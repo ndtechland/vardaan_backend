@@ -65,7 +65,7 @@
         <div class="page-body-wrapper">
             <!-- Page Sidebar Start-->
             <div class="sidebar-wrapper">
-                @Html.Partial("~/Views/Shared/Master/Sidebar.cshtml")
+                @Html.Action("ShowSidebarMenus", "Admin")
             </div>
             <!-- Page Sidebar Ends-->
             <div class="page-body">
@@ -137,7 +137,7 @@
     <script src="~/adminassets/js/ratio.js"></script>
     <!-- vector map start -->
     <!-- customizer js start  -->
-    <script src="~/adminassets/js/customizer.js"></script>
+    @*<script src="~/adminassets/js/customizer.js"></script>*@
     <!-- customizer js start  -->
     <script src="~/adminassets/js/vector-map/jquery-jvectormap-2.0.2.min.js"></script>
     <script src="~/adminassets/js/vector-map/map/jquery-jvectormap-world-mill-en.js"></script>

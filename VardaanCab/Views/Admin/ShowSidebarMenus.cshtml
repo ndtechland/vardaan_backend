@@ -50,14 +50,13 @@
                 {
                     foreach (var item in Model)
                     {
-                        <li class="sub-menu">
-                            <a href="javascript:;">
-                                <i class="fa fa-book"></i>
-                                <span>@item.Title</span>
+                        <li class="sidebar-list">
+                            <a class="sidebar-link sidebar-title" href="#">
+                                <i data-feather="navigation"></i><span>@item.Title</span>
                             </a>
                             @if (item.ChildMenus != null && item.ChildMenus.Count() > 0)
                             {
-                                <ul class="sub">
+                                <ul class="sidebar-submenu">
                                     @foreach (var menu in item.ChildMenus)
                                     {
                                         <li>
@@ -71,6 +70,7 @@
                                             }
                                         </li>
                                     }
+
                                 </ul>
                             }
                         </li>
@@ -92,12 +92,28 @@
                         </ul>
                     </li>*@
 
-                <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title link-nav"
-                       href="#"><i data-feather="bookmark"> </i><span>Booking</span></a>
-                </li>
+
             </ul>
         </div>
         <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
     </nav>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Get the current URL path
+        var path = window.location.pathname;
+
+        // Find the corresponding nav-link and mark it as active
+        $('nav a.nav-link').each(function () {
+            var href = $(this).attr('href');
+            if (path === href) {
+                $(this).addClass('active');
+                // If there are submenus, also open their parent menu
+                $(this).parents('.menu-close').addClass('menu-open');
+            } else {
+                $(this).removeClass('active');
+            }
+        });
+    });</script>

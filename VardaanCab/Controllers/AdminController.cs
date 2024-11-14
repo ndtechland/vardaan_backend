@@ -380,7 +380,19 @@ namespace VardaanCab.Controllers
             ViewBag.menuId = menuId;
             return View(logs);
         }
-       
 
+        public ActionResult ShowSidebarMenus()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
+            var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
+            foreach (var item in softwareLinks)
+            {
+                var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + " and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
+                var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
+                item.ChildMenus = l;
+            }
+            return PartialView(softwareLinks);
         }
+    }
 }
