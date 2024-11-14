@@ -1,282 +1,61 @@
 ﻿@{
     var UserName = @User.Identity.Name;
 }
-<!-- Page Sidebar Start-->
-<style>
-    .nk-menu-sub {
-        display: none;
-    }
-
-        .nk-menu-sub.show {
-            display: block;
-        }
-
-    .nk-menu-toggle-icon.rotate {
-        transform: rotate(90deg);
-        transition: transform 0.3s ease;
-    }
-</style>
-<div class="nk-sidebar-element nk-sidebar-head">
-    <div class="nk-menu-trigger">
-        <a href="#" class="nk-nav-toggle nk-quick-nav-icon d-xl-none"
-           data-target="sidebarMenu"><em class="icon fas fa-arrow-left"></em></a>
-        <a href="#"
-           class="nk-nav-compact nk-quick-nav-icon d-none d-xl-inline-flex"
-           data-target="sidebarMenu"><em class="icon fas fa-bars"></em></a>
-    </div>
-    <div class="nk-sidebar-brand">
-        <a href="/Home/Dashboard" class="logo-link nk-sidebar-logo">
-            <img class="logo-light logo-img" src="~/adminassets/images/vardaancab_logo.png" alt="logo">
-            <img class="logo-dark logo-img" src="~/adminassets/images/vardaancab_logo.png" alt="logo-dark">
-        </a>
-    </div>
-</div>
-
-<div class="nk-sidebar-element nk-sidebar-body">
-    <div class="nk-sidebar-content">
-        <div class="nk-sidebar-menu" data-simplebar>
-            <ul class="nk-menu">
-                <li class="nk-menu-item">
-                    <a href="/Home/Dashboard" class="nk-menu-link">
-                        <span class="nk-menu-icon"><i class="fas fa-tachometer-alt"></i></span><span class="nk-menu-text">Dashboard</span>
-                    </a>
-                </li>
-                @if (UserName == "SuperAdmin")
-                {
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon">
-                                <i class="fa-solid fa-image"></i>
-                            </span><span class="nk-menu-text">Banners</span>
-                            <i class="fas fa-angle-right nk-menu-toggle-icon"></i>
-                        </a>
-                        <ul class="nk-menu-sub" style="display: none;">
-                            <li class="nk-menu-item">
-                                <a href="/Banner/Banner" class="nk-menu-link">
-                                    <span class="nk-menu-text">Banner</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </span><span class="nk-menu-text">Meals</span>
-                            <i class="fas fa-angle-right nk-menu-toggle-icon"></i>
-                        </a>
-                        <ul class="nk-menu-sub" style="display: none;">
-                            <li class="nk-menu-item">
-                                <a href="/Restaurants/Meals" class="nk-menu-link">
-                                    <span class="nk-menu-text">Meal</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon">
-                                <i class="fa-solid fa-image"></i>
-                            </span><span class="nk-menu-text">Gallery</span>
-                            <i class="fas fa-angle-right nk-menu-toggle-icon"></i>
-                        </a>
-                        <ul class="nk-menu-sub" style="display: none;">
-                            <li class="nk-menu-item">
-                                <a href="/Gallery/GalleryList" class="nk-menu-link">
-                                    <span class="nk-menu-text">Gallery</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon">
-                                <i class="fas fa-calendar-check"></i>
-                            </span><span class="nk-menu-text">Bookings</span>
-                            <i class="fas fa-angle-right nk-menu-toggle-icon"></i>
-                        </a>
-                        <ul class="nk-menu-sub" style="display: none;">
-                            <li class="nk-menu-item">
-                                <a href="/Booking/Bookings" class="nk-menu-link">
-                                    <span class="nk-menu-text">All Bookings</span>
-                                </a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="/Booking/AddBooking" class="nk-menu-link">
-                                    <span class="nk-menu-text">Add Booking</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon">
-                                <i class="fas fa-home"></i>
-                            </span><span class="nk-menu-text">Room</span>
-                            <i class="fas fa-angle-right nk-menu-toggle-icon"></i>
-                        </a>
-                        <ul class="nk-menu-sub" style="display: none;">
-                            <li class="nk-menu-item">
-                                <a href="/Rooms/RoomList" class="nk-menu-link">
-                                    <span class="nk-menu-text">All Rooms</span>
-                                </a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="/Rooms/RoomTypeList" class="nk-menu-link">
-                                    <span class="nk-menu-text">Room Types</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon"><i class="fas fa-file-alt"></i></span>
-                            <span class="nk-menu-text">Reports</span>
-                            <i class="fas fa-angle-right nk-menu-toggle-icon"></i>
-                        </a>
-                        <ul class="nk-menu-sub" style="display: none;">
-                            <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link">
-                                    <span class="nk-menu-text">Stocks</span>
-                                </a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link">
-                                    <span class="nk-menu-text">Expenses</span>
-                                </a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link">
-                                    <span class="nk-menu-text">Booking</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nk-menu-item">
-                        <a href="/Home/CustomerList" class="nk-menu-link">
-                            <span class="nk-menu-icon"><i class="fas fa-users"></i></span>
-                            <span class="nk-menu-text">Customers</span>
-                        </a>
-                    </li>
-                    <li class="nk-menu-item">
-                        <a href="/Rooms/ContactusList" class="nk-menu-link">
-                            <span class="nk-menu-icon"><i class="fa fa-address-book"></i></span>
-                            <span class="nk-menu-text">Contact</span>
-                        </a>
-                    </li>
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon"><i class="fas fa-coins"></i></span>
-                            <span class="nk-menu-text">Payment</span>
-                            <i class="fas fa-angle-right nk-menu-toggle-icon"></i>
-                        </a>
-                        <ul class="nk-menu-sub" style="display: none;">
-                            <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link">
-                                    <span class="nk-menu-text">Payment Methods</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item">
-                        <a href="#" class="nk-menu-link">
-                            <span class="nk-menu-icon">
-                                <i class="fas fa-comments"></i>
-                            </span><span class="nk-menu-text">Support</span>
-                        </a>
-                    </li>
-                    <li class="nk-menu-item">
-                        <a href="#" class="nk-menu-link">
-                            <span class="nk-menu-icon">
-                                <i class="fas fa-cog"></i>
-                            </span><span class="nk-menu-text">Settings</span>
-                        </a>
-                    </li>
-                }
-                else
-                {
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </span><span class="nk-menu-text">Menus</span>
-                            <i class="fas fa-angle-right nk-menu-toggle-icon"></i>
-                        </a>
-                        <ul class="nk-menu-sub" style="display: none;">
-                            <li class="nk-menu-item">
-                                <a href="/Restaurants/MenuType" class="nk-menu-link">
-                                    <span class="nk-menu-text">Menu Type</span>
-                                </a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="/Restaurants/MenuList" class="nk-menu-link">
-                                    <span class="nk-menu-text">Menu</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon">
-                                <i class="fas fa-calendar-check"></i>
-                            </span><span class="nk-menu-text">Bookings</span>
-                            <i class="fas fa-angle-right nk-menu-toggle-icon"></i>
-                        </a>
-                        <ul class="nk-menu-sub" style="display: none;">
-                            <li class="nk-menu-item">
-                                <a href="/Restaurants/MenuItemBookingList" class="nk-menu-link">
-                                    <span class="nk-menu-text">Food Bookings</span>
-                                </a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="/Restaurants/TableBookingList" class="nk-menu-link">
-                                    <span class="nk-menu-text">Dining Table Bookings</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon">
-                                <i class="fa-solid fa-image"></i>
-                            </span><span class="nk-menu-text">Gallery</span>
-                            <i class="fas fa-angle-right nk-menu-toggle-icon"></i>
-                        </a>
-                        <ul class="nk-menu-sub" style="display: none;">
-                            <li class="nk-menu-item">
-                                <a href="/Gallery/MenuGalleryList" class="nk-menu-link">
-                                    <span class="nk-menu-text">Menu Galleries</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                }
-            </ul>
+<div>
+    <div class="logo-wrapper">
+        <span class="back">Back</span>
+        <div class="back-btn"><i class="fa fa-angle-left"></i></div>
+        <div class="toggle-sidebar">
+            <i class="status_toggle middle sidebar-toggle" data-feather="grid">
+            </i>
         </div>
     </div>
+    <div class="logo-icon-wrapper">
+        <a href="index.html">
+            <img class="img-fluid"
+                 src="../assets/images/logo/logo-icon.png" alt="">
+        </a>
+    </div>
+    <nav class="sidebar-main">
+        <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+        <div id="sidebar-menu">
+            <ul class="sidebar-links" id="simple-bar">
+                <li class="back-btn">
+                    <a href="index.html">
+                        <img class="img-fluid"
+                             src="../assets/images/logo/logo-icon.png" alt="">
+                    </a>
+                    <div class="mobile-back text-end">
+                        <span>Back</span><i class="fa fa-angle-right ps-2"
+                                            aria-hidden="true"></i>
+                    </div>
+                </li>
+
+                <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title link-nav"
+                       href="/Admin/Dashboard"><i data-feather="home"> </i><span>Dashboard</span></a>
+                </li>
+
+                <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title" href="#">
+                        <i data-feather="navigation"></i><span>Cab</span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li><a href="all-cars.html">All Cars</a></li>
+                        <li><a href="cars-detail.html">Cars's Details </a></li>
+
+                        <li><a href="add-new-cars.html">Add New Cars</a></li>
+                        <li><a href="all-drivers.html">All Drivers</a></li>
+                        <li><a href="add-driver.html">Add Drivers</a></li>
+                    </ul>
+                </li>
+
+                <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title link-nav"
+                       href="booking.html"><i data-feather="bookmark"> </i><span>Booking</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
+    </nav>
 </div>
-<!-- Page Sidebar Ends-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const menuToggles = document.querySelectorAll('.nk-menu-toggle');
-
-        menuToggles.forEach(toggle => {
-            toggle.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                // Toggle the submenu
-                const subMenu = toggle.nextElementSibling;
-                subMenu.classList.toggle('show');
-
-                // Toggle the icon rotation
-                const icon = toggle.querySelector('.nk-menu-toggle-icon');
-                icon.classList.toggle('rotate');
-            });
-        });
-    });
-</script>

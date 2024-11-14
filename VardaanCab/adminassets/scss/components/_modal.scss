@@ -1,0 +1,32 @@
+/**=====================
+     Modal CSS Start
+==========================**/
+.modal-body {
+    position: relative;
+    h5 {
+        font-weight: 700;
+        font-size: calc(17px + (25 - 17) * ((100vw - 320px) / (1920 - 320)));
+        margin-bottom: calc(15px + (20 - 15) * ((100vw - 320px) / (1920 - 320)));
+    }
+    p {
+        font-size: 16px;
+    }
+    .btn-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    .button-box {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+    }
+    .btn--no {
+        margin-left: auto;
+        margin-right: 15px;
+        color: $white !important;
+
+        background-color: $cancel-color !important;
+    }
+}

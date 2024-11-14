@@ -2,56 +2,149 @@
 
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="author" content="Softnio">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-          content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
-    <link rel="shortcut icon" href="../images/favicon.png">
-    <title>Admin - Vardaan Cab</title>
-    <link rel="stylesheet" href="~/adminassets/css/dashlitee5ca.css?ver=3.2.3">
-    <link id="skin-default" rel="stylesheet" href="~/adminassets/css/themee5ca.css?ver=3.2.3">
-    <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
-    <script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-D1QW99F3EN&amp;l=dataLayer&amp;cx=c"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91615293-4"></script>
-    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'UA-91615293-4');</script>
+        content="Rica admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Rica admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" href="~/adminassets/images/logo/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="~/adminassets/images/logo/logo.png" type="image/x-icon">
+    <title>Vardaan -Car</title>
+    <!-- Google font-->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Favicon-->
-    <link rel="icon" href="~/adminassets/images/icon/CaelumLogo.png" type="image/x-icon">
-    <link rel="shortcut icon" href="~/adminassets/images/icon/CaelumLogo.png" type="image/x-icon">
+    <!-- FontAsowme css start  -->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/font-awesome.css">
+
+    <!-- Themify icon-->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/vendors/themify.css">
+    <!-- ratio start -->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/ratio.css">
+
+    <!-- Feather icon-->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/vendors/feather-icon.css">
+    <!-- Plugins css start-->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/vendors/animate.css">
+    <!-- Plugins css Ends-->
+    <!-- datepicker -->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/vendors/date-picker.css">
+    <!-- Bootstrap css-->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/vendors/bootstrap.css">
+    <!-- vector map css start -->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/vector-map.css">
+    <!-- vector map css start -->
+    <!-- slick slider-->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/slick.css">
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/slick-theme.css">
+    <!-- App css-->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/style.css">
+    <!-- Responsive css-->
+    <link rel="stylesheet" type="text/css" href="~/adminassets/css/responsive.css">
 </head>
 <body>
-    <div class="nk-app-root">
-        <div class="nk-main ">
-            <div class="nk-sidebar nk-sidebar-fixed " data-content="sidebarMenu">
+    <!-- pre-loader start -->
+    @*<div class="loader-wrapper">
+        <img src="~/adminassets/images/loader/loader.gif" alt="loader gif">
+    </div>*@
+    <!-- pre-loader End -->
+    <!-- tap on top starts-->
+    <div class="tap-top"><i data-feather="chevrons-up"></i></div>
+    <div class="page-wrapper compact-wrapper modern-type" id="pageWrapper">
+        <!-- Page Header Start-->
+        <div class="page-header">
+            @Html.Partial("~/Views/Shared/Master/Header.cshtml")
+        </div>
+        <!-- Page Header Ends -->
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page Sidebar Start-->
+            <div class="sidebar-wrapper">
                 @Html.Partial("~/Views/Shared/Master/Sidebar.cshtml")
-
             </div>
-            <div class="nk-wrap">
-                <div class="nk-header nk-header-fixed">
-                    <div class="container-fluid">
-                        @Html.Partial("~/Views/Shared/Master/Header.cshtml")
-                    </div>
-                </div>
-                <div class="nk-content">
-                    @RenderBody()
-                </div>
-                <div class="nk-footer">
-                    @Html.Partial("~/Views/Shared/Master/Footer.cshtml")
+            <!-- Page Sidebar Ends-->
+            <div class="page-body">
+
+                <!-- Container-fluid starts-->
+                @RenderBody()
+                <!-- Container-fluid Ends-->
+
+                <div class="container-fluid">
+                    <!-- footer start-->
+                    <footer class="footer">
+
+                        @Html.Partial("~/Views/Shared/Master/Footer.cshtml")
+
+                    </footer>
                 </div>
             </div>
         </div>
+
     </div>
 
+
     <!-- latest jquery-->
-    <script src="../adminassets/js/bundlee5ca.js?ver=3.2.3"></script>
-    <script src="~/adminassets/js/scriptse5ca.js?ver=3.2.3"></script>
-    <script src="~/adminassets/js/demo-settingse5ca.js?ver=3.2.3"></script>
-    <script src="~/adminassets/js/charts/chart-hotele5ca.js?ver=3.2.3"></script>
-    <script src="../assetsadmin/js/script.js?ver=3.2.3"></script>
-    <script src="../assetsadmin/js/charts/chart-hotele5ca.js?ver=3.2.3"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="~/adminassets/js/jquery-3.5.1.min.js"></script>
+    <!-- Bootstrap js-->
+    <script src="~/adminassets/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- feather icon js-->
+    <script src="~/adminassets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="~/adminassets/js/icons/feather-icon/feather-icon.js"></script>
+    <!-- scrollbar js-->
+    <script src="~/adminassets/js/scrollbar/simplebar.js"></script>
+    <script src="~/adminassets/js/scrollbar/custom.js"></script>
+    <!-- Sidebar jquery-->
+    <script src="~/adminassets/js/config.js"></script>
+
+
+    <!-- tooltip init js  start-->
+    <script src="~/adminassets/js/tooltip-init.js"></script>
+    <!-- tooltip init js  end-->
+    <!-- slick js start -->
+    <script src="~/adminassets/js/slick.js"></script>
+    <!-- slick js end -->
+    <!-- Plugins JS start-->
+    <script src="~/adminassets/js/sidebar-menu.js"></script>
+    <script src="~/adminassets/js/notify/bootstrap-notify.min.js"></script>
+
+
+    <script src="~/adminassets/js/notify/index.js"></script>
+    <script src="~/adminassets/js/typeahead/handlebars.js"></script>
+    <script src="~/adminassets/js/typeahead/typeahead.bundle.js"></script>
+    <script src="~/adminassets/js/typeahead/typeahead.custom.js"></script>
+    <script src="~/adminassets/js/typeahead-search/handlebars.js"></script>
+    <script src="~/adminassets/js/typeahead-search/typeahead-custom.js"></script>
+    <!-- Plugins JS Ends-->
+
+    <script src="~/adminassets/js/datepicker/date-picker/datepicker.js"></script>
+
+    <script src="~/adminassets/js/datepicker/date-picker/datepicker.en.js"></script>
+
+    <script src="~/adminassets/js/datepicker/date-picker/datepicker.custom.js"></script>
+    <!-- Apexchar js start -->
+
+    <script src="~/adminassets/js/chart/apex-chart/moment.min.js"></script>
+    <script src="~/adminassets/js/chart/apex-chart/apex-chart.js"></script>
+    <script src="~/adminassets/js/chart/apex-chart/stock-prices.js"></script>
+    <script src="~/adminassets/js/chart/apex-chart/chart-custom.js"></script>
+    <!-- Apexchar js start -->
+    <!-- ratio start  -->
+    <script src="~/adminassets/js/ratio.js"></script>
+    <!-- vector map start -->
+    <!-- customizer js start  -->
+    <script src="~/adminassets/js/customizer.js"></script>
+    <!-- customizer js start  -->
+    <script src="~/adminassets/js/vector-map/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="~/adminassets/js/vector-map/map/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/adminassets/js/vector-map/map-vector.js"></script>
+    <!-- vector map end -->
+    <!-- Theme js-->
+    <script src="~/adminassets/js/script.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $.ajax({
