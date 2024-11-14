@@ -1,0 +1,95 @@
+﻿@model VardaanCab.Models.ViewModels.CabCategoryVm
+@{
+    ViewBag.Title = "Cab Categories";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    int sn = Model.SrNo;
+}
+<link href="~/css/fixtable.css" rel="stylesheet" />
+<style>
+    #main {
+        margin: auto;
+        width: 70%;
+    }
+
+</style>
+
+<div id="main">
+    <h2>Cab Categories</h2>
+    <div class="row">
+        <a href="/SubMenu/MasterEntrySubMenu" class="btn btn-info" style="margin-left:2%">Back</a>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="row r">
+            <div class="col-md-4">
+                <input type="text" placeholder="Search by Name" class="form-control" name="term" />
+            </div>
+            <div class="col-md-8">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/CabCategory/All">Show all</a>
+                <a class="btn btn-info" href="/CabCategory/Add">+ Add More</a>
+            </div>
+        </div>
+    }
+
+    
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Categories)
+                    {
+                        <tr>
+                            <td>@(++sn)</td>
+                            <td>@item.CabCategoryName</td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+                                <span class="btn btn-danger" onclick="deleteRecord('/CabCategory/Delete?id=@item.Id')">Delete</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/CabCategory/All?term=@Model.Term&page=@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    function deleteRecord(url)
+    {
+        if(window.confirm('do you want to delete?'))
+        {
+            $.get(url).then(function (r) {
+                if (r == "ok") {
+                    var loc = window.location.href;
+                    window.location.href = loc;
+                }
+            }, function (e) {
+                alert("Server error");
+            })
+        }
+    }
+</script>
+

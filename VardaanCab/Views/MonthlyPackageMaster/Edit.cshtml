@@ -1,0 +1,99 @@
+﻿@model VardaanCab.Models.DTO.MonthlyPackageMasterDTO
+@{
+    ViewBag.Title = "Update Monthly Package";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div style="width:60%;margin-left:1%">
+    <div class="row r">
+        <div class="col-md-12">
+            <h2>Update Monthly Package</h2>
+        </div>
+    </div>
+
+    <div class="row r">
+        <div class="col-md-6">
+            <a href="/MonthlyPackageMaster/All?menuId=@Model.MenuId" class="btn btn-default">Show Packages</a>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(a => a.Id)
+        @Html.HiddenFor(a => a.CreatedBy_Id)
+        @Html.HiddenFor(a => a.MenuId)
+
+        <div class="row">
+            <div class="col-md-12">
+                @if (ViewData.ModelState["msg"] != null)
+                {
+                    <div class="alert alert-info">
+                        @Html.ValidationMessage("msg")
+                    </div>
+                }
+
+                <div class="form-group">
+                    Vehicle Model*
+                    @Html.DropDownListFor(a => a.VehicleModel_Id, Model.VehicleModelList, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.VehicleModel_Id)
+                    </span>
+                </div>
+
+
+                <div class="form-group">
+                    Fare *
+                    @Html.TextBoxFor(a => a.Fare, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.Fare)
+                    </span>
+                </div>
+
+                @*<div class="form-group">
+                        Fixed Km *
+                        @Html.TextBoxFor(a => a.FixedKms, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.FixedKms)
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        Fixed Hour/Day *
+                        @Html.TextBoxFor(a => a.FixedHourPerDay, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.FixedHourPerDay)
+                        </span>
+                    </div>*@
+
+                <div class="form-group">
+                    Extra Km rate *
+                    @Html.TextBoxFor(a => a.ExtraKmRate, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.ExtraKmRate)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Extra Hour Rate *
+                    @Html.TextBoxFor(a => a.ExtraHourRate, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.ExtraHourRate)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Night Charges *
+                    @Html.TextBoxFor(a => a.NightCharge, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.NightCharge)
+                    </span>
+                </div>
+
+
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-info">Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

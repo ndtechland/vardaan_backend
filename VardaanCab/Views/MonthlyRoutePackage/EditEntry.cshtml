@@ -1,0 +1,127 @@
+﻿@model VardaanCab.Models.DTO.MonthlyPackageRouteEntryDTO
+@{
+    ViewBag.Title = "Update Entry";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Update Entry</h2>
+
+<div class="row r">
+    <div class="col-md-12">
+        <a class="btn btn-default" href="/MonthlyRoutePackage/DispatchEntries?packageId=@Model.MonthlyPackageRoute_Id">Back</a>
+    </div>
+</div>
+@if (ViewData.ModelState["msg"] != null)
+{
+    <div class="alert alert-info">
+        @Html.ValidationMessage("msg")
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(a => a.MonthlyPackageRoute_Id)
+    @Html.HiddenFor(a => a.Id)
+
+    <div class="row r">
+        <div class="col-md-2">
+            Vehicle No *
+        </div>
+        <div class="col-md-4">
+            @Html.HiddenFor(a => a.Cab_Id)
+
+            @Html.TextBoxFor(a => a.CabNo, null, new { id = "vehicleNo", @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.CabNo)
+            </span>
+        </div>
+
+        <div class="col-md-1">
+            Driver *
+        </div>
+        <div class="col-md-5">
+            @{Html.EnableClientValidation(false);}
+            @Html.DropDownListFor(a => a.Driver_Id, Model.Drivers, "Select", new { @class = "form-control", required = "required" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.Driver_Id)
+            </span>
+            @{Html.EnableClientValidation(true);}
+
+
+        </div>
+    </div>
+    <div class="row r">
+
+        <div class="col-md-3">
+            Pickup Date *
+            @Html.TextBoxFor(a => a.JourneyStartDate, new { @class = "form-control sdp" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.JourneyStartDate)
+            </span>
+        </div>
+
+
+        <div class="col-md-2">
+            Pickup Time *
+            @Html.TextBoxFor(a => a.PickupTime, new { @class = "form-control tp" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.PickupTime)
+            </span>
+        </div>
+
+        <div class="col-md-7">
+            Pickup Location *
+            @Html.TextBoxFor(a => a.PickupPlace, new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.PickupPlace)
+            </span>
+        </div>
+
+    </div>
+
+    <div class="row r">
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary btn-block">Save</button>
+        </div>
+    </div>
+}
+
+<link href="/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<script src="/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script>
+    $("#vehicleNo").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/MonthlyPackage/GetCabList',
+                data: { term: request.term },
+                type: 'GET',
+                success: function (data) {
+                    if (!data.length) {
+                        var result = [
+                         {
+                             label: 'No data found',
+                             value: response.term
+                         }
+                        ];
+                        response(result);
+                    }
+                    else {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.ModelName + "(" + item.VehicleNumber + ")",
+                                value: item.Id
+
+                            };
+                        }));
+                    }
+                }
+            });
+        },
+        select: function (event, ui) {
+            $('#Cab_Id').val(ui.item.value);
+            $('#vehicleNo').val(ui.item.label);
+
+            return false;
+        }
+    });
+</script>

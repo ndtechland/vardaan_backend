@@ -1,0 +1,224 @@
+﻿@model VardaanCab.Models.DTO.MonthlyPackageEntryDTO
+@{
+    ViewBag.Title = "Close Entry";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row r">
+    <div class="col-md-12">
+        @*<a class="btn btn-default" href="/MonthlyPackage/DispatchEntries?packageId=@Model.MonthlyPackage_Id&menuId=@Model.MenuId">Back</a>*@
+
+        <a class="btn btn-default" href="@Model.PrevUrl">Back</a>
+    </div>
+</div>
+
+@if(ViewData.ModelState["msg"]!=null)
+{
+    <div class="alert alert-info">
+        @Html.ValidationMessage("msg")
+    </div>
+}
+@using (Html.BeginForm())
+{
+@Html.HiddenFor(a => a.MonthlyPackage_Id)
+    @Html.HiddenFor(a => a.Id)
+    @Html.HiddenFor(a => a.Cab_Id)
+    @Html.HiddenFor(a => a.CabNo)
+    @Html.HiddenFor(a => a.Driver_Id)
+    @Html.HiddenFor(a => a.EntryDate)
+    @Html.HiddenFor(a => a.MenuId)
+    @Html.HiddenFor(a=>a.PrevUrl)
+         <div class="row r">
+            <div class="col-md-4">
+                Start Kms. *
+                @Html.TextBoxFor(a => a.StKm, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.StKm)
+                </span>
+            </div>
+            <div class="col-md-4">
+                End Kms. *
+                @Html.TextBoxFor(a => a.EndKm, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.EndKm)
+                </span>
+            </div>
+            <div class="col-md-4">
+                Total Kms.*
+                @Html.TextBoxFor(a => a.TotalKm, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.TotalKm)
+                </span>
+            </div>
+        </div>
+
+
+        <div class="row r">
+                <div class="col-md-3">
+                    Start Date *
+                    @Html.TextBoxFor(a => a.JourneyStartDate, new { @class = "form-control sdp" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.JourneyStartDate)
+                    </span>
+                </div>
+                <div class="col-md-3">
+                    Closing Date *
+                    @Html.TextBoxFor(a => a.JourneyClosingDate, new { @class = "form-control sdp" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.JourneyClosingDate)
+                    </span>
+                </div>
+            <div class="col-md-2">
+                Start Hour *
+                @Html.TextBoxFor(a => a.StartHr, new { @class = "form-control tp" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.StartHr)
+                </span>
+            </div>
+
+            <div class="col-md-2">
+                Closing Hour *
+                @Html.TextBoxFor(a => a.EndHr, new { @class = "form-control tp" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.EndHr)
+                </span>
+            </div>
+
+            <div class="col-md-2">
+                Total Hrs.*
+                @Html.TextBoxFor(a => a.TotalHrs, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.TotalHrs)
+                </span>
+            </div>
+        
+        </div>
+
+
+        <div class="row r">
+            <div class="col-md-3">
+                Min Hrs. *
+                @Html.TextBoxFor(a => a.MinHrs, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.MinHrs)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Extra Hours. *
+                @Html.TextBoxFor(a => a.ExtraHr, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraHr)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Rate/ Extra Hour.*
+                @Html.TextBoxFor(a => a.ExtraHrsRate, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraHrsRate)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Charge for extra Hour *
+                @Html.TextBoxFor(a => a.ExtraHrsCharge, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraHrsCharge)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+
+            <div class="col-md-3">
+                Total Nights *
+                @Html.TextBoxFor(a => a.TotalNight, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.TotalNight)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Rate/Night *
+                @Html.TextBoxFor(a => a.NightRate, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NightRate)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Night Charges *
+                @Html.TextBoxFor(a => a.NightCharge, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NightCharge)
+                </span>
+            </div>
+
+
+        </div>
+
+        <div class="row r">
+            <div class="col-md-3">
+                Parking  Charges
+                @Html.TextBoxFor(a => a.ParkingCharge, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ParkingCharge)
+                </span>
+            </div>
+            <div class="col-md-3">
+                Toll  Charges
+                @Html.TextBoxFor(a => a.TollCharge, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.TollCharge)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                MCD
+                @Html.TextBoxFor(a => a.MCD, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.MCD)
+                </span>
+            </div>
+            <div class="col-md-3">
+                Taxes *
+                @Html.TextBoxFor(a => a.InterStateTax, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.InterStateTax)
+                </span>
+            </div>
+        </div>
+
+     
+
+        <div class="row r">
+           
+
+            <div class="col-md-2">
+                Net Amount
+                @Html.TextBoxFor(a => a.NetAmount, new { id = "netAmount", @class = "form-control", type = "number", @readonly = "readonly" })
+
+            </div>
+
+            <div class="col-md-3">
+                Total Amount
+                @Html.TextBoxFor(a => a.Total, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.Total)
+                </span>
+            </div>
+
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary btn-block">Save</button>
+            </div>
+        </div>
+
+}
+
+<script src="/Scripts/monthlyPackageEntry.js"></script>

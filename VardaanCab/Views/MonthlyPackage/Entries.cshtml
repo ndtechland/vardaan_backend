@@ -1,0 +1,122 @@
+﻿@model IEnumerable<VardaanCab.Models.DTO.MonthlyPackageEntryDTO>
+@{
+    ViewBag.Title = "Monthly package entries";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+<h2>Closed entries</h2>
+
+<div style="width:99%;margin-left:1%;margin-top:1%;margin-bottom:1%;height:400px;overflow:scroll">
+    <div class="row r">
+        <div class="col-md-2">
+            <a class="btn btn-default" href="/MonthlyPackage/All?menuId=@ViewBag.menuId">Back</a>
+            <button type="button" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+
+        </div>
+       
+    </div>
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div class="mainDiv">
+            <div class="wrapperTable table-scroll">
+                <table class="table" id="table_wrapper">
+            <tr>
+                <th>Vehicle</th>
+                <th>Started at</th>
+                <th>Ended At</th>
+                <th>St -End kms</th>
+                <th>Total Kms</th>
+                <th>Total Hrs</th>
+                <th>Extra Hrs</th>
+                <th>Extra Hrs rate</th>
+                <th>Extra Hrs charge</th>
+                <th>Toll Charge</th>
+                <th>MCD</th>
+                <th>Parking</th>
+                <th>Interstate tax</th>
+                <th>Updated by</th>
+                <th>Update time</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.VehicleModel (@item.CabNo)</td>
+                    <td>@item.JourneyStartDate.ToString("dd-MMM-yyyy") @item.StartHr</td>
+                    <td>@item.JourneyClosingDate.Value.ToString("dd-MMM-yyyy") @item.EndHr</td>
+                    <td>@item.StKm - @item.EndKm</td>
+                    <td>@item.TotalKm</td>
+                    <td>@item.TotalHrs</td>
+                    <td>@item.ExtraHr</td>
+                    <td>@item.ExtraHrsRate</td>
+                    <td>@item.ExtraHrsCharge</td>
+                    <td>@item.TollCharge</td>
+                    <td>@item.MCD</td>
+                    <td>@item.ParkingCharge</td>
+                    <td>@item.InterStateTax</td>
+                    <td>@item.UpdatedBy</td>
+                    <td>@item.UpdateDate.ToString("dd-MMM-yyyy")</td>
+                    <td>
+                        <a href="@Url.Action("CloseDailyEntry",new { entryId=item.Id,prevUrl=Request.RawUrl })" class="btn btn-info">Update</a>
+                    </td>
+                </tr>
+            }
+        </table>
+            </div>
+        </div>
+        
+    }
+    else
+    {
+        <div class="row r">
+            <div class="col-md-12">
+                <h4>No Records found</h4>
+            </div>
+        </div>
+    }
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function (e) {
+            e.preventDefault();
+            //getting data from our table
+            var data_type = 'data:application/vnd.ms-excel';
+            var table_div = document.getElementById('table_wrapper');
+            var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+
+            var a = document.createElement('a');
+            a.href = data_type + ', ' + table_html;
+            a.download = 'monthly-package_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+            a.click();
+        });
+    });
+
+    //function cancelInvoice(obj)
+    //{
+    //    if (!window.confirm("Are you sure to cancel it?"))
+    //    {
+    //        return false;
+    //    }
+    //    var el = $(obj);
+    //    var url = el.attr('url');
+    //    $.get(url)
+    //        .then(function (r) {
+    //            if(r=='error')
+    //            {
+    //                alert("Server error");
+    //            }
+    //            else {
+    //                var loc = window.location.href;
+
+    //                window.location.href = loc;
+    //            }
+    //        })
+    //        .fail(function (err) {
+    //            console.log(err.responseText);
+    //            alert("server error");
+    //        });
+    //}
+</script>

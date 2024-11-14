@@ -1,0 +1,265 @@
+﻿@model VardaanCab.Models.DTO.CorporatePackageDTO
+@{
+    ViewBag.Title = "Add Corporate Package";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+        }
+
+
+<style>
+    .row {
+        margin-top: 1% !important;
+    }
+#monthly{
+    display:none;
+    }
+</style>
+
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(a=>a.MenuId)
+    <div style="width:50%">
+        @Html.ValidationSummary()
+        <div class="row r">
+            <div class="col-md-12">
+                <a href="/Admin/SubMenu?menuId=@Model.MenuId" class="btn btn-info">Back</a>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+                <h2>Create Corporate Package</h2>
+            </div>
+        </div>
+
+        @if (TempData["msg"] != null)
+    {
+            <div class="row r">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        @TempData["msg"]
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row r">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    Package Type *
+                    @Html.DropDownListFor(a => a.PackageType_Id, Model.PackageTypes, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.PackageType_Id)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Rental Type *
+                    @Html.DropDownListFor(a => a.RentalType_Id, Enumerable.Empty<SelectListItem>(), "Select RentalType", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.RentalType_Id)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Vehicle *
+                    @Html.DropDownListFor(a => a.VehicleModel_Id, Model.VehicleModels, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.VehicleModel_Id)
+                    </span>
+                </div>
+                <div id="monthly">
+                    <div class="form-group">
+                        Pickup Location *
+                        @Html.TextBoxFor(a => a.PickupLocation, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.PickupLocation)
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        Drop Location *
+                        @Html.TextBoxFor(a => a.DropLocation, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.DropLocation)
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        No Of Days *
+                        @Html.TextBoxFor(a => a.NoOfDays, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.Fare)
+                        </span>
+                    </div>
+                </div>
+           
+                     <div class="form-group">
+                    Fare *
+                    @Html.TextBoxFor(a => a.Fare, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.Fare)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Min Km *
+                    @Html.TextBoxFor(a => a.MinKm, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.MinKm)
+                    </span>
+                </div>
+
+                <div id="regularDiv">
+                    <div class="form-group">
+                        Min Hrs *
+                        @Html.TextBoxFor(a => a.MinHrs, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.MinHrs)
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        Extra Per Hour *
+                        @Html.TextBoxFor(a => a.ExtraPerHour, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.ExtraPerHour)
+                        </span>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    Extra Per Km *
+                    @Html.TextBoxFor(a => a.ExtraPerKm, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.ExtraPerKm)
+                    </span>
+                </div>
+
+                <div class="form-group" id="outstationDiv" style="display:none">
+                    Outstation TA/Day *
+                    @Html.TextBoxFor(a => a.OutStationCharge, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.OutStationCharge)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Night Charges *
+                    @Html.TextBoxFor(a => a.NightCharges, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.NightCharges)
+                    </span>
+                </div>
+
+                @*<div class="form-group">
+                        InterState Charges *
+                        @Html.TextBoxFor(a => a.InterStateCharge, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.InterStateCharge)
+                        </span>
+                    </div>*@
+
+
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Save" />
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+}
+<script src="/js/jquery2.0.3.min.js"></script>
+@*<script>
+        $("#RentalType_Id").change(function () {debugger
+            var rentalTypeText = $(this).find('option:selected').text();
+            //var arr = rentalTypeText.split('-');
+            //let packageType = arr[arr.length - 1];
+            var outstationDiv = $("#outstationDiv");
+            var regularDiv = $("#regularDiv");
+            if (rentalTypeText === "outstation")
+            {
+               outstationDiv.show();
+                regularDiv.hide();
+            }
+            else {
+               outstationDiv.hide();
+                regularDiv.show();
+            }
+        });
+
+    </script>*@
+<script>
+    document.getElementById("PackageType_Id").onchange = function () {debugger
+        var outstationDiv = document.getElementById("outstationDiv"); 
+        var regularDiv = document.getElementById("regularDiv");
+        var pType = document.getElementById("PackageType_Id");
+        var pTypeId = pType.value;
+        var pTypeName = pType.options[pType.selectedIndex].text;
+        if (pTypeName.toLowerCase() === "outstation") {
+            outstationDiv.style.display = 'block';
+            regularDiv.style.display = 'none';
+        }
+        else {
+            regularDiv.style.display = 'block';
+            outstationDiv.style.display = 'none';
+        }
+        var rentalType = document.getElementById("RentalType_Id");
+        rentalType.options.length = 0;
+        var monthlyDiv = document.getElementById("monthly");
+        var monthlyTypes = ["monthly", "monthly-route", "monthly-trip"]
+        if (monthlyTypes.includes(pTypeName))
+        {
+            monthlyDiv.style.display = 'block';
+        }
+        else {
+            monthlyDiv.style.display = 'none';
+        }
+        var option = document.createElement('option');
+        option.text = 'Select RentalType';
+        option.value = "";
+        rentalType.appendChild(option);
+        var xhr = new XMLHttpRequest();
+        xhr.open('get', `/CorporatePackage/GetRentalType?pTypeId=${pTypeId}`);
+        xhr.send();
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                var res = JSON.parse(xhr.response);
+                for (var i = 0; i < res.length; i++) {
+                    var opt = document.createElement("option");
+                    opt.text = res[i].RentalTypeName;
+                    opt.value = res[i].Id;
+                    rentalType.appendChild(opt);
+                }
+            }
+        };
+        xhr.onerror = function () {
+            console.log(xhr.statusText);
+        };
+    }
+    //$("#PackageType_Id").change(function () {
+    //    var pTypeId = $(this).val();
+    //    var rentalType = document.getElementById("RentalType_Id");
+    //    rentalType.empty();
+    //    rentalType.append(`<option value="">Select RentalType</option>`);
+    //    var xhr = new XMLHttpRequest();
+    //    xhr.open('get', `/CorporatePackage/GetRentalType?pTypeId=${pTypeId}`);
+    //    xhr.send();
+    //    xhr.onload = function () {
+    //        if (xhr.status == 200) {
+    //            var res = JSON.parse(xhr.response);
+    //            for (var i = 0; i < res.length; i++) {
+    //                rentalType.append(`<option value="${res[i].Id}">${res[i].PType}</option>`);
+    //            }
+    //        }
+    //    };
+    //    xhr.onerror=function () {
+    //        console.log(xhr.statusText);
+    //    };
+    //})
+</script>

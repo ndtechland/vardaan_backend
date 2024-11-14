@@ -1,0 +1,41 @@
+﻿@model VardaanCab.Models.DTO.MonthlyPackageRouteBillDTO
+@{
+    ViewBag.Title = "Create Monthly Bill";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+<div style="width:70%;margin-top:1%;margin-left:1%">
+    <h2>Create Monthly Route Bill</h2>
+    @Html.HiddenFor(a => a.MonthlyPackageRoute_Id)
+    @Html.HiddenFor(a => a.eDate)
+    @Html.HiddenFor(a => a.sDate)
+    @Html.HiddenFor(a=>a.page)
+
+    <div class="form-group">
+        @Html.ActionLink("Back","All", new { sDate = Model.sDate, eDate = Model.eDate, term = Model.term, page = Model.page }, new { @class="btn btn-primary"})
+    </div>
+
+    @if(ViewData.ModelState["msg"]!=null)
+    {
+        <div class="alert alert-danger">
+            @Html.ValidationMessage("msg")
+        </div>
+    }
+
+    <div class="form-group">
+        Billing State *
+        @Html.DropDownListFor(a => a.BillingState_Id, Model.StateWiseGstinList, "Select Billing State", new { @class = "form-control" })
+        <span class="text-danger">
+            @Html.ValidationMessageFor(a => a.BillingState_Id)
+        </span>
+    </div>
+
+
+    <div class="form-group">
+        <input type="submit" value="Generate" class="btn btn-default"/>
+    </div>
+
+    </div>
+}

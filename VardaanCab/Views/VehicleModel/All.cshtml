@@ -1,0 +1,104 @@
+﻿@model VardaanCab.Models.ViewModels.VehicleViewModel
+@{
+    ViewBag.Title = "Cab Categories";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+    int sn = Model.SrNo;
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+<style>
+    #main {
+        margin: auto;
+        width: 70%;
+    }
+</style>
+
+<div id="main">
+    <h2>Vehicle Models</h2>
+    <div class="row">
+        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+        @* <a href="/VehicleModel/Add" class="btn btn-info">Add More</a>*@
+    </div>
+    @using (Html.BeginForm())
+    {
+        <input name="menuId" type="hidden" value="@ViewBag.menuId" />
+
+        <div class="row r">
+            <div class="col-md-4">
+                <input type="text" placeholder="Search by Name" class="form-control" name="term" />
+            </div>
+            <div class="col-md-8">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/VehicleModel/All?menuId=@ViewBag.menuId">Show all</a>
+                @*  <a class="btn btn-info" href="/VehicleModel/Add">+ Add More</a>*@
+            </div>
+        </div>
+    }
+
+
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>ManufactureName Name</th>
+                        <th>Model Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.VModels)
+                    {
+                    <tr>
+                        <td>@(++sn)</td>
+                        <td>@item.ManufactureName</td>
+                        <td>@item.ModelName</td>
+                        <td>
+                            @if (links.Contains("Edit Vehicle Model"))
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                            }
+                            @if (links.Contains("Delete Vehicle Model"))
+                            {
+                                <span class="btn btn-danger" onclick="deleteRecord('/VehicleModel/Delete?id=@item.Id&menuId=@ViewBag.menuId')">Delete</span>
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/VehicleModel/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    function deleteRecord(url) {
+        if (window.confirm('do you want to delete?')) {
+            $.get(url).then(function (r) {
+                if (r == "ok") {
+                    var loc = window.location.href;
+                    window.location.href = loc;
+                }
+            }, function (e) {
+                alert("Server error");
+            })
+        }
+    }
+</script>
+

@@ -1,0 +1,39 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>testingsendmail</title>
+</head>
+<body>
+    <div>
+        Test mail
+        <div>
+            @ViewBag.Message
+        </div>
+        <fieldset>
+            <legend>
+                Send Email
+            </legend>
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary()
+                <p>From: </p>
+                <p><input id="from" type="text" /></p>
+                <p>To: </p>
+                <p><input id="to" type="text" /></p>
+                <p>Subject: </p>
+                <p><input id="sub" type="text" /></p>
+                <p>Body: </p>
+                <p><input id="body" type="text" /></p>
+                <input type="submit" value="Send" />
+            }
+        </fieldset>
+    </div>
+</body>
+</html>

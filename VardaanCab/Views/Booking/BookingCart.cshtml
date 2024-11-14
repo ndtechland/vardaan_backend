@@ -1,0 +1,368 @@
+﻿@model List<VardaanCab.Models.ViewModels.BookingCartVM>
+@{
+
+    ViewBag.Title = "MIS(Tax Invoce)";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var dt = DateTime.Now;
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+    int sn = 1;
+}
+
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+        font: 12px;
+    }
+
+    #cancel {
+        font-weight: bold;
+        color: #bf2a2a;
+        cursor: pointer;
+    }
+
+    .linkText {
+        font-weight: bold;
+        color: #441b71;
+    }
+
+    #bookingId {
+        color: #1a257d !important;
+    }
+
+    #ctable {
+        border: 1px solid #1a257d;
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        margin: 0px;
+        font-size: 12px !important;
+    }
+
+        #ctable td, th {
+            color: #1a257d !important;
+            margin: 0px;
+            border: 1px solid #1a257d;
+            padding: 2px 2px;
+        }
+
+    hr {
+        border-color: #293ac2 !important;
+    }
+    /*.temerTd{
+        padding: 0px !important;
+    }*/
+    /*.timerTable {
+        width: 233px;
+    }*/
+</style>
+<link href="/css/fixtable.css" rel="stylesheet" />
+<div id="main">
+
+    <h3>Select Booking List</h3>
+    <div class="row r">
+        <div class="col-md-12">
+            <div style="float:right;">
+                <div class="row r" id="divGenerateBill">
+                    <div class="col-md-12">
+                        <div style="float:right;">
+                            <button type="button" data-toggle="modal" class="btn btn-info"><span class="fa fa-floppy-o" id="btnGenerateBill">   Create Tax Inoive</span></button>
+                        </div>
+                        <div style="float:right;text-align:center;padding-left:15px;padding-top:5px;padding-right:15px;">
+                            <b>No Of Selected Booking : </b>
+                            <span id="selectedCount"> @ViewBag.total</span>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table id="table1" class="table">
+                <thead>
+                    <tr>
+                        <th class="sticky-col first-col">S.No.</th>
+                        <th class="sticky-col second-col">BookingId</th>
+                        <th>Organization</th>
+                        <th>Rental Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="sticky-col first-col">
+                                <input type="checkbox" checked="checked" class="chkId" value="@item.Id" />
+                                @(sn++)
+                            </td>
+                            <td class="sticky-col second-col"> @Html.ActionLink(item.BookingId, "TaxInvoice", new { id = item.Id, IsTaxInvoice = false, menuId = ViewBag.menuId }, new { @class = "link linkText" })</td>
+                            <td>@item.CompanyName</td>
+                            <td>@item.PackageTypeName</td>
+                            <td> @Html.ActionLink("Tax Invoice", "TaxInvoice", new { id = item.Id, IsTaxInvoice = true, menuId = ViewBag.menuId, export = true }, new { @class = "link linkText" })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div id="createInvoiceModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Generate Tax Invoice</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frmGenInvoice">
+                        <div class="form-group">
+                            Previous Invoice Number *
+                            <input type="text" id="preinvoiceNumber" readonly="readonly" class="form-control" />
+
+                        </div>
+                        <div class="form-group">
+                            Previous  Invoice Date *
+                            <input type="text" id="preinvoicedate" readonly="readonly" name="preinvoicedate" class="form-control" />
+
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            Invoice Number *
+                            <input type="text" id="invoiceNumber" class="form-control" />
+
+                        </div>
+                        <div class="form-group">
+                            Invoice Date *
+                            <input type="text" id="invoicedate" name="invoicedate" class="form-control sdp" />
+
+                        </div>
+                        <div class="form-group">
+                            PO Number *
+                            <input type="text" id="PONo" value="0" class="form-control" />
+
+                        </div>
+                        <div class="form-group">
+                            PO Date *
+                            <input type="text" id="PODate" placeholder="PO Date" name="PODate" class="form-control sdp" />
+
+                        </div>
+                        <div class="form-group">
+                            <span id="message"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="button" id="btnGenInvoice" class="btn btn-info" value="Save" />
+                        </div>
+
+
+
+
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancel" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="/Scripts/jquery-1.12.4.min.js"></script>
+<script src="/Scripts/jquery.countdown.min.js"></script>
+
+<script>
+
+        $('#btnGenerateBill').click(function () {
+            //**************Get Auto Genrated Invoice*****
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/getAutoNPreviousTaxInvoiceNo',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    if (response != null) {
+                        $('#preinvoiceNumber').val(response.PrevTaxInvoiceNo);
+
+                        $('#preinvoicedate').val(getForatedDate(response.PrevTaxInvoiceDate));
+                        $('#invoiceNumber').val(response.TaxInvoiceNo);
+                    } else {
+                        alert("Something went wrong");
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+            //**************Get Today Date*****
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = mm + '/' + dd + '/' + yyyy;
+
+            $("#invoicedate").val(today);
+            $("#PODate").val(today);
+            $('#createInvoiceModal').modal('show');
+        });
+
+
+
+
+
+    $("#btnGenInvoice").click(function () {
+      //  alert("btnGenInvoice");
+            var msg=$("#message").css("color","black");
+            msg.text("wait...");
+
+            var invoiceNo = $("#invoiceNumber").val();
+            var InvoiceDate = $("#invoicedate").val();
+            var PoNo = $("#PONo").val();
+            var PoDate = $("#PODate").val();
+
+            var invoiceIds=[];
+            $(".chkId").each(function(){
+                if ($(this).prop('checked')==true)
+                {
+                    var invId=$(this).val();
+                    invoiceIds.push(invId);
+                    //add in session
+                   // alert(invId);
+
+                    //var data = JSON.stringify({ bookingNo: invId, chkValue: true });
+                    //console.log(data);
+                    //$.ajax({
+                    //    url: '/Booking/addBookingId',
+                    //    type: 'post',
+                    //    data: data,
+                    //    contentType: 'application/json'
+                    //}).done(function (r) {
+                    //    //alert(r);
+                    //   // $("#selectedCount").text(r);
+                    //    // if (r == 'ok') {
+                    //    // alert("yes will do");
+                    //    // }
+                    //    console.log("done");
+                    //})
+                    //    .fail(function (er) {
+                    //        msg.text("Some error occured.").css("color", "red");
+                    //        console.log(er);
+                    //    })
+                    //end
+                }
+            })
+            if(invoiceIds.count<0)
+            {
+                msg.text("Please select atleast on record").css("color","red");
+            }
+            else
+            {
+                var data = JSON.stringify({ ids: "", invoiceNo: invoiceNo, invoiceDate: InvoiceDate, PONo: PoNo, PODate: PoDate});
+                console.log(data);
+                $.ajax({
+                    url:'/Booking/CreateInvoiceAll',
+                    type:'post',
+                    data:data,
+                    contentType:'application/json'
+                }).done(function(r){
+                    if(r=='ok')
+                    {
+                      //  alert("Success");
+                        @*var _term = '@Model.Term';
+                        var _page=@Model.Page;
+                        var _menuId=@ViewBag.menuId;
+                        var _sDate='@Model.sDate';
+                        var _eDate='@Model.eDate';
+                        var _export = true;
+                        var _isNrg='@Model.IsNrg';
+                        msg.text("").css("color","black");*@
+                        window.location.href =`/Booking/CorporateInvoiceList?isNrg=false&menuId=1120}`;
+                    }
+                    else{
+                        msg.text(r).css("color","red");
+                    }
+                })
+                .fail(function(er){
+                    msg.text("Some error occured.").css("color","red");
+                    console.log(er);
+                })
+            }
+        })
+
+
+
+
+        function getForatedDate(datevalue) {
+
+            var MyDate_String_Value = datevalue;//"/Date(1224043200000)/"
+            var value = new Date
+                (
+                    parseInt(MyDate_String_Value.replace(/(^.*\()|([+-].*$)/g, ''))
+                );
+            var dat = value.getMonth() +
+                1 +
+                "/" +
+                value.getDate() +
+                "/" +
+                value.getFullYear();
+            return dat;
+        }
+
+
+
+</script>
+
+<script>
+    function generateTaxInvoice(obj) {
+        var btnSave = $(obj);
+        var nextPageUrl = btnSave.attr('url');
+        var parent = btnSave.parent().parent();
+        var txtInvoiceId = parent.find("#invoiceId");
+        var txtInvoiceNo = parent.find("#invoiceNo");
+        var txtInvoiceDate = parent.find("#invoiceDate");
+        var txtMsg = parent.find("#msg");
+        txtMsg.css("color", "black").text("wait..");
+        if (!txtInvoiceId.val() || !txtInvoiceNo.val() || !txtInvoiceDate.val()) {
+            txtMsg.css("color", "red").text("All fields are required");
+            return false;
+        }
+        var invoiceId = txtInvoiceId.val();
+        var invoiceNo = txtInvoiceNo.val();
+        var invoiceDate = txtInvoiceDate.val();
+        var data = {
+            invoiceId: invoiceId,
+            invoiceNo: invoiceNo,
+            invoiceDate: invoiceDate
+        };
+        var jsonData = JSON.stringify(data);
+        var url = `/Booking/GenerateTaxInvoice`;
+        $.ajax({
+            url: url,
+            method: 'post',
+            data: jsonData,
+            contentType: 'application/json',
+        }).then(function (r) {
+            if (r == "ok") {
+                window.location.href = nextPageUrl;
+            }
+            else {
+                txtMsg.css("color", "red").text(r);
+            }
+        })
+            .fail(function (er) {
+                console.log(er);
+                txtMsg.css("color", "red").text("Some error occured.");
+
+            })
+    }
+</script>
+

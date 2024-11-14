@@ -1,0 +1,85 @@
+﻿@model IEnumerable<VardaanCab.Models.DTO.MonthlyPackageRouteEntryDTO>
+@{
+    ViewBag.Title = "Monthly package entries";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+<h2>Monthly package entries</h2>
+
+<div style="width:99%;margin-left:1%;margin-top:1%;margin-bottom:1%;height:400px;overflow:scroll">
+    <div class="row r">
+        <div class="col-md-2">
+            <a class="btn btn-default" href="/MonthlyRoutePackage/All">Back</a>
+            <button type="button" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+
+        </div>
+       
+    </div>
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div class="mainDiv">
+            <div class="wrapperTable table-scroll">
+                 <table class="table" id="table_wrapper">
+            <tr>
+                <th>Vehicle</th>
+                <th>Pickup at</th>
+                <th>Drop At</th>
+                <th>Pickup Address</th>
+                <th>Drop Adress</th>
+                <th>Toll</th>
+                <th>MCD</th>
+                <th>Updated by</th>
+                <th>Updated At</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.VehicleModel (@item.CabNo)</td>
+                    <td>@item.JourneyStartDate.ToString("dd-MMM-yyyy") @item.PickupTime</td>
+                    <td>@item.JourneyClosingDate.Value.ToString("dd-MMM-yyyy") @item.DropTime</td>
+                    <td>@item.PickupPlace</td>
+                    <td>@item.DropPlace</td>
+                    <td>@item.Toll</td>
+                    <td>@item.MCD</td>
+                    <td>@item.UpdatedBy</td>
+                    <td>@item.UpdateDate.ToString("dd-MMM-yyyy")</td>
+                    <td>
+                        <a href="@Url.Action("CloseDailyEntry",new { entryId=item.Id})" class="btn btn-info">Update</a>
+                    </td>
+                </tr>
+            }
+        </table>
+            </div>
+        </div>
+
+       
+    }
+    else
+    {
+        <div class="row r">
+            <div class="col-md-12">
+                <h4>No Records found</h4>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function (e) {
+            e.preventDefault();
+            //getting data from our table
+            var data_type = 'data:application/vnd.ms-excel';
+            var table_div = document.getElementById('table_wrapper');
+            var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+
+            var a = document.createElement('a');
+            a.href = data_type + ', ' + table_html;
+            a.download = 'monthly-route-package_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+            a.click();
+        });
+    });
+
+</script>

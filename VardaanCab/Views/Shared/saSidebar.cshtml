@@ -1,0 +1,120 @@
+﻿<div id="sidebar" class="nav-collapse">
+    <!-- sidebar menu start-->
+    <div class="leftside-navigation">
+        <ul class="sidebar-menu" id="nav-accordion">
+            <li>
+                <a href="/Admin/Dashboard">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-book"></i>
+                    <span>Driver Leave</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="/DriverLeave/AssignLeave">Assign Leave</a></li>
+                    <li><a href="/DriverLeave/DriverLeaves"> Leave Detail</a></li>
+
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-book"></i>
+                    <span>Master Entries</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="/State/All">State</a></li>
+                    <li><a href="/City/All">City</a></li>
+                    @*<li><a href="/Mop/All">Mode Of Payment</a></li>
+                    <li><a href="/Category/All">Categories</a></li>
+                    <li><a href="/CabCategory/All">Cab Categories</a></li>*@
+                    <li><a href="/StateGSTIN/All">GSTIN</a></li>                    
+                    <li><a href="/VehicleModel/All">Cab Categories</a></li>
+                    <li><a href="/RentalType/All">Rental Type</a></li>
+
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-book"></i>
+                    <span>Registration</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="/Vendor/Add">Add Vendor</a></li>
+                    <li><a href="/Vendor/All">Vendors</a></li>
+                    <li><a href="/Driver/Add">Add Driver</a></li>
+                    <li><a href="/Driver/All">Drivers</a></li>
+                    <li><a href="/Cab/Add">Add Cab</a></li>
+                    <li><a href="/Cab/All">Cab List</a></li>
+                    <li><a href="/Customer/Add">Add Client</a></li>
+                    <li><a href="/Customer/All">Client List</a></li>
+                    
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-book"></i>
+                    <span>Cab Booking</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="/Booking/CabBook">New Booking</a></li>
+                    <li><a href="/Booking/ShowAllBooking">All Bookings</a></li>
+                    <li><a href="/Booking/ShowBooking">Pending Bookings</a></li>
+                    <li><a href="/Booking/ShowBooking?bookingStatus=@((int)VardaanCab.Utilities.BookingStatus.Dispatch)">Dispatched Bookings</a></li>
+                    <li><a href="/Booking/ShowBooking?bookingStatus=@((int)VardaanCab.Utilities.BookingStatus.Completed)">Completed Bookings</a></li>
+                    <li><a href="/Booking/ShowBooking?bookingStatus=@((int)VardaanCab.Utilities.BookingStatus.Cancelled)">Cancelled Bookings</a></li>                
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-book"></i>
+                    <span>Corporate Billing</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="/Booking/CorporateInvoiceList?isNrg=false">Regular Bills</a></li>
+                    <li><a href="/Booking/CorporateInvoiceList?isNrg=true">NRD Bills</a></li>
+                </ul>
+                
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-book"></i>
+                    <span>Vendor Billing</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="/Booking/VendorInvoiceList">View Bill</a></li>
+                </ul>
+
+            </li>
+
+         
+
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-book"></i>
+                    <span>Packages</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="/MonthlyPackage/All">Monthly Packages</a></li>
+                    <li><a href="/MonthlyPackage/CreatePackage">Add Monthly Package</a></li>
+                    <li><a href="/MonthlyRoutePackage/All">Monthly Route Packages</a></li>
+                    <li><a href="/MonthlyRoutePackage/CreatePackage">Add Monthly Route Package</a></li>
+                    <li><a href="/VendorPackage/All">Vendor Packages</a></li>
+                    <li><a href="/VendorPackage/Add">Add Vendor Package</a></li>
+                    <li><a href="/CorporatePackage/All">Corporate Packages</a></li>
+                    <li><a href="/CorporatePackage/Add">Add Corporate Package</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    <!-- sidebar menu end-->
+</div>

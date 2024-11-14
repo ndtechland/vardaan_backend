@@ -1,0 +1,556 @@
+﻿@model VardaanCab.Models.ViewModels.BookingViewMOdel
+@{
+    //string bookings = (VardaanCab.Utilities.BookingStatus)Model.BookingStatus + " Bookings";
+    int pcat = ViewBag.pendingCat;
+    string bookings = VardaanCab.Utilities.Converter.getBookingType(Model.BookingStatus, pcat);
+    ViewBag.Title = bookings;
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var dt = DateTime.Now;
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+    int sn = Model.SrNo;
+            }
+
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+        font:12px;
+    }
+#cancel{
+        font-weight:bold;
+        color:#bf2a2a;
+        cursor:pointer;
+    }
+    .linkText{
+        font-weight:bold;
+    color:#441b71;
+    }
+#bookingId{
+color: #1a257d !important;
+   }
+    #ctable{
+         border: 1px solid #1a257d;
+  width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+margin:0px;
+    font-size:12px !important;
+    }
+    #ctable td,th{
+        color: #1a257d !important;
+  margin:0px;
+border:1px solid #1a257d;
+         padding: 2px 2px;
+    }
+    
+     hr{
+        border-color: #293ac2 !important;
+
+     }
+    /*.temerTd{
+        padding: 0px !important;
+    }*/
+    /*.timerTable {
+        width: 233px;
+    }*/
+</style>
+
+<div id="main">
+
+
+    <h4><a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info">Back</a> &nbsp;@bookings</h4>
+
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+        <input type="hidden" name="pbookingCat" value="@ViewBag.pendingCat" />
+        <div class="row r">
+            <div class="col-md-3">
+                <input type="text" placeholder="Booking Id/Org/CabNo" value="@Model.Term" class="form-control" name="term" />
+            </div>
+            <div class="col-md-2">
+                <input type="text" placeholder="YYYY/MM/DD" value="@Model.sDate" class="form-control sdp" name="sDate" autocomplete="off" readonly />
+            </div>
+            <div class="col-md-2">
+                <input type="text" placeholder="YYYY/MM/DD" value="@Model.eDate" class="form-control sdp" name="eDate" autocomplete="off" readonly />
+            </div>
+            <div class="col-md-3">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/Booking/ShowBooking?bookingStatus=@Model.BookingStatus?&menuId=@ViewBag.menuId">Show all</a>
+
+
+                <button type="button" class="btn btn-info" onclick="Export()" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+
+        </div>
+    }
+    <div class="row r">
+        @if (TempData["mesg"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["mesg"]
+            </div>
+        }
+    </div>
+    <div class="row r">
+        <div class="col-md-2">
+            <button type="button" data-toggle="modal" class="btn btn-info"><span class="fa fa-floppy-o" id="btnRequriedCab">&nbsp;Requried Cab</span></button>
+        </div>
+</div>
+        <div class="row r">
+            <div class="col-md-12" style="height:100% !important;">
+                <table id="ctable">
+                    <thead>
+                        <tr>
+                            @*<th>S.No.</th>*@
+                            <th style="width:62px">Edit</th>
+                            <th style="width:80px">Date Time</th>
+                            <th style="width:80px">Booking Type</th>
+                            <th style="width:70px">Route No.</th>
+                            <th style="width:70px">City</th>
+                            <th style="width: 90px;">Vehicle</th>
+                            <th style="width:100px">Traveler</th>
+                            <th style="width:100px">Pickup-Drop Address</th>
+                            @*@if (Model.BookingStatus != 2)
+                                {
+                                 <th>Update By</th>
+                                 <th>Update Date</th>
+                                }*@
+                            <th style="width:90px">Time Left</th>
+                            @*<th>Status</th>*@
+                            <th style="width:70px">Instruction</th>
+                            <th>By</th>
+                            <th width: 118px;>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Bookings)
+                        {
+                            <tr style="background-color:@item.Color" id="rowtr">
+                                @*<td class="sticky-col first-col">@(++sn)</td>*@
+                                <td>
+                                    <b># @(++Model.SrNo) </b> <br />
+                                    @if ((VardaanCab.Utilities.BookingStatus)item.BookingStatus == VardaanCab.Utilities.BookingStatus.Dispatched
+|| (VardaanCab.Utilities.BookingStatus)item.BookingStatus == VardaanCab.Utilities.BookingStatus.Pending)
+                                    {
+                                        if (links.Contains("Edit Booking"))
+                                        {
+                                            @Html.ActionLink("" + item.BookingId, "Edit", new { id = item.Id, menuId = ViewBag.menuId, sDate = Model.sDate, eDate = Model.eDate, term = Model.Term, bookingStatus = Model.BookingStatus, pbookingCat = @ViewBag.pendingCat, page = Model.Page }, new { id = "bookingId" })
+                                        }
+                                        else
+                                        {
+                                            <span>@item.BookingId</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>@item.BookingId</span>
+                                    }
+                                </td>
+                                <td>
+                                    <b>Booking <br /> </b>@item.BookingDate.ToString("dd-MM-yyyy") <hr />
+                                    <b>Pickup <br /> </b>@item.PickupDate.ToString("dd-MM-yyyy") @item.PickupTime
+                                </td>
+                                <td>
+                                    @item.BookingType <hr />
+                                    @item.PackageTypeName <br />
+                                    @item.RentalTypeName
+                                </td>
+                                <td>@item.RouteNo</td>
+                                <td>@item.CityName</td>
+                                <td>
+                                    <b>Booked : </b> @item.DesiredCar <br />
+                                    @if (!string.IsNullOrEmpty(item.VehicleName) && !string.IsNullOrEmpty(item.VehicleNo))
+                                    {
+                                        <b><span>Alloted: </span></b> <span>@item.VehicleName</span><br />
+                                        <b><span>Vehicle No: </span></b><span>@item.VehicleNo</span><br />
+                                    }
+                                    <br />
+                                    @if (!string.IsNullOrEmpty(item.DriverName) && !string.IsNullOrEmpty(item.DriverContactNo))
+                                    {
+                                        <b><span>Driver: </span></b><span>@item.DriverName</span> <br />
+                                        <b><span>Contact No: </span></b><span>@item.DriverContactNo</span>
+                                    }
+                                </td>
+                                <td>
+                                    @item.CompanyName <br />
+                                    <hr />
+                                    Booker Name : @item.BookedByPerson
+                                    @if (!string.IsNullOrEmpty(item.BookedByPersonMobileNo))
+                                    {
+                                        <br />
+                                        <span> Mobile No : @item.BookedByPersonMobileNo</span>
+                                    }
+                                    <hr />
+                                    Guest : @item.CustomerName @if (item.IsVIP)
+                                    {<span style="background-color:#ecfb06 !important">♛</span>} <br />
+                                    Mobile : @item.ContactNo <br />
+                                    Email :<span style="word-break:break-all;">@item.Email</span>
+                                </td>
+
+                                @*  <td>@item.BookingDate.ToString("dd-MM-yyyy")</td>*@
+                                <td>
+                                    @item.PickupAddress<br />
+                                    @if (!string.IsNullOrEmpty(item.PickupLandMark))
+                                    {
+                                        @item.PickupLandMark
+                                    }
+                                    <hr />
+                                    @item.DropAddress <br />
+                                    @if (!string.IsNullOrEmpty(item.DropLandmark))
+                                    {
+                                        @item.DropLandmark
+                                    }
+                                </td>
+
+                                @*@if (Model.BookingStatus != 2)
+                                    {
+                                        <td>@item.UserRole</td>
+                                        <td>@item.UpdateDate.ToString("dd-MM-yyyy")</td>
+                                    }*@
+                                <td style="font-weight:bold;font-size:1.0em;text-align:center;">
+                                    <span class="golivedate" data-countdown="@item.PickupDateTime.ToString("MM-dd-yyyy HH:mm:ss")"></span>
+                                </td>
+                                <td id="status" style="display:none">@item.BookingStatusName</td>
+                                <td>@item.BookingInstruction</td>
+                                <td><span title="@item.UpdateDescription" style="color:#0419bf;cursor:pointer">By</span></td>
+
+                                <td>
+                                    @if ((VardaanCab.Utilities.BookingStatus)item.BookingStatus == VardaanCab.Utilities.BookingStatus.Pending)
+                                    {
+                                        if (links.Contains("Delete Booking"))
+                                        {
+                                            @Html.ActionLink("Delete", "DeleteBooking", new { id = item.Id, page = Model.Page, pbookingCat = @ViewBag.pendingCat, menuId = ViewBag.menuId, sDate = Model.sDate, eDate = Model.eDate }, new { @class = "linkText", onclick = " return window.confirm('Are you sure to delete?')" }) <br />
+                                        }
+
+                                        @*if (links.Contains("Dispatch Booking"))
+                                            {
+                                                @Html.ActionLink("Dispatch", "ChangeToDispatch", "Booking", new { bookingId = item.Id, bookingType = Model.BookingType, menuId = ViewBag.menuId }, new { @class = "btn btn-primary" })
+                                            }*@
+
+                                        if (links.Contains("Assign Cab"))
+                                        {
+                                            @Html.ActionLink("Dispatch", "AssignCab", "Assign", new { id = item.Id, page = Model.Page, menuId = ViewBag.menuId, bookingType = Model.BookingType, pbookingCat = @ViewBag.pendingCat, term = Model.Term, sDate = Model.sDate, eDate = Model.eDate, bookingStatus = Model.BookingStatus }, new { @class = "linkText" }) <br />
+                                        }
+
+                                    }
+
+                                    @if ((VardaanCab.Utilities.BookingStatus)item.BookingStatus == VardaanCab.Utilities.BookingStatus.Dispatched
+                                       || (VardaanCab.Utilities.BookingStatus)item.BookingStatus == VardaanCab.Utilities.BookingStatus.Pending)
+                                    {
+                                        @*if (links.Contains("Edit Booking")) edit booking has shifted to first column
+                                            {
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                                            }*@
+                                        if (links.Contains("Cancel Booking"))
+                                        {
+                                            <span id="cancel" url="/Booking/CancelBooking?bookingId=@item.Id&pDriver_Id=@item.DriverId&pCab_Id=@item.Cab_Id&bStatusId= @((int)VardaanCab.Utilities.BookingStatus.Cancelled)&pbookingCat = @ViewBag.pendingCat&menuId = @ViewBag.menuId" onclick="cancelBooking(this)">Cancel</span> <br />
+                                        }
+                                        if (item.DriverId != null || item.Cab_Id != null)
+                                        {
+                                            @Html.ActionLink("Change Cab & Driver", "AssignCab", "Assign", new
+                                       {
+                                           id = item.Id,
+                                           pDriver_Id = item.DriverId,
+                                           pCab_Id = item.Cab_Id,
+                                           page = Model.Page,
+                                           menuId = ViewBag.menuId,
+                                           bookingType = Model.BookingType,
+                                           pbookingCat = ViewBag.pendingCat,
+                                                  term = Model.Term,
+                                           sDate = Model.sDate,
+                                           eDate = Model.eDate,
+                                           bookingStatus = Model.BookingStatus
+                                       }, new { @class = "linkText" }) <br />
+                                        }
+                                        if (item.PickupDateTime >= DateTime.Now)
+                                        {
+                                            if (item.Cab_Id != null || item.DriverId != null)
+                                            {
+                                                if ((VardaanCab.Utilities.BookingStatus)item.BookingStatus == VardaanCab.Utilities.BookingStatus.Dispatched)
+                                                {
+                                                    @*if (links.Contains("Close Booking"))
+                                                        {
+                                                            @Html.ActionLink("Close Booking", "CloseBooking", new { id = item.Id, page = Model.Page, term = Model.Term, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                                                        }*@
+                                                    if (links.Contains("ReleaseCab"))
+                                                    {
+                                                        @Html.ActionLink("Relase Cab/Driver", "ReleaseCab", new
+                                                   {
+                                                       id = item.Id,
+                                                       pbookingCat = @ViewBag.pendingCat,
+                                                       page = Model.Page,
+                                                       menuId = @ViewBag.menuId,
+                                                       term = Model.Term,
+                                                       sDate = Model.sDate,
+                                                       eDate = Model.eDate
+                                                   }, new { @class = "linkText" }) <br />
+                                                    }
+                                                }
+                                                @*if (links.Contains("Assign Cab"))
+                                                    {
+                                                        @Html.ActionLink("Change Cab & Driver", "AssignCab", "Assign", new { id = item.Id, pDriver_Id = item.DriverId, pCab_Id = item.Cab_Id, menuId = ViewBag.menuId, bookingType = Model.BookingType }, new { @class = "btn btn-primary" })
+                                                    }*@
+
+                                            }
+                                            else
+                                            {
+                                                @*if (links.Contains("Assign Cab"))
+                                                    {
+                                                        @Html.ActionLink("Assign Cab & Driver", "AssignCab", "Assign", new { id = item.Id, menuId = ViewBag.menuId, bookingType = Model.BookingType }, new { @class = "btn btn-primary" })
+                                                    }*@
+                                                @*if (links.Contains("Cancel Booking"))
+                                                    {
+                                                        <span id="cancel" class="btn btn-danger" url="/Booking/CancelBooking?bookingId=@item.Id&pDriver_Id=@item.DriverId&pCab_Id=@item.Cab_Id&bStatusId= @((int)VardaanCab.Utilities.BookingStatus.Cancelled)&menuId = @ViewBag.menuId" onclick="cancelBooking(this)">Cancel</span>
+                                                    }*@
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item.Cab_Id != null && item.DriverId != null)
+                                            {
+                                                if ((VardaanCab.Utilities.BookingStatus)item.BookingStatus == VardaanCab.Utilities.BookingStatus.Dispatched)
+                                                {
+                                                    @*if (links.Contains("Close Booking"))
+                                                        {
+                                                            @Html.ActionLink("Close Booking", "CloseBooking", new { id = item.Id, page = Model.Page, menuId = @ViewBag.menuId, term = Model.Term }, new { @class = "btn btn-info" })
+                                                        }*@
+
+                                                    if (links.Contains("ReleaseCab"))
+                                                    {
+                                                        @Html.ActionLink("Relase Cab/Driver", "ReleaseCab", new { id = item.Id, pbookingCat = @ViewBag.pendingCat, page = Model.Page, menuId = @ViewBag.menuId, term = Model.Term, sDate = Model.sDate, eDate = Model.eDate }, new { @class = "linkText" }) <br />
+                                                    }
+                                                }
+                                                @*if (links.Contains("Cancel Booking"))
+                                                    {
+                                                        <span id="cancel" class="btn btn-danger" url="/Booking/CancelBooking?bookingId=@item.Id&pDriver_Id=@item.DriverId&pCab_Id=@item.Cab_Id&bStatusId= @((int)VardaanCab.Utilities.BookingStatus.Cancelled)&menuId = @ViewBag.menuId" onclick="cancelBooking(this)">Cancel</span>
+                                                    }*@
+                                            }
+                                        }
+                                    }
+
+                                    @if (links.Contains("Booking Confirmation"))
+                                    {
+                                        if ((VardaanCab.Utilities.BookingStatus)item.BookingStatus != VardaanCab.Utilities.BookingStatus.Dispatched)
+                                        {
+                                            @Html.ActionLink("Confirmation", "BookingConfirmationInvoice1", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "linkText", target = "_blank" })
+                                        }
+                                    }
+                                    @*@if (!string.IsNullOrEmpty(item.BookingConfirmFile))
+                                        {
+                                            if (links.Contains("Email Booking Confirmation"))
+                                            {
+                                                @Html.ActionLink("Email Booking Confirmation", "SendBookConfirmInvoice", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                                            }
+                                        }*@
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row r">
+            <div class="col-md-12">
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.NumberOfPages; i++)
+                    {
+                        <li class="@if (i == Model.Page) {<text>active</text> }">
+                            <a href="/Booking/ShowBooking?term=@Model.Term&page=@i&bookingStatus=@Model.BookingStatus&bookingType=@Model.BookingType&pbookingCat=@ViewBag.pendingCat&menuId=@ViewBag.menuId&sDate=@Model.sDate&eDate=@Model.eDate">@i</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div id="cabAvailablityModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Cab Requried for tomorrow </h4>
+                </div>
+                <div class="modal-body">
+                    <table id="cabtable" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>City</th>
+                                <th>Cab</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="CityName">Desire</td>
+                                <td class="ModelName">Desire</td>
+                                <td class="BookingCount">122</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancel" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="/Scripts/jquery.countdown.min.js"></script>
+    <script>
+        var glds = document.querySelectorAll('span.golivedate');
+        var i = 0;
+        var days, hours, minutes, seconds;
+
+        setInterval(function () {
+            var current_date = new Date().getTime();
+
+            for (var i = 0; i < glds.length; i++) {
+                var dt = glds[i].getAttribute('data-countdown');
+                var seconds_left = (new Date(dt).getTime() - current_date) / 1000;
+                var tr = glds[i].parentElement.parentElement;
+                var status = tr.querySelector("#status").innerText;
+                var color = "";
+                if (status == "Completed") {
+                    color = "#4df562";
+                }
+                else if (seconds_left < 7200) {
+                    color = "#F56F6F";
+                }
+                else if (seconds_left >= 7200 && seconds_left < 10800) {
+                    color = "#fee55b";
+                }
+                else {
+                    color = "#4df562";
+                }
+                tr.style.backgroundColor = color;
+                if (seconds_left <= 0) {
+                    var str = "Time Over";
+                    // var result = str;
+                    glds[i].innerHTML = str;
+                    glds[i].className = ""
+
+                }
+                else {
+                    days = parseInt(seconds_left / 86400);
+                    seconds_left = seconds_left % 86400;
+                    hours = parseInt(seconds_left / 3600);
+                    seconds_left = seconds_left % 3600;
+                    minutes = parseInt(seconds_left / 60);
+                    seconds = parseInt(seconds_left % 60);
+
+                    glds[i].innerHTML = days + "D : " + hours + "H : " + minutes + "M : " + seconds + "S";
+                }
+            }
+
+        }, 1000);
+    </script>
+    <script>
+
+    /////////////////// cancel booking funtion ////////////////////
+    function cancelBooking(obj) {
+
+            var el = $(obj);
+            var url = el.attr("url");
+            if (window.confirm("Do you want to cancel it?")) {
+                $.get(url)
+                    .done(function (r) {
+                        if (r == "ok") {
+                            var _term = '@Model.Term';
+                            var _page=@Model.Page;
+                            var _menuId=@ViewBag.menuId;
+                            var _bookingStatus=@Model.BookingStatus;
+                            var _sDate='@Model.sDate';
+                            var _eDate = '@Model.eDate';
+                            var _pcategory=@ViewBag.pendingCat;
+                            var _export = false;
+                            window.location.href = `/Booking/ShowBooking?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&page=${_page}&bookingStatus=${_bookingStatus}&pbookingCat=${_pcategory}&menuId=${_menuId}&export=${_export}`;
+
+                        }
+                    })
+                    .fail(function (e) {
+                        console.log(e.responseText);
+                    })
+            }
+            else {
+                return false;
+            }
+    }
+    /////
+        $('#btnRequriedCab').click(function () {
+            $('#cabAvailablityModal').modal('show');
+            var testData1;
+            $("#cabtable tbody").find("tr:gt(0)").remove();
+            var testData = [{
+                "CityName": "AAA",
+                "ModelName":"desier",
+                "BookingCount": 10
+            }, {
+                    "CityName": "BBB",
+                    "ModelName": "Wagnor",
+                "BookingCount": 20
+                }];
+            $.ajax({
+                type: 'GET',
+                url: '/Common/getBookedCabByDate',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    //alert("success");
+                    $("#cabtable tbody").find("tr:gt(0)").remove(); //remove all old rows except first one
+                    $.each(data, function (i, v) {
+
+                        if (i == 0) {
+                            //setting the data in first row itself
+                            setDataOnRow($("#cabtable tbody").find("tr").first(), v);
+
+                        } else {
+
+                            //clonning the first row and setting data over it and then appending in tbody
+                            var clonnedRow = $($("#cabtable tbody").find("tr").first()).clone();
+                            setDataOnRow(clonnedRow, v);
+
+                            $("#cabtable tbody").append(clonnedRow);
+
+                        }
+                    });
+                },
+                error: function (response) {
+                    alert("Error..");
+                }
+            });
+
+
+
+    });
+    //set the data in row
+    function setDataOnRow(rowObject, v) {
+        var test = v.CityName;
+        var modeln = v.ModelName;
+        var NoOfCarton = v.BookingCount;
+        $(rowObject).find(".CityName").html(test);
+        $(rowObject).find(".ModelName").html(modeln);
+        $(rowObject).find(".BookingCount").html(NoOfCarton);
+    }
+    </script>
+    <script>
+
+    function Export()
+    {
+        var _term = '@Model.Term';
+        var _page=@Model.Page;
+        var _menuId=@ViewBag.menuId;
+        var _bookingStatus=@Model.BookingStatus;
+        var _sDate='@Model.sDate';
+        var _eDate='@Model.eDate';
+        var _export = true;
+
+        window.location.href=`/Booking/ShowBooking?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&page=${_page}&bookingStatus=${_bookingStatus}&pbookingCat=@ViewBag.pendingCat&menuId=${_menuId}&export=${_export}`;
+    }
+    </script>
+
+

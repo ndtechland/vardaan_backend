@@ -1,0 +1,143 @@
+﻿@model VardaanCab.Models.ViewModels.SaleDetailReportModel
+@{
+    ViewBag.Title = "SaleDetail";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    int sn = 0;
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+
+<style>
+    #main {
+        width: 99%;
+        margin: auto;
+    }
+</style>
+<div id="main">
+    <div class="row r">
+
+        <div class="col-md-3">
+            <a href="/Report/NRDSale?nrdType=@Model.NRDType&menuId=@Model.MenuId" class="btn btn-info"> Back</a>
+            <button type="button" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+        </div>
+    </div>
+    <h2>NRD Sale Detail</h2>
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table id="table1" class="table">
+                <thead>
+                    <tr><th colspan="3">Company Name : @Model.CompanyName</th><th colspan="37" style="text-align:left;">Month : @Model.sMonth</th></tr>
+                    <tr>
+                        <th class="sticky-col first-col">S.No.</th>
+                        <th class="sticky-col second-col">Booking ID</th>
+                        <th>Car Booked</th>
+                        <th>Vehicle Number</th>
+                        <th>Invoice No.</th>
+                        <th>Invoice Date</th>
+                        <th>Journey Start Date</th>
+                        <th>Journey Closing Date</th>
+                        <th>Guest Name</th>
+                        <th>Visited Place</th>
+                        <th>Package Type</th>
+                        <th>Rental Type</th>
+                        <th>Fare</th>
+                        <th>Extra Hrs</th>
+                        <th>Extra Hrs Rate</th>
+                        <th>Extra Hrs Charge</th>
+                        <th>Extra Kms</th>
+                        <th>Extra Kms Rate</th>
+                        <th>Extra Kms Charge</th>
+                        <th>Total Night</th>
+                        <th>Night Rate</th>
+                        <th>Night Charge</th>
+                        <th>OutStation Days</th>
+                        <th>OutStation Charge Rate</th>
+                        <th>TA Charge</th>
+                        <th>Parking </th>
+                        <th>Toll Tax</th>
+                        <th>State Tax</th>
+                        <th>MCD</th>
+                        <th>MISC</th>
+                        <th>Sub Total</th>
+                        <th>Discount</th>
+                        <th>Net Amt</th>
+                        <th>Sgst(%)</th>
+                        <th>SGST</th>
+                        <th>Cgst(%)</th>
+                        <th>CGST</th>
+                        <th>Igst(%)</th>
+                        <th>IGST</th>
+                        <th>Total</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Data)
+                    {
+                    <tr>
+                        <td class="sticky-col first-col">@(++sn)</td>
+                        <td class="sticky-col second-col">@item.BookingId</td>
+                        <td>@item.ModelName</td>
+                        <td>@item.VehicleNumber</td>
+                        <td>@item.TaxInvoiceNumber</td>
+                        <td>@item.TaxInvoiceDate</td>
+                        <td>@item.JourneyStartDate</td>
+                        <td>@item.JourneyClosingDate</td>
+                        <td>@item.CompanyName</td>
+                        <td>@item.VisitedPlace</td>
+                        <td>@item.PackageTypeName</td>
+                        <td>@item.RentalTypeName</td>
+                        <td>@item.Fare</td>
+                        <td>@item.ExtraHrs</td>
+                        <td>@item.ExtraHrsRate</td>
+                        <td>@item.ExtraHrsCharge</td>
+                        <td>@item.ExtraKms</td>
+                        <td>@item.ExtraKmsRate</td>
+                        <td>@item.ExtraKmsCharge</td>
+                        <td>@item.TotalNight</td>
+                        <td>@item.NightRate</td>
+                        <td>@item.NightCharge</td>
+                        <td>@item.OutStationDays</td>
+                        <td>@item.OutStationChargeRate</td>
+                        <td>@item.OutStationCharge</td>
+                        <td>@item.ParkCharge</td>
+                        <td>@item.TollCharge</td>
+                        <td>@item.StateCharge</td>
+                        <td>@item.MCD</td>
+                        <td>@item.MiscCharge</td>
+                        <td>@item.SubTotal</td>
+                        <td>@item.DiscountAmount</td>
+                        <td>@item.NetAmount</td>
+                        <td>@item.SgstPercent</td>
+                        <td>@item.SGST</td>
+                        <td>@item.CgstPercent</td>
+                        <td>@item.CGST</td>
+                        <td>@item.IgstPercent</td>
+                        <td>@item.IGST</td>
+                        <td>@item.Total</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<script src="/Scripts/jquery-1.12.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function (e) {
+            e.preventDefault();
+            //getting data from our table
+            var data_type = 'data:application/vnd.ms-excel';
+            var table_div = document.getElementById('table1');
+            var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+
+            var a = document.createElement('a');
+            a.href = data_type + ', ' + table_html;
+            a.download = 'nrd-sale-details_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+            a.click();
+        });
+    });
+</script>

@@ -1,0 +1,162 @@
+﻿@model VardaanCab.Models.DTO.MonthlyPackageRouteDTO
+@{
+    ViewBag.Title = "Create Booking (Monthly Route)";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div style="width:60%;margin-left:1%">
+   
+    <div class="row r">
+        <div class="col-md-12">
+            <h2>@ViewBag.Title</h2>
+        </div>
+    </div>
+
+    <div class="row r">
+        <div class="col-md-6">
+            <a href="/MonthlyRoutePackage/All" class="btn btn-default">Show Packages</a>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md-12">
+                @if (ViewData.ModelState["msg"] != null)
+                {
+                    <div class="alert alert-info">
+                        @Html.ValidationMessage("msg")
+                    </div>
+                }
+
+                <div class="form-group">
+                    Vehicle *
+                    @Html.DropDownListFor(a => a.VehicleModel_Id, Model.VehicleModelList, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.VehicleModel_Id)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Location *
+                    @Html.DropDownListFor(a => a.MonthlyRoutePackageMaster_Id,
+                    Enumerable.Empty<SelectListItem>()
+                   , "Select location", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.MonthlyRoutePackageMaster_Id)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Company *
+                    @Html.DropDownListFor(a => a.Customer_Id, Model.ClientList, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.Customer_Id)
+                    </span>
+                </div>
+
+               
+
+                <div class="form-group">
+                    Fare *
+                    @Html.TextBoxFor(a => a.Amount, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.Amount)
+                    </span>
+                </div>
+              
+
+                <div class="form-group">
+                    Booking Start Date *
+                    @Html.TextBoxFor(a => a.BookingStartDate, new { @class = "form-control dp" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.BookingStartDate)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Pickup time *
+                    @Html.TextBoxFor(a => a.PickupTime, new { @class = "form-control tp" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.PickupTime)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    No of days *
+                    @Html.TextBoxFor(a => a.NoOfDays, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.NoOfDays)
+                    </span>
+                </div>
+             
+                <div class="form-group">
+                    Booked By *
+                    @Html.TextBoxFor(a => a.BookedBy, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.BookedBy)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-info">Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    //BookingStartDate
+    $("#VehicleModel_Id").change(function () {
+        let modelId = $(this).val() ? $(this).val() : 0;
+        var targetDdn = $("#MonthlyRoutePackageMaster_Id");
+        targetDdn.empty();
+        targetDdn.append("<option value=''>Select location</option>");
+        if(modelId>0)
+        {
+            $.get("/MonthlyRoutePackage/GetVehiclePackages?vehicleModelId=" + modelId).success(function (res) {
+                if(res.status==1)
+                {
+                    $.each(res.data, function (k,v) {
+                        targetDdn.append(`<option value='${v.Id}'>${v.Location}</option>`);
+                    })
+                }
+            })
+             .fail(function (err) {
+                console.error(err);
+            })
+        }
+    });
+
+    $("#MonthlyRoutePackageMaster_Id").change(function () {
+        var packageId = $(this).val() ? $(this).val() : 0;
+        var txtFare = $("#Amount");
+        var txtNoOfDays = $("#NoOfDays");
+        if(packageId>0)
+        {
+            $.get("/MonthlyRoutePackage/getPackage?packageId="+packageId).done(function (res) {
+                if (res.status==1)
+                {
+                    txtFare.val(res.data.Fare);
+                    txtNoOfDays.val(res.data.NoOfDays);
+                }
+                else {
+                    txtFare.val(0);
+                    txtNoOfDays.val(0);
+                }
+            })
+            .fail(function(err)
+            {
+                txtFare.val(0);
+                txtNoOfDays.val(0);
+                console.error(err);
+            }
+            )
+        }
+        else{
+            txtFare.val(0);
+            txtNoOfDays.val(0);
+        }
+    })
+</script>

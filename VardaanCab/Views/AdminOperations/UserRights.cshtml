@@ -1,0 +1,103 @@
+﻿@model VardaanCab.Models.DTO.RoleManageModel
+@{
+    ViewBag.Title = "User Rights";
+    Layout = null;
+    
+}
+
+<link href="~/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+    .row {
+        margin-top: 1% !important;
+    }
+
+    ul, #myUL {
+        list-style-type: none;
+    }
+
+    #myUL {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(a => a.UserId)
+    @Html.HiddenFor(a=>a.MenuId)
+    <div style="width:70%;margin:auto;background:#eef9f0;border:1px solid">
+
+        <div class="row r">
+            <div class="col-md-12">
+                <a class="btn btn-info" href="/AdminOperations/All?menuId=@ViewBag.menuId" style="margin-left:2%;">Back</a>
+
+
+            </div>
+        </div>
+
+        @if (TempData["msg"] != null)
+        {
+            <div class="row r">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        @TempData["msg"]
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div style="margin-left:2%;margin-top: 8%;">
+            <div class="form-group">
+                <h3 class="text-center">Assign Rights</h3>
+            </div>
+            <hr />
+            @if (Model.Rights.Count() > 0)
+                {
+                <ul id="myUL">
+                   
+                      @foreach (var item in Model.Rights)
+                      {                        
+                            <li>
+                                <input name="IsChecked[]" checked="@item.IsChecked" type="checkbox" value="@item.Id" />@item.Title
+                                
+                                @if (item.ChildMenus != null && item.ChildMenus.Count() > 0)
+                                {
+                                    <ul>
+                                        @foreach (var menu in item.ChildMenus)
+                                        {
+                                            <li>
+
+                                                <input name="IsChecked[]" checked="@item.IsChecked" type="checkbox" value="@menu.Id" />@menu.Title
+
+                                                @if (menu.ChildMenus != null && menu.ChildMenus.Count() > 0)
+                                                {
+                                                    <ul>
+                                                        @foreach (var subsubMenu in menu.ChildMenus)
+                                                        {
+                                                            <li>
+                                                                <input name="IsChecked[]" checked="@subsubMenu.IsChecked" type="checkbox" value="@subsubMenu.Id" />@subsubMenu.Title
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                          }                
+                </ul>
+            }
+        </div>
+
+        <div class="form-group text-center" style="margin-left:2%;margin-right:2%">
+            <input type="submit" class="btn btn-info btn-block" value="Update" />
+        </div>
+
+    </div>
+
+}

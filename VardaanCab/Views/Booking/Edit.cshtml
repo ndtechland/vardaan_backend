@@ -1,0 +1,541 @@
+﻿@model VardaanCab.Models.DTO.BookingDTO
+@{
+    ViewBag.Title = "CabBook";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    .row {
+        margin-top: 1% !important;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    
+
+   
+</style>
+<div style="width:100%">
+
+    @if (TempData["msg"] != null)
+    {
+        <div class="row r">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    @TempData["msg"]
+                </div>
+            </div>
+        </div>
+    }
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frm" }))
+    {
+        @Html.HiddenFor(a => a.MenuId)
+        @Html.HiddenFor(a => a.sDate)
+        @Html.HiddenFor(a => a.eDate)
+        @Html.HiddenFor(a => a.Term)
+        @Html.HiddenFor(a => a.Page)
+        @Html.HiddenFor(a => a.PreviousBookingType)
+        @Html.HiddenFor(a => a.Id)
+        @Html.HiddenFor(a => a.BookingStatus)
+        @Html.HiddenFor(a => a.BookedBy)
+        @Html.HiddenFor(a => a.BookingId)
+        @Html.HiddenFor(a => a.BookingDate)
+        @Html.HiddenFor(a => a.CreateBy)
+        @Html.HiddenFor(a => a.CreateDate)      
+        @Html.HiddenFor(a => a.Cab_Id)
+        @Html.HiddenFor(a => a.DriverId)
+        @Html.HiddenFor(a => a.StartHour)
+        @Html.HiddenFor(a => a.StartKms)
+        @Html.HiddenFor(a => a.CityName)
+        @Html.HiddenFor(a => a.FromUnbilled)
+        @Html.HiddenFor(a => a.bStatus)
+       
+        @Html.HiddenFor(a=>a.IsReleasedCab)
+        @Html.ValidationSummary()
+        <div class="row r">
+            <div class="col-md-12">
+                <a href="/Admin/Dashboard" class="btn btn-info">Dashboard</a>
+                @if (Model.FromUnbilled)
+                {
+                    @*<a href="@Url.Action("UnbilledBooking", "Booking", new { sDate = Model.sDate, eDate = Model.eDate, page = Model.Page, term = Model.Term, menuId = Model.MenuId })" class="btn btn-info">Back</a>*@
+                    <a href="@ViewBag.priviousURL" class="btn btn-info">Back</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("ShowBooking", "Booking", new { sDate = Model.sDate, eDate = Model.eDate, page = Model.Page, term = Model.Term, bookingStatus=Model.BookingStatus,pbookingCat=ViewBag.pendingCat, menuId = Model.MenuId })" class="btn btn-info">Back</a>
+
+                }
+                <a href="/Booking/ShowBooking?menuId=@Model.MenuId" class="btn btn-info">Show all</a>
+                <h2 style="text-align:center">Edit Booking</h2>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+               
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+                <h2 style="text-align:center" id="msg"></h2>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-2">
+                Booking Type *
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownListFor(a => a.BookingType,
+               new List<SelectListItem> {
+                   new SelectListItem {Text="Regular",Value="regular" },
+                   new SelectListItem {Text="NRD",Value="nrd" },
+               }, "select", new { @class = "form-control" })
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(a => a.BookingType)
+                    <input type="hidden" name="pbookingCat" value="@ViewBag.pendingCat" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                VIP : @Html.CheckBoxFor(a => a.IsVIP)
+            </div>
+            <div id="rgState" @if (Model.BookingType == "nrd" || Model.BookingType == null) { <text> style="display:none" </text> }>
+                <div class="col-md-1 rgState"> State :</div>
+                <div class="col-md-2 ">
+                    @Html.DropDownListFor(a => a.NrdStateId, Model.StateList
+               , "Select", new { @class = "form-control", id = "State_Id" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row r nrg" @if (Model.BookingType == "regular") { <text> style="display:none" </text> }>
+            <div class="col-md-2">
+                Payment Type *
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownListFor(a => a.NrdBookingMode,
+                   new List<SelectListItem>{
+                     new SelectListItem {Text="Complimentry",Value="Complimentry" },
+                     new SelectListItem {Text="Cash",Value="Cash" },
+                     new SelectListItem {Text="Service",Value="Service" }
+                   }, "Select", new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NrdBookingMode)
+                </span>
+            </div>
+            <div class="col-md-2" style="text-align:right;">
+                Type  *
+            </div>
+
+            <div class="col-md-2">
+                @Html.DropDownListFor(a => a.NrgType,
+                  new List<SelectListItem>
+                  {
+                      new SelectListItem {Text="WalkIn",Value="walkin" },
+                      new SelectListItem {Text="Corporate",Value="corporate"}
+                  }, "Select type", new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NrdStateId)
+                </span>
+            </div>
+            <div class="col-md-2" style="text-align:right;">
+                Booking State *
+            </div>
+
+            <div class="col-md-2">
+                @Html.DropDownListFor(a => a.NrdStateId, Model.StateList, "Select", new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NrdStateId)
+                </span>
+            </div>
+
+
+
+        </div>
+
+        <div class="row r">
+            <div class="col-md-2">
+                Service City *
+            </div>
+            <div class="col-md-3">
+
+                @*@Html.HiddenFor(a => a.City_Id)
+        @Html.TextBox("cityName", null, new { @class = "form-control", Value = Model.CityName })*@
+                @Html.DropDownListFor(a => a.City_Id, Model.Cities, "select city", new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.City_Id)
+                </span>
+            </div>
+
+            <div class="regular" @if (Model.BookingType == "nrd" && Model.NrgType=="walkin") { <text>style="display:none"</text>}>
+                <div class="col-md-2">
+                    Organization *
+                </div>
+                <div class="col-md-5">
+
+                    @Html.DropDownListFor(a => a.Client_Id, Model.OrganizationList, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.Client_Id)
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-2">
+                Package Type *
+            </div>
+
+            <div class="col-md-4">
+                @Html.DropDownListFor(a => a.PackageType_Id, Model.PacakgeTypes, "Select", new { @class = "form-control", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.PackageType_Id)
+                </span>
+            </div>
+            <div class="col-md-2">
+                Rental Type *
+            </div>
+            <div class="col-md-4">
+                @Html.DropDownListFor(a => a.RentalType, Model.RentalList, "Select", new { @class = "form-control", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.RentalType)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-2">
+                Desired Car  *
+            </div>
+            <div class="col-md-4">
+                @Html.DropDownListFor(a => a.VehicleModel_Id, Model.VehicleModels, "Select Vehicle", new { @class = "form-control", required = "required" })
+                <span class="text-danger" >
+                    @Html.ValidationMessageFor(a => a.VehicleModel_Id)
+                </span>
+            </div>
+
+           
+                <div id="monthlyDaysDiv" @if (Model.DaysInMonth < 1) {<text> style="display:none;"</text> }>
+                    <div class="col-md-2">
+                       Select Month
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="col-md-3" id="wdmonth">
+                            <select id='woMonth' class="form-control">
+                                <option value=''>--Select Month--</option>
+                                <option value='1'>Janaury</option>
+                                <option value='2'>February</option>
+                                <option value='3'>March</option>
+                                <option value='4'>April</option>
+                                <option value='5'>May</option>
+                                <option value='6'>June</option>
+                                <option value='7'>July</option>
+                                <option value='8'>August</option>
+                                <option value='9'>September</option>
+                                <option value='10'>October</option>
+                                <option value='11'>November</option>
+                                <option value='12'>December</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(a => a.DaysInMonth, new { @class = "form-control" })
+                            <span class="text-danger">
+                                @Html.ValidationMessageFor(a => a.DaysInMonth)
+                            </span>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-5">
+                                Route No
+                            </div>
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(a => a.RouteNo, new { @class = "form-control" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.RouteNo)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>        
+        </div>
+
+        <div class="row r">
+            <div class="col-md-2">
+                User Name *
+            </div>
+            <div class="col-md-5">
+                @Html.TextBoxFor(a => a.CustomerName, new { @class = "form-control", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.CustomerName)
+                </span>
+            </div>
+
+
+            <div class="col-md-2">
+                Contact No *
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(a => a.ContactNo, new { @class = "form-control", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ContactNo)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-2">Email *</div>
+            <div class="col-md-4">
+                @Html.TextBoxFor(a => a.Email, new { @class = "form-control", required = "required" })
+
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.Email)
+                </span>
+            </div>
+
+            <div class="col-md-1">
+                Booked By *
+            </div>
+
+            <div class="col-md-2">
+                @Html.TextBoxFor(a => a.BookedByPerson, new { @class = "form-control", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.BookedByPerson)
+                </span>
+            </div>
+            <div class="col-md-1">
+                Booker Mobile *
+            </div>
+
+            <div class="col-md-2">
+                @Html.TextBoxFor(a => a.BookedByPersonMobileNo, new { @class = "form-control", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.BookedByPersonMobileNo)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+
+            <div class="col-md-2">
+                Pickup Address *
+            </div>
+            <div class="col-md-5">
+                @Html.TextAreaFor(a => a.PickupAddress, new { @class = "form-control", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.PickupAddress)
+                </span>
+            </div>
+
+            <div class="col-md-2">
+                Pickup Landmark
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(a => a.PickupLandMark, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.PickupLandMark)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+
+            <div class="col-md-2">
+                Drop Address *
+            </div>
+            <div class="col-md-5">
+                @Html.TextAreaFor(a => a.DropAddress, new { @class = "form-control", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.DropAddress)
+                </span>
+            </div>
+
+            <div class="col-md-2">
+                Drop Landmark
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(a => a.DropLandmark, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.DropLandmark)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+
+            <div class="col-md-2">
+                Pickup Date *
+            </div>
+            <div class="col-md-2">
+                @Html.TextBoxFor(a => a.PickupDate,String.Format("{0:yyyy-MM-dd}",Model.PickupDate), new { @class = "form-control dp", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.PickupDate)
+                </span>
+            </div>
+
+            <div class="col-md-1">
+                Pickup Time *
+            </div>
+            <div class="col-md-2">
+                @Html.TextBoxFor(a => a.PickupTime, new { @class = "form-control tp", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.PickupTime)
+                </span>
+            </div>
+            <div class="col-md-2">
+                Reporting Time *
+            </div>
+            <div class="col-md-2">
+                @Html.TextBoxFor(a => a.ReportingTime, new { @class = "form-control tp", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ReportingTime)
+                </span>
+            </div>
+
+        </div>
+
+        <div class="row r">
+            
+            <div class="col-md-12">
+                Instruction
+                @Html.TextAreaFor(a => a.BookingInstruction, new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.BookingInstruction)
+            </span>
+            </div>
+           
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12 text-center">
+                <input type="submit" class="btn btn-info" id="btnSave" value="Save" />
+            </div>
+        </div>
+    }
+
+</div>
+<link href="/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<script src="/js/jquery2.0.3.min.js"></script>
+<script src="/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="/Scripts/booking.js"></script>
+<script>
+    $(document).ready(function () {
+        var pickupDate = $("#PickupDate").val();
+        var d = new Date(pickupDate);
+        var mo = d.getMonth() + 1;
+        $("#woMonth").val(mo);
+    });
+
+
+    $("#PackageType_Id").change(function () {
+    var currentDd = $(this);
+    if (!currentDd.val())
+        return false;
+    var ptypeName = currentDd.find("option:selected").text();
+    var monthlyDaysdiv = $("#monthlyDaysDiv");
+        var monthlyTypes = ["monthly", "monthly-route", "monthly-trip"];
+        let daysInMonth = $("#DaysInMonth");
+        var wdmonthddl = $("#wdmonth");
+    if (monthlyTypes.includes(ptypeName))
+    {
+        monthlyDaysdiv.show();
+        if (ptypeName == "monthly-route") {
+            daysInMonth.val(44);
+            daysInMonth.removeAttr('readonly');
+            wdmonthddl.show();
+        }
+        if (ptypeName == "monthly-trip") {
+            daysInMonth.val(1);
+            daysInMonth.attr('readonly', 'readonly');
+            wdmonthddl.hide();
+        }
+        if (ptypeName == "monthly") {
+            daysInMonth.val(30);
+            daysInMonth.removeAttr('readonly');
+            wdmonthddl.hide();
+        }
+       // monthlyDaysdiv.show();
+    }
+    else {
+        daysInMonth.val(0);
+        monthlyDaysdiv.hide();
+    }
+    var ptypeId = currentDd.val();
+        var targetDd = $("#RentalType");
+        var nrgTpe = $("#NrgType").val();
+        var clientId = $("#Client_Id").val();
+        var qu;
+        if (nrgTpe == "walkin") { qu = 'packageId=' + ptypeId + '&custId=0' }
+        else { qu = 'packageId=' + ptypeId + '&custId=' + clientId; }
+    targetDd.empty();
+    targetDd.append("<option value=''>select</option>");
+        $.get(`/Common/GetRentalTypeByPackageCustomerID?` + qu)
+            .then(function (r) {
+                $.each(r, function (k, v) {
+                    targetDd.append(`<option value='${v.Id}'>${v.RentalTypeName}</option>`)
+                })
+    }).fail(function (e) { console.log(e.responseText)});
+    });
+
+    //updated by bhupesh
+    $("#City_Id").change(function () {
+        var id = $(this).val();
+        $.get('/Common/GetCustomerByCity?cityId=' + id, function (r) {
+            var dd = $("#Client_Id");
+            dd.empty();
+            dd.append('<option value="">Select Customer>');
+            $.each(r, function (k, v) {
+                dd.append('<option value="' + v.Id + '">' + v.CompanyName + '</option>');
+
+            })
+        })
+    });
+
+    $("#State_Id").change(function () {
+        var id = $(this).val();
+        $("#NrdStateId").val(id);
+        $.get('/Common/GetCityByState?stateId=' + id, function (r) {
+            var dd = $("#City_Id");
+            dd.empty();
+            dd.append('<option value="">Select city</option>');
+            $.each(r, function (k, v) {
+                dd.append('<option value="' + v.Id + '">' + v.CityName + '</option>');
+
+            })
+        })
+    });
+    $("#NrdStateId").change(function () {
+        var id = $(this).val();
+        $("#State_Id").val(id);
+        $.get('/Common/GetCityByState?stateId=' + id, function (r) {
+            var dd = $("#City_Id");
+            dd.empty();
+            dd.append('<option value="">Select city</option>');
+            $.each(r, function (k, v) {
+                dd.append('<option value="' + v.Id + '">' + v.CityName + '</option>');
+
+            })
+        })
+    });
+
+
+    $("#woMonth").change(function () {
+        var mm = $(this).val();
+        var yr = new Date().getFullYear();
+        var wdate = yr + "-" + mm + "-01";
+        let daysInMonth = $("#DaysInMonth");
+
+        $.get('/Common/getWorkingDayInAMonth?woDate=' + wdate, function (r) {
+            var wday = r * 2;
+
+            daysInMonth.val(wday);
+            //daysInMonth.val(wday);
+        })
+    });
+</script>

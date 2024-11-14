@@ -1,0 +1,207 @@
+﻿@model VardaanCab.Models.ViewModels.MultipleBookingVm
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="/css/multipleBookingConfirm.css" rel="stylesheet" />
+    <title>Booking Confirmation Invoice</title>
+</head>
+<body>
+    <div id="main">
+        @if (!Model.IsPdf)
+        {
+          <div>
+              @if (!string.IsNullOrEmpty(Model.MultipleBookingFile))
+              {
+                  <button class="no-print" id="btnEmail" type="button" onclick="sendEmail(this)" userId="@Model.MultipleBookingId">Send Mail To Customer</button><br />
+                  <a href="/Files/@Model.MultipleBookingFile" class="no-print btnPdf" download>Download</a>
+              }
+              else
+              {
+                  <button class="no-print btnPdf" id="btnPdf" type="button" onclick="generateDocs(this)" userId="@Model.MultipleBookingId">Generate PDF</button><br />
+              }
+              <a href="/Booking/ScheduleCabBook?menuId=@Model.MenuId" class="no-print btnPdf">Back</a>
+          </div>
+        }
+      
+        @if (Model != null && Model.Booking != null && Model.Booking.Count > 0)
+       {
+        <div id="inner1">
+            <div id="inner1_1">
+                <p>
+                    <b>Vardaan Car Rental Services Pvt. Ltd.,</b><br />
+                    <b>Address:</b> U-1,Upadhyay Block,Sakarpur,<br />
+                     New Delhi - 110092, India<br />
+                    <b>Branch Office:</b> <br />
+                    <b>Address:</b> B-114, Sector-64, Noida - 201301 <br />
+                    <b>Call :</b> +91-8130874555 <br />
+                    <b>Email Id :</b> reservation@vardaanrentacar.com
+                </p>
+            </div>
+
+            <div id="inner1_2">
+                <img src="/images/VrcLogo.png" id="lgo" />
+
+            </div>
+        </div>
+
+        <div id="inner2">
+            <p>
+                Dear <b>@Model.Booking[0].CustomerName</b>,<br />
+                Your car booking IDs are <b> @(string.Join(",",Model.Booking.Select(a=>a.BookingId).ToList()))</b> , car &amp; chauffeur details will  be send to you
+                before reporting time. Some other related details are as:
+            </p>
+        </div>
+        <div id="inner3">
+            <table id="tbl1">
+                <tr>
+                    <th>Service City</th>
+                    <td>@Model.Booking[0].CityName</td>
+                    <th>Booking Id</th>
+                    <td>@(string.Join(",", Model.Booking.Select(a => a.BookingId).ToList()))</td>
+                </tr>
+                <tr>
+                    <th>Organization</th>
+                    <td style="text-transform: uppercase;">@Model.Booking[0].CompanyName</td>
+                    <th>Guest</th>
+                    <td style="text-transform: uppercase;">@Model.Booking[0].CustomerName</td>
+                </tr>
+                <tr>
+                    <th>Booked On</th>
+                    <td>
+                        @Model.Booking[0].BookingDate.ToString("dd/MM/yyyy")
+                    </td>
+                    <th>Booked By</th>
+                    <td>@Model.Booking[0].BookedByPerson</td>
+                </tr>
+                <tr>
+                    <th>Contact</th>
+                    <td>@Model.Booking[0].ContactNo</td>
+                    <th>&nbsp;</th>
+                    <td>&nbsp;</td>
+                </tr>
+               
+            </table>
+        </div>
+        <div class="inner4">
+            <table id="tbl2">
+               <tr>
+                   <th style="width:5%">Pickup Date Time</th>
+                   <th style="width:5%">Reporting Time</th>
+                   <th style="width:5%">Rental Type</th>
+                   <th style="width:5%">Car Booked</th>
+                   <th>Pickup Location</th>
+                   <th>Drop Location</th>
+               </tr>
+                @foreach (var item in Model.Booking)
+                {
+                   <tr>
+                       <td>@item.PickupDate.ToString("dd/MM/yyyy") @item.PickupTime</td>
+                       <td>@item.ReportingTime</td>
+                       <td>@item.RentalTypeName</td>
+                       <td>@item.CarModelName</td>
+                       <td>@item.PickupAddress</td>
+                       <td>@item.DropAddress</td>
+                   </tr>
+                }
+            </table>
+        </div>
+      
+        <table id="tbl3">
+            <tr style="border-top:none !important;">
+                <td>
+                    <b>Instructions :</b><span>
+                        @if (!string.IsNullOrEmpty(Model.Booking[0].BookingInstruction))
+                        { @Model.Booking[0].BookingInstruction}
+                    </span>
+                </td>
+            </tr>
+        </table>
+        <div id="inner5">
+            <div id="inner5_1">
+                <span>Please note,</span>  <br />
+            </div>
+            <div id="inner5_2">
+                <ul style="margin-left:3%;">
+                    <li>
+                        This is booking acknowledgement mail, confirmation mail with car and
+                        chauffeur details will be sent prior to pickup date and time.
+                    </li>
+                    <li>Services are subject to availability of Cars.</li>
+                    <li>
+                        For any further clarifications, write to us or call us on the 24 Hours Helpline
+                        mentioned below.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="inner6">
+            <div id="inner6_1">
+                <span>Kind Regards,</span>
+            </div>
+            <div id="inner6_2">
+                <span>Vardaan Car Rental Services Reservations Team</span>
+
+            </div>
+            <div id="inner6_3">
+                <b> <span>Call : +91-8130874555</span> </b>
+            </div>
+            <div id="inner6_4">
+                <span><b>Email : </b> reservation@vardaanrentacar.com</span>
+            </div>
+        </div>
+       }
+
+</div>
+</body>
+</html>
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+
+    function generateDocs(obj)
+    {
+     //   $("#btnEmail").hide();
+       // $("#btnPdf").hide();
+        var el = $(obj);
+        var id = el.attr("userId");
+        el.text("wait..");
+        $.get('/Booking/GenerateMultiplePdfBookingInvoice?id=' + id)
+            .done(function (response) {
+                if (response != "error") {
+                    alert("Pdf has generated");
+                    var loc = window.location;
+                    window.location.href = loc;
+                }
+                else {
+                    alert("Error on server side");
+                }
+            })
+            .fail(function (err) {
+                alert("server error on receipt");
+                console.log(err);
+            });
+    }
+</script>
+
+<script>
+
+    function sendEmail(obj)
+    {
+        var el = $(obj);
+        var id = el.attr("userId");
+        el.text("wait..");
+        $.get('/Booking/SendMultipleBookConfirmInvoice?id=' + id)
+            .done(function (response) {
+                alert("Mail has been sent");
+                var loc = window.location;
+                window.location.href = loc;
+            })
+            .fail(function (err) {
+                alert("server error on receipt");
+            });
+    }
+</script>

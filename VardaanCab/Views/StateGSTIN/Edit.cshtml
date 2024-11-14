@@ -1,0 +1,186 @@
+﻿@model VardaanCab.Models.DTO.StateWiseGstinDTO
+@{
+    ViewBag.Title = "Edit Customer";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    .row {
+        margin-top: 1% !important;
+    }
+</style>
+
+
+@using (Html.BeginForm())
+{
+    <div style="width:50%">
+
+        <div class="row r">
+            <div class="col-md-12">
+                <a href="/StateGSTIN/All" class="btn btn-info">Show all</a>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+                <h2>Edit GSTIN</h2>
+            </div>
+        </div>
+
+        @if (TempData["msg"] != null)
+        {
+            <div class="row r">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        @TempData["msg"]
+                    </div>
+                </div>
+            </div>
+        }
+
+        @Html.HiddenFor(a => a.Id)
+        @Html.HiddenFor(a => a.IsActive)
+        @Html.HiddenFor(a => a.MenuId)
+
+       
+        <div class="row r">
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        State *
+                        @Html.DropDownListFor(a => a.State_Id, Model.StateList, "Select", new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.State_Id)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        GSTIN *
+                        @Html.TextBoxFor(a => a.Gstin, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.Gstin)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        Full Address *
+                        @Html.TextAreaFor(a => a.Address, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.Address)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        Bank Name *
+                        @Html.TextAreaFor(a => a.BankName, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.BankName)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        A/C No *
+                        @Html.TextAreaFor(a => a.AC_No, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.AC_No)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        Branch *
+                        @Html.TextAreaFor(a => a.BranchAddress, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.BranchAddress)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        IFS Code *
+                        @Html.TextAreaFor(a => a.IFS_Code, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.IFS_Code)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        Company Name *
+                        @Html.TextAreaFor(a => a.CompanyName, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.CompanyName)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        Regd. Office Address*
+                        @Html.TextAreaFor(a => a.CompanyRegAdd, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.CompanyRegAdd)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        Regd. Office State *
+                        @Html.TextAreaFor(a => a.CompanyRegState, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.CompanyRegState)
+                        </span>
+                    </div>               
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        CIN Number *
+                        @Html.TextAreaFor(a => a.CIN_No, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.CIN_No)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        PIN Code *
+                        @Html.TextAreaFor(a => a.PIN_Code, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.PIN_Code)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        Email ID *
+                        @Html.TextAreaFor(a => a.EmailId, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.EmailId)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        Contact Number *
+                        @Html.TextAreaFor(a => a.ContactNo, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.ContactNo)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-info" value="Save" />
+                    </div>
+                </div>
+            </div>
+            </div>
+
+    </div>
+
+}

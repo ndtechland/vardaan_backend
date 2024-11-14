@@ -1,0 +1,78 @@
+﻿@model VardaanCab.Models.DTO.MonthlyPackageRouteMasterDTO
+@{
+    ViewBag.Title = "Update Monthly Route Package";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div style="width:60%;margin-left:1%">
+    <div class="row r">
+        <div class="col-md-12">
+            <h2>@ViewBag.Title</h2>
+        </div>
+    </div>
+
+    <div class="row r">
+        <div class="col-md-6">
+            <a href="/MonthlyRouteMaster/All?menuId=@Model.MenuId" class="btn btn-default">Show Packages</a>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(a => a.MenuId)
+        @Html.HiddenFor(a => a.Id)
+        <div class="row">
+            <div class="col-md-12">
+                @if (ViewData.ModelState["msg"] != null)
+                {
+                    <div class="alert alert-info">
+                        @Html.ValidationMessage("msg")
+                    </div>
+                }
+
+                <div class="form-group">
+                    No of days *
+                    @Html.TextBoxFor(a => a.NoOfDays, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.NoOfDays)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Vehicle *
+                    @Html.DropDownListFor(a => a.VehicleModel_Id, Model.VehicleModelList, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.VehicleModel_Id)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Start Location *
+                    @Html.TextBoxFor(a => a.PickupLocation, new { @class = "form-control", type = "" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.PickupLocation)
+                    </span>
+                </div>
+                <div class="form-group">
+                    End Location *
+                    @Html.TextBoxFor(a => a.DropLocation, new { @class = "form-control", type = "" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.DropLocation)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Fare *
+                    @Html.TextBoxFor(a => a.Fare, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.Fare)
+                    </span>
+                </div>
+
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-info">Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

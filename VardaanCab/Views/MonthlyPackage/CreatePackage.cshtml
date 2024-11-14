@@ -1,0 +1,167 @@
+﻿@model VardaanCab.Models.DTO.MonthlyPackageDTO
+@{
+    ViewBag.Title = "Monthly Booking";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div style="width:60%;margin-left:1%">
+    <div class="row r">
+        <div class="col-md-12">
+            <h2>Create Monthly Package</h2>
+        </div>
+    </div>
+
+    <div class="row r">
+        <div class="col-md-12">
+            <a href="/admin/Submenu?menuId=@Model.MenuId" class="btn btn-default">Back</a>
+            <a href="/MonthlyPackage/All?menuId=@Model.MenuId" class="btn btn-default">Show All Booking</a>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+    <div class="row">
+        <div class="col-md-12">
+            @if (ViewData.ModelState["msg"]!=null)
+            {
+            <div class="alert alert-info">
+                @Html.ValidationMessage("msg")
+            </div>
+            }
+            @Html.HiddenFor(a=>a.MenuId)
+            <div class="form-group">
+                Company *
+                @Html.DropDownListFor(a=>a.Customer_Id,Model.ClientList,"Select",new { @class="form-control"})
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a=>a.Customer_Id)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Vehicle *
+                @Html.DropDownListFor(a => a.VehicleModel_Id, Model.VehicleModelList, "Select", new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.VehicleModel_Id)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Booked By *
+                @Html.TextBoxFor(a => a.BookedBy, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.BookedBy)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Fare *
+                @Html.TextBoxFor(a => a.Fare, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.Fare)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Fixed Km *
+                @Html.TextBoxFor(a => a.FixedKms, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.FixedKms)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Fixed Hour/Day *
+                @Html.TextBoxFor(a => a.FixedHourPerDay, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.FixedHourPerDay)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Extra Km rate *
+                @Html.TextBoxFor(a => a.ExtraKmRate, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraKmRate)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Extra Hour Rate *
+                @Html.TextBoxFor(a => a.ExtraHourRate, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraHourRate)
+                </span>
+            </div>
+
+            <div class="form-group">
+                No of days *
+                @Html.TextBoxFor(a => a.NoOfDays, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NoOfDays)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Night Hour Start *
+                @Html.TextBoxFor(a => a.NightStartTime, new { @class = "form-control tp" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NightStartTime)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Night Hour end *
+                @Html.TextBoxFor(a => a.NightEndTime, new { @class = "form-control tp" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NightEndTime)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Night Charges *
+                @Html.TextBoxFor(a => a.NightCharge, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NightCharge)
+                </span>
+            </div>
+
+            
+
+            <div class="form-group">
+               <button type="submit" class="btn btn-info">Save</button>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    $("#VehicleModel_Id").change(function () {
+        var vehicleModelId = $(this).val();
+        var txtFare = $("#Fare");
+        var txtExtraKmRate = $("#ExtraKmRate");
+        var txtExtraHourRate = $("#ExtraHourRate");
+        if(vehicleModelId.length>0)
+        {
+            $.get('/MonthlyPackage/GetMasterMnthlyPckg?modelId=' + vehicleModelId)
+                
+            .done(res=> {
+                if (res.status == "ok")
+                {
+                    txtFare.val(res.package.Fare);
+                    txtExtraKmRate.val(res.package.ExtraKmRate);
+                    txtExtraHourRate.val(res.package.ExtraHourRate);
+                }
+                else {
+                    txtFare.val(0);
+                    txtExtraKmRate.val(0);
+                    txtExtraHourRate.val(0);
+                }
+            })
+            .fail(err=> {
+                console.log(err);
+            })
+        }
+
+    })
+</script>

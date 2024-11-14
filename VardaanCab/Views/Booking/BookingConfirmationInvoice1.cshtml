@@ -1,0 +1,269 @@
+﻿@model VardaanCab.Models.DTO.BookingDTO
+@{
+    Layout = null;
+}
+
+
+<style>
+    .btnPdf {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 3px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        /*margin: 4px 2px;*/
+        cursor: pointer;
+        border-radius: 1px;
+    }
+
+    .btnEmail {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 3px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        /*margin: 4px 2px;*/
+        cursor: pointer;
+        border-radius: 3px;
+        box-shadow: 3px 3px #82a183;
+    }
+</style>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="/css/BookingConfirmationInvoice.css" rel="stylesheet" />
+
+    <title>Booking Confirmation Invoice</title>
+</head>
+<body>
+
+    <div id="main">
+        @if (ViewBag.isPdf==false)
+        {
+        <div>
+            @if (!string.IsNullOrEmpty(Model.BookingConfirmFile))
+            {
+                <button class="no-print" id="btnEmail" type="button" onclick="sendEmail(this)" userId="@Model.Id">Send Mail To Customer</button><br />
+                <a href="/Files/@Model.BookingConfirmFile" class="no-print btnPdf" download>Download</a>
+            }
+            else
+            {
+                <button class="no-print btnPdf" id="btnPdf" type="button" onclick="generateDocs(this)" userId="@Model.Id">Generate PDF</button><br />
+
+            }
+            @*<a href="/Booking/ShowBooking?bookingStatus=@Model.BookingStatus?&menuId=@ViewBag.menuId" class="no-print btnPdf">Back</a>*@
+            <a href="/Booking/CabBook?&menuId=3" class="no-print btnPdf">Back</a>
+        </div>
+        }
+        @*<button class="no-print" onclick="window.print()" type="button" >Print</button><br />*@
+        @*<button class="no-print" onclick="window.location.href = '/SubMenu/CabBookingSubMenu'">Back</button>*@
+        <div id="inner1">
+            <div id="inner1_1">
+                <p>
+                    <b>Vardaan Car Rental Services Pvt. Ltd.,</b><br />
+                    <b>Address:</b> U-1,Upadhyay Block,Sakarpur,<br />
+                    New Delhi - 110092, India<br />
+                    <b>Branch Office:</b> <br />
+                    <b>Address:</b> B-114, Sector-64, Noida - 201301 <br />
+                    <b>Call :</b> +91-8130874555 <br />
+                    <b>Email Id :</b> reservation@vardaanrentacar.com
+                </p>
+            </div>
+
+            <div id="inner1_2">
+                <img src="/images/VrcLogo.png" id="lgo" />
+
+            </div>
+        </div>
+
+        <div id="inner2">
+            <p>
+                Dear <b>@Model.CustomerName</b>,<br />
+                Your car booking ID is <b>@Model.BookingId</b>, car &amp; chauffeur details will  be send to you
+                before reporting time.Some other related details are as:
+            </p>
+        </div>
+        <div id="inner3">
+            <table id="tbl1">
+                <tr>
+                    <th>Service City</th>
+                    <td>@Model.CityName</td>
+                    <th>Booking Id</th>
+                    <td>@Model.BookingId</td>
+                </tr>
+                <tr>
+                    <th>Organization</th>
+                    <td style="text-transform: uppercase;">@Model.CompanyName</td>
+                    <th>Pickup Address</th>
+                    <td>
+                        @Model.PickupAddress
+                    </td>
+                </tr>
+                <tr>
+                    <th>Customer</th>
+                    <td>@Model.CustomerName</td>
+                    <th>Pickup Landmark</th>
+                    <td>
+                        @if (!string.IsNullOrEmpty(Model.PickupLandMark))
+                        {
+                            @Model.PickupLandMark
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>Contact</th>
+                    <td>@Model.ContactNo</td>
+                    <th>Drop Address</th>
+                    <td>@Model.DropAddress</td>
+                </tr>
+                <tr>
+                    <th>Emp Code</th>
+                    <td></td>
+                    <th>Drop Landmark</th>
+                    <td>
+                        @if (!string.IsNullOrEmpty(Model.DropLandmark))
+                        {
+                            @Model.DropLandmark
+                        }
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Cost Code</th>
+                    <td></td>
+                    <th>
+
+                    </th>
+                    <td></td>
+                </tr>
+
+
+            </table>
+        </div>
+
+        <div id="inner4">
+            <table id="tbl2">
+                <tr>
+                    <th>Pickup Date Time</th>
+                    <td>@Model.PickupDate.ToString("dd/MM/yyyy") @Model.PickupTime</td>
+                    <th>Booked On </th>
+                    <td>@Model.BookingDate.ToString("dd/MM/yyyy")</td>
+                </tr>
+
+                <tr>
+                    <th>Booked By</th>
+                    <td>@Model.BookedByPerson</td>
+                    <th>Rental Type</th>
+                    <td>@Model.RentalTypeName</td>
+                </tr>
+
+                <tr>
+                    <th>Car Booked</th>
+                    <td>@Model.CarModelName</td>
+                    <th>Reporting Time</th>
+                    <td>@Model.ReportingTime</td>
+                </tr>
+
+            </table>
+
+            <table id="tbl3">
+                <tr style="border-top:none !important;">
+                    <td>
+                        <b>Instructions :</b><span>
+                            @if (!string.IsNullOrEmpty(Model.BookingInstruction))
+                        { @Model.BookingInstruction}
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="inner5">
+        <div id="inner5_1">
+            <span>Please note,</span>  <br />
+        </div>
+        <div id="inner5_2">
+            <ul style="margin-left:3%;">
+                <li>
+                    This is booking acknowledgement mail, confirmation mail with car and
+                    chauffeur details will be sent prior to pickup date and time.
+                </li>
+                <li>Services are subject to availability of Cars.</li>
+                <li>
+                    For any further clarifications, write to us or call us on the 24 Hours Helpline
+                    mentioned below.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="inner6">
+        <div id="inner6_1">
+            <span>Kind Regards,</span>
+        </div>
+        <div id="inner6_2">
+            <span>Vardaan Car Rental Services Reservations Team</span>
+
+        </div>
+        <div id="inner6_3">
+            <b> <span>Call : +91-8130874555</span> </b>
+        </div>
+        <div id="inner6_4">
+            <span><b>Email : </b> reservation@vardaanrentacar.com</span>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+
+    function generateDocs(obj) {
+        //   $("#btnEmail").hide();
+        // $("#btnPdf").hide();
+        var el = $(obj);
+        var id = el.attr("userId");
+        el.text("wait..");
+        $.get('/Booking/GeneratePdfBookingInvoice?id=' + id)
+            .done(function (response) {
+                if (response != "error") {
+                    alert("Pdf has generated");
+                    var loc = window.location;
+                    window.location.href = loc;
+                }
+                else {
+                    alert("Error on server side");
+                }
+            })
+            .fail(function (err) {
+                alert("server error on receipt");
+                console.log(err);
+            });
+    }
+</script>
+
+<script>
+
+    function sendEmail(obj) {
+        var el = $(obj);
+        var id = el.attr("userId");
+        el.text("wait..");
+        $.get('/Booking/SendBookConfirmInvoice?id=' + id)
+            .done(function (response) {
+                alert("Mail has been sent");
+                var loc = window.location;
+                window.location.href = loc;
+            })
+            .fail(function (err) {
+                alert("server error on receipt");
+            });
+    }
+</script>

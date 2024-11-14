@@ -1,0 +1,394 @@
+﻿
+
+@model VardaanCab.Models.DTO.AssignCabModel
+@{
+    ViewBag.Title = "AssignCab";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<style>
+    .row {
+        margin-top: 1% !important;
+    }
+    .ui-autocomplete {
+    z-index: 1050 !important;
+}
+</style>
+
+<div style="width:90%">
+    @if (TempData["msg"] != null)
+    {
+        <div class="row r">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    @TempData["msg"]
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row r">
+        <div class="col-md-12">
+            <a href="@Url.Action("ShowBooking", "Booking", new { sDate = Model.sDate, eDate = Model.eDate, page = Model.Page, term = Model.Term, bookingStatus=Model.BookingStatus,pbookingCat=@ViewBag.pendingCat, menuId = Model.MenuId })" class="btn btn-info">Back</a>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#driverModal" >Add Driver</button>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#cabModal" >Add Cab</button>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(a => a.Booking_Id)
+        @Html.HiddenFor(a => a.PCab_Id)
+        @Html.HiddenFor(a => a.PDriver_Id)
+        @Html.HiddenFor(a => a.BookingType)
+        @Html.HiddenFor(a => a.MenuId)
+        @Html.HiddenFor(a => a.Page)
+        @Html.HiddenFor(a => a.Term)
+        @Html.HiddenFor(a => a.sDate)
+        @Html.HiddenFor(a => a.eDate)
+        @Html.HiddenFor(a => a.BookingStatus)
+
+        <input type="hidden" value="@ViewBag.pendingCat" id="pendingBCat" name="pendingBCat" />
+        
+        <div class="row r">
+            <div class="col-md-12">
+                <h2 style="text-align:center">Assign Cab & Driver</h2>
+            </div>
+            <br />
+            <span style="margin-left:15px;">
+                Desired Car :@Model.DesiredCar
+            </span>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <span>
+                Pickup Time : @Model.PickupTime
+            </span>
+        </div>
+
+        <div class="row r">
+
+            <div class="col-md-2">
+                Search Cab *
+            </div>
+            <div class="col-md-4">
+
+                <input type="hidden" name="Cab_Id" id="Cab_Id" value="" />
+
+                @Html.TextBox("cabName", null, new { @class = "form-control", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.Cab_Id)
+                </span>
+            </div>
+
+            <div class="col-md-2">
+                Driver *
+            </div>
+            <div class="col-md-4">
+                @Html.DropDownListFor(a => a.Driver_Id, Model.Drivers, "Select", new { @class = "form-control", required = "required" })
+
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.Driver_Id)
+                </span>
+            </div>
+
+        </div>
+        <div class="row r">
+            <div class="col-md-2">
+                Start Kms *
+            </div>
+            <div class="col-md-4">
+                @Html.TextBoxFor(a => a.StartKms, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.StartKms)
+                </span>
+            </div>
+
+            <div class="col-md-2">
+                Start Hrs *
+            </div>
+            <div class="col-md-4">
+                @Html.TextBoxFor(a => a.StartHour, new { @class = "form-control tp" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.StartHour)
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-info" value="Assign" />
+        </div>
+    }
+</div>
+<div id="driverModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Driver</h4>
+            </div>
+            <form id="frmSaveDriver">
+                <div class="modal-body">
+                    <div class="form-group">
+                        Driver Name *
+                        <input type="text" class="form-control req" name="DriverName"  style = "text-transform:uppercase"  id="DriverName" />
+                        <span class="text-danger errMsg"></span>
+                    </div>
+                    <div class="form-group">
+                        Mobile No. *
+                        <input type="number" class="form-control req" name="MobileNumber" maxlength = "10" id="MobileNumber" />
+                        <span class="text-danger errMsg"></span>
+                    </div>
+                    <div class="form-group">
+                        Address 
+                        <textarea class="form-control" name="Address" id="Address"></textarea>
+                        <span class="text-danger errMsg"></span>
+                    </div>
+                    <div class="form-group">
+                        <span id="msg1"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" id="btnSaveDriver" class="btn btn-info">Save</button>
+                    </div>
+                </div>
+            </form> 
+        </div>
+
+    </div>
+</div>
+
+<div id="cabModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Cab</h4>
+            </div>
+            <form id="frmSaveCab">
+                <div class="modal-body">
+                    <div class="form-group">
+                        Model *
+                        @Html.DropDownList("VehicleModel_Id", Model.VehicleModels, "Select Model", new { @class = "form-control req1", onfocus = "this.size=5;", onblur = "this.size=1;", onchange = "this.size=1; this.blur();" })
+                        <span class="text-danger errMsg"></span>
+                    </div>
+                    <div class="form-group">
+                        Vehicle Company (eg. toyota/suzuki/honda) *
+                        <input type="text" class="form-control req1" name="Company" id="Company" />
+                        <span class="text-danger errMsg"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        Vehicle Number *
+                        <input type="text" class="form-control req1" name="VehicleNumber" id="VehicleNumber" maxlength="10" , style="text-transform:uppercase" />
+                        <span class="text-danger errMsg"></span>
+                    </div>
+                    <div class="form-group">
+                        Vendor *
+                        <input type="hidden" name="Vendor_Id" id="Vendor_Id" />
+
+                        <input type="text" class="form-control req1" name="vendorName" id="vendorName" />
+                        <span class="text-danger errMsg"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <span id="msg2"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" id="btnSaveCab" class="btn btn-info">Save</button>
+                    </div>
+                </div>
+            </form> 
+        </div>
+    </div>
+</div>
+
+<link href="/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<script src="/js/jquery2.0.3.min.js"></script>
+<script src="/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+<script>
+    $("#cabName").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/Assign/GetCabList',
+                data: { term: request.term },
+                type: 'GET',
+                success: function (data) {
+                    if (!data.length) {
+                        var result = [
+                         {
+                             label: 'No data found',
+                             value: response.term
+                         }
+                        ];
+                        response(result);
+                    }
+                    else {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.ModelName + "(" + item.VehicleNumber + ")",
+                                value: item.Id
+
+                            };
+                        }));
+                    }
+                }
+            });
+        },
+        select: function (event, ui) {
+            $('#Cab_Id').val(ui.item.value);
+            $('#cabName').val(ui.item.label);
+            
+            return false;
+        }
+    });
+</script>
+
+<script>
+    $("#vendorName").autocomplete({
+        
+        source: function (request, response) {
+            debugger
+            $.ajax({
+                url: '/Cab/GetVendorList',
+                data: { term: request.term },
+                type: 'GET',
+                success: function (data) {
+                    if (!data.length) {
+                        var result = [
+                         {
+                             label: 'No data found',
+                             value: response.term
+                         }
+                        ];
+                        response(result);
+                    }
+                    else {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.CompanyName,
+                                value: item.Id
+
+                            };
+                        }));
+                    }
+                }
+            });
+        },
+        select: function (event, ui) {
+            $('#Vendor_Id').val(ui.item.value);
+            $('#vendorName').val(ui.item.label);
+            return false;
+        }
+    });
+
+    $("#VehicleModel_Id").change(function () {
+        var mm = $(this).val();
+        // alert(mm);
+        let vmanu = $("#Company");
+        $.get('/Common/geVehicleManufatureName?modelId=' + mm, function (r) {
+            var wday = r;
+            // alert(wday);
+            vmanu.val(wday);
+        })
+
+    });
+</script>
+
+<script>
+///////////////////// save driver data on model pop up /////////////////////////////
+    $("#btnSaveDriver").click(function () {debugger
+        var msg = $("#msg1");
+        msg.css("color", "grey").text("Wait..");
+        var isValid = true;
+        $(".req").each(function () {
+            var ip = $(this);
+            var elementId = ip.attr("id");
+            var spn = ip.siblings(".errMsg");
+            if(!ip.val())
+            {
+                isValid = false;
+                spn.text(elementId + " field is required");
+            }
+            else {
+                spn.text("");
+            }
+ 
+        })
+        var mobile = $("#MobileNumber").val();
+        if (mobile.length != 10) {
+            $("#MobileNumber").siblings(".errMsg").append("<br/> Mobile number should be 10 digit long");
+            isValid = false;
+        }
+        if (!isValid) {
+            msg.text("");
+            return false;
+        }
+        var frmSaveDriverData = $("#frmSaveDriver").serialize();
+        $.ajax(
+            {
+                url: '/Assign/CreateDriver',
+                type:'post',
+                data:frmSaveDriverData
+            })
+            .done(function (r)
+            {
+                if(r=="ok")
+                {
+                    var url = window.location.href;
+                    window.location.href = url;
+                }
+                else
+                {
+                    msg.css("color", "red").text(r);
+                }
+            })
+            .fail(function () {
+                msg.css("color", "red").text("failed to submit");
+            });
+    })
+
+///////////////////// save cab data on model pop up //////////////////////////
+    $("#btnSaveCab").click(function () {
+        var msg = $("#msg2");
+        msg.css("color", "grey").text("Wait..");
+        var isValid = true;
+        $(".req1").each(function () {
+            var ip = $(this);
+            var elementId = ip.attr("id");
+            var spn = ip.siblings(".errMsg");
+            if (!ip.val()) {
+                isValid = false;
+                spn.text(elementId + " field is required");
+            }
+            else {
+                spn.text("");
+            }
+
+        })
+        
+        if (!isValid) {
+            msg.text("");
+            return false;
+        }
+        var frmSaveCabData = $("#frmSaveCab").serialize();
+        $.ajax(
+            {
+                url: '/Assign/CreateCab',
+                type: 'post',
+                data: frmSaveCabData
+            })
+            .done(function (r) {
+                if (r == "ok") {
+                    var url = window.location.href;
+                    window.location.href = url;
+                }
+                else {
+                    msg.css("color", "red").text(r);
+                }
+            })
+            .fail(function () {
+                msg.css("color", "red").text("failed to submit");
+            });
+    })
+</script>
+
+

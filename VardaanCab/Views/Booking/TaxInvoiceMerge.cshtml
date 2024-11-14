@@ -1,0 +1,453 @@
+﻿@model VardaanCab.Models.ViewModels.TaxInvoiceFileListVM
+@{
+    Layout = null;
+    double gTotal =  Math.Round(Model.TaxInvoiceFileLists[0].GrandTotal, MidpointRounding.AwayFromZero);
+    double oTotal = Math.Round(Model.TaxInvoiceFileLists[0].GrandTotal, 2);
+    double rem = Math.Round(gTotal - oTotal, 2);
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>
+                TAX INVOICE
+     
+    </title>
+    <link href="/css/TaxInvoiceMerge.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div id="main">
+      
+            <div class="d0 no-print">
+                <div>
+                    @if (!string.IsNullOrEmpty(Model.TaxInvoiceFileLists[0].InvoiceFile))
+                    {
+                        <a href="/Files/@Model.TaxInvoiceFileLists[0].InvoiceFile" class="no-print btnPdf" download>Download</a>
+                    }
+                    else
+                    {
+                        <button class="no-print btnPdf" id="btnPdf" type="button" onclick="generateDocs(this)" userId="@Model.TaxInvoiceFileLists[0].Id">Generate Invoice</button>
+                    }                  
+                </div>
+            </div>
+
+
+        <div class="d1">
+            <div class="d1_1">
+                CIN NO: U63040DL2012PTC243935
+            </div>
+            <div class="d1_2">
+
+
+                <span>TAX INVOICE</span>
+
+            </div>
+            <div class="d1_3">
+                PAN : AAICM2306C
+
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="d2">
+            <div class="d2_1">
+                <p>
+                    <b>Vardaan Car Rental Services Pvt. Ltd.,</b> <br />
+                    <b>Regd. Office :</b> : @Model.StateGSTNBankdetails.Address<br />
+        <b>Sate Name :</b>   @Model.StateGSTNBankdetails.CompanyRegState<br />
+                    <b>GSTIN: </b>@Model.StateGSTNBankdetails.Gstin <br />
+                    <b>Email Id :</b>@Model.StateGSTNBankdetails.EmailId 
+                </p>
+            </div>
+            <div class="d2_2">
+                <img id="logoa" src="/images/VrcLogo.png" />
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="d3">
+            <div class="d3_1" style="">
+                <p>
+                    <b>Consignee</b><br />
+                    @Model.TaxInvoiceFileLists[0].CompanyName<br />
+                    Okaya Centre, 5th Floor, Tower-1, B-5, Sector-62<br />
+                    Noida U.P<br />
+                    GSTIN/UIN : 09AABCT3261E1ZJ<br />
+                    State Name : Uttar Pradesh, Code : 09
+                </p>
+            </div>
+            <div class="d3_2">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <b>Invoice NO</b> <br />
+                            @Model.TaxInvoiceFileLists[0].TaxInviceNo
+                        </td>
+                        <td>
+                            <b>Invoice Date</b> <br />
+                            @Model.TaxInvoiceFileLists[0].TaxInvoiceDate.ToString("dd/MM/yyyy")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Challan No.</b></td>
+                        <td><b>Terms Of Payment</b></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>  Supplier’s Ref.</b>
+                        </td>
+                        <td><b> Other Referenc </b>e</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Order No.</b><br />
+                            @Model.TaxInvoiceFileLists[0].PONo
+                        </td>
+                        <td>
+                            <b> Dated</b><br />
+                            @Model.TaxInvoiceFileLists[0].PODate.ToString("dd/MM/yyyy")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Despatch Doc No.</td>
+                        <td>Dated</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Despatch Through
+                        </td>
+                        <td>Destination</td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2">Terms of Delivery</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="d6">
+            <table id="tbl1">
+                <tr>
+                    <th>S. No</th>
+                    <th>Particulars</th>
+                    <th>HSN/SAC</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>
+                        1
+                    </td>
+                    <td>
+                        <b>Car Hire Receipt</b><br />
+                        @if (Model.TaxInvoiceFileLists[0].IGST > 0)
+                        {
+                            <span>
+                                <b>  IGST :@Model.TaxInvoiceFileLists[0].IGST_per %</b><br />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                <b>  CGST :@Model.TaxInvoiceFileLists[0].CGST_per %</b><br />
+                            </span>
+
+                            <span>
+                                <b>  SGST :@Model.TaxInvoiceFileLists[0].SGST_per %</b><br />
+                            </span>
+                        }
+                        @if (rem > 0)
+                        {
+                            <span>
+                                Less : Round Off<br />
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        996601
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].Amount)<br />
+                        @if (Model.TaxInvoiceFileLists[0].IGST > 0)
+                        {
+                            <span>
+                                @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].IGST)<br />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].CGST)<br />
+                            </span>
+
+                            <span>
+                                @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].SGST)<br />
+                            </span>
+                        }
+                        @if(rem>0)
+                        {
+                    <span>
+                        @string.Format("{0:N2}", rem)<br />
+                    </span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th> &nbsp;</th>
+                    <th>
+                        <span>
+                            <b>Total :</b>
+                        </span>
+                    </th>
+                    <th> &nbsp;</th>
+                    <th> &nbsp;</th>
+                    @*<th style="text-align:right;"> @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].GrandTotal)</th>*@
+                    <th style="text-align:right;"> @string.Format("{0:N2}", gTotal)</th>
+                    
+                </tr>
+            </table>
+
+
+
+        </div>
+
+
+
+        <div class="d8">
+            <span> <b>Amount Chargable in Words : </b> @VardaanCab.Utilities.Converter.NumberToText(Convert.ToInt32(gTotal), true, false) Rupees only. </span>
+        </div>
+        <div class="d9">
+            @if (Model.TaxInvoiceFileLists[0].IGST > 0)
+            {
+                <table style="width:100%;">
+                    <tr>
+                        <td  rowspan="2">
+                            HSN/SAC
+                        </td>
+                        <td  rowspan="2">
+                            Taxable Value
+                        </td>
+                        <td colspan="2">
+                            Integrated Tax
+                        </td>
+
+                        <td  rowspan="2">
+                            Total Tax
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                       
+                        <td>
+                            Rate
+                        </td>
+                        <td>
+                            Amount
+                        </td>
+
+                       
+
+                    </tr>
+                    <tr>
+                        <td>
+                            996601
+                        </td>
+                        <td>
+                            @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].Amount)
+                        </td>
+                        <td>
+                            @Model.TaxInvoiceFileLists[0].IGST_per %
+                        </td>
+                        <td>
+                            @Model.TaxInvoiceFileLists[0].IGST
+                        </td>
+
+                        <td>
+                            @Model.TaxInvoiceFileLists[0].IGST
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;">Total
+                        </td>
+                        <td>
+                            @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].Amount)
+                        </td>
+                        <td>
+                             @Model.TaxInvoiceFileLists[0].IGST_per %
+                        </td>
+                        <td>
+                            @Model.TaxInvoiceFileLists[0].IGST
+                        </td>
+
+                        <td>
+                            @Model.TaxInvoiceFileLists[0].IGST
+                        </td>
+                    </tr>
+                </table>
+            }
+            else
+            {
+                <table style="width:100%;">
+                    <tr>
+                        <td rowspan="2">
+                            HSN/SAC
+                        </td>
+                        <td  rowspan="2">
+                            Taxable Value
+                        </td>
+                        <td colspan="2">
+                            Central Tax
+                        </td>
+                        <td colspan="2">
+                            State Tax
+                        </td>
+                        <td  rowspan="2">
+                            Total Tax
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        
+                       
+                        <td>
+                            Rate
+                        </td>
+                        <td>
+                            Amount
+                        </td>
+                        <td>
+                            Rate
+                        </td>
+                        <td>
+                            Amount
+                        </td>
+                       
+
+                    </tr>
+                    <tr>
+                        <td>
+                            996601
+                        </td>
+                        <td>
+                            @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].Amount)
+                        </td>
+                        <td>
+                             @Model.TaxInvoiceFileLists[0].CGST_per %
+                        </td>
+                        <td>
+                            @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].CGST)
+                        </td>
+                        <td>
+                             @Model.TaxInvoiceFileLists[0].SGST_per %
+                        </td>
+                        <td>
+                            @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].SGST)
+                        </td>
+                        <td>
+                            @string.Format("{0:N2}", (Model.TaxInvoiceFileLists[0].CGST + Model.TaxInvoiceFileLists[0].SGST))
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td  style="text-align:right;"> Total
+                        </td>
+                        <td>
+                            @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].Amount)
+                        </td>
+                        <td>
+                             @Model.TaxInvoiceFileLists[0].CGST_per %
+                        </td>
+                        <td>
+                            @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].CGST)
+                        </td>
+                        <td>
+                             @Model.TaxInvoiceFileLists[0].SGST_per %
+                        </td>
+                        <td>
+                            @string.Format("{0:N2}", Model.TaxInvoiceFileLists[0].SGST)
+                        </td>
+                        <td>
+                            @string.Format("{0:N2}", (Model.TaxInvoiceFileLists[0].CGST + Model.TaxInvoiceFileLists[0].SGST))
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+        <div class="d8">
+            @if (Model.TaxInvoiceFileLists[0].IGST > 0)
+            {
+                <span> <b>Amount in Words : </b> @VardaanCab.Utilities.Converter.NumberToText(Convert.ToInt32(Model.TaxInvoiceFileLists[0].IGST), true, false) Rupees only. </span>
+            }
+            else
+            {
+                <span> <b>Amount in Words : </b> @VardaanCab.Utilities.Converter.NumberToText(Convert.ToInt32(Model.TaxInvoiceFileLists[0].CGST+ Model.TaxInvoiceFileLists[0].SGST), true, false) Rupees only. </span>
+            }
+        </div>
+        <div class="d10">
+            <div class="d10_1">
+                <p>
+                    <b>Company’s PAN</b> : AAICM2306C <br />
+                    Declaration<br />
+                    We declare that this invoice shows the actual price of<br />
+                    the goods described and that all particulars are true<br />
+                    and correct.
+                </p>
+            </div>
+
+            <div class="d10_2">
+                <p style="text-align:left;">
+
+                    <b>   Company’s Bank Details</b><br />
+                    Bank Name : @Model.StateGSTNBankdetails.BankName  <br />
+                    A/c No. : @Model.StateGSTNBankdetails.AC_No<br />
+                    Branch & IFS Code : @Model.StateGSTNBankdetails.BranchAddress & @Model.StateGSTNBankdetails.IFS_Code<br />
+                    <br />
+                </p>
+                    <table style="width:100%;min-height:70px;">
+                        <tr>
+                            <td style="text-align:left">
+                                for Vardaan Car Rental Services Private Limited<br /><br /><br />
+
+                                Authorised Signatory
+                            </td>
+                        </tr>
+                    </table>
+              
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+
+    function generateDocs(obj)
+    {       
+        var el = $(obj);
+        var id = el.attr("userId");
+        var isTaxInvoice = "@Model.TaxInvoiceFileLists[0].TaxInviceNo";
+        el.text("wait..");
+        $.get('/Booking/GeneratePdfTaxInvoiceMerge?id=' + id )
+            .done(function (response) {
+                alert("Pdf has generated");
+                var loc= window.location;
+                window.location.href = loc;
+            })
+            .fail(function (err) {
+                alert("server error on receipt");
+            });
+    }
+</script>
+

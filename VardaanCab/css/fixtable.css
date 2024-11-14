@@ -1,0 +1,111 @@
+﻿       
+     #main {
+        margin: auto;
+        width: 100%;
+    }
+    /* fixed header scrollable table*/
+     
+
+     /*#table1 {
+            border-collapse: collapse;
+            width: 100%;
+            overflow-x: scroll;
+            display: block;
+        }
+
+        #table1 thead {
+            background-color: #EFEFEF;
+        }
+
+       #table1 thead,
+        tbody {
+            display: block;
+        }
+
+        #table1 tbody {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 350px;
+        }
+
+       #table1 td,
+        th {
+            min-width: 170px;
+            height: 25px;
+            border: 1px dashed #808080;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 170px;
+        }*/
+
+/*other css for testing*/
+
+
+
+.mainDiv {
+	margin: auto;
+    width: 100%;
+    margin-top:0.5%;
+}
+
+.wrapperTable {
+	position: relative;
+	overflow: auto;
+   	border: 1px solid black;
+  	/*white-space: nowrap;*/
+     height:550px;
+     font:10px;
+
+}
+
+.sticky-col {
+    position: sticky;
+    position: -webkit-sticky;    
+    /*background-color: white;*/
+    background: #ccc;
+}
+  
+.first-col {
+	width: 30px;
+    min-width: 30px;
+    max-width: 30px;
+	left: 0px;  
+    
+}
+
+.second-col {
+	width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+	left: 100px;  
+    
+}
+
+.third-col {
+	width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+	left:250px;   
+   
+}
+.table-scroll thead th {
+  background: #bfbdbd;
+  color: #fff;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  
+}
+
+.table-scroll tbody  tr td,thead th{
+    padding:2px !important;
+}
+
+.table-scroll thead th, td
+{
+    border:1px solid;
+}
+.table-scroll thead th:nth-child(1),th:nth-child(2),th:nth-child(3)
+{
+  z-index: 5;
+}

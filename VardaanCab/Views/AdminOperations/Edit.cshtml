@@ -1,0 +1,79 @@
+﻿@model VardaanCab.Models.DTO.UserLoginDTO
+@{
+    ViewBag.Title = "Update User ";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    .row {
+        margin-top: 1% !important;
+    }
+</style>
+
+@if (TempData["msg"] != null)
+{
+    <div class="row r">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                @TempData["msg"]
+            </div>
+        </div>
+    </div>
+}
+@using (Html.BeginForm())
+{
+
+<div style="width:50%">
+
+    <div class="row r">
+        <div class="col-md-12">
+            <a href="/AdminOperations/All" class="btn btn-info">Show all</a>
+        </div>
+    </div>
+
+    <div class="row r">
+        <div class="col-md-12">
+            <h2>Update User</h2>
+        </div>
+    </div>
+
+    @Html.HiddenFor(a => a.Id)
+
+    @Html.HiddenFor(a => a.Role)
+    @Html.HiddenFor(a => a.MenuId)
+    @Html.HiddenFor(a => a.IsActive)
+
+    <div class="row r">
+        <div class="col-md-12">
+            <div class="form-group">
+                User Name *
+                @Html.TextBoxFor(a => a.Email, new { @class = "form-control", required = "required" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.Email)
+                </span>
+            </div>
+
+            <div class="form-group">
+                Phone Number *
+                @Html.TextBoxFor(a => a.MobileNumber, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.MobileNumber)
+                </span>
+            </div>
+            <div class="form-group">
+                Password *
+                @Html.TextBoxFor(a => a.Password, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.Password)
+                </span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-info" value="Save" />
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+}

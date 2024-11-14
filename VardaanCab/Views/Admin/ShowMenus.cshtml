@@ -1,0 +1,48 @@
+﻿@model IEnumerable<VardaanCab.Models.DTO.SoftwareLinkDTO>
+
+<div id="sidebar" class="nav-collapse">
+    <!-- sidebar menu start-->
+    <div class="leftside-navigation">
+        <ul class="sidebar-menu" id="nav-accordion">
+            <li>
+                <a href="/Admin/Dashboard">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            @if (Model != null && Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <li class="sub-menu">
+                        <a href="javascript:;">
+                            <i class="fa fa-book"></i>
+                            <span>@item.Title</span>
+                        </a>
+                       @if (item.ChildMenus!=null && item.ChildMenus.Count()>0)
+                       {
+                        <ul class="sub">
+                            @foreach (var menu in item.ChildMenus)
+                            {
+                            <li>
+                                @if (menu.Url.Contains("?"))
+                                {
+                                    <a href="@menu.Url&menuId=@item.Id">@menu.Title</a>
+                                }
+                                else
+                                {
+                                    <a href="@menu.Url?&menuId=@item.Id">@menu.Title</a>
+                                }
+                            </li>
+                            }
+                        </ul>
+                       }
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+    <!-- sidebar menu end-->
+</div>
+

@@ -1,0 +1,157 @@
+﻿@model VardaanCab.Models.ViewModels.MonthlyPackageRoutVm
+@{
+    ViewBag.Title = "Monthly Route Packages";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var dt = DateTime.Now;
+    int sn = Model.SrNo;
+}
+
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+    }
+</style>
+
+<div id="main">
+
+    <h2>Monthly Route Packages</h2>
+    <div class="row">
+            <a href="#" class="btn btn-info" style="margin-left:2%">Back</a>
+        </div>
+    @using (Html.BeginForm())
+    {
+        <div class="row r">
+            <div class="col-md-3">
+                <input type="text" placeholder="Find By Company/Mobile" class="form-control" name="term" />
+            </div>
+            <div class="col-md-2">
+                <input type="text" placeholder="YYYY/MM/DD" class="form-control sdp" name="sDate" autocomplete="off" readonly />
+            </div>
+            <div class="col-md-2">
+                <input type="text" placeholder="YYYY/MM/DD" class="form-control sdp" name="eDate" autocomplete="off" readonly />
+            </div>
+            <div class="col-md-5">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/MonthlyRoutePackage/All">Show all</a>
+                <a class="btn btn-info" href="/MonthlyRoutePackage/CreatePackage"><i class="fa fa-plus-circle"></i>New Package</a>
+                <button type="button" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+        </div>
+    }
+
+
+    <div class="row r r">
+        <div class="col-md-12" style="overflow:scroll;height:400px">
+            <table class="table table-bordered" id="table_wrapper">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Date</th>
+                        <th>Organization</th>
+                        <th>Contact Person</th>
+                        <th>Contact No</th>
+                        <th>Vehicle</th>
+                        <th>Booked By</th>
+                        <th>Fare</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Packages)
+                    {
+                        <tr>
+                            <td>@(++sn)</td>
+                            <td>@item.CreateDate.ToString("dd-MMM-yyyy")</td>
+                            <td class="toolTip" title="updated on @item.UpdateDate.ToString("dd-MMM-yyyy") @item.UpdateDate.ToShortTimeString() by @item.UpdatedBy">@item.CompanyName</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.ContactNo</td>
+                            <td>@item.ModelName</td>
+                            <th>@item.BookedBy</th>
+                            <td>@item.Amount</td>
+                            <td id="col-@item.Id">
+                                @Html.ActionLink("Closed Entries", "Entries", new { packageId = item.Id }, new { @class = "btn btn-info" })
+                                @if (item.IsClosed)
+                                {
+                                    @Html.ActionLink("Tax Invoice", "ViewMonthlyBill", new { packageId = item.Id, IsTaxInvoice = true }, new { @class = "btn  btn-primary" })
+                                    @Html.ActionLink("Performa Invoice", "ViewMonthlyBill", new { packageId = item.Id }, new { @class = "btn  btn-primary" })
+                                    <span class="btn btn-danger" url="/MonthlyRoutePackage/CancelInvoice?packageId=@item.Id" onclick="cancelInvoice(this)">Cancel</span>
+
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Edit", new { id=item.Id})" class="btn btn-info">Edit Package</a>
+                                    @Html.ActionLink("Dispatch", "DayEntry", new { packageId = item.Id }, new { @class = "btn btn-info" })
+                                    @Html.ActionLink("Dispatched Records", "DispatchEntries", new { packageId = item.Id }, new { @class = "btn btn-info" })
+                                    @Html.ActionLink("GenerateBill", "CreateMonthlyBill",
+                                new { packageId = item.Id, page = Model.Page, term = Model.Term, sDate = Model.sDate, eDate = Model.eDate },
+                                new { @class = "btn  btn-primary" })
+
+
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/MonthlyRoutePackage/All?term=@Model.Term&page=@i&sDate=@Model.sDate&eDate=@Model.eDate">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function (e) {
+            e.preventDefault();
+            //getting data from our table
+            var data_type = 'data:application/vnd.ms-excel';
+            var table_div = document.getElementById('table_wrapper');
+            var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+
+            var a = document.createElement('a');
+            a.href = data_type + ', ' + table_html;
+            a.download = 'monthly-route-package_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+            a.click();
+        });
+    });
+
+    function cancelInvoice(obj)
+    {
+        if (!window.confirm("Are you sure to cancel it?"))
+        {
+            return false;
+        }
+        var el = $(obj);
+        var url = el.attr('url');
+        $.get(url)
+            .then(function (r) {
+                if(r=='error')
+                {
+                    alert("Server error");
+                }
+                else {
+                    var loc = window.location.href;
+
+                    window.location.href = loc;
+                }
+            })
+            .fail(function (err) {
+                console.log(err.responseText);
+                alert("server error");
+            });
+    }
+</script>

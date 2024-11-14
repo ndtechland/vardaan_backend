@@ -1,0 +1,106 @@
+﻿@model VardaanCab.Models.ViewModels.MonthlyRouteMasterVm
+@{
+    ViewBag.Title = "Monthly Route Packages";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var dt = DateTime.Now;
+    int sn = Model.SrNo;
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+    }
+</style>
+
+<div id="main">
+    
+    <h2>@ViewBag.Title</h2>
+    <div class="row">
+        <a href="/Admin/Submenu?menuId=@Model.MenuId" class="btn btn-info" style="margin-left:2%">Back</a>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="row r">
+            <div class="col-md-3">
+                <input type="text" placeholder="Search Vehicle Model" class="form-control" name="term" />
+            </div>
+            <input type="hidden" name="menuId" value="@Model.MenuId"/>
+            <div class="col-md-5">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/MonthlyRouteMaster/All?menuId=@Model.MenuId">Show all</a>
+                <a class="btn btn-info" href="/MonthlyRouteMaster/CreatePackage?menuId=@Model.MenuId"><i class="fa fa-plus-circle"></i>New Package</a>
+                <button type="button" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+        </div>
+    }
+
+
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll" >
+            <table class="table" id="table_wrapper">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Vehicle</th>
+                        <th>Location</th>
+                        <th>Days</th>
+                        <th>Fare</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Packages)
+                    {
+                        <tr>
+                            <td>@(++sn)</td>
+                            <td>@item.ModelName</td>
+                            <td>@item.PickupLocation - @item.DropLocation</td>
+                            <td>@item.NoOfDays</td>
+                            <td>@item.Fare</td>
+                            <td>
+                                <a class="btn btn-info" href="/MonthlyRouteMaster/Edit?id=@item.Id&menuId=@Model.MenuId">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a class="btn btn-danger" onclick="return window.confirm('1 item is going to delete.')" href="/MonthlyRouteMaster/Delete?id=@item.Id&menuId=@Model.MenuId"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/MonthlyRouteMaster/All?term=@Model.Term&page=@i&menuId=@Model.MenuId">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function (e) {
+            e.preventDefault();
+            //getting data from our table
+            var data_type = 'data:application/vnd.ms-excel';
+            var table_div = document.getElementById('table_wrapper');
+            var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+
+            var a = document.createElement('a');
+            a.href = data_type + ', ' + table_html;
+            a.download = 'monthly-route-packageMaster_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+            a.click();
+        });
+    });
+
+</script>

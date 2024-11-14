@@ -1,0 +1,272 @@
+﻿@model VardaanCab.Models.ViewModels.TaxInvoiceFileListVM
+@{
+
+    ViewBag.Title = "Tax Invoce List";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var dt = DateTime.Now;
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+    int sn = 1;
+}
+
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+        font: 12px;
+    }
+
+    #cancel {
+        font-weight: bold;
+        color: #bf2a2a;
+        cursor: pointer;
+    }
+
+    .linkText {
+        font-weight: bold;
+        color: #441b71;
+    }
+
+    #bookingId {
+        color: #1a257d !important;
+    }
+
+    #ctable {
+        border: 1px solid #1a257d;
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        margin: 0px;
+        font-size: 12px !important;
+    }
+
+        #ctable td, th {
+            color: #1a257d !important;
+            margin: 0px;
+            border: 1px solid #1a257d;
+            padding: 2px 2px;
+        }
+
+    hr {
+        border-color: #293ac2 !important;
+    }
+    /*.temerTd{
+        padding: 0px !important;
+    }*/
+    /*.timerTable {
+        width: 233px;
+    }*/
+</style>
+
+<div id="main">
+
+    <h4><a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info">Back</a> &nbsp;@ViewBag.Title</h4>
+
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+        <div class="row r">
+            <div class="col-md-4">
+                <input type="text" placeholder="Booking Id/Org/CabNo" value="@Model.Term" class="form-control" name="term" />
+            </div>
+            <div class="col-md-2">
+                <input type="text" placeholder="YYYY/MM/DD" value="@Model.sDate" class="form-control sdp" name="sDate" autocomplete="off" readonly />
+            </div>
+            <div class="col-md-2">
+                <input type="text" placeholder="YYYY/MM/DD" value="@Model.eDate" class="form-control sdp" name="eDate" autocomplete="off" readonly />
+            </div>
+            <div class="col-md-3">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/Booking/TaxInvoceList?&menuId=@ViewBag.menuId">Show all</a>
+
+                <button type="button" class="btn btn-info" id="btnExport" onclick="Export()"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+        </div>
+    }
+    <div class="row r">
+        @if (TempData["mesg"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["mesg"]
+            </div>
+        }
+    </div>
+
+    <div class="row r">
+        <div class="col-md-12" style="height:100% !important;">
+            <table id="ctable">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th style="width:90px">Company Name</th>
+                        <th style="width:90px">Tax Invoice No</th>
+                        <th style="width:70px">Tax Invoice Date</th>
+                        <th style="width: 90px;">Amount</th>
+                        <th style="width:120px">CGST</th>
+                        <th style="width:120px">SGST</th>
+                        <th style="width:90px">IGST</th>
+                        <th style="width:70px">Grand Total</th>
+                        <th width: 118px;>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.TaxInvoiceFileLists != null)
+                    {
+                        foreach (var item in Model.TaxInvoiceFileLists)
+                        {
+                            <tr id=@item.Id>
+                                <td class="sticky-col first-col">@(sn++)</td>
+                                <td>
+                                    <b>@item.CompanyName</b><br />
+                                    @item.City
+                                </td>
+                                <td>
+                                    <span title="@item.logDetails">@item.TaxInviceNo</span>
+                                </td>
+                                <td>
+                                    @item.TaxInvoiceDate.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    @item.Amount
+                                </td>
+                                <td>
+                                    @item.CGST
+                                </td>
+                                <td>
+                                    @item.SGST
+                                </td>
+
+                                <td>
+                                    @item.IGST
+                                </td>
+                                <td>
+                                    @item.GrandTotal
+                                </td>
+
+                                <td>
+                                    @if (item.IsCancel)
+                                    {
+                                        <span style="color:#ff0000">@item.Remark</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("Tax Invoice", "TaxInvoiceMerge", new { id = item.Id, menuId = @ViewBag.menuId })
+                                        <br />
+                                        @Html.ActionLink("MIS Download", "MIS", new { id = item.Id, menuId = @ViewBag.menuId })<br />
+                                        if (links.Contains("Edit Tax Invoice"))
+                                        {
+                                            @Html.ActionLink("Edit Invoice", "CorporateInvoiceListEditInv", new { id = item.Id, menuId = @ViewBag.menuId, TInvID = item.Id })<br />
+                                        }
+                                        if (links.Contains("Cancel Tax Invoice"))
+                                        {
+                                            <button data-toggle="modal" class="btn btn-info" onclick="show()">Cancel Invoice</button>
+                                        }
+                                    }
+                                    </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<div id="cancelInvoiceModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cancel Tax Invoice</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCancelInvoice">
+                    <div class="form-group">
+                        Remark
+                        <input type="text" id="txtRemark" class="form-control" />
+                        <input type="hidden" id="taxInvId1" name="taxInvId1" value="0" />
+                    </div>
+                    <div class="form-group">
+                        <span id="message"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" id="btnCancelInvoice" onclick="CancelInvoiceProcess()" class="btn btn-info" value="Update" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    function Export()
+    //$("#btnExport").click(function ()
+    {
+    //    alert("testtt1");
+        var _term = '@Model.Term';
+        var _page =@Model.Page;
+         var _menuId =@ViewBag.menuId;
+        var _sDate = '@Model.sDate';
+        var _eDate = '@Model.eDate';
+  //      alert("testttt3");
+        var _export = true;
+//        alert(`/Booking/TaxInvoceList?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&page=${_page}&menuId=${_menuId}&export=${_export}`);
+       window.location.href =`/Booking/TaxInvoceList?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&page=${_page}&menuId=${_menuId}&export=${_export}`;
+
+    };
+    //$("#btnCancelInv").click(function (event)
+    //{
+    //    var rowId =event.target.parentNode.parentNode.id;
+    //    //alert("record  " + record);
+    //    alert(rowId);
+    //    $('#cancelInvoiceModal').modal('show');
+    //});
+    function show()
+    {
+        var rowId = event.target.parentNode.parentNode.id;
+       // alert(rowId);
+        $("#taxInvId1").val(rowId);
+        $('#cancelInvoiceModal').modal('show');
+
+
+    }
+    function CancelInvoiceProcess()
+    {
+
+        //**************Cancel Tax Invoice*****
+        var taxInvid = $("#taxInvId1").val();
+         var remark = $("#txtRemark").val();
+       // alert(remark + taxInvid);
+        var data = JSON.stringify({ TaxInvid: taxInvid, Remark: remark});
+        $.ajax({
+            url: '/Booking/CancelTaxInvoice',
+            type: 'post',
+            data: data,
+            contentType: 'application/json'
+            }).done(function (r) {
+                if (r == 'ok') {
+                    var _term = '@Model.Term';
+                    var _page =@Model.Page;
+                    var _menuId =@ViewBag.menuId;
+                    var _sDate = '@Model.sDate';
+                    var _eDate = '@Model.eDate';
+                    var _export = false;
+                    window.location.href ='/Booking/TaxInvoceList?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&isNrg=${_isNrg}&page=${_page}&menuId=${_menuId}&export=${_export}';
+            }
+            else {
+                   // msg.text(r).css("color", "red");
+                    alert("Error");
+                }
+            }).fail(function (er) {
+                msg.text("Some error occured.").css("color", "red");
+                console.log(er);
+            })
+    }
+</script>
+
+

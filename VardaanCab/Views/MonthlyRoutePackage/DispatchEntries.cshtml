@@ -1,0 +1,58 @@
+﻿@model IEnumerable<VardaanCab.Models.DTO.MonthlyPackageRouteEntryDTO>
+@{
+    ViewBag.Title = "Dispatched Vehicles";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link href="/css/fixtable.css" rel="stylesheet" />
+<h2>Dispatched Vehicles</h2>
+
+<div style="width:99%;margin-left:1%;margin-top:1%;margin-bottom:1%;height:400px;overflow:scroll">
+    <div class="row r">
+        <div class="col-md-12">
+            <a class="btn btn-default" href="/MonthlyRoutePackage/All">Back</a>
+        </div>
+    </div>
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div class="mainDiv">
+            <div class="wrapperTable table-scroll">
+                <table class="table">
+        <tr>
+            <th>Vehicle</th>
+            <th>Vehicle No</th>
+            <th>Pickup Date</th>
+            <th>Pickup time</th>
+            <th>Updated by</th>
+            <th>Update time</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.VehicleModel</td>
+                <td>@item.CabNo</td>
+                <td>@item.JourneyStartDate.ToString("dd-MMM-yyyy")</td>
+                <td>@item.PickupTime</td>
+                <td>@item.UpdatedBy</td>
+                <td>@item.UpdateDate.ToString("dd-MMM-yyyy")</td>
+                <td>
+                    <a href="@Url.Action("EditEntry", new { id=item.Id})" class="btn btn-info">Edit</a>
+                    <a href="@Url.Action("CloseDailyEntry",new { entryId=item.Id})" class="btn btn-info">Close</a>
+                </td>
+            </tr>
+        }
+        </table>
+            </div>
+        </div>
+    
+    }
+    else
+    {
+        <div class="row r">
+            <div class="col-md-12">
+                <h4>No Records found</h4>
+            </div>
+        </div>
+    }
+    </div>

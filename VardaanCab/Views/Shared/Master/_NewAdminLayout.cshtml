@@ -1,0 +1,76 @@
+﻿
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Softnio">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description"
+          content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+    <link rel="shortcut icon" href="../images/favicon.png">
+    <title>Admin - Vardaan Cab</title>
+    <link rel="stylesheet" href="~/adminassets/css/dashlitee5ca.css?ver=3.2.3">
+    <link id="skin-default" rel="stylesheet" href="~/adminassets/css/themee5ca.css?ver=3.2.3">
+    <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
+    <script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-D1QW99F3EN&amp;l=dataLayer&amp;cx=c"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91615293-4"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'UA-91615293-4');</script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Favicon-->
+    <link rel="icon" href="~/adminassets/images/icon/CaelumLogo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="~/adminassets/images/icon/CaelumLogo.png" type="image/x-icon">
+</head>
+<body>
+    <div class="nk-app-root">
+        <div class="nk-main ">
+            <div class="nk-sidebar nk-sidebar-fixed " data-content="sidebarMenu">
+                @Html.Partial("~/Views/Shared/Master/Sidebar.cshtml")
+
+            </div>
+            <div class="nk-wrap">
+                <div class="nk-header nk-header-fixed">
+                    <div class="container-fluid">
+                        @Html.Partial("~/Views/Shared/Master/Header.cshtml")
+                    </div>
+                </div>
+                <div class="nk-content">
+                    @RenderBody()
+                </div>
+                <div class="nk-footer">
+                    @Html.Partial("~/Views/Shared/Master/Footer.cshtml")
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- latest jquery-->
+    <script src="../adminassets/js/bundlee5ca.js?ver=3.2.3"></script>
+    <script src="~/adminassets/js/scriptse5ca.js?ver=3.2.3"></script>
+    <script src="~/adminassets/js/demo-settingse5ca.js?ver=3.2.3"></script>
+    <script src="~/adminassets/js/charts/chart-hotele5ca.js?ver=3.2.3"></script>
+    <script src="../assetsadmin/js/script.js?ver=3.2.3"></script>
+    <script src="../assetsadmin/js/charts/chart-hotele5ca.js?ver=3.2.3"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                url: '/Home/getsessionkey', // URL to your action method
+                type: 'GET', // HTTP method
+                dataType: 'json', // Data type expected from server
+                success: function (data) {
+                    // Handle the response data
+                    console.log(data);
+                    if (data === false) {
+
+                        window.location.href = "/Home/Login";
+
+
+                    }
+                }
+                
+            });
+        });
+    </script>
+</body>
+</html>

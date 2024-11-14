@@ -1,0 +1,51 @@
+﻿@model IEnumerable<VardaanCab.Models.DTO.LogsDTO>
+@{
+    ViewBag.Title = "Recent Updates";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<link href="~/css/fixtable.css" rel="stylesheet" />
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+    }
+</style>
+
+<div id="main">
+    <h2>Recent Updates</h2>
+    <div class="row">
+        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+
+
+    </div>
+
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Update</th>
+                        <th>Updated By</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.UpdateDate.ToString("dd-MMM-yyyy") @item.UpdateDate.ToShortTimeString()</td>
+                            <td>@item.Description</td>
+                            <td>@item.UpdatedBy</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,727 @@
+﻿@using VardaanCab.Models.Domain
+@model VardaanCab.Models.ViewModels.CIBillingListVm
+@{
+    List<tempUserBooking> lst = new List<tempUserBooking>();
+    if (Model.IsNrg)
+    {
+        ViewBag.Title = " NRD Bills";
+    }
+    else
+    {
+        ViewBag.Title = "Corporate Bills";
+    }
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+
+    if (ViewBag.bookinglst != null)
+    {
+        lst = (List<tempUserBooking>)ViewBag.bookinglst;
+    }
+}
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+        font: 12px;
+    }
+
+    #cancel {
+        font-weight: bold;
+        color: #bf2a2a;
+        cursor: pointer;
+    }
+
+    .link {
+        cursor: pointer
+    }
+
+    .linkText {
+        font-weight: bold;
+        color: #441b71;
+    }
+
+    #bookingId {
+        color: #1a257d !important;
+    }
+
+    #ctable {
+        border: 1px solid #1a257d;
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        margin: 0px;
+        font-size: 12px !important;
+    }
+
+        #ctable td, th {
+            color: #1a257d !important;
+            margin: 0px;
+            border: 1px solid #1a257d;
+            padding: 2px 2px;
+        }
+
+    hr {
+        border-color: #293ac2 !important;
+    }
+</style>
+<div id="main">
+    @if (Model.IsNrg)
+    {
+        <h2>
+            <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+
+            &nbsp;NRD Bills
+        </h2>
+    }
+    else
+    {
+
+        <h2>
+            <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:1%;margin-top:2px;">Back</a>
+            @*<a class="btn btn-info" href="@ViewBag.priviousURL">Back</a>*@
+            &nbsp;Corporate Bills &nbsp;
+        </h2>
+        <div style="float:right;padding-right:10px;">
+            No Of Booking : @ViewBag.total
+        </div>
+    }
+
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+        @Html.HiddenFor(a => a.IsNrg)
+        <div class="row r">
+            <div class="col-md-2">
+                <input type="text" value="@Model.sDate" placeholder="Date From" name="sDate" class="form-control sdp" />
+            </div>
+            <div class="col-md-2">
+                <input type="text" value="@Model.eDate" placeholder="Date To" name="eDate" class="form-control sdp" />
+            </div>
+            <div class="col-md-1">
+                <select name="Display" class="form-control">
+                    <option value="">Page size</option>
+                    <option value="d" selected="@(Model.Display=="d")">Default</option>
+                    <option value="a" selected="@(Model.Display=="a")">All</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                @Html.DropDownList("City_Id", Model.Cities, "Select City", new { @class = "form-control" })
+            </div>
+            <div class="col-md-1">
+                Route No.
+            </div>
+            <div class="col-md-1">
+                <input type="text" value="@Model.routeno" placeholder="Route No" name="routeNo" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <input type="text" placeholder="BookingId/DsNo/Org/Mobile/Cab No." value="@Model.Term" class="form-control" name="term" />
+            </div>
+            <div class="col-md-2">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/Booking/CorporateInvoiceList?isNrg=@Model.IsNrg.ToString()?&menuId=@ViewBag.menuId">Show all</a>
+                <button type="button" class="btn btn-info" onclick="Export()"> <i class="fa fa-file-excel-o"></i></button>
+
+
+            </div>
+        </div>
+
+    }
+    <div class="row r">
+        <div class="col-md-12">
+            <div style="float:left;">
+                <div class="row r" id="divGenerateBill" style="display:none;">
+                    <div class="col-md-12">
+                        <div style="float:left;">
+                            <button type="button" class="btn btn-info" id="btnChkAll"> Select All</button>
+                            <button type="button" data-toggle="modal" class="btn btn-info"><span class="fa fa-floppy-o" id="btnGenerateBill">  Create Tax Inoive</span></button>
+                        </div>
+                        <div style="float:left;text-align:center;padding-left:15px;padding-top:5px;">
+                            <b>No. Of Selected Booking : </b>
+                            <span id="selectedCount">0</span>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div style="float:right;"><b>No Of Booking : </b> @ViewBag.total</div>
+
+        </div>
+    </div>
+
+    <div class="row r">
+        <div class="col-md-12" style="height:100% !important;">
+            <table id="ctable">
+                <thead>
+                    <tr>
+                        <th style="width:110px">
+                            <input type="checkbox" id="chkAll" /> BookingId
+                        </th>
+                        <th style="width:165px">  Organization </th>
+                        <th>Date</th>
+                        <th>Rental Type </th>
+                        <th>  Cab  </th>
+                        <th style="width:120px">Kms & hrs</th>
+                        <th style="width:120px">  Fare </th>
+                        <th style="width:120px">  Amount </th>
+                        <th style="width:110px">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Bills)
+                    {
+                        string chk = string.Empty;
+                        if (lst.Count > 0)
+                        {
+                            if (lst.Any(x => x.BookingId == item.Id))
+                            {
+                                chk = @"checked='checked'";
+                            }
+                        }
+                        <tr>
+                            <td class="sticky-col first-col" style="cursor:pointer;text-decoration:underline" data-placement="top" data-toggle="tooltip">
+                                <b><input type="checkbox" value="@item.Id" class="chkId" @chk /> #@(++Model.SrNo)</b>
+                                <br />
+                                <span title="@item.UpdateDescription">@item.BookingId</span><br />
+                                @Html.ActionLink("Edit Booking", "EditBooking", new { id = item.CabBooking_Id, menuId = ViewBag.menuId, term = "edit", page = Model.Page, fromUnbilled = true }, new { id = "bookingId" })
+                            </td>
+                            <td>
+                                <b>@item.Company</b><br />
+                                @item.City
+                                @if (Model.IsNrg)
+                                {
+                                    <span>
+                                        <br />
+                                        <b>Type:</b>  @item.NrgType <br />
+                                        <b> Payment:</b> @item.PaymentType
+                                    </span>
+                                }
+                                <hr />
+                                <b> Guest:</b> @item.GuestName  <br />
+                                <b> Booker:</b> @item.BookedBy <br />
+                                <b> Mobile:</b> @item.Mobile
+                            </td>
+                            <td>
+                                <b>Duty </b> <br /> @item.InvoiceDate.ToString("dd-MMM-yyyy") <hr />
+
+                                <b>From</b> <br />
+                                @item.JourneyDate.ToString("dd-MMM-yyyy")<br />
+                                <b>To</b> <br />
+                                @item.JourneyEndDate.ToString("dd-MMM-yyyy") <br />
+                                @*City:  @item.City*@
+                            </td>
+                            <td>
+                                @item.BookingType (@item.PackageTypeName)
+
+                            </td>
+
+                            <td>
+                                Booked: @item.CabBooked <br />
+                                Alloted: @item.CabAlloted  <br />
+                                Cab No :  @item.CabNo <br />
+                                Route No :  @item.RouteNo
+                            </td>
+
+                            <td>
+                                StKm: @item.StartKm <br />
+                                EndKm: @item.EndKm <br />
+                                TotalKm:  @item.TotalKm <br />
+                                ExtraKm:  @item.ExtraKm <br />
+                                ExtraKmRate: @item.ExtraKmsRate <br />
+                                ExtraKmCharge: @item.ExtraKmsCharge
+                                <hr />
+                                STime: @item.StartTime <br />
+                                ETime: @item.ClosingTime <br />
+                                @*TotalHr @(TimeSpan.FromHours(item.TotalHours).ToString("hh\\:mm"))<br />
+                                    ExtraHr: @(TimeSpan.FromHours(item.ExtraHours).ToString("hh\\:mm"))<br />*@
+
+                                TotalHr : @(Math.Floor(TimeSpan.FromHours((double)item.TotalHours).TotalHours)) Hrs. @((TimeSpan.FromHours((double)item.TotalHours).Minutes)) Mins<br />
+                                ExtraHr: @(Math.Floor(TimeSpan.FromHours((double)item.ExtraHours).TotalHours)) Hrs. @((TimeSpan.FromHours((double)item.ExtraHours).Minutes)) Mins<br />
+
+
+                                ExtraHrsRate: @item.ExtraHrsRate <br />
+                                ExtraHrsCharge: @item.ExtraHrsCharge
+                            </td>
+                            <td>
+                                Fare:  @item.Fare <br />
+                                NightChrg: @item.NightCharges <br />
+                                @@Nights: @item.TotalNights  <br />
+                                Parking: @item.ParkingChage <br />
+                                Toll:  @item.TollCharge <br />
+                                StateTax:  @item.InterStateCharge <br />
+                                TA:  @item.OutStationCharge <br />
+                                MCD: @item.MCD <br />
+                                MiscCharge: @item.MiscCharge <br />
+                            </td>
+                            <td>
+                                Net : @item.NetAmount<br />
+                                Disc. Type: @item.DiscountType<br />
+                                Disc Val: @item.DiscountValue<br />
+                                Discoount:  @item.DiscountAmount<br />
+                                CGST : @item.CGST <br />
+                                SGST : @item.SGST <br />
+                                IGST: @item.IGST <br />
+                                <b>Total:  @item.TotalAmount </b>
+                            </td>
+                            <td>
+
+                                @if (links.Contains("Invoice"))
+                                {
+
+                                    if (string.IsNullOrEmpty(item.TaxInvoiceNumber))
+                                    {
+                                        <span class="link linkText" data-toggle="modal" data-target="#myModal-@item.Id">
+                                            Tax-Invoice
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("Tax Invoice", "TaxInvoice", new { id = item.Id, IsTaxInvoice = true, menuId = ViewBag.menuId, sDate = Model.sDate, eDate = Model.eDate, isNrg = Model.IsNrg, term = Model.Term, page = Model.Page, export = Model.Export, Display = Model.Display }, new { @class = "link linkText" })
+                                    }
+                                    <br />
+                                    <!-- modal start-->
+                                    <div id="myModal-@item.Id" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Generate Tax Invoice</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="frmInvoice">
+                                                        <input type="hidden" id="invoiceId" value="@item.Id" />
+                                                        <div class="form-group">
+                                                            Invoice Number *
+                                                            <input type="text" id="invoiceNo" class="form-control" />
+
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            Invoice date *
+                                                            <input type="date" id="invoiceDate" class="form-control" />
+
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <span id="msg"></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="button" url="/Booking/TaxInvoice?id=@item.Id&IsTaxInvoice=true&menuId=@ViewBag.menuId" class="btn btn-info" value="Save" onclick="generateTaxInvoice(this)" />
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" id="cancel" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- modal end-->
+                                }
+                                @if (links.Contains("Invoice"))
+                                {
+                                    @Html.ActionLink("Performa Invoice", "TaxInvoice", new { id = item.Id, IsTaxInvoice = false, menuId = ViewBag.menuId, sDate = Model.sDate, eDate = Model.eDate, isNrg = Model.IsNrg, term = Model.Term, page = Model.Page, export = Model.Export, Display = Model.Display }, new { @class = "link linkText" })
+                                    <br />}
+                                @if (links.Contains("Cancel Invoice"))
+                                {
+                                    @Html.ActionLink("Cancel Invoice", "CancelInvoice", new { Bill_Id = item.Id, menuId = ViewBag.menuId }, new { id = "cancel" })
+                                    <br />
+                                }
+
+                                @Html.ActionLink("Edit Invoice", "EditBookingBill", new { id = item.Id, page = Model.Page, menuId = @ViewBag.menuId, term = "Editbill" })
+
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/Booking/CorporateInvoiceList?sDate=@Model.sDate&eDate=@Model.eDate&term=@Model.Term&page=@i&isNrg=@Model.IsNrg.ToString()&menuId=@ViewBag.menuId">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="createInvoiceModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Generate Tax Invoice</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmGenInvoice">
+                    <div class="form-group">
+                        Previous Invoice Number *
+                        <input type="text" id="preinvoiceNumber" readonly="readonly" class="form-control" />
+
+                    </div>
+                    <div class="form-group">
+                        Previous  Invoice Date *
+                        <input type="text" id="preinvoicedate" readonly="readonly" name="preinvoicedate" class="form-control" />
+
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        Invoice Number *
+                        <input type="text" id="invoiceNumber" class="form-control" />
+
+                    </div>
+                    <div class="form-group">
+                        Invoice Date *
+                        <input type="text" id="invoicedate" name="invoicedate" class="form-control sdp" />
+
+                    </div>
+                    <div class="form-group">
+                        PO Number *
+                        <input type="text" id="PONo" value="0" class="form-control" />
+
+                    </div>
+                    <div class="form-group">
+                        PO Date *
+                        <input type="text" id="PODate" placeholder="PO Date" name="PODate" class="form-control sdp" />
+
+                    </div>
+                    <div class="form-group">
+                        <span id="message"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" id="btnGenInvoice" class="btn btn-info" value="Save" />
+                    </div>
+
+
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="/js/jquery2.0.3.min.js"></script>
+
+
+@if (lst.Count > 0)
+{
+    <script>
+            window.onload = function ()
+            {
+                $("#divGenerateBill").show();
+                $("#selectedCount").text(@lst.Count);
+             };
+    </script>
+}
+
+<script>
+
+        $('#btnGenerateBill').click(function () {
+            //**************Get Auto Genrated Invoice*****
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/getAutoNPreviousTaxInvoiceNo',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    if (response != null) {
+                        $('#preinvoiceNumber').val(response.PrevTaxInvoiceNo);
+
+                        $('#preinvoicedate').val(getForatedDate(response.PrevTaxInvoiceDate));
+                        $('#invoiceNumber').val(response.TaxInvoiceNo);
+                    } else {
+                        alert("Something went wrong");
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+            //**************Get Today Date*****
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = mm + '/' + dd + '/' + yyyy;
+
+
+           // $("#preinvoiceNumber").val('3-2021-22');
+           // $("#preinvoicedate").val(today);
+           // $("#invoiceNumber").val('2-2021-22');
+            $("#invoicedate").val(today);
+            $("#PODate").val(today);
+            $('#createInvoiceModal').modal('show');
+        });
+
+
+
+        $("#chkAll").click(function(){
+            if ($(this).prop('checked')==true)
+            {
+                $(".chkId").prop("checked",true);
+            }
+            else
+            {
+                $(".chkId").removeAttr("checked");
+            }
+        })
+
+        $("#chkAll,.chkId").click(function () {
+            var invId = $(this).val();
+           // alert("test" + invId);
+            var chkval = $(this).prop('checked');
+          //  alert(chkval);
+            if ($(this).prop('checked') == true)
+            {
+              //  alert("true");
+            }
+
+            var data = JSON.stringify({ bookingNo: invId, chkValue: chkval});
+            console.log(data);
+            $.ajax({
+                url: '/Booking/addBookingId',
+                type: 'post',
+                data: data,
+                contentType: 'application/json'
+            }).done(function (r)
+            {
+               // alert(r);
+                $("#selectedCount").text(r);
+               // if (r == 'ok') {
+                   // alert("yes will do");
+               // }
+            })
+                .fail(function (er) {
+                    msg.text("Some error occured.").css("color", "red");
+                    console.log(er);
+                })
+
+            displaySaveBill();
+        })
+
+
+        function displaySaveBill()
+        {
+            var isChecked=false;
+            $(".chkId").each(function(){
+                if ($(this).prop('checked')==true)
+                {
+                    isChecked=true;
+                }
+            })
+            if(isChecked)
+            {
+                $("#divGenerateBill").show();
+            }
+            else{
+                $("#divGenerateBill").hide();
+                $("#chkAll").removeAttr("checked");
+            }
+        }
+
+
+        $("#btnGenInvoice").click(function(){
+            var msg=$("#message").css("color","black");
+            msg.text("wait...");
+
+            var invoiceNo = $("#invoiceNumber").val();
+            var InvoiceDate = $("#invoicedate").val();
+            var PoNo = $("#PONo").val();
+            var PoDate = $("#PODate").val();
+
+            var invoiceIds=[];
+            $(".chkId").each(function(){
+                if ($(this).prop('checked')==true)
+                {
+                    var invId=$(this).val();
+                    invoiceIds.push(invId);
+                }
+            })
+            if(invoiceIds.count<0)
+            {
+                msg.text("Please select atleast on record").css("color","red");
+            }
+            else
+            {
+                var data = JSON.stringify({ ids: invoiceIds, invoiceNo: invoiceNo, invoiceDate: InvoiceDate, PONo: PoNo, PODate: PoDate});
+                console.log(data);
+                $.ajax({
+                    url:'/Booking/CreateInvoice',
+                    type:'post',
+                    data:data,
+                    contentType:'application/json'
+                }).done(function(r){
+                    if(r=='ok')
+                    {
+                        var _term = '@Model.Term';
+                        var _page=@Model.Page;
+                        var _menuId=@ViewBag.menuId;
+                        var _sDate='@Model.sDate';
+                        var _eDate='@Model.eDate';
+                        var _export = true;
+                        var _isNrg='@Model.IsNrg';
+                        msg.text("").css("color","black");
+                        window.location.href=`/Booking/CorporateInvoiceList?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&isNrg=${_isNrg}&page=${_page}&menuId=${_menuId}`;
+                    }
+                    else{
+                        msg.text(r).css("color","red");
+                    }
+                })
+                .fail(function(er){
+                    msg.text("Some error occured.").css("color","red");
+                    console.log(er);
+                })
+            }
+        })
+
+        function Export()
+        {
+            var _term = '@Model.Term';
+            var _page=@Model.Page;
+            var _menuId=@ViewBag.menuId;
+            var _sDate='@Model.sDate';
+            var _eDate='@Model.eDate';
+            var _export = true;
+            var _isNrg='@Model.IsNrg';
+            window.location.href=`/Booking/CorporateInvoiceList?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&isNrg=${_isNrg}&page=${_page}&menuId=${_menuId}&export=${_export}`;
+        }
+
+
+        function getForatedDate(datevalue) {
+
+            var MyDate_String_Value = datevalue;//"/Date(1224043200000)/"
+            var value = new Date
+                (
+                    parseInt(MyDate_String_Value.replace(/(^.*\()|([+-].*$)/g, ''))
+                );
+            var dat = value.getMonth() +
+                1 +
+                "/" +
+                value.getDate() +
+                "/" +
+                value.getFullYear();
+            return dat;
+        }
+
+    //select All
+    $('#btnChkAll').click(function () {
+       // alert("select All button");
+            var _term = '@Model.Term';
+            var _menuId=@ViewBag.menuId;
+            var _sDate='@Model.sDate';
+            var _eDate='@Model.eDate';
+            var _isNrg = '@Model.IsNrg';
+        //check company
+        var data = JSON.stringify({ sDate: _sDate, eDate: _eDate, isNrg: _isNrg, term: _term, routeNo: 0 });
+     //   alert(_eDate);
+      //  alert(_sDate);
+        $.ajax({
+            type: 'post',
+            url: '/Booking/checkOneCompanySelected',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: data,
+            success: function (response)
+            {
+                if (response != null) {
+                    if (response > 1)
+                    {
+                        alert("You can not generate invoice of more than one company.Selected company count - " + response);
+                        return false;
+                    } else
+                    {
+                       // alert(encodeURIComponent(_eDate));
+                       // alert(encodeURIComponent(_sDate));
+                        const encoded_eDate = encodeURIComponent(_eDate);
+                        const bookCartUrl=`/Booking/BookingCart?sDate=${_sDate}&eDate=${_eDate}&term=${_term}&isNrg=${_isNrg}&menuId=${_menuId}`;
+                        //link
+                        window.location.href = bookCartUrl;
+                        //window.location.href = `/Booking/BookingCart?eDate=${encoded_eDate}&sDate=${_sDate}&term=${_term}&isNrg=${_isNrg}&menuId=${_menuId}`;
+                    }
+                   // alert("company count");
+                } else
+                    {
+                        alert("Something went wrong");
+                    }
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+
+
+
+    })
+
+</script>
+
+<script>
+    function generateTaxInvoice(obj) {
+        var btnSave = $(obj);
+        var nextPageUrl = btnSave.attr('url');
+        var parent = btnSave.parent().parent();
+        var txtInvoiceId = parent.find("#invoiceId");
+        var txtInvoiceNo = parent.find("#invoiceNo");
+        var txtInvoiceDate = parent.find("#invoiceDate");
+        var txtMsg = parent.find("#msg");
+        txtMsg.css("color", "black").text("wait..");
+        if (!txtInvoiceId.val() || !txtInvoiceNo.val() || !txtInvoiceDate.val()) {
+            txtMsg.css("color", "red").text("All fields are required");
+            return false;
+        }
+        var invoiceId = txtInvoiceId.val();
+        var invoiceNo = txtInvoiceNo.val();
+        var invoiceDate = txtInvoiceDate.val();
+        var data = {
+            invoiceId: invoiceId,
+            invoiceNo: invoiceNo,
+            invoiceDate: invoiceDate
+        };
+        var jsonData = JSON.stringify(data);
+        var url = `/Booking/GenerateTaxInvoice`;
+        $.ajax({
+            url: url,
+            method: 'post',
+            data: jsonData,
+            contentType: 'application/json',
+        }).then(function (r) {
+            if (r == "ok") {
+                window.location.href = nextPageUrl;
+            }
+            else {
+                txtMsg.css("color", "red").text(r);
+            }
+        })
+            .fail(function (er) {
+                console.log(er);
+                txtMsg.css("color", "red").text("Some error occured.");
+
+            })
+    }
+</script>
+

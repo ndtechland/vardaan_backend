@@ -1,0 +1,113 @@
+﻿@model VardaanCab.Models.ViewModels.DriverReportModel
+@{
+    ViewBag.Title = "Driver Report";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    int menuId = Model.MenuId;
+    int sn = 0;
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+
+<style>
+    #main {
+        width: 100%;
+        /*height: 470px;
+        overflow: scroll;*/
+    }
+</style>
+
+<div id="main">
+    <h2>Driver Report from @Model.sDate.ToString("dd-MMM-yyyy") to @Model.eDate.ToString("dd-MMM-yyyy")</h2>
+    <div class="row">
+        <a href="/admin/Submenu?menuId=@menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="row r">
+
+            <div class="col-md-3">
+                <input type="date" class="form-control" name="sDate" value="@Model.sDate" id="sDate" />
+                <input type="hidden" name="sDateH" id="sDateH" value="@Model.sDate" />
+            </div>
+            <div class="col-md-3">
+                <input type="date" class="form-control" name="eDate" value="@Model.eDate" id="eDate" />
+                <input type="hidden" name="eDateH" id="eDateH" value="@Model.eDate" />
+            </div>
+            <div class="col-md-3">
+                <input type="text" placeholder="Search by Driver" class="form-control" value="@Model.Term" name="term" id="term" />
+            </div>
+            <div class="col-md-3">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <span class="btn btn-success"><i class="fa fa-file-excel-o" onclick="Export()"> Export</i></span>
+            </div>
+            @Html.HiddenFor(a => a.MenuId)
+        </div>
+    }
+        <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table  id="table1" class="table">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th> Driver Name</th>
+                        <th>Mobile</th>
+                        <th>Total Rides</th>
+                        <th>Total Hours</th>
+                        <th>Total Kms</th>
+                        <th>Total Night</th>
+                        <th>Total TA</th>
+                        <th>Total Duty</th>
+                        <th>Total Amt</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Data)
+                    {
+                    <tr>
+                        <td>@(++sn)</td>
+                        <td>
+                            @item.DriverName
+                        </td>
+                        <td>@item.MobileNumber</td>
+                        <td>@item.TotalRides</td>
+                        <td>@item.TotalHrs</td>
+                        <td>@item.TotalKms</td>
+                        <td>@item.TotalNight</td>
+                        <td>@item.TotalTA</td>
+                        <td>@item.TotalDuty</td>
+                        <td>@item.TotalAmt</td>
+                        <td>
+                            <a class="btn btn-info" href="/Report/DriverReportDetail?driverId=@item.Id&sDate=@Model.StartDate&eDate=@Model.EndDate&menuId=@Model.MenuId&term=@Model.Term">Detail</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row r">
+        <div class="col-md-12">
+            <b> Total Rides : </b> @Model.Total
+        </div>
+    </div>
+
+
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+
+
+   function Export()
+    {
+        var _term = $("#term").val();
+       // var _sDAte = $("#sDate").val();
+       //var _eDAte = $("#eDate").val();
+       var _sDAte = $("#sDateH").val();
+       var _eDAte = $("#eDateH").val();
+        var _menuId = $("#MenuId").val();
+        var _export = true;
+        window.location.href = `/Report/DriverReport?sDate=${_sDAte}&eDate=${_eDAte}&term=${_term}&export=${_export}&menuId=${_menuId}`;
+    }
+</script>

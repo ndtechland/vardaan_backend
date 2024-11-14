@@ -1,0 +1,250 @@
+﻿@model VardaanCab.Models.ViewModels.BookingViewMOdel
+@{
+
+    ViewBag.Title = "Show Booking";
+    Layout = "~/Areas/Clint/Views/Shared/ClientLayout.cshtml";
+    var dt = DateTime.Now;
+    int sn = Model.SrNo;
+ }
+
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+        font:12px;
+    }
+#cancel{
+        font-weight:bold;
+        color:#bf2a2a;
+        cursor:pointer;
+    }
+    .linkText{
+        font-weight:bold;
+    color:#441b71;
+    }
+#bookingId{
+color: #1a257d !important;
+   }
+    #ctable{
+         border: 1px solid #1a257d;
+  width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+margin:0px;
+    font-size:12px !important;
+    }
+    #ctable td,th{
+        color: #1a257d !important;
+  margin:0px;
+border:1px solid #1a257d;
+         padding: 2px 2px;
+    }
+    
+     hr{
+        border-color: #293ac2 !important;
+
+     }
+    /*.temerTd{
+        padding: 0px !important;
+    }*/
+    /*.timerTable {
+        width: 233px;
+    }*/
+</style>
+
+<div id="main">
+
+
+    <h4>Show Bookings</h4>
+
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+        <div class="row r">
+            <div class="col-md-3">
+                <input type="text" placeholder="Booking Id/Org/CabNo" value="@Model.Term" class="form-control" name="term" />
+            </div>
+            <div class="col-md-2">
+                <input type="text" placeholder="YYYY/MM/DD" value="@Model.sDate" class="form-control sdp" name="sDate" autocomplete="off" readonly />
+            </div>
+            <div class="col-md-2">
+                <input type="text" placeholder="YYYY/MM/DD" value="@Model.eDate" class="form-control sdp" name="eDate" autocomplete="off" readonly />
+            </div>
+            <div class="col-md-3">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/Clint/CabBooking/ShowBooking">Show all</a>
+                <button type="button" class="btn btn-info" onclick="Export()" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+
+        </div>
+    }
+    <div class="row r">
+        @if (TempData["mesg"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["mesg"]
+            </div>
+        }
+    </div>
+    <div class="row r">
+            <div class="col-md-12" style="height:100% !important;">
+                <table id="ctable">
+                    <thead>
+                        <tr>
+                            <th style="width:80px">S.No.</th>                           
+                            <th style="width:80px">Date Time</th>
+                            <th style="width:80px">Booking Type</th>
+                            @*<th style="width:70px">Route No.</th>*@
+                            <th style="width:70px">City</th>
+                            <th style="width:250px;">Vehicle</th>
+                            <th>Traveler</th>
+                            <th >Pickup-Drop Address</th>                           
+                            <th style="width:100px">Status</th>      
+                            <th width: 118px;>Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Bookings)
+                        {
+                            <tr style="background-color:@item.Color" id="rowtr">
+                                <td class="sticky-col first-col">
+                                    <b>@(++Model.SrNo)</b><br/>
+                                    <span id="linkText">@item.BookingId</span>
+
+                                </td>                              
+                                <td>
+                                    <b>Booking <br /> </b>@item.BookingDate.ToString("dd-MM-yyyy") <hr />
+                                    <b>Pickup <br /> </b>@item.PickupDate.ToString("dd-MM-yyyy") @item.PickupTime
+                                </td>
+                                <td>
+                                    @item.BookingType <hr />
+                                    @item.PackageTypeName <br />
+                                    @item.RentalTypeName
+                                </td>
+                                @*<td>@item.RouteNo</td>*@
+                                <td>@item.CityName</td>
+                                <td>
+                                    <b>Booked : </b> @item.DesiredCar <br />
+                                    @if (!string.IsNullOrEmpty(item.VehicleName) && !string.IsNullOrEmpty(item.VehicleNo))
+                                    {
+                                        <b><span>Alloted: </span></b> <span>@item.VehicleName</span><br />
+                                        <b><span>Vehicle No: </span></b><span>@item.VehicleNo</span><br />
+                                    }
+                                    <br />
+                                    @if (!string.IsNullOrEmpty(item.DriverName) && !string.IsNullOrEmpty(item.DriverContactNo))
+                                    {
+                                        <b><span>Driver: </span></b><span>@item.DriverName</span> <br />
+                                        <b><span>Contact No: </span></b><span>@item.DriverContactNo</span>
+                                    }
+                                </td>
+                                <td>
+                                    @item.CompanyName <br />
+                                    <hr />
+                                    Booker Name : @item.BookedByPerson
+                                    @if (!string.IsNullOrEmpty(item.BookedByPersonMobileNo))
+                                    {
+                                        <br />
+                                        <span> Mobile No : @item.BookedByPersonMobileNo</span>
+                                    }
+                                    <hr />
+                                    Guest : @item.CustomerName @if (item.IsVIP)
+                                    {<span style="background-color:#ecfb06 !important">♛</span>} <br />
+                                    Mobile : @item.ContactNo <br />
+                                    Email :<span style="word-break:break-all;">@item.Email</span>
+                                </td>
+                               
+                                <td>
+                                    @item.PickupAddress<br />
+                                    @if (!string.IsNullOrEmpty(item.PickupLandMark))
+                                    {
+                                        @item.PickupLandMark
+                                    }
+                                    <hr />
+                                    @item.DropAddress <br />
+                                    @if (!string.IsNullOrEmpty(item.DropLandmark))
+                                    {
+                                        @item.DropLandmark
+                                    }
+                                </td>
+                               
+                                <td id="status">@item.BookingStatusName</td>                               
+                                <td>
+                                    @Html.ActionLink("Performa Invoice", "TaxInvoice", "CabBooking", new { id = item.Id, IsTaxInvoice = false,area= "Clint" }, new { @class = "link linkText" })
+                                   
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row r">
+            <div class="col-md-12">
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.NumberOfPages; i++)
+                    {
+                        <li class="@if (i == Model.Page) {<text>active</text> }">
+                            <a href="/Clint/CabBooking/ShowBooking?term=@Model.Term&page=@i&bookingType=@Model.BookingType&menuId=@ViewBag.menuId&sDate=@Model.sDate&eDate=@Model.eDate">@i</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    
+
+    <script src="/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="/Scripts/jquery.countdown.min.js"></script>
+    
+    <script>
+
+    /////////////////// cancel booking funtion ////////////////////
+    function cancelBooking(obj) {
+
+            var el = $(obj);
+            var url = el.attr("url");
+            if (window.confirm("Do you want to cancel it?")) {
+                $.get(url)
+                    .done(function (r) {
+                        if (r == "ok") {
+                            var _term = '@Model.Term';
+                            var _page=@Model.Page;
+                            var _menuId=@ViewBag.menuId;
+                            var _bookingStatus=@Model.BookingStatus;
+                            var _sDate='@Model.sDate';
+                            var _eDate='@Model.eDate';
+                            var _export = false;
+                            window.location.href=`/Booking/ShowBooking?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&page=${_page}&bookingStatus=${_bookingStatus}&menuId=${_menuId}&export=${_export}`;
+
+                        }
+                    })
+                    .fail(function (e) {
+                        console.log(e.responseText);
+                    })
+            }
+            else {
+                return false;
+            }
+    }
+    
+    </script>
+    <script>
+
+    function Export()
+    {
+        var _term = '@Model.Term';
+        var _page=@Model.Page;
+        var _menuId=@ViewBag.menuId;
+        var _bookingStatus=@Model.BookingStatus;
+        var _sDate='@Model.sDate';
+        var _eDate='@Model.eDate';
+        var _export = true;
+
+        window.location.href=`/Booking/ShowBooking?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&page=${_page}&bookingStatus=${_bookingStatus}&menuId=${_menuId}&export=${_export}`;
+    }
+    </script>
+
+

@@ -1,0 +1,161 @@
+﻿@model VardaanCab.Models.ViewModels.CorporatePackageVm
+@{
+    ViewBag.Title = "Corporate Packages";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+    int sn = Model.SrNo;
+}
+<link href="~/css/fixtable.css" rel="stylesheet" />
+<style>
+    #main {
+        margin: auto;
+        width: 99%;
+    }
+
+</style>
+<link href="/css/fixtable.css" rel="stylesheet" />
+
+<div id="main">
+    <h2>Corporate Packages</h2>
+    <div class="row r">
+      <div class="col-md-12">
+          <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info">Back</a>
+
+      </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" placeholder="Search by Vehicle Model/Rental Type" class="form-control" name="term" />
+            </div>
+            <div class="col-md-8">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/CorporatePackage/All?menuId=@ViewBag.menuId">Show all</a>
+                <a class="btn btn-info" href="/CorporatePackage/Add?menuId=@ViewBag.menuId">+ Add More</a>
+                <button type="button" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+        </div>
+    }
+
+    
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table  id="table1" class="table">
+                <thead>
+                    <tr>
+                        <th class="sticky-col first-col">S.No.</th>
+                        <th class="sticky-col second-col">Rental Type</th>
+                        <th class="sticky-col third-col">Vehicle</th>
+                        <th>Package Type</th>
+                        <th>Fare</th>
+                        <th>MinKm</th>
+                        <th>MinHrs</th>
+                        <th>ExtraPerHour</th>
+                        <th>ExtraPerKm</th>
+                        <th>NightCharges</th>
+                        @*<th>Interstate Charges</th>*@
+                        <th>Outstation TA/day</th>
+                        <th>Created/Updated By</th>
+                        <th>Create/Update Date</th>
+                        <th>No of Days</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Packages)
+                    {
+                        <tr>
+                            <td class="sticky-col first-col">@(++sn)</td>
+                            
+                            <td class="sticky-col second-col">@item.RentalType
+                            @if(!string.IsNullOrEmpty(item.PickupLocation) && !string.IsNullOrEmpty(item.DropLocation))
+                            {
+                                <text>
+                              &nbsp; (@item.PickupLocation to @item.DropLocation)
+                            </text>
+                            }
+                            </td>
+                            <td class="sticky-col third-col">@item.ModelName</td>
+                            <td>@item.PackageTypeName
+                            <td>@item.Fare</td>
+                            <td>@item.MinKm</td>
+                            <td>@item.MinHrs</td>
+                            <td>@item.ExtraPerHour</td>
+                            <td>@item.ExtraPerKm</td>
+                            <td>@item.NightCharges</td>
+                         @*   <td>@item.InterStateCharge</td>*@
+                            <td>@item.OutStationCharge</td>
+                            <td>@item.UpdatedByUser</td>
+                            <td>@item.UpdateDate.ToString("dd-MMM-yyyy")</td>
+                            <td>@item.NoOfDays</td>
+                            <td>
+                                @if (links.Contains("Edit Corporate Package"))
+                                {
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+                                }
+                                @if (links.Contains("Delete Corporate Package"))
+                                {
+                                    <span class="btn btn-danger" onclick="deleteRecord('/CorporatePackage/Delete?id=@item.Id')">Delete</span>
+                                }
+                            </td>
+                        </tr>
+                        
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/CorporatePackage/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    function deleteRecord(url)
+    {
+        if(window.confirm('do you want to delete?'))
+        {
+            $.get(url).then(function (r) {
+                if (r == "ok") {
+                    var loc = window.location.href;
+                    window.location.href = loc;
+                }
+            }, function (e) {
+                alert("Server error");
+            })
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function (e) {
+            e.preventDefault();
+            //getting data from our table
+            var data_type = 'data:application/vnd.ms-excel';
+            var table_div = document.getElementById('table1');
+            var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+
+            var a = document.createElement('a');
+            a.href = data_type + ', ' + table_html;
+            a.download = 'corporate_packages_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+            a.click();
+        });
+    });
+</script>

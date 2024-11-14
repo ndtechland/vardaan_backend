@@ -1,0 +1,179 @@
+﻿@model VardaanCab.Models.ViewModels.VendorListVm
+@{
+    ViewBag.Title = "Vendor List";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+    int sn = Model.SrNo;
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+    }
+</style>
+
+<div id="main">
+    <h2>Vendors</h2>
+    <div class="row">
+        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+
+    </div>
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+        <div class="row r">
+            <div class="col-md-6">
+                <input type="text" placeholder="Search by Name/Mobile/Company" class="form-control" name="term" />
+            </div>
+            <div class="col-md-4">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/Vendor/All?menuId=@ViewBag.menuId">Show all</a>
+                <a class="btn btn-info" href="/Vendor/Add?menuId=@ViewBag.menuId">+ Add More</a>
+                <button type="button" onclick="Export()" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+        </div>
+    }
+
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table id="table1" class="table">
+                <thead>
+                    <tr>
+                        <th class="sticky-col first-col">S.No.</th>
+                        <th class="sticky-col second-col">Company</th>
+                        <th>Contact Person</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Alternate Mobile</th>
+                        <th>Registration Date</th>
+                        <th>Parent Vendor</th>
+                        <th>Address</th>
+                        <th>GSTIN</th>
+                        <th>CIN</th>
+                        <th>PAN</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Vendors)
+                    {
+                        <tr>
+                            <td class="sticky-col first-col">@(++sn)</td>
+                            <td class="sticky-col second-col">@item.CompanyName</td>
+                            <td>@item.VendorName</td>
+                            <td>@item.Email</td>
+                            <td>@item.MobileNumber</td>
+                            <td>@item.AlernateMobile</td>
+                            <td>@item.CreateDate.ToString("dd-MMM-yyyy")</td>
+                            <td>@item.ParentVendorName</td>
+                            <td>@item.FullAddress @item.CityName , @item.StateName</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.GSTIN))
+                            {
+                                <span>@item.GSTIN</span>
+                            }
+                        </td>
+                        <td>@item.CIN</td>
+                        <td>
+                            PAN No : @item.PAN
+                            @if (!string.IsNullOrEmpty(item.PanImage))
+                            {
+                                <a href="/Images/@item.PanImage">
+                                    <img src="/Images/@item.PanImage" class="thumb" />
+                                </a>
+                            }
+                        </td>
+
+                        <td>
+                            @if (item.IsActive)
+                            {
+                                if (links.Contains("Change Vendor Status"))
+                                {
+                                    <a class="btn btn-success" href="@Url.Action("ChangeStatus", new { id = item.Id,menuId=ViewBag.menuId })">Active</a>
+                                }
+                                else
+                                {
+                                    <span>Active</span>
+                                }
+                            }
+                            else
+                            {
+                                if (links.Contains("Change Vendor Status"))
+                                {
+                                    <a class="btn btn-danger" href="@Url.Action("ChangeStatus", new { id = item.Id,menuId=ViewBag.menuId })">Inactive</a>
+                                }
+                                else
+                                {
+                                    <span>Inactive</span>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if (links.Contains("View Vendor Package"))
+                            {
+                                @Html.ActionLink("View Package", "ViewPackage", "VendorPersonalPackage", new { id = item.Id,menuId=ViewBag.menuId }, new { @class = "btn btn-info" })
+                            }
+                            @if (links.Contains("Add Vendor Package"))
+                            {
+                                @Html.ActionLink("Add Package", "Add", "VendorPersonalPackage", new { VendorId = item.Id,menuId=ViewBag.menuId }, new { @class = "btn btn-info" })
+                            }
+                            @if (links.Contains("Edit Vendor"))
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                            }
+                            @if (links.Contains("Delete Vendor"))
+                            {
+                                <span class="btn btn-danger" onclick="deleteRecord('/Vendor/Delete?id=@item.Id&menuId=@ViewBag.menuId')">Delete</span>
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+    </div>
+    </div>
+    
+
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/Vendor/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    function deleteRecord(url) {
+        if (window.confirm('do you want to delete?')) {
+            $.get(url).then(function (r) {
+                if (r == "ok") {
+                    var loc = window.location.href;
+                    window.location.href = loc;
+                }
+            }, function (e) {
+                alert("Server error");
+            })
+        }
+    }
+
+    function Export()
+    {
+        var _term = '@Model.Term';
+        var _page=@Model.Page;
+        var _menuId=@ViewBag.menuId;
+        var _export = true;
+        window.location.href=`/Vendor/All?term=${_term}&page=${_page}&export=${_export}&menuId=${_menuId}`;
+    }
+</script>
+

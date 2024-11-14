@@ -1,0 +1,116 @@
+﻿@model VardaanCab.Models.ViewModels.MonthlyPackageMasterVm
+@{
+    ViewBag.Title = "Monthly Package Master";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var dt = DateTime.Now;
+    int sn = Model.SrNo;
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+    }
+</style>
+
+<div id="main">
+
+    <h2>Monthly Package Master</h2>
+   <div class="row">
+          <div class="col-md-6">
+              <a href="/admin/Submenu?menuId=@Model.MenuId" class="btn btn-default">Back</a>
+          </div>
+        </div>
+    @using (Html.BeginForm())
+    {
+        <div class="row r">
+            <div class="col-md-3">
+                <input type="hidden" value="@Model.MenuId" />
+                <input type="text" placeholder="Find by vehicle model" class="form-control" name="term" />
+            </div>
+         
+            <div class="col-md-5">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/MonthlyPackageMaster/All?menuId=@Model.MenuId">Show all</a>
+                <a class="btn btn-info" href="/MonthlyPackageMaster/CreatePackage?menuId=@Model.MenuId"><i class="fa fa-plus-circle"></i>New Package</a>
+                <button type="button" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+        </div>
+    }
+
+
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll" >
+            <table class="table" id="table_wrapper">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Vehicle</th>
+                        <th>Fare</th>
+                        @*<th>Fixed Km</th>
+                        <th>Fixed Hrs</th>*@
+                        <th>Extra Km Charge</th>
+                        <th>Extra Hour/Day</th>
+                        <th>Night Charges</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Packages)
+                    {
+                        <tr>
+                            <td>@(++sn)</td>
+                            <td>@item.ModelName</td>
+                            <td>@item.Fare</td>
+                            @*<td>@item.FixedKms</td>
+                            <td>@item.FixedHourPerDay</td>*@
+                            <td>@item.ExtraKmRate</td>
+                            <td>@item.ExtraHourRate</td>
+                           
+                            <td>@item.NightCharge</td>
+                            <td id="col-@item.Id">
+                                    <a href="@Url.Action("Edit", new { id=item.Id,menuId=Model.MenuId})" class="btn btn-info">Edit</a>
+                                <a onclick="return window.confirm('Are you sure to delete?')" href="@Url.Action("Delete", new { id=item.Id,menuId=Model.MenuId})" class="btn btn-danger">Delete</a>
+                                
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/MonthlyPackageMaster/All?term=@Model.Term&page=@i&menuId=@Model.MenuId">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function (e) {
+            e.preventDefault();
+            //getting data from our table
+            var data_type = 'data:application/vnd.ms-excel';
+            var table_div = document.getElementById('table_wrapper');
+            var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+
+            var a = document.createElement('a');
+            a.href = data_type + ', ' + table_html;
+            a.download = 'monthly-package-master_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+            a.click();
+        });
+    });
+
+    
+</script>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<VardaanCab.Models.DTO.MonthlyPackageEntryDTO>
+@{
+    ViewBag.Title = "All Dispatched Vehicles (Monthly)";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<link href="/css/fixtable.css" rel="stylesheet" />
+<div style="width:99%;margin-left:1%;margin-top:1%;margin-bottom:1%;height:400px;overflow:scroll">
+    <div class="row r">
+        <div class="col-md-12">
+            <a class="btn btn-default" href="/MonthlyPackage/All?menuId=@ViewBag.menuId">Back</a>
+        </div>
+    </div>
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div class="mainDiv">
+            <div class="wrapperTable table-scroll">
+                <table class="table">
+            <tr>
+                <th>Client</th>
+                <th>Vehicle</th>
+                <th>Vehicle No</th>
+                <th>St Date</th>
+                <th>St Kms</th>
+                <th>St time</th>
+                <th>Updated by</th>
+                <th>Update time</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CustomerName</td>
+                    <td>@item.VehicleModel</td>
+                    <td>@item.CabNo</td>
+                    <td>@item.JourneyStartDate.ToString("dd-MMM-yyyy")</td>
+                    <td>@item.StKm</td>
+                    <td>@item.StartHr</td>
+                    <td>@item.UpdatedBy</td>
+                    <td>@item.UpdateDate.ToString("dd-MMM-yyyy")</td>
+                    <td>
+                        <a href="@Url.Action("EditEntry", new { id=item.Id,menuId=ViewBag.menuId})" class="btn btn-info">Edit</a>
+                        <a href="@Url.Action("CloseDailyEntry",new { entryId=item.Id,prevUrl=Request.RawUrl})" class="btn btn-info">Close</a>
+                    </td>
+                </tr>
+            }
+        </table>
+            </div>
+        </div>
+        
+    }
+    else
+    {
+        <div class="row r">
+            <div class="col-md-12">
+                <h4>No Records found</h4>
+            </div>
+        </div>
+    }
+</div>

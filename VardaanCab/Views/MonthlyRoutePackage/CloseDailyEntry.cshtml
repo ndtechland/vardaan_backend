@@ -1,0 +1,96 @@
+﻿@model VardaanCab.Models.DTO.MonthlyPackageRouteEntryDTO
+@{
+    ViewBag.Title = "Daily Entry";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Daily Entry</h2>
+
+<div class="row r">
+    <div class="col-md-12">
+        <a class="btn btn-default" href="/MonthlyRoutePackage/DispatchEntries?packageId=@Model.MonthlyPackageRoute_Id">Back</a>
+    </div>
+</div>
+
+@if(ViewData.ModelState["msg"]!=null)
+{
+    <div class="alert alert-info">
+        @Html.ValidationMessage("msg")
+    </div>
+}
+@using (Html.BeginForm())
+{
+@Html.HiddenFor(a => a.MonthlyPackageRoute_Id)
+    @Html.HiddenFor(a => a.Id)
+    @Html.HiddenFor(a => a.Cab_Id)
+    @Html.HiddenFor(a => a.CabNo)
+    @Html.HiddenFor(a => a.Driver_Id)
+    @Html.HiddenFor(a => a.EntryDate)
+
+        <div class="row r">
+                <div class="col-md-3">
+                    Pickup Date *
+                    @Html.TextBoxFor(a => a.JourneyStartDate, new { @class = "form-control sdp" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.JourneyStartDate)
+                    </span>
+                </div>
+            <div class="col-md-2">
+                Pickup Time *
+                @Html.TextBoxFor(a => a.PickupTime, new { @class = "form-control tp" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.PickupTime)
+                </span>
+            </div>
+                <div class="col-md-3">
+                    Drop Date *
+                    @Html.TextBoxFor(a => a.JourneyClosingDate, new { @class = "form-control sdp" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.JourneyClosingDate)
+                    </span>
+                </div>
+           
+            <div class="col-md-2">
+                Drop Time *
+                @Html.TextBoxFor(a => a.DropTime, new { @class = "form-control tp" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.DropTime)
+                </span>
+            </div>
+        
+        </div>
+
+
+       <div class="row r">
+           <div class="col-md-6">
+               Pickup Location *
+               @Html.TextBoxFor(a => a.PickupPlace, new { @class="form-control"})
+           </div>
+
+           <div class="col-md-6">
+               Drop Location *
+               @Html.TextBoxFor(a => a.DropPlace, new { @class = "form-control" })
+           </div>
+       </div>
+
+    <div class="row r">
+        <div class="col-md-6">
+            Toll
+            @Html.TextBoxFor(a => a.Toll, new { @class = "form-control" ,type="number" })
+        </div>
+
+        <div class="col-md-6">
+            MCD
+            @Html.TextBoxFor(a => a.MCD, new { @class = "form-control", type = "number" })
+        </div>
+    </div>
+
+
+        <div class="row r">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary btn-block">Save</button>
+            </div>
+        </div>
+
+}
+

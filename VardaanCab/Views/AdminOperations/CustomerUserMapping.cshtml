@@ -1,0 +1,92 @@
+﻿@model List<VardaanCab.Models.DTO.CustomerUserMappingDTO>
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    int sn = 0;
+}
+<link href="~/css/fixtable.css" rel="stylesheet" />
+<div id="main">
+    <h2>User Clients Mapping</h2>
+    <div class="row">
+        <input type="hidden" name="UserId" value="@ViewBag.userId" />
+        <a href="/AdminOperations/All?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+    </div>
+    @if (TempData["msg"] != null)
+    {
+        <div class="row r">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    @TempData["msg"]
+                </div>
+            </div>
+        </div>
+    }
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+        <div class="row r">
+            <div class="col-md-4">
+                <input type="text" placeholder="Search by Name/ContactNo" class="form-control" value="" name="term" id="term" />
+            </div>
+            <div class="col-md-6">
+                <input type="button" class="btn btn-info" value="Find" />
+            </div>
+            <div class="col-md-2" style="float:right">
+                <input type="submit" class="btn btn-info" value="Save & Update" />
+            </div>
+        </div>
+        <div class="mainDiv">
+            <div class="wrapperTable table-scroll">
+                <table id="table1" class="table">
+                    <thead>
+                        <tr>
+
+                            <th class="sticky-col first-col">CompanyName</th>
+                            <th class="sticky-col second-col">Customer</th>
+                            <th>Contact No</th>
+                            <th>State</th>
+                            <th>City</th>
+                            <th>Email</th>
+                            <th>GSTIN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <tr>
+
+                                <td class="sticky-col first-col">
+
+                                    @Html.CheckBoxFor(x => x[i].IsChecked, new { @class = "check" })
+                                    @Html.HiddenFor(x => x[i].CustomerId)
+                                    @Html.HiddenFor(x => x[i].UserId)
+
+                                    <b>
+                                        @Model[i].CompanyName
+
+                                    </b>
+                                </td>
+                                <td class="sticky-col second-col">
+                                    <span>@Model[i].CustomerName</span>
+                                </td>
+                                <td>@Model[i].ContactNo</td>
+                                <td>@Model[i].StateName</td>
+                                <td>@Model[i].CityName</td>
+                                <td>@Model[i].Email</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(Model[i].GSTIN))
+                                    {
+                                        <span>@Model[i].GSTIN</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+
+
+</div>

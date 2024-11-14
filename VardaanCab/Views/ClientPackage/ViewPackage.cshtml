@@ -1,0 +1,140 @@
+﻿@model VardaanCab.Models.ViewModels.ClientPackageVm
+@{
+    ViewBag.Title = "Client Packages";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+    int sn = Model.SrNo;
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+
+<style>
+    #main {
+        margin: auto;
+        width: 99%;
+    }
+</style>
+
+<div id="main">
+    <h2>Client Packages</h2>
+    
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md-4">
+                @Html.HiddenFor(a=>a.Customer_Id)
+                <input type="text" placeholder="Search by Vehicle Model" class="form-control" name="term" />
+            </div>
+            <div class="col-md-8">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/ClientPackage/ViewPackage?id=@Model.Customer_Id&menuId=@ViewBag.menuId">Show all</a>
+                <a class="btn btn-info" href="/ClientPackage/Add?ClientId=@Model.Customer_Id&menuId=@ViewBag.menuId">+ Add More</a>
+                <a class="btn btn-info" href="/Customer/All?menuId=@ViewBag.menuId"> Show All Client</a>
+
+            </div>
+        </div>
+    }
+
+    @if (Model.Packages.Count() > 0)
+    {
+        <div class="mainDiv">
+            <div class="wrapperTable table-scroll">
+                <table id="table1" class="table">
+                    <thead>
+                        <tr>
+                            <th class="sticky-col first-col">S.No.</th>
+                            <th class="sticky-col second-col">RentalType</th>
+                            <th class="sticky-col third-col">Vehicle</th>
+                             <th>PackageType</th>
+                            <th>Fare</th>
+                            <th>MinKm</th>
+                            <th>MinHrs</th>
+                            <th>ExtraPerHour</th>
+                            <th>ExtraPerKm</th>
+                            <th>NightCharges</th>
+                            @*<th>Traveling allowance</th>*@
+                            <th>Outstation TA/Day</th>
+                            <th>Pickup-Drop Loc.</th>
+                            <th>Days in month</th>
+                            <th>Created/Updated By</th>
+                            <th>Create/Update Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Packages)
+                        {
+                            <tr>
+                                <td class="sticky-col first-col">@(++sn)</td>
+                                <td class="sticky-col second-col">@item.RentalTypeName</td>
+                                <td class="sticky-col third-col">@item.ModelName</td>
+                                <td >@item.PackageTypeName</td>
+
+                                <td>@item.Fare</td>
+                                <td>@item.MinKm</td>
+                                <td>@item.MinHrs</td>
+                                <td>@item.ExtraPerHour</td>
+                                <td>@item.ExtraPerKm</td>
+                                <td>@item.NightCharges</td>
+                                @*<td>@item.InterStateCharge</td>*@
+                                <td>@item.OutStationCharge</td>
+                                <td>@item.PickupLocation - @item.DropLocation</td>
+                                <td>@item.NoOfDays</td>
+                                <td>@item.UpdatedByUser</td>
+                                <td>@item.UpdateDate.ToString("dd-MMM-yyyy")</td>
+                                <td>
+                                    @if (links.Contains("Edit Client Package"))
+                                    {
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                                    }
+                                    @if (links.Contains("Delete Client Package"))
+                                    {
+                                        <span class="btn btn-danger" onclick="deleteRecord('/ClientPackage/Delete?id=@item.Id')">Delete</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="row">
+            <h3>No package found</h3>
+        </div>
+        
+    }
+    <div class="row r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/ClientPackage/ViewPackage?id=@Model.Customer_Id&term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    function deleteRecord(url)
+    {
+        if(window.confirm('do you want to delete?'))
+        {
+            $.get(url).then(function (r) {
+                if (r == "ok") {
+                    var loc = window.location.href;
+                    window.location.href = loc;
+                }
+            }, function (e) {
+                alert("Server error");
+            })
+        }
+    }
+</script>

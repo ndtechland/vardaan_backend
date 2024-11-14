@@ -1,0 +1,145 @@
+﻿@model VardaanCab.Models.ViewModels.ClientPackageVm
+@{
+    ViewBag.Title = "Add Package";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    .row{
+        margin-top:1% !important;
+    }
+</style>
+    <div class="row r">
+        <div class="col-md-12">
+           <a href="/ClientPackage/ViewPackage?id=@Model.Customer_Id&menuId=@Model.MenuId" class="btn btn-info">Show all</a>
+        </div>
+    </div>
+
+<link href="/css/fixtable.css" rel="stylesheet" />
+    
+
+    @if (TempData["msg"] != null)
+    {
+        <div class="row r">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    @TempData["msg"]
+                </div>
+            </div>
+        </div>
+    }
+@using (Html.BeginForm())
+  {
+<div class="form-group" style="margin-top:2%;">
+   
+    @if (Model.Packages.Count() > 0)
+    {
+        <div class="row r">
+            <div class="col-md-12">
+                <h2>Add Package</h2>
+            </div>
+        </div>
+        @Html.HiddenFor(a => a.Customer_Id)
+        @Html.HiddenFor(a=>a.MenuId)
+        <div class="mainDiv">
+            <div class="wrapperTable table-scroll">
+                <table id="table1" class="table">
+                <thead>
+                    <tr>
+                        <th class="sticky-col first-col"><input type="checkbox" id="all" /></th>
+                        <th class="sticky-col second-col">Vehicle</th>
+                        <th class="sticky-col third-col">RentalType</th>
+                        <th>PackageType</th>
+                        <th>Fare</th>
+                        <th>MinKm</th>
+                        <th>MinHrs</th>
+                        <th>ExtraPerHour</th>
+                        <th>ExtraPerKm</th>
+                        <th>NightCharges</th>
+                       @* <th>Traveling allowance</th>*@
+                        <th>Outstation TA/day</th>
+                        <th>Pickup loc.</th>
+                        <th>Drop loc.</th>
+                        <th>Days</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Packages.Count(); i++)
+                    {
+
+                        <tr>
+                            <td class="sticky-col first-col">@Html.CheckBoxFor(a=>a.Packages[i].IsChecked,new { @class="chkAvail"})</td>
+                            <td class="sticky-col second-col">
+                                @Html.HiddenFor(a => a.Packages[i].CorporatePackage_Id)
+                                @Html.HiddenFor(a => a.Packages[i].RentalType_Id)
+                                @Html.HiddenFor(a => a.Packages[i].VehicleModel_Id)
+                                @Model.Packages[i].ModelName
+                            </td>
+                            
+                            <td class="sticky-col third-col" >
+                                @Model.Packages[i].RentalTypeName
+                               
+                            </td>
+                            <td>
+                                @Model.Packages[i].PackageTypeName
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(a => a.Packages[i].Fare, new { @class = "form-control", Value = Model.Packages[i].Fare, required = "required" })
+                            </td>
+                            @*<td><input type="text" class="form-control" name="Packages[@i].Fare" value="@Model.Packages[i].Fare" required /></td>*@
+                            <td>@Html.TextBoxFor(a => a.Packages[i].MinKm, new { @class = "form-control", Value = Model.Packages[i].MinKm, required = "required" })</td>
+                            <td>@Html.TextBoxFor(a => a.Packages[i].MinHrs, new { @class = "form-control", Value = Model.Packages[i].MinHrs, required = "required" })</td>
+                            <td>@Html.TextBoxFor(a => a.Packages[i].ExtraPerHour, new { @class = "form-control", Value = Model.Packages[i].ExtraPerHour, required = "required" })</td>
+                            <td>@Html.TextBoxFor(a => a.Packages[i].ExtraPerKm, new { @class = "form-control", Value = Model.Packages[i].ExtraPerKm, required = "required" })</td>
+                            <td>@Html.TextBoxFor(a => a.Packages[i].NightCharges, new { @class = "form-control", Value = Model.Packages[i].NightCharges, required = "required" })</td>
+                            @*<td>@Html.TextBoxFor(a => a.Packages[i].InterStateCharge, new { @class = "form-control", Value = Model.Packages[i].InterStateCharge, required = "required" })</td>*@
+                            <td>@Html.TextBoxFor(a => a.Packages[i].OutStationCharge, new { @class = "form-control", Value = Model.Packages[i].OutStationCharge, required = "required" })</td>
+                            <td>@Html.TextBoxFor(a => a.Packages[i].PickupLocation, new { @class = "form-control", Value = Model.Packages[i].PickupLocation })</td>
+                            <td>@Html.TextBoxFor(a => a.Packages[i].DropLocation, new { @class = "form-control", Value = Model.Packages[i].DropLocation })</td>
+                            <td>@Html.TextBoxFor(a => a.Packages[i].NoOfDays, new { @class = "form-control", Value = Model.Packages[i].NoOfDays })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+        </div>
+        <div class="row r">
+            <div class="col-md-12">
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.NumberOfPages; i++)
+                    {
+                        <li class="@if (i == Model.Page) {<text>active</text> }">
+                            <a href="/ClientPackage/Add?ClientId=@Model.Customer_Id&page=@i&menuId=@ViewBag.menuId">@i</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-info" value="Save" />
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <h3>No new package found</h3>
+        </div>
+    }
+
+</div>
+}
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    $("#all").click(function () {
+        var allPackage = $(".chkAvail");
+        var chkCurrent = $(this);
+        if(chkCurrent.prop("checked")==true)
+        {
+            allPackage.prop("checked", true);
+        }
+        else {
+            allPackage.prop("checked", false);
+
+        }
+    });
+</script>

@@ -1,0 +1,619 @@
+﻿@model VardaanCab.Models.ViewModels.TaxInvoiceViewModel
+@{
+    Layout = null;
+    double gTotal = Model.ShouldRoundOff ? Math.Round(Model.Total, MidpointRounding.AwayFromZero) : Math.Round(Model.Total, 2);
+    double oTotal = Math.Round(Model.Total, 2);
+    double rem = Math.Round(gTotal - oTotal, 2);
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>
+        @if (Model.IsTaxInvoice)
+        {
+            if (Model.IsNrg != "True")
+            {
+                <text>TAX INVOICE</text>
+            }
+            else
+            {
+                <text>INVOICE</text>
+            }
+        }
+        else
+        {
+            <text>PERFORMA INVOICE</text>
+
+        }
+    </title>
+    <link href="/css/TaxInvoice.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div id="main">
+                @if (ViewBag.isPdf == false)
+                {
+                    <div class="d0 no-print">
+                        <div>
+                            @if (!string.IsNullOrEmpty(Model.BillFile))
+                            {
+                                <button class="no-print btnEmail" id="btnEmail" type="button" onclick="sendEmail(this)" userId="@Model.Id">Mail To Client</button>
+                                <a href="/Files/@Model.BillFile" class="no-print btnPdf" download>Download</a>
+                            }
+                            else
+                            {
+                                <button class="no-print btnPdf" id="btnPdf" type="button" onclick="generateDocs(this)" userId="@Model.Id">Generate Invoice</button>
+                            }
+                            <a class="no-print btnPdf" id="hrfBack" onclick="history.back()" href="@ViewBag.priviousURL">Back</a>
+                            @*<button class="no-print btnPdf" onclick="window.history.back()" type="button">Back</button>*@
+                            @*<a href= "@Url.Action("CorporateInvoiceList", "Booking", new { menuId = ViewBag.menuId, sDate =Model.sDate, eDate=Model.eDate, isNrg= Model.IsNrg, term = Model.Term, page = Model.Page, export = Model.Export, Display = Model.Display })"
+        class="no-print btnPdf">Back</a>*@&nbsp;
+                            <button class="no-print" onclick="window.print()" type="button">Print</button>
+                        </div>
+                    </div>
+
+                }
+
+        <div class="d1">
+            <div class="d1_1">
+                @if (Model.IsNrg != "True")
+                {
+                    <span>
+                        CIN NO: U63040DL2012PTC243935
+                    </span>
+                }
+                else
+                {
+                    <span> &nbsp;</span>
+                    }
+            </div>
+            <div class="d1_2">
+
+                @if (Model.IsTaxInvoice)
+                {
+                    if (Model.IsNrg != "True")
+                    {
+                        <text>TAX INVOICE</text>
+                    }
+                    else
+                    {
+                        <text>INVOICE</text>
+                    }
+                }
+                else
+                {
+                    <span>PROFORMA INVOICE</span>
+
+                }
+            </div>
+            <div class="d1_3">
+                @if (Model.IsNrg != "True")
+                {
+                    <span>  PAN : AAICM2306C</span>
+                }
+                else
+                { <span> &nbsp;</span>}
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="d2">
+            <div class="d2_1">
+                <p>
+                    <b>@Model.FromCompanyName,</b> <br />
+                    <b>Regd. Office :</b> @Model.CompanyRegAdd<br />
+                    <b>Name Of State :</b>  @Model.CompanyRegState
+                    <br />
+                    <b>Email Id :</b> @Model.FromEmail
+                </p>
+            </div>
+            <div class="d2_2">
+                @if (Model.IsNrg != "True")
+                {
+                    <img id="logoa" src="/images/VrcLogo.png" />
+                }
+                </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="d3">
+            <div class="d3_1">
+                <p>
+                    <b>From</b> <br />
+                   @Model.FromCompanyName<br />
+                    @Model.FromAddress <br />
+                    Name Of State : @Model.FromStateName <br />
+
+                    GSTIN : @Model.FromGSTIN<br />
+                    HSN Code: 996601
+                </p>
+            </div>
+            <div class="d3_2">
+                <p>
+                    <b>Billed To</b> <br />
+                    @Model.CompanyName<br />
+                    @Model.BilledAddress <br />
+
+                    @*Name of State : @Model.CompanyState<br />*@
+
+                    GSTIN Of Customer: @Model.CompanyGSTIN<br />
+
+                    <br />
+                </p>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="d4">
+            <div class="d4_1">
+                <b>Place Of Service - </b>
+                @Model.PlaceOfService
+            </div>
+            <div class="d4_2">
+             
+        @if (Model.IsTaxInvoice)
+        {
+            <b>Invoice No :</b>
+            @Model.TaxInvoiceNumber
+        }
+        else
+        {
+            <b>Proforma Invoice No. :</b>
+                @Model.ProformNo  
+            
+        }
+
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="d5">
+            <div class="d5_1">
+                    <p>
+                        <b>Guest Name -</b> @Model.GuestName <br />
+                        <b>Pickup Address :</b>@Model.PickupAddress<br />
+                        <b>Drop Address :</b>@Model.DropAddress<br />
+                        <b>Visited Place :</b>@if (!string.IsNullOrEmpty(Model.VisitedPlace))
+                        {<span>@Model.VisitedPlace</span> }<br />
+                        @*<b>Address Of Delivery -</b>
+                @Model.DutyAddress*@
+                    </p>
+            </div>
+            <div class="d5_2">
+                @if (Model.IsTaxInvoice && Model.TaxInvoiceDate != null)
+                {
+                    <b>Invoice Date : </b> @Model.TaxInvoiceDate.Value.ToString("dd/MM/yyyy")
+                }
+                else
+                {
+                    <b> Date : </b> @Model.JourneyDate.Value.ToString("dd/MM/yyyy")
+                }
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="d6">
+            <table id="tbl1">
+                <tr>
+                    <th>Ds No/Date</th>
+                    <th>Vehicle Detail</th>
+                    <th>Duty Description/Particulars</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>
+                        @Model.BookingId <br />
+                        @if (Model.JourneyDate.Value.Date == Model.JourneyEndDate.Value.Date)
+                        {
+                            @Model.JourneyDate.Value.ToString("dd/MM/yyyy")
+                        }
+                        else
+                        {
+                            @Model.JourneyDate.Value.ToString("dd/MM/yyyy") <br />
+                            <b>To</b> <br />
+                            @Model.JourneyEndDate.Value.ToString("dd/MM/yyyy")
+                        }
+
+                    </td>
+                    <td>
+                        @Model.VehicleName <br />
+                        @Model.VehicleNo
+                    </td>
+                    <td>
+
+                        Total: @Model.TotalKms kms. &amp;
+                        @if (Model.PackageTypeName.ToLower() == "outstation")
+                        {
+                            <text>@Model.OutStationDays day(s)</text>
+                        }
+                        else
+                        {
+                            <text>@(Math.Floor(TimeSpan.FromHours((double)Model.TotalHrs).TotalHours)) Hrs. @((TimeSpan.FromHours((double)Model.TotalHrs).Minutes)) Mins</text>
+                        }
+                        Duty<br /><br />
+
+                        @Model.RentalTypeName
+                        @if (Model.PackageTypeName.ToLower() == "outstation")
+                        {
+                            <text>&nbsp;@@ @Model.OutStationDays day(s)</text>
+                        }
+                        <br />
+                        @if (Model.PackageTypeName.ToLower() == "outstation")
+                        {
+                            <text>TA @@ @Model.OutStationDays day(s)</text><br />
+                        }
+                        @if (Model.ExtraKms > 0)
+                        {
+                            <span>Extra Km </span> <span>@Model.ExtraKms @@</span><br />
+                        }
+                        @if (Model.ExtraHrs > 0)
+                        {
+                            <span>Extra Hrs </span> <span>@(Math.Floor(TimeSpan.FromHours((double)Model.ExtraHrs).TotalHours)).@((TimeSpan.FromHours((double)Model.ExtraHrs).Minutes))  @@</span><br />
+                        }
+                        @if (Model.TotalNight > 0)
+                        {
+                            <span>Night Charges </span> <span>@Model.TotalNight @@</span><br />
+                        }
+
+                        Park/Toll/State/MCD/Misc : @Model.ParkCharge+@Model.TollCharge+@Model.InterStateCharge+@Model.MCD+@Model.MiscCharge<br />
+                        @if (Model.FuelCharge > 0)
+                        {
+                            <span>Fuel Charge :(@Model.FuelCharge)</span><br />
+                        }
+
+
+                    </td>
+                    <td>
+                        &nbsp;
+                        <br />
+                        <br />
+                        <!-- fare or rate-->
+                        @if (Model.PackageTypeName.ToLower() == "outstation")
+                        {
+                            <text>@(Model.Fare / Model.OutStationDays)</text><br />
+                            <text>@Model.OutStationChargeRate</text><br />
+                        }
+                        else
+                        {
+                            @Model.Fare<br />
+
+                        }
+
+                        <!-- Extra km rate -->
+                        @if (Model.ExtraKms > 0)
+                        {
+                            @Model.ExtraKmsRate<br />
+                        }
+                        <!-- Extra hours rate -->
+                        @if (Model.ExtraHrs > 0)
+                        {
+                            @Model.ExtraHrsRate<br />
+                        }
+                        <!--Night Charge rate -->
+                        @if (Model.TotalNight > 0)
+                        {
+                            @Model.NightRate<br />
+                        }
+
+                        <!--Park/toll/state -->
+                        @if (Model.FuelCharge > 0)
+                        {
+                            <!-- fuel Charge -->
+                            <span>(+Or -)</span>
+                        }
+
+                    </td>
+                    <td>
+                        &nbsp;
+                        <br />
+                        <br />
+                        <!-- fare--> @String.Format("{0:00.00}", Model.Fare)<br />
+                        <!--outstation Charge-->
+                        @if (Model.PackageTypeName.ToLower() == "outstation")
+                        {
+                            @String.Format("{0:00.00}", Model.OutStationCharge)<br />
+                        }
+                        <!-- Extra km  -->
+                        @*@if (Model.ExtraKmsCharge > 0)*@
+                        @if (Model.ExtraKms > 0)
+                        {
+                            @String.Format("{0:00.00}", Model.ExtraKmsCharge)<br />
+                        }
+
+                        <!-- Extra hours  -->
+                        @*@if (Model.ExtraHrsCharge > 0)*@
+                        @if (Model.ExtraHrs > 0)
+                        {
+                            @String.Format("{0:00.00}", Model.ExtraHrsCharge)<br />
+                        }
+
+                        <!--Night Charge  -->
+                        @if (Model.TotalNight > 0)
+                        {
+                            @String.Format("{0:00.00}", Model.NightCharge)<br />
+                        }
+
+                        <!--Park/toll/state -->
+                        @String.Format("{0:00.00}", (Model.ParkCharge + Model.TollCharge + Model.InterStateCharge + Model.MCD + Model.MiscCharge))<br />
+
+                        <!-- fuel Charge -->
+                        @if (Model.FuelCharge > 0)
+                        {
+                            @String.Format("{0:00.00}", Model.IncreaseDecreaseInFuel)
+                        }
+                        @*@if (Model.DiscountAmount > 0)
+        {
+            <span>
+                Rs.<br />
+            </span>
+        }*@
+
+                    </td>
+            </table>
+
+            <table id="tbl2">
+                <tr>
+                    <td>Total Effected Duty : 1</td>
+                    <td></td>
+                 
+
+                    <td>
+                        @if (Model.DiscountAmount > 0)
+                        {
+                         <span> Sub Total<br /></span>           
+
+                          <span>Discount<br /></span>
+                        }
+                        Net Amt<br />
+
+                        @if (Model.IsNrg!= "True")
+                        {
+                            if (Model.IGST > 0)
+                            {
+                            <span>
+                                IGST @@@Model.IgstPercent%<br />
+                            </span>
+                            }
+                            else
+                            {
+                            <span>
+                                CGST @@@Model.CgstPercent%<br />
+                            </span>
+
+                            <span>
+                                SGST @@@Model.SgstPercent%<br />
+                            </span>
+                            }
+                        }
+
+                        <span>Round Off</span><br />
+                        <span>Grand Total</span>
+                    </td>
+
+                    <td>
+                        @if (Model.DiscountAmount > 0)
+                        {
+                            <span>
+                                Rs.<br />
+                            </span>
+                            <span>
+                                Rs.<br />
+                            </span>
+                        }
+                        <span>
+                            Rs.<br />
+                        </span>
+
+                        @if (Model.IsNrg != "True")
+                        {
+                            if (Model.IGST > 0)
+                            {
+                                <span>
+                                    Rs.<br />
+                                </span>
+                            }
+                            else
+                            {
+                                <span>
+                                    Rs.<br />
+                                </span>
+
+                                <span>
+                                    Rs.<br />
+
+                                </span>
+                            }
+                        }
+                            <span>Rs.</span><br />
+                            <span>
+                                Rs.
+                            </span>
+                        </td>
+                    
+                    <td>
+
+
+                        @if (Model.DiscountAmount > 0)
+                        {
+                            <span>
+                                @String.Format("{0:00.00}", Math.Round(Model.NetAmount, 2))<br />
+                            </span>
+                            <span>
+                                -   @String.Format("{0:00.00}", Math.Round(Model.DiscountAmount, 2))<br />
+                            </span>
+                        }
+                        <span>
+                            @if (Model.DiscountAmount > 0)
+                            {
+                                @String.Format("{0:00.00}", Math.Round((Model.NetAmount - Model.DiscountAmount), 2))<br />
+                            }
+                            else
+                            {
+                                @String.Format("{0:00.00}", Math.Round(Model.NetAmount, 2))<br />
+                            }
+                        </span>
+                        @if (Model.IsNrg != "True")
+                        {
+                            if (Model.IGST > 0)
+                            {
+                                <span>
+                                    @String.Format("{0:00.00}", Model.IGST)<br />
+                                </span>
+                            }
+                            else
+                            {
+                                <span>
+                                    @String.Format("{0:00.00}", Model.CGST)<br />
+                                </span>
+
+                                <span> @String.Format("{0:00.00}", Model.SGST)<br /></span>
+                            }
+                        }
+                        <span>@String.Format("{0:00.00}", rem)</span><br />
+                        @if (Model.IsNrg != "True")
+                        {
+                            <span>@String.Format("{0:00.00}", gTotal)</span>
+                        }
+                        else
+                        {
+                            if (Model.DiscountAmount > 0)
+                            {
+                                gTotal = Math.Round((Model.NetAmount - Model.DiscountAmount), 2);
+                                @String.Format("{0:00.00}", Math.Round((Model.NetAmount - Model.DiscountAmount), 2))<br />
+                            }
+                            else
+                            {
+                                gTotal = Math.Round(Model.NetAmount, 2);
+                                @String.Format("{0:00.00}", Math.Round(Model.NetAmount, 2))<br />
+                            }
+                        }
+                    </td>
+
+                </tr>
+            </table>
+          
+        </div>
+
+      
+        
+        <div class="d8">
+            <span> <b>Amount in Words : </b> @VardaanCab.Utilities.Converter.NumberToText(Convert.ToInt32(gTotal), true, false) Rupees only. </span> 
+        </div>
+
+       
+
+        <div class="d10">
+            <div class="d10_1">
+                <p>
+                    E. & O.E <br />
+                    Any disputers subject to Delhi Jurisdiction.<br />
+                    Payment to be made within 20 days else interest @@20% will <br />be charged extra.<br />
+                    Please add bank charges for outstation cheques.<br />
+                    In case of deductions, @Model.FromCompanyName <br /> must be
+                    intimated with valid reason within 7 days of submission of bills.
+
+                </p>
+               
+            </div>
+
+            <div class="d10_2">
+
+                @if (Model.IsNrg != "True")
+                {
+                    <div style="position: absolute;right:100px;top: 20px;">
+                        <img src="../../images/signature.jpg" style="width: 100px; height: 100px;" />
+                    </div>
+                }
+                else
+                {
+            <div style="position: absolute;right:160px;top:85px;">
+
+                <img src="../../images/luckySig.png" style="width:60px; height:60px;padding-top:0px;" />
+            </div>
+                 }
+
+                        @if (Model.IsNrg == "True")
+                        {
+            <p style="text-align:left;">
+                <b> Company’s Bank Details</b><br />
+                A/c No. : @Model.FromAC_No<br />
+                IFS Code : @Model.FromIFS_Code <br />
+                Bank Name : @Model.FromBankName  <br />
+            </p>
+                            <p style="text-align:left;">
+                                <b> for  @Model.FromCompanyName</b><br /><br />
+                                <br />
+                                <b> Manager</b>
+                            </p>
+                        }
+                        else
+                        {
+
+                            <p style="text-align:left;">
+                                @Model.FromCompanyName
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+
+                            </p>
+                            <p style="text-align:left;padding-left:109px;">  Manager</p>
+
+                        }
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+    </div>
+</body>
+</html>
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+
+    function generateDocs(obj)
+    {
+        var myLink = document.getElementById("hrfBack");
+        var myURL = myLink.href;
+        alert(myURL);
+        //$("#btnEmail").hide();
+        //$("#btnPdf").hide();
+        var el = $(obj);
+        var id = el.attr("userId");
+        var isTaxInvoice = "@Model.IsTaxInvoice";
+        el.text("wait..");
+        $.get('/Booking/GeneratePdfTaxInvoice?id=' + id + '&IsTaxInvoice=' + isTaxInvoice)
+            .done(function (response) {
+               
+                alert("Pdf has generated");
+                var loc= window.location;
+                window.location.href = loc;
+               // window.location.href = myURL;
+            })
+            .fail(function (err) {
+                alert("server error on receipt");
+            });
+    }
+</script>
+
+<script>
+
+    function sendEmail(obj)
+    {
+        var el = $(obj);
+        var id = el.attr("userId");
+        el.text("wait..");
+        $.get('/Booking/SendTaxInvoice?id=' + id)
+            .done(function (response) {
+                alert("Mail has been sent");
+                el.text("Mail To Client");
+            })
+            .fail(function (err) {
+                alert("server error on receipt");
+            });
+    }
+</script>

@@ -1,0 +1,43 @@
+﻿@model VardaanCab.Models.ViewModels.DispatchBookingModel
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    ViewBag.title = "Dispath Booking";
+}
+
+<div style="width:50%">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Dispath Booking</h3>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        if (TempData["msg"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["msg"]
+            </div>
+        }
+        @Html.HiddenFor(a => a.BookingId)
+        @Html.HiddenFor(a => a.BookingType)
+        <input type="hidden" name="MenuId" value="@ViewBag.menuId" />
+        <div class="form-group">
+            Start Kms *
+            @Html.TextBoxFor(a => a.StartKms, new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.StartKms)
+            </span>
+        </div>
+        <div class="form-group">
+            Start Hrs *
+            @Html.TextBoxFor(a => a.StartHour, new { @class = "form-control tp" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.StartHour)
+            </span>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-default btn-block" name="Dispatch" />
+        </div>
+    }
+</div>

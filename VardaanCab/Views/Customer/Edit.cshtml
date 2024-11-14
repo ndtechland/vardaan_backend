@@ -1,0 +1,150 @@
+﻿@model VardaanCab.Models.DTO.CustomerDTO
+@{
+    ViewBag.Title = "Edit Client";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    .row {
+        margin-top: 1% !important;
+    }
+</style>
+
+
+@using (Html.BeginForm())
+{
+    <div style="width:50%">
+
+        <div class="row r">
+            <div class="col-md-12">
+                <a href="/Customer/All" class="btn btn-info">Show all</a>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+                <h2>Edit Client</h2>
+            </div>
+        </div>
+
+        @if (TempData["msg"] != null)
+        {
+            <div class="row r">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        @TempData["msg"]
+                    </div>
+                </div>
+            </div>
+        }
+
+        @Html.HiddenFor(a => a.Id)
+        @Html.HiddenFor(a => a.IsActive)
+        @Html.HiddenFor(a => a.CreateDate)
+        @Html.HiddenFor(a => a.MenuId)
+
+
+        <div class="row r">
+            <div class="col-md-12">
+                <div class="form-group">
+                    State *
+                    @Html.DropDownListFor(a => a.State_Id, Model.StateList, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.State_Id)
+                    </span>
+                </div>
+                <div class="form-group">
+                    City *
+                    @Html.DropDownListFor(a => a.City_Id, Model.CityList, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.City_Id)
+                    </span>
+                </div>
+                <div class="form-group">
+                    Company Name *
+                    @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.CompanyName)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Contact Person Name *
+                    @Html.TextBoxFor(a => a.CustomerName, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.CustomerName)
+                    </span>
+                </div>
+                <div class="form-group">
+                    Parent Customer (If any)
+                    @Html.DropDownListFor(a => a.ParentCustomer_Id, Model.CustomerList, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.CustomerName)
+                    </span>
+                </div>
+                <div class="form-group">
+                    Email *
+                    @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.Email)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Contact No *
+                    @Html.TextBoxFor(a => a.ContactNo, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.ContactNo)
+                    </span>
+                </div>
+
+
+                <div class="form-group">
+                    Alternate Contact No
+                    @Html.TextBoxFor(a => a.AlternateNo, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.AlternateNo)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Full Editress *
+                    @Html.TextAreaFor(a => a.FullAddress, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.FullAddress)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    GSTIN
+                    @Html.TextBoxFor(a => a.GSTIN, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.GSTIN)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Update" />
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+}
+<script> 
+    $("#State_Id").change(function () {
+            var id = $(this).val();
+            $.get('/Common/GetCityByState?stateId=' + id, function (r) {
+                var dd = $("#City_Id");
+                dd.empty();
+                dd.append('<option value="">Select city</option>');
+                $.each(r, function (k, v) {
+                    dd.append('<option value="' + v.Id + '">' + v.CityName + '</option>');
+
+                })
+            })
+        });
+
+</script>

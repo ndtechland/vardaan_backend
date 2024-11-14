@@ -1,0 +1,104 @@
+﻿@model VardaanCab.Models.ViewModels.SaleReportVm
+@{
+    ViewBag.Title = "Corporate Billing Report";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    int menuId = ViewBag.menuId;
+    int sn = 0;
+}
+
+
+<link href="/css/fixtable.css" rel="stylesheet" />
+
+<div style="width:90%">
+    <h2>Corporate Billing Report from @Model.sDate.ToString("dd-MMM-yyyy") to @Model.eDate.ToString("dd-MMM-yyyy")</h2>
+    <div class="row">
+        <a href="/admin/Submenu?menuId=@menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="row r">
+           
+            <div class="col-md-3">
+                <input type="date" class="form-control" name="sDate" id="sDate" />
+                <input type="hidden" name="sDateH" id="sDateH"  value="@Model.sDate" />
+            </div>
+            <div class="col-md-3">
+                <input type="date" class="form-control" name="eDate" id="eDate"  />
+                <input type="hidden" name="eDateH" id="eDateH" value="@Model.eDate" />
+            </div>
+            <div class="col-md-3">
+                <input type="text" placeholder="Search by Company" class="form-control" value="@Model.Term" name="term" id="term" />
+            </div>
+            <div class="col-md-3">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <span class="btn btn-success"><i class="fa fa-file-excel-o" onclick="Export()"> Export</i></span>
+            </div>
+        </div>
+    }
+
+
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table id="table1" class="table">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Company Name</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SaleData)
+                    {
+                        <tr>
+                            <td>@(++sn)</td>
+                            <td>
+                                @item.CompanyName
+                            </td>
+                            <td>@item.Amount</td>
+                            <td>
+                                <a href="/Report/SaleDetail?companyId=@item.CompanyId&sDate=@Model.StartDate&eDate=@Model.EndDate&menuId=@ViewBag.menuId">Detail</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row r">
+        <div class="col-md-12">
+            <b>Grand Total : </b> @Model.Total
+        </div>
+    </div>
+
+    @*<div class="row r r">
+            <div class="col-md-12">
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.NumberOfPages; i++)
+                    {
+                        <li class="@if (i == Model.Page) {<text>active</text> }">
+                            <a href="/Customer/All?term=@Model.Term&page=@i">@i</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>*@
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+
+
+   function Export()
+    {
+        var _term = $("#term").val();
+       var _sDAte = $("#sDateH").val();
+      // alert("testt"+_sDAte);
+       var _eDAte = $("#eDateH").val();
+       var _export = true;
+      // alert(`/Report/Sale?sDate=${_sDAte}&eDate=${_eDAte}&term=${_term}&export=${_export}`);
+        window.location.href = `/Report/Sale?sDate=${_sDAte}&eDate=${_eDAte}&term=${_term}&export=${_export}`;
+    }
+</script>

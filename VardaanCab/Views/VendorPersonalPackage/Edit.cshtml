@@ -1,0 +1,168 @@
+﻿@model VardaanCab.Models.DTO.VendorPersonalPackageDTO
+@{
+    ViewBag.Title = "Edit Vendor Package";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    string[] monthlyTypes = new string[] { "monthly", "monthly-route", "monthly-trip" };
+}
+
+
+<style>
+    .row {
+        margin-top: 1% !important;
+    }
+</style>
+
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(a => a.Id)
+    @Html.HiddenFor(a => a.Vendor_Id)
+    @Html.HiddenFor(a => a.RentalType_Id)
+    @Html.HiddenFor(a => a.VehicleModel_Id)
+    @Html.HiddenFor(a => a.IsActive)
+    @Html.HiddenFor(a => a.VendorPackage_Id)
+    @Html.HiddenFor(a => a.PackageTypeName)
+    @Html.HiddenFor(a => a.MenuId)
+
+    <div style="width:70%">
+
+        <div class="row r">
+            <div class="col-md-12">
+                <a href="/VendorPersonalPackage/ViewPackage?id=@Model.Vendor_Id&menuId=@Model.MenuId" class="btn btn-info">Show all</a>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+                <h4>Edit Package</h4>
+            </div>
+        </div>
+
+        @if (TempData["msg"] != null)
+        {
+            <div class="row r">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        @TempData["msg"]
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row r">
+            <div class="col-md-6">
+                Booking Type *
+                @Html.TextBoxFor(a => a.RentalTypeName, new { @class = "form-control", @readonly="readonly" })
+
+            </div>
+
+            <div class="col-md-6">
+                Vehicle *
+                @Html.TextBoxFor(a => a.ModelName, new { @class = "form-control", @readonly="readonly" })
+
+            </div>
+
+        </div>
+                
+
+
+        <div class="row r">
+            <div class="col-md-6">
+                Fare *
+                @Html.TextBoxFor(a => a.Fare, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.Fare)
+                </span>
+            </div>
+
+            <div class="col-md-6">
+                Min Km *
+                @Html.TextBoxFor(a => a.MinKm, new { @class = "form-control"})
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.MinKm)
+                </span>
+            </div>
+        </div>
+                
+        <div class="row r">
+            <div class="col-md-6">
+                Min Hrs *
+                @Html.TextBoxFor(a => a.MinHrs, new { @class = "form-control"})
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.MinHrs)
+                </span>
+            </div>
+
+            <div class="col-md-6">
+                Extra Per Hour *
+                @Html.TextBoxFor(a => a.ExtraPerHour, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraPerHour)
+                </span>
+            </div>
+
+        </div>
+                <div class="row r">
+                    <div class="col-md-6">
+                        Extra Per Km *
+                        @Html.TextBoxFor(a => a.ExtraPerKm, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.ExtraPerKm)
+                        </span>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        Night Charges *
+                        @Html.TextBoxFor(a => a.NightCharges, new { @class = "form-control" })
+                        <span class="text-danger">
+                            @Html.ValidationMessageFor(a => a.NightCharges)
+                        </span>
+                    </div>
+                </div>
+                
+        <div class="row r">
+           
+
+            <div class="col-md-6" @if (Model.PackageTypeName.ToLower() != "outstation") { <text> style="display:none" </text>     }>
+                Outstation TA/Day *
+                @Html.TextBoxFor(a => a.OutStationCharge, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.OutStationCharge)
+                </span>
+            </div>
+
+            <div id="monthly" style="@if(!monthlyTypes.Contains(Model.PackageTypeName)) {<text>display:none</text>}">
+                <div class="col-md-6">
+                    PickupLocation
+                    @Html.TextBoxFor(a => a.PickupLocation, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.PickupLocation)
+                    </span>
+                </div>
+
+                <div class="col-md-6">
+                    DropLocation
+                    @Html.TextBoxFor(a => a.DropLocation, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.DropLocation)
+                    </span>
+                </div>
+
+                <div class="col-md-6">
+                    NoOfDays
+                    @Html.TextBoxFor(a => a.NoOfDays, new { @class = "form-control"})
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.NoOfDays)
+                    </span>
+                </div>
+                </div>
+            </div>
+                
+        <div class="form-group" style="margin-top:2%">
+            <input type="submit" class="btn btn-info btn-block" value="Save" />
+        </div>
+  </div>
+     
+}
+

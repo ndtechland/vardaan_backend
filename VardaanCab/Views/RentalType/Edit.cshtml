@@ -1,0 +1,70 @@
+﻿@model VardaanCab.Models.DTO.RentalTypeDTO
+@{
+    ViewBag.Title = "Update Rental Types";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    .row {
+        margin-top: 1% !important;
+    }
+</style>
+
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(a => a.Id)
+    @Html.HiddenFor(a=>a.MenuId)
+    <div style="width:50%">
+
+        <div class="row r">
+            <div class="col-md-12">
+                <a href="/RentalType/All" class="btn btn-info">Show all</a>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+                <h2>Update Rental Types</h2>
+            </div>
+        </div>
+
+        @if (TempData["msg"] != null)
+        {
+            <div class="row r">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        @TempData["msg"]
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row r">
+            <div class="col-md-12">
+               
+                 <div class="form-group">
+                    Rental Name *
+                    @Html.TextBoxFor(a => a.RentalTypeName , new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.RentalTypeName)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Package Type *
+                    @Html.DropDownListFor(a => a.PackageType_Id, Model.PackageTypes, "Select Packages", new { @class = "form-control", required = "required" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.PackageType_Id)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Save" />
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+}

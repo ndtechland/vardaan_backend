@@ -1,0 +1,188 @@
+﻿@model VardaanCab.Models.DTO.VendorDTO
+@{
+    ViewBag.Title = "Edit Vendor";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    .row {
+        margin-top: 1% !important;
+    }
+</style>
+
+
+@using (Html.BeginForm("Edit", "Vendor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div style="width:50%">
+        @Html.HiddenFor(a => a.Id)
+        @Html.HiddenFor(a => a.CreateDate)
+        @Html.HiddenFor(a => a.IsActive)
+        @Html.HiddenFor(a => a.UserLogin_Id)
+        @Html.HiddenFor(a => a.PanImage)
+        @Html.HiddenFor(a => a.MenuId)
+
+
+        <div class="row r">
+            <div class="col-md-12">
+                <a href="/Vendor/All" class="btn btn-info">Back</a>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+                <h2>Edit Vendor</h2>
+            </div>
+        </div>
+
+        @if (TempData["msg"] != null)
+        {
+            <div class="row r">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        @TempData["msg"]
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row r">
+            <div class="col-md-12">
+
+
+                <div class="form-group">
+                    Company Name *
+                    @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.CompanyName)
+                    </span>
+                </div>
+                <div class="form-group">
+                    Contact Person Name *
+                    @Html.TextBoxFor(a => a.VendorName, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.VendorName)
+                    </span>
+                </div>
+               
+                <div class="form-group">
+                    Email 
+                    @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.Email)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Mobile Number
+                    @Html.TextBoxFor(a => a.MobileNumber, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.MobileNumber)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Alternate mobile no.
+                    @Html.TextBoxFor(a => a.AlernateMobile, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.AlernateMobile)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    GSTIN 
+                    @Html.TextBoxFor(a => a.GSTIN, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.GSTIN)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    PAN Number 
+                    @Html.TextBoxFor(a => a.PAN, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.PAN)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    PAN Document image 
+                    @if(!string.IsNullOrEmpty(Model.PanImage))
+                    {
+                       <img class="thumb" src="/Images/@Model.PanImage" />
+                    }
+                    @Html.TextBoxFor(a => a.PanFile, new { type = "file", @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.PanFile)
+                    </span>
+                </div>
+
+
+                <div class="form-group">
+                    CIN Number 
+                    @Html.TextBoxFor(a => a.CIN, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.CIN)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    Parent Vendor
+                    @Html.DropDownListFor(a => a.ParentVendor_Id, Model.Vendors, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.ParentVendor_Id)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    State *
+                    @Html.DropDownListFor(a => a.StateMaster_Id, Model.States, "Select", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.StateMaster_Id)
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    City *
+                    @Html.DropDownListFor(a => a.CityMaster_Id, Model.Cities, "Select City", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.CityMaster_Id)
+                    </span>
+                </div>
+
+
+
+                <div class="form-group">
+                    Full Address *
+                    @Html.TextAreaFor(a => a.FullAddress, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.FullAddress)
+                    </span>
+                </div>
+
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Save" />
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+}
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    $("#StateMaster_Id").change(function () {
+        var id= $(this).val();
+        $.get('/Common/GetCityByState?stateId=' + id, function (r) {
+            var dd = $("#CityMaster_Id");
+            dd.empty();
+            dd.append('<option value="">Select city</option>');
+            $.each(r, function (k, v) {
+                dd.append('<option value="'+v.Id+'">'+v.CityName+'</option>');
+
+            })
+        })
+    });
+</script>

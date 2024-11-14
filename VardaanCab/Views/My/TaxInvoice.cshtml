@@ -1,0 +1,264 @@
+﻿@model VardaanCab.Models.ViewModels.TaxInvoiceViewModel
+@{
+    Layout = null;
+    double gTotal = 0;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TaxInvoice</title>
+    <link href="/css/TaxInvoice.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="main">
+       
+        <div class="d1">
+            <div class="d1_1">
+                CIN NO: U63040DL2012PTC243935
+            </div>
+            <div class="d1_1">
+                TAX INVOICE
+            </div>
+            <div class="d1_1">
+                PAN : AAICM2306C
+            </div>
+        </div>
+
+        <div class="d2">
+            <div class="d2_1">
+                <p>
+                    <b>Vardaan Car Rental Services Pvt. Ltd.,</b> <br/>
+                    <b>Regd. Office :</b> U-1, Upadhyay Block, Shakarpur, <br/>
+                    New Delhi - 110092, India
+                    <br/>
+
+                    <b>Email Id :</b> reservation@@vardaanrentacar.com
+                </p>
+            </div>
+            <div class="d2_2">
+                 <img id="logoa" src="/images/vardaan.jpg" style="height: 160px;"/>
+            </div>
+        </div>
+
+        <div class="d3">
+            <div class="d3_1">
+                <p>
+                    <b>From</b> <br/>
+                     Vardaan Car Rental Services Private Limited<br/>
+                     @Model.FromAddress <br/>
+                     Name Of State : @Model.FromStateName <br/>
+                     
+                     GSTIN : @Model.FromGSTIN
+                </p>
+            </div>
+            <div class="d3_2">
+                  <p>
+                      <b>Billed To</b> <br/>
+                      @Model.CompanyName<br />
+                      @Model.BilledAddress <br />
+                      
+                      Name of State : @Model.PlaceOfService<br />
+                      
+                      GSTIN Of Customer: @Model.CompanyGSTIN<br />
+                      <br />
+                  </p>
+            </div>
+        </div> 
+
+        <div class="d4">
+            <div class="d4_1">
+                <b>Place Of Service - </b>
+                 @Model.PlaceOfService
+            </div>
+            <div class="d4_2">
+                <b>Duty Slip No :</b>
+                @Model.DsNo
+            </div>
+        </div>
+
+        <div class="d5">
+            <div class="d5_1">
+               <p>
+                   <b>Guest Name -</b> @Model.GuestName <br />
+                   <b>Address Of Delivery -</b>
+                   @Model.DutyAddress
+                </p> 
+               
+            </div>
+            <div class="d5_2">
+                <b>Duty Date : </b> @Model.DsDate.ToString("dd/MM/yyyy")
+            </div>
+        </div>
+
+        <div class="d6">
+            <table id="tbl1">
+                <tr>
+                    <th>Booking Id/ Date</th>
+                    <th>Vehicle Detail</th>
+                    <th>Duty Description/Particulars</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>
+                        @Model.BookingId <br/>
+                        @if (Model.PickupDate == Model.DsDate)
+                        {
+                            @Model.PickupDate.ToString("dd/MM/yyyy")
+                        }
+                        else
+                        {
+                            @Model.PickupDate.ToString("dd/MM/yyyy") <br />
+                            <b>To</b> <br />
+                            @Model.DsDate.ToString("dd/MM/yyyy")
+                        }
+                        
+                    </td>
+                    <td>
+                        @Model.VehicleName <br/>
+                        @Model.VehicleNo
+                    </td>
+                    <td>
+                        Total : @Model.TotalKms kms. &amp; @Model.TotalHrs:) Hrs. Duty
+                        <br /><br />
+                        @Model.RentalTypeName<br />
+                        @if (Model.ExtraKms > 0)
+                        {
+                           <span>Extra Km </span> <span>@Model.ExtraKms @@</span>  <br />
+                        }
+                        @if (Model.ExtraHrs > 0)
+                        {
+                            <span>Extra Hrs </span> <span>@Model.ExtraHrs @@</span>  <br />
+                        }
+                        @if (Model.TotalNight > 0)
+                        {
+                            <span>Night Charges </span> <span>@Model.TotalNight @@</span>  <br />
+                        }
+
+                        Park/Toll/State : @Model.ParkCharge+@Model.TollCharge+@Model.StateCharge <br/>
+                        Fuel Charge :(@Model.FuelCharge) <br/>
+
+
+                    </td>
+                    <td>
+                        &nbsp;
+                        <br/>
+                        <br/>
+                        <!-- hour amount--> @Model.Fare <br/>
+                        <!-- Extra km rate -->@if (Model.ExtraKms > 0) { @Model.ExtraKmsRate} <br/>
+                        <!-- Extra hours rate -->@if (Model.ExtraHrs > 0) { @Model.ExtraHrsRate} <br/>
+                        <!--Night Charge rate -->@if (Model.TotalNight > 0) { @Model.NightRate }<br/>
+                        <!--Park/toll/state --> <br/>
+                        <!-- fuel Charge -->(+ Or -)
+
+
+                    </td>
+                    <td>
+                        &nbsp;
+                        <br />
+                        <br />
+                        <!-- hour amount--> @Model.Fare <br />
+                        <!-- Extra km rate -->@if (Model.ExtraKmsCharge > 0) { @Model.ExtraKmsCharge }<br />
+                        <!-- Extra hours rate -->@if(Model.ExtraHrsCharge>0) {@Model.ExtraHrsCharge }<br />
+                        <!--Night Charge rate -->@if (Model.NightCharge > 0) {@Model.NightCharge } <br />
+                        <!--Park/toll/state --> @Model.ParkTollStateCharge <br />
+                        <!-- fuel Charge --> @Model.IncreaseDecreaseInFuel
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="d7">
+            <div class="d7_1">
+                Total Effected Duty : 1
+            </div>
+
+            <div class="d7_2">
+                 <div class="in1">
+                     Total
+                 </div>
+                @if (Model.IGST > 0)
+                {
+                    <div class="in2">
+                        IGST @@@Model.IgstPercent%
+                    </div>
+                }
+                else
+                {
+                    <div class="in2">
+                        CGST @@@Model.CgstPercent%
+                    </div>
+
+                    <div class="in3">
+                        SGST @@@Model.SgstPercent%
+                    </div>
+                }
+                
+
+                <div class="in4">
+                    Grand Total
+                </div>
+
+                
+            </div>
+
+            <div class="d7_3">
+
+            </div>
+
+            <div class="d7_4">
+                <div class="in1">
+                    @Math.Round(Model.Total,2)
+                </div>
+                @if (Model.IGST > 0)
+                {
+                    <div class="in2">
+                        @Model.IGST
+                    </div>
+                }
+                else
+                {
+                    <div class="in2">
+                        @Model.CGST
+                    </div>
+
+                    <div class="in3 borderBtm">
+                        @Model.SGST
+                    </div>
+                }
+               
+                @if (Model.IGST > 0)
+                {
+                    gTotal = Model.Total + Model.IGST;
+                    <div class="in4 ">
+                        Rs @gTotal
+                    </div>
+                }
+                else
+                {
+                    gTotal = Math.Round(Model.Total + Model.CGST + Model.SGST,2);
+                    <div class="in4 ">
+                        Rs @gTotal
+                    </div>
+                }
+                
+
+                
+            </div>
+
+         
+
+        </div>
+
+        <div class="d8">
+            Amount in Words : @VardaanCab.Utilities.Converter.NumberToText(Convert.ToInt32(gTotal),true,false)
+        </div>
+
+        <div class="d9">
+            Amount of Tax subject to Reverse Charges No
+        </div>
+    </div>
+</body>
+</html>

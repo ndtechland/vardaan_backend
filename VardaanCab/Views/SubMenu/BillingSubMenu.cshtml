@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "CorporatePackageSubMenu";
+    Layout = null;
+
+}
+
+<link href="/css/component.css" rel="stylesheet" />
+<link href="/css/style_grid.css" rel="stylesheet" />
+<link href="/css/font-awesome.css" rel="stylesheet">
+<!DOCTYPE html>
+<head>
+    <style>
+        .containerDiv {
+            width: 100%;
+            /*height:650px;
+        margin: auto;
+        border:1px solid;*/
+        }
+
+        .btnBack {
+            background-color: #008CBA; /* Blue */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 10%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="containerDiv">
+        <a href="/Admin/Dashboard" class="btnBack">Back</a>
+
+        <div class="agile_top_w3_grids">
+            <ul class="ca-menu">
+
+                <li>
+                    <a href="/Booking/CorporateInvoiceList?isNrg=false">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <div class="ca-content">
+                            <h3 class="ca-sub one">Corporate Bills</h3>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Booking/CorporateInvoiceList?isNrg=true">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <div class="ca-content">
+                            <h3 class="ca-sub one">Corporate NRD Bills</h3>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Booking/VendorInvoiceList">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <div class="ca-content">
+
+                            <h3 class="ca-sub one">Vendor Bills</h3>
+                        </div>
+                    </a>
+                </li>
+                <div class="clearfix"></div>
+            </ul>
+        </div>
+    </div>
+
+</body>
+
+
+
+
+
+

@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "CorporatePackageSubMenu";
+    Layout = null;
+
+}
+
+<link href="/css/component.css" rel="stylesheet" />
+<link href="/css/style_grid.css" rel="stylesheet" />
+<link href="/css/font-awesome.css" rel="stylesheet">
+<!DOCTYPE html>
+<head>
+    <style>
+              .containerDiv {
+                  width: 100%;
+                  /*height:650px;
+        margin: auto;
+        border:1px solid;*/
+              }
+
+              .btnBack {
+                  background-color: #008CBA; /* Blue */
+                  border: none;
+                  color: white;
+                  padding: 15px 32px;
+                  text-align: center;
+                  text-decoration: none;
+                  display: inline-block;
+                  font-size: 16px;
+                  margin: 4px 2px;
+                  cursor: pointer;
+                  width: 10%;
+              }
+    </style>
+</head>
+<body>
+
+    <div class="containerDiv">
+        <a href="/Admin/Dashboard" class="btnBack">Back</a>
+
+        <div class="agile_top_w3_grids">
+            <ul class="ca-menu">
+                <li>
+                    <a href="/Report/Sale">
+
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <div class="ca-content">
+                            <h3 class="ca-sub four">Corporate  Report</h3>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Report/NRDSale?nrdType=corporate">
+
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <div class="ca-content">
+                            <h3 class="ca-sub three">NRD (Corporate) Report</h3>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Report/NRDSale?nrdType=walkin">
+
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <div class="ca-content">
+                            <h3 class="ca-sub two">NRD (WalkIn)  Report</h3>
+                        </div>
+                    </a>
+                </li>
+               
+                <li>
+                    <a href="/Report/VendorCommisionReport">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <div class="ca-content">
+                            <h3 class="ca-sub one">Vendor Billing Report</h3>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Report/BookingReport">
+
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <div class="ca-content">
+                            <h3 class="ca-sub three">Booking StatusReport</h3>
+                        </div>
+                    </a>
+                </li>
+               
+                <div class="clearfix"></div>
+            </ul>
+        </div>
+    </div>
+
+</body>
+
+
+
+
+
+

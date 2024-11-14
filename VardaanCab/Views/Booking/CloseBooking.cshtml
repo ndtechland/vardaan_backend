@@ -1,0 +1,525 @@
+﻿@model VardaanCab.Models.DTO.CorporateBillingDTO
+@{
+    ViewBag.Title = "Close Booking";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var ptype = Model.PackageType == "outstation" ? "outstation" : "reg";
+}
+
+<style>
+    #main {
+        margin: auto;
+        width: 99%;
+    }
+
+    .outstation {
+        display: none;
+    }
+
+    .reg {
+        display: block;
+    }
+</style>
+
+<div id="main">
+    @if (TempData["msg"] != null)
+    {
+        <div class="row r">
+            <div class="col-lg-12">
+                <div class="alert alert-info">
+                    @TempData["msg"]
+                </div>
+            </div>
+        </div>
+    }
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(a => a.Booking_Id)
+        @Html.HiddenFor(a => a.Company_Id)
+        @Html.HiddenFor(a => a.GuestName)
+        @Html.HiddenFor(a => a.DutyAddress)
+        @Html.HiddenFor(a => a.Term)
+        @Html.HiddenFor(a => a.sDate)
+        @Html.HiddenFor(a => a.eDate)
+        @Html.HiddenFor(a => a.Page)
+        @Html.HiddenFor(a => a.Package8HourFare)
+        @Html.HiddenFor(a => a.PackageType)
+        @Html.HiddenFor(a => a.MenuId)
+        <input type="hidden" id="oldFare" value="@Model.Fare" />
+        <input type="hidden" id="strartHrs" value="@Model.StartHour" />
+        <input type="hidden" id="pickupDate" , value="@String.Format("{0:yyyy-MM-dd}", Model.JourneyStartDate)" />
+        <input type="hidden" id="priURL" value="@ViewBag.priviousURL" />
+
+        <div class="row r">
+            <div class="col-md-12">
+                <h2>
+                    @*<a href="@Url.Action("UnbilledBooking", new { page = Model.Page, term = Model.Term, menuId = Model.MenuId,sDate=Model.sDate,eDate=Model.eDate })" class="btn btn-info">Back</a>*@
+                    <a href="@ViewBag.priviousURL" class="btn btn-info">Back</a>
+                    Close Booking
+                </h2>
+                <hr />
+            </div>
+
+        </div>
+        <div class="row r">
+            <div class="col-md-3">
+                <b>  Booking ID - </b>
+                <span>    @ViewBag.bookingId</span>
+
+            </div>
+
+            <div class="col-md-4">
+                <b>   Cab No - </b>
+                <span> @ViewBag.CabNo</span>
+
+            </div>
+            <div class="col-md-4">
+                <b>   Company Name - </b>
+                <span >@ViewBag.companyName</span>
+                <input id="companyname" type="hidden" value="@ViewBag.companyName" />
+            </div>
+        </div>
+        <div class="row r">
+
+            <div class="col-md-3">
+                Billing State *
+                @Html.DropDownListFor(a => a.StateGstin_Id, Model.StateWiseGstinList, "Select Billing State", new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.StateGstin_Id)
+                </span>
+            </div>
+            <div class="col-md-3">
+                Fare *
+                @Html.TextBoxFor(a => a.Fare, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.Fare)
+                </span>
+            </div>
+            <div class="col-md-3">
+                Desired Car
+                @Html.TextBoxFor(a => a.DesiredCar, new { @class = "form-control", @readonly = "readonly" })
+
+            </div>
+            @if (Model.PackageType == "outstation")
+            {
+                <div class="col-md-2">
+                    TA / Day
+                    @Html.TextBoxFor(a => a.OutStationChargeRate, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    TA *
+                    @Html.TextBoxFor(a => a.OutStationCharge, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                </div>
+            }
+
+        </div>
+
+
+        <div class="row r">
+            <div class="col-md-4">
+                Start Kms. *
+                @Html.TextBoxFor(a => a.StartKms, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.StartKms)
+                </span>
+            </div>
+            <div class="col-md-4">
+                End Kms. *
+                @Html.TextBoxFor(a => a.EndKms, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.EndKms)
+                </span>
+            </div>
+            <div class="col-md-4">
+                Total Kms.*
+                @Html.TextBoxFor(a => a.TotalKms, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.TotalKms)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-2">
+                Min Kms @if (Model.PackageType == "outstation")
+                {<text>/ Day</text>} *
+                @Html.TextBoxFor(a => a.MinKm, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.MinKm)
+                </span>
+            </div>
+            @if (Model.PackageType == "outstation")
+            {
+                <div class="col-md-2">
+                    Total Min Kms
+                    <input type="number" class="form-control" id="totalMinKms" value="@Model.MinKm" readonly />
+                </div>
+            }
+
+            <div class="col-md-2">
+                Extra Kms*
+                @Html.TextBoxFor(a => a.ExtraKms, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraKms)
+                </span>
+            </div>
+
+            <div class="col-md-2">
+                Rate / Extra km *
+                @Html.TextBoxFor(a => a.ExtraKmsRate, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraKmsRate)
+                </span>
+            </div>
+
+            <div class="col-md-4">
+                Extra km charge*
+                @Html.TextBoxFor(a => a.ExtraKmsCharge, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraKmsCharge)
+                </span>
+            </div>
+
+        </div>
+
+        <div class="row r">
+            @if (Model.PackageType == "outstation")
+            {
+                <div class="col-md-3">
+                    Start Date *
+                    @Html.TextBoxFor(a => a.JourneyStartDate, String.Format("{0:yyyy-MM-dd}", Model.JourneyStartDate), new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.JourneyStartDate)
+                    </span>
+                </div>
+
+                <div class="col-md-2">
+                    Closing Date *
+                    @Html.TextBoxFor(a => a.JourneyClosingDate, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.JourneyClosingDate)
+                    </span>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-3">
+                    Start Date *
+                    @Html.TextBoxFor(a => a.JourneyStartDate, String.Format("{0:yyyy-MM-dd}", Model.JourneyStartDate), new { @class = "form-control sdp" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.JourneyStartDate)
+                    </span>
+                </div>
+
+                <div class="col-md-2">
+                    Closing Date *
+                    @Html.TextBoxFor(a => a.JourneyClosingDate, new { @class = "form-control sdp" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.JourneyClosingDate)
+                    </span>
+                </div>
+            }
+            <div class="col-md-2">
+                Start Hour *
+                @Html.TextBoxFor(a => a.StartHour, new { @class = "form-control tp" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.StartHour)
+                </span>
+            </div>
+
+
+
+
+
+            <div class="col-md-2">
+                Closing Hour *
+                @Html.TextBoxFor(a => a.EndHour, new { @class = "form-control tp" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.EndHour)
+                </span>
+            </div>
+
+            <div class="col-md-2 @ptype">
+                Total Hrs.*
+                @Html.TextBoxFor(a => a.TotalHrs, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.TotalHrs)
+                </span>
+            </div>
+
+            @if (Model.PackageType == "outstation")
+            {
+                <div class="col-md-2">
+                    Days *
+                    @Html.TextBoxFor(a => a.OutStationDays, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(a => a.OutStationDays)
+                    </span>
+                </div>
+            }
+        </div>
+
+        <div class="row r @ptype">
+            <div class="col-md-3">
+                Min Hrs. *
+                @Html.TextBoxFor(a => a.MinHrs, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.MinHrs)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Extra Hours. *
+                @Html.TextBoxFor(a => a.ExtraHrs, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.TotalKms)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Rate/ Extra Hour.*
+                @Html.TextBoxFor(a => a.ExtraHrsRate, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraHrsRate)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Charge for extra Hour *
+                @Html.TextBoxFor(a => a.ExtraHrsCharge, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ExtraHrsCharge)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+
+            <div class="col-md-3">
+                Total Nights *
+                @Html.TextBoxFor(a => a.TotalNight, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.TotalNight)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Rate/Night *
+                @Html.TextBoxFor(a => a.NightRate, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NightRate)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Night Charges *
+                @Html.TextBoxFor(a => a.NightCharge, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.NightCharge)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Misc. Charges *
+                @Html.TextBoxFor(a => a.MiscCharge, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.MiscCharge)
+                </span>
+            </div>
+
+        </div>
+
+        <div class="row r">
+            <div class="col-md-3">
+                Parking  Charges
+                @Html.TextBoxFor(a => a.ParkCharge, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.ParkCharge)
+                </span>
+            </div>
+            <div class="col-md-3">
+                Toll  Charges
+                @Html.TextBoxFor(a => a.TollCharge, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.TollCharge)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                MCD
+                @Html.TextBoxFor(a => a.MCD, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.MCD)
+                </span>
+            </div>
+            <div class="col-md-3">
+                Taxes *
+                @Html.TextBoxFor(a => a.InterStateCharge, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.InterStateCharge)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r" style="display:none">
+
+            <div class="col-md-3">
+                Outstation Charges TA/Day
+                @Html.TextBoxFor(a => a.OutStationChargeRate, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.OutStationChargeRate)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Outstation  Days *
+                @Html.TextBoxFor(a => a.OutStationDays, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.OutStationDays)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Outstation  Charges *
+                @Html.TextBoxFor(a => a.OutStationCharge, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.OutStationCharge)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-4">
+                Increase/Decrease in fuel  (eg. -3 or 3)
+                @Html.TextBoxFor(a => a.IncreaseDecreaseInFuel, new { @class = "form-control", type = "number" })
+                <br />
+
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.IncreaseDecreaseInFuel)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Fuel Efficiency
+                @Html.TextBoxFor(a => a.FuelEfficiency, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.FuelEfficiency)
+                </span>
+            </div>
+
+            <div class="col-md-2">
+                Fuel Charge
+                @Html.TextBoxFor(a => a.FuelCharge, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.FuelCharge)
+                </span>
+            </div>
+
+            <div class="col-md-2">
+                Net Amount
+                @Html.TextBoxFor(a => a.NetAmount, new { id = "netAmount", @class = "form-control", type = "number", @readonly = "readonly" })
+
+            </div>
+
+        </div>
+
+        <div class="row r">
+            <div class="col-md-3">
+                Discount Type
+                @Html.DropDownListFor(a => a.DiscountType, Model.DiscountTypes, "Select", new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.OutStationChargeRate)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Discount Value
+                @Html.TextBoxFor(a => a.DiscountValue, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.DiscountValue)
+                </span>
+            </div>
+
+            <div class="col-md-3">
+                Total Dicount (Rs.)
+                @Html.TextBoxFor(a => a.DiscountAmount, new { @class = "form-control", type = "number", @readonly = "readonly" })
+
+            </div>
+
+            <div class="col-md-3">
+                Total Amount
+                @Html.TextBoxFor(a => a.Total, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.Total)
+                </span>
+            </div>
+
+        </div>
+
+        <div class="row r">
+            <div class="col-md-4">
+                Vendor Commision Type *
+                @Html.DropDownListFor(a => a.CommisionType,
+            new List<SelectListItem> {
+            new SelectListItem {Text="Percent",Value="Percent" },
+            new SelectListItem {Text="None",Value="None" }
+            }, "Select", new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.CommisionType)
+                </span>
+            </div>
+
+
+            <div class="col-md-4" id="commisionDiv" @if (Model.CommisionType != "Percent") { <text> style="display:none" </text> }>
+                Commision
+                @Html.TextBoxFor(a => a.VendorCommision, new { @class = "form-control", type = "number" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.VendorCommision)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+                Visit Place
+                @Html.TextAreaFor(a => a.VisitedPlace, new { @class = "form-control" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.VisitedPlace)
+                </span>
+            </div>
+        </div>
+
+        <div class="row r">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary btn-block">Save</button>
+            </div>
+        </div>
+    }
+
+</div>
+@if (Model.PackageType == "outstation")
+{
+    <script src="/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="/Scripts/outstationClosing.js"></script>
+}
+else
+{
+    <script src="/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="/Scripts/closeBookingJs.js"></script>
+}
+<script>
+    $("#CommisionType").change(function () {
+        var commisionType = $(this).val();
+        var commisionDiv = $("#commisionDiv");
+        if (commisionType == "Percent")
+            commisionDiv.show();
+        else
+            commisionDiv.hide();
+    })
+
+
+
+
+</script>

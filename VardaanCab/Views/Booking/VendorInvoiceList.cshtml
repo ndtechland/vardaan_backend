@@ -1,0 +1,364 @@
+﻿@model VardaanCab.Models.ViewModels.CIBillingListVm
+@{
+    ViewBag.Title = "Vendor Billing List";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+
+}
+
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+        font: 12px;
+    }
+
+    #cancel {
+        font-weight: bold;
+        color: #bf2a2a;
+        cursor: pointer;
+    }
+
+    .link {
+        cursor: pointer;
+    }
+
+    .linkText {
+        font-weight: bold;
+        color: #441b71;
+    }
+
+    #bookingId {
+        color: #1a257d !important;
+    }
+
+    #ctable {
+        border: 1px solid #1a257d;
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        margin: 0px;
+        font-size: 12px !important;
+    }
+
+        #ctable td, th {
+            color: #1a257d !important;
+            margin: 0px;
+            border: 1px solid #1a257d;
+            padding: 2px 2px;
+        }
+
+    hr {
+        border-color: #293ac2 !important;
+    }
+</style>
+
+
+<div id="main">
+    <h2>
+        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+        &nbsp;
+        Vendor Billing List
+    </h2>
+    <div class="row">
+    </div>
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+        <div class="row r">
+            <div class="col-md-2">
+                <input type="text" value="@Model.sDate" placeholder="Date From" name="sDate" class="form-control sdp" />
+            </div>
+            <div class="col-md-2">
+                <input type="text" placeholder="Date To" value="@Model.eDate" name="eDate" class="form-control sdp" />
+            </div>
+            <div class="col-md-4">
+                <input type="text" placeholder="CabNo/Mobile/Vendor/BookingId/DsNo." value="@Model.Term" class="form-control" name="term" />
+            </div>
+            <div class="col-md-4">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/Booking/VendorInvoiceList?&menuId=@ViewBag.menuId">Show all</a>
+                <button type="button" class="btn btn-info" onclick="Export()"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+        </div>
+    }
+
+
+
+
+    <div class="row r">
+        <div class="col-md-12" style="height:100% !important;">
+            <table id="ctable">
+                <thead>
+                    <tr>
+                        <th style="width:110px">BookingId </th>
+                        <th style="width:165px">  Organization </th>
+                        <th style="width:120px">Date</th>
+                        <th>Rental Type </th>
+                        <th>  Cab  </th>
+                        <th style="width:120px">Kms & hrs</th>
+                        <th style="width:120px">  Fare </th>
+                       
+                        <th style="width:110px">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Bills)
+                    {
+                        <tr>
+                            <td class="sticky-col first-col" style="cursor:pointer;text-decoration:underline" data-placement="top" data-toggle="tooltip" title="@item.UpdateDescription">
+                                <b>#@(++Model.SrNo)</b> <br />
+                                BookingId<br /> @item.BookingId
+                            </td>
+
+
+                            <td>
+                                <b>@item.Company</b>
+                                @*@if (Model.IsNrg)
+                                    {
+                                        <span>
+                                            <br />
+                                            <b>Type:</b>  @item.NrgType <br />
+                                            <b> Payment:</b> @item.PaymentType
+                                        </span>
+                                    }*@
+                                <hr />
+                                <b> Guest:</b> @item.GuestName  <br />
+                                <b> Booker:</b> @item.BookedBy <br />
+                                <b> Mobile:</b> @item.Mobile
+                            </td>
+                            <td>
+                                <b>Duty </b> <br /> @item.InvoiceDate.ToString("dd-MMM-yyyy") <hr />
+
+                                <b>From</b> <br />
+                                @item.JourneyDate.ToString("dd-MMM-yyyy")<br />
+                                <b>To</b> <br />
+                                @item.JourneyEndDate.ToString("dd-MMM-yyyy") <br />
+                                @*City:  @item.City*@
+                            </td>
+                            <td>  @item.BookingType (@item.PackageTypeName)</td>
+
+                            <td>
+                                Booked: @item.CabBooked <br />
+                                Alloted: @item.CabAlloted  <br />
+                                Cab No :  @item.CabNo
+                            </td>
+
+                            <td>
+                                StKm: @item.StartKm <br />
+                                EndKm: @item.EndKm <br />
+                                TotalKm:  @item.TotalKm <br />
+                                ExtraKm:  @item.ExtraKm <br/>
+                                ExtraKmRate: @item.ExtraKmsRate<br/>
+                                ExtraKmsCharge: @item.ExtraKmsCharge <hr />
+                                STime: @item.StartTime <br />
+                                ETime: @item.ClosingTime <br />
+                                TotalHr @(TimeSpan.FromHours(item.TotalHours).ToString("hh\\:mm"))<br />
+                                ExtraHr: @(TimeSpan.FromHours(item.ExtraHours).ToString("hh\\:mm"))<br/>
+                                ExtraHrRate: @item.ExtraHrsRate<br />
+                                ExtraHrsCharge: @item.ExtraHrsCharge 
+                            </td>
+                            <td>
+                                Fare:  @item.Fare <br />
+                                @if (item.NightCharges > 0)
+                                {
+                                    <span>NightChrg: @item.NightCharges <br /></span>
+                                }
+                                @if (item.TotalNights > 0)
+                                {
+                                    <span> @@Nights: @item.TotalNights  <br /></span>
+                                }
+
+                                Parking: @item.ParkingChage <br />
+                                Toll:  @item.TollCharge <br />
+                                MCD: @item.MCD <br />
+                                MiscCharge: @item.MiscCharge <br />
+                                @if (!string.IsNullOrEmpty(item.DiscountType))
+                                {
+                                    <span>Disc.Type: @item.DiscountType</span> <br />
+                                }
+                                @if (item.DiscountValue > 0)
+                                {
+                                    <span>Disc Val: @item.DiscountValue</span> <br />
+                                }
+                                @if (item.DiscountAmount > 0)
+                                {
+                                    <span> Discount:  @item.DiscountAmount</span> <br />
+                                }
+
+                               
+                                @if (item.CGST > 0)
+                                {
+                                    <span> CGST : @item.CGST</span> <br />
+                                }
+                                @if (item.SGST > 0)
+                                {
+                                    <span>SGST : @item.SGST  </span> <br />
+                                }
+                                @if (item.IGST > 0)
+                                {
+                                    <span> IGST: @item.IGST</span> <br />
+                                }
+
+                                <b>Total:  @item.TotalAmount </b>
+                            </td>
+                          
+                            <td>
+                                @if (links.Contains("Vendor Invoice"))
+                                {
+                                    @Html.ActionLink("Tax Invoice", "VendorTaxInvoice", new { id = item.Id, IsTaxInvoice = true, menuId = ViewBag.menuId }, new { @class = "link linkText" })
+                                }
+                                @if (links.Contains("Vendor Invoice"))
+                                { @Html.ActionLink("Performa Invoice", "VendorTaxInvoice", new { id = item.Id, IsTaxInvoice = false, menuId = ViewBag.menuId }, new { @class = "link linkText" })
+                                }
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/Booking/VendorInvoiceList?sDate=@Model.sDate&eDate=@Model.eDate&term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+
+<script>
+    function Export()
+    {
+        var _term = '@Model.Term';
+        var _page=@Model.Page;
+        var _menuId=@ViewBag.menuId;
+        var _sDate='@Model.sDate';
+        var _eDate='@Model.eDate';
+        var _export = true;
+        window.location.href=`/Booking/VendorInvoiceList?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&page=${_page}&menuId=${_menuId}&export=${_export}`;
+    }
+</script>
+
+@*<div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table id="table1" class="table">
+                <thead>
+                    <tr>
+                        <th class="sticky-col first-col">  InvoiceNo </th>
+                        <th class="sticky-col second-col">  InvoiceDate </th>
+                        <th class="sticky-col third-col">  Booking Id </th>
+                        <th>  Company </th>
+                        <th>Mobile</th>
+                        <th>  Journey Date </th>
+                        <th>  Journey EndDate </th>
+
+                        <th>  City </th>
+                        <th>  Booking Type </th>
+                        <th>  Booked By </th>
+                        <th>  Closing Date </th>
+                        <th>  ClosedBy </th>
+                        <th>  Cab Alloted </th>
+                        <th>  CabNo </th>
+                        <th>Start Km</th>
+                        <th>End Km</th>
+                        <th>  Total Km </th>
+                        <th>  Extra Km </th>
+                        <th>  Start Time </th>
+                        <th>  Closing Time </th>
+                        <th>  Total Hours </th>
+                        <th>  Extra Hours </th>
+                        <th>  Fare </th>
+                        <th>Commision(%)</th>
+                        <th>Total Nights</th>
+                        <th>  Night Charges </th>
+                        <th>  Parking Charges </th>
+                        <th>  InterState Charges </th>
+                        <th>  Toll Charges </th>
+                        <th>MCD</th>
+                        <th>  CGST </th>
+                        <th>  SGST </th>
+                        <th>  IGST </th>
+                        <th>  TotalAmount </th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Bills)
+                    {
+                        <tr>
+                            <td class="sticky-col first-col"> @(++Model.SrNo) <br />  @item.InvoiceNo </td>
+                            <td class="sticky-col second-col">  @item.InvoiceDate.ToString("dd-MMM-yyyy") </td>
+                            <td class="sticky-col third-col">  @item.BookingId </td>
+                            <td>  @item.Company </td>
+                            <td>  @item.Mobile</td>
+                            <td>  @item.JourneyDate.ToString("dd-MMM-yyyy") </td>
+                            <td>  @item.JourneyEndDate.ToString("dd-MMM-yyyy") </td>
+                            <td>  @item.City </td>
+                            <td>  @item.BookingType </td>
+                            <td>  @item.BookedBy </td>
+                            <td>
+                                @if (item.ClosingDate != null)
+                                {
+                                    @item.ClosingDate.Value.ToString("dd-MMM-yyyy")
+                                }
+                            </td>
+                            <td>  @item.ClosedBy </td>
+                            <td>  @item.CabAlloted </td>
+                            <td>  @item.CabNo </td>
+                            <td>@item.StartKm</td>
+                            <td>@item.EndKm</td>
+                            <td>  @item.TotalKm </td>
+                            <td>  @item.ExtraKm </td>
+                            <td>  @item.StartTime </td>
+                            <td>  @item.ClosingTime </td>
+                            <td>  @(TimeSpan.FromHours(item.TotalHours).ToString("hh\\:mm")) </td>
+                            <td>  @(TimeSpan.FromHours(item.ExtraHours).ToString("hh\\:mm")) </td>
+                            <td>  @item.Fare </td>
+                            <td>@item.VendorCommission</td>
+                            <td>@item.TotalNights</td>
+                            <td>  @item.NightCharges </td>
+                            <td>  @item.ParkingChage </td>
+                            <td>  @item.StateCharge </td>
+                            <td>  @item.TollCharge </td>
+                            <td>  @item.MCD </td>
+                            <td>  @item.CGST </td>
+                            <td>  @item.SGST </td>
+                            <td>  @item.IGST </td>
+                            <td>  @item.TotalAmount </td>
+                            <td>
+                                @if (item.IsCancelled)
+                                {
+                                    <span class="text-danger">Cancelled</span>
+                                }
+                                else
+                                {
+                                    <span class="text-success">Okey</span>
+                                }
+                            </td>
+                            <td>
+                                @if (links.Contains("Vendor Invoice"))
+                                {
+                                    @Html.ActionLink("Tax Invoice", "VendorTaxInvoice", new { id = item.Id, IsTaxInvoice = true, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                                }
+                                @if (links.Contains("Vendor Invoice"))
+                                { @Html.ActionLink("Performa Invoice", "VendorTaxInvoice", new { id = item.Id, IsTaxInvoice = false, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>*@

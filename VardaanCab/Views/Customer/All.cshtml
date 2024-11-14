@@ -1,0 +1,187 @@
+﻿@model VardaanCab.Models.ViewModels.CustomerListVm
+@{
+    ViewBag.Title = "Clients";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+    int sn = Model.SrNo;
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+
+<style>
+    #main {
+        margin: auto;
+        width: 99%;
+        /*height:470px;
+        overflow:scroll;*/
+    }
+
+</style>
+
+<div id="main">
+    <h2>Clients</h2>
+    <div class="row">
+        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+
+    </div>
+    <input type="hidden" id="page" value="@Model.Page"/>
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+        <div class="row r">
+            <div class="col-md-4">
+                <input type="text" placeholder="Search by Name/ContactNo" class="form-control" value="@Model.Term" name="term" id="term" />
+            </div>
+            <div class="col-md-8">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/Customer/All?menuId=@ViewBag.menuId">Show all</a>
+                <a class="btn btn-info" href="/Customer/Add?menuId=@ViewBag.menuId">+ Add More</a>
+                <button type="button" onclick="Export()" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+        </div>
+    }
+
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table  id="table1" class="table">
+                <thead>
+                    <tr>
+                        <th class="sticky-col first-col">S.No.</th>
+                        <th class="sticky-col second-col">Company Name</th>
+                        <th>Contact Person Name</th>
+                        <th>State</th>
+                        <th>City</th>
+                        <th>Registration Date</th>
+                        <th>Parent Client</th>
+                        <th>Email</th>
+                        <th>ContactNo.</th>
+                        <th>Alternate No.</th>
+                        <th>FullAddress</th>
+                        <th>GSTIN</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Customers)
+                    {
+                    <tr @if (!item.IsActive) { <text> style="background-color:red;color:white!important" </text> }>
+                        <td class="sticky-col first-col">@(++sn)</td>
+                        <td class="sticky-col second-col">
+                            @if (!string.IsNullOrEmpty(item.CompanyName))
+                            {
+                                <span>@item.CompanyName</span>
+                            }
+                        </td>
+                        <td>@item.CustomerName</td>
+                        <td>@item.StateName (Code : @item.StateCode)</td>
+                        <td>@item.City_Name</td>
+                        <td>@item.CreateDate.ToString("dd-MMM-yyyy")</td>
+                        <td>@item.ParentCustomer</td>
+                        <td>@item.Email</td>
+                        <td>@item.ContactNo</td>
+                        <td>@item.AlternateNo</td>
+                        <td>@item.FullAddress</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.GSTIN))
+                            {
+                                <span>@item.GSTIN</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.IsActive)
+                            {
+                                if (links.Contains("Change Client Status"))
+                                {
+                                    <a href="@Url.Action("ChangeStatus",new { id=item.Id,menuId=ViewBag.menuId})" class="btn btn-success">Active</a>
+                                }
+                                else
+                                {
+                                    <span>Active</span>
+                                }
+                            }
+                            else
+                            {
+                                if (links.Contains("Change Client Status"))
+                                {
+                                    <a href="@Url.Action("ChangeStatus",new { id=item.Id,menuId=ViewBag.menuId})" class="btn btn-danger">Inactive</a>
+                                }
+                                else
+                                {
+                                    <span>Inactive</span>
+                                }
+
+                            }
+                        </td>
+
+                        <td>
+                            @if (links.Contains("Show Client Package"))
+                            {
+                                @Html.ActionLink("View Package", "ViewPackage", "ClientPackage", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                            }
+                            @if (links.Contains("Add Client Package"))
+                            {
+                                <a href="/ClientPackage/Add?ClientId=@item.Id&menuId=@ViewBag.menuId" class="btn btn-info">Add Package</a>
+                            }
+                            @if (links.Contains("Edit Client"))
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                            }
+                            @if (links.Contains("Delete Client"))
+                            {
+                                <span class="btn btn-danger" onclick="deleteRecord('/Customer/Delete?id=@item.Id&menuId = @ViewBag.menuId')">Delete</span>
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+     
+
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/Customer/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    function deleteRecord(url)
+    {
+        if(window.confirm('do you want to delete?'))
+        {
+            $.get(url).then(function (r) {
+                if (r == "ok") {
+                    var loc = window.location.href;
+                    window.location.href = loc;
+                }
+            }, function (e) {
+                alert("Server error");
+            })
+        }
+    }
+
+    function Export()
+    {
+        var _term = '@Model.Term';
+        var _page=@Model.Page;
+        var _menuId=@ViewBag.menuId;
+        var _export = true;
+        window.location.href=`/Customer/All?term=${_term}&page=${_page}&export=${_export}&menuId=${_menuId}`;
+    }
+
+   
+</script>
+
+
+

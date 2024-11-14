@@ -1,0 +1,220 @@
+﻿<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Visitors Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- bootstrap-css -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- //bootstrap-css -->
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel='stylesheet' type='text/css' />
+    <link href="/css/style-responsive.css" rel="stylesheet" />
+    <!-- font CSS -->
+    <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <!-- font-awesome icons -->
+    <link rel="stylesheet" href="/css/font.css" type="text/css" />
+    <link href="/css/font-awesome.css" rel="stylesheet">
+    <link href="/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    @*<link href="/css/jquery.timepicker.min.css" rel="stylesheet" />*@
+    <!-- //font-awesome icons -->
+    <script src="/js/jquery2.0.3.min.js"></script>
+    <style>
+         .dp,.sdp {
+            background: url(/Images/calender.png) right no-repeat;
+            background-size: contain;
+        }
+
+        .formBox {
+            border: 1px solid #848484;
+            margin-left: 2px;
+            padding-top: 2%;
+            padding-bottom: 2%;
+        }
+
+        .thumb {
+            width: 120px;
+            height: 90px;
+        }
+
+        .r{
+            margin-top:1%;
+        }
+         input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+         .toolTip{
+      cursor:pointer;color:#2c617c;text-decoration:underline;
+    }
+    .s{
+        height:350px;
+        overflow:auto;
+    }
+
+     input,select,textarea{
+       border-color: #808080 !important;
+    }
+    </style>
+</head>
+<body>
+    <section id="container">
+        <!--header start-->
+        <header class="header fixed-top clearfix">
+            <!--logo start-->
+            <div class="brand">
+                <a href="#" class="logo">
+                    Login
+                </a>
+                <div class="sidebar-toggle-box">
+                    <div class="fa fa-bars"></div>
+                </div>
+            </div>
+            <!--logo end-->
+          
+            <div class="top-nav clearfix">
+
+                <!--search & user info start-->
+                <div style="float:right;">
+                    <ul class="nav pull-right top-menu">
+
+                        <!-- user login dropdown start-->
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                @* <img alt="" src="/images/2.png">*@
+                                <span class="username">Setting</span>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu extended logout">
+                                @*<li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>*@
+                                <li><a href="/Admin/ChangePassword"><i class="fa fa-cog"></i> Change Password</a></li>
+                                <li><a href="/Admin/Logout"><i class="fa fa-key"></i> Log Out</a></li>
+                            </ul>
+                        </li>
+                        <!-- user login dropdown end -->
+
+                    </ul>
+                </div>
+                <!--search & user info end-->
+                @if (Session["uEmail"] == null)
+                {
+                    Response.Redirect("/Admin/Login");
+                }
+                else
+                {
+                    <div style="float:right;"><span>Welcome : @Session["uEmail"].ToString()</span></div>
+                }
+            </div>
+
+</header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+           @Html.Action("ShowMenus","Admin")
+        </aside>
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                <div class="form-w3layouts">
+                    <!-- page start-->
+                    <!-- page start-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                           @RenderBody()
+                        </div>
+
+                    </div>
+                    <!-- page end-->
+                </div>
+            </section>
+            <!-- footer -->
+            <!-- / footer -->
+        </section>
+
+        <!--main content end-->
+    </section>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jquery.dcjqaccordion.2.7.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="/js/jquery.slimscroll.js"></script>
+    <script src="/js/jquery.nicescroll.js"></script>
+    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/js/flot-chart/excanvas.min.js"></script><![endif]-->
+    <script src="/js/jquery.scrollTo.js"></script>
+    <script src="/js/jquery.validate.min.js"></script>
+    <script src="/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+        $("input").attr("autocomplete", "off");
+        $(".dp").datepicker({
+            yearRange: "-100:+100",
+            changeMonth: true,
+            changeYear: true,
+            minDate: '0',
+            dateFormat: 'yy-mm-dd'
+        });
+    </script>
+
+    <script>
+        $(".sdp").datepicker({
+            yearRange: "-100:+100",
+            changeMonth: true,
+            changeYear: true,           
+            dateFormat: 'yy-mm-dd'
+        });
+    </script>
+    <link href="/timepicker/jquery.timepicker.min.css" rel="stylesheet" />
+    <script src="/timepicker/jquery.timepicker.min.js"></script>
+    <script>
+      
+        $('table').on('scroll', function () {
+            $("#" + this.id + " > *").width($(this).width() + $(this).scrollLeft());
+        });
+        $('.tp').timepicker({
+            
+            //defaultTime: '12:00:00',// 12:00:00 AM
+            timeFormat: 'H:i:s',
+            //minTime: '12:00:00', // 12:00:00 AM
+            maxHour: 24,       
+            startTime: new Date(0,0,0,12,0,0,0), // 12:00:00 AM
+            step: 05 // 05 minutes
+            
+        });
+      
+    </script>
+   
+
+    <!--duplicate form submit prevent-->
+    <script>
+
+        //$("form").submit(function ()
+        //{
+        //    //$('input[type=submit]', this).attr('disabled', 'disabled');
+        //    // submit more than once return false
+        //    $(this).submit(function () {
+        //        return false;
+        //    });
+        //    // submit once return true
+        //    return true;
+        //});
+
+        $("form").submit(function () {
+            $('input[type=submit]', this).attr('disabled', 'disabled');
+            window.setTimeout(function () {
+                $('input[type=submit]').prop('disabled', false);
+            }, 3000)
+        });
+      
+    </script>
+</body>
+

@@ -1,0 +1,117 @@
+﻿@model VardaanCab.Models.ViewModels.NrgPackageVm
+@{
+    ViewBag.Title = "Corporate Packages";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    int sn = Model.SrNo;
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+<style>
+    #main {
+        margin: auto;
+        width: 99%;
+    }
+
+</style>
+
+<div id="main">
+    <h2>Corporate Packages</h2>
+    <div class="row">
+        <a href="/SubMenu/CorporatePackageSubMenu" class="btn btn-info" style="margin-left:2%">Back</a>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" placeholder="Search by Vehicle Model" class="form-control" name="term" />
+            </div>
+            <div class="col-md-8">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/NrdPackage/All">Show all</a>
+                <a class="btn btn-info" href="/NrdPackage/Add">+ Add More</a>
+            </div>
+        </div>
+    }
+
+    
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="sticky-col first-col">S.No.</th>
+                        <th class="sticky-col second-col">Booking Type</th>
+                        <th class="sticky-col third-col">Vehicle</th>
+                        <th>Fare</th>
+                        <th>MinKm</th>
+                        <th>MinHrs</th>
+                        <th>ExtraPerHour</th>
+                        <th>ExtraPerKm</th>
+                        <th>NightCharges</th>
+                        @*<th>Interstate Charges</th>*@
+                        <th>Outstation Charges</th>
+                        <th>Created/Updated By</th>
+                        <th>Create/Update Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Packages)
+                    {
+                        <tr>
+                            <td class="sticky-col first-col">@(++sn)</td>
+                            <td class="sticky-col second-col">@item.RentalType</td>
+                            <td class="sticky-col third-col">@item.ModelName</td>
+                            <td>@item.Fare</td>
+                            <td>@item.MinKm</td>
+                            <td>@item.MinHrs</td>
+                            <td>@item.ExtraPerHour</td>
+                            <td>@item.ExtraPerKm</td>
+                            <td>@item.NightCharges</td>
+                           @* <td>@item.InterStateCharge</td>*@
+                            <td>@item.OutStationCharge</td>
+                            <td>@item.UpdatedByUser</td>
+                            <td>@item.UpdateDate.ToString("dd-MMM-yyyy")</td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+                                <span class="btn btn-danger" onclick="deleteRecord('/NrdPackage/Delete?id=@item.Id')">Delete</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/CorporatePackage/All?term=@Model.Term&page=@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    function deleteRecord(url)
+    {
+        if(window.confirm('do you want to delete?'))
+        {
+            $.get(url).then(function (r) {
+                if (r == "ok") {
+                    var loc = window.location.href;
+                    window.location.href = loc;
+                }
+            }, function (e) {
+                alert("Server error");
+            })
+        }
+    }
+</script>
+

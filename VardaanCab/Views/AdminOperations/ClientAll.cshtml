@@ -1,0 +1,127 @@
+﻿@model VardaanCab.Models.ViewModels.ClientUsersViewModel
+@{
+    ViewBag.Title = "Client Users";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
+    int sn = Model.SrNo;
+}
+<link href="~/css/fixtable.css" rel="stylesheet" />
+<style>
+    #main {
+        margin: auto;
+        width: 100%;
+    }
+</style>
+
+<div id="main">
+    <h2>Client Users</h2>
+    <div class="row">
+        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="row r">
+            <div class="col-md-6">
+                <input type="text" placeholder="Search by Name/Phone number" class="form-control" name="term" />
+            </div>
+            <div class="col-md-6">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/AdminOperations/ClientAll?menuId=@ViewBag.menuId">Show all</a>
+                <a class="btn btn-info" href="/AdminOperations/AddClient">+ Add More</a>
+            </div>
+        </div>
+    }
+
+
+    <div class="mainDiv">
+        <div class="wrapperTable table-scroll">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Company Name</th>
+                        <th>Client Name</th>
+                        <th>Phone Number</th>
+                        <th>Email Id</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.clientUsers)
+                    {
+                    <tr>
+                        <td>@(++sn)</td>
+                        <td>@item.CompanyName</td>
+                        <td>@item.ClientName</td>
+                        <td>@item.MobileNumber</td>
+                        <td>@item.Email</td>
+                        <td>
+                            @if (links.Contains("Edit User Detail"))
+                            {
+                                @Html.ActionLink("Edit", "EditClient", new { id = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-info" })
+                            }
+                            @if (links.Contains("Deactivate User"))
+                            {
+                                if (Convert.ToBoolean(item.IsActive))
+                                {
+                                    <span class="btn btn-danger" onclick="deactivateRecord('/AdminOperations/Deactivate?id=@item.Id&menuId=@ViewBag.menuId')">Deactivate</span>
+                                }
+                                else
+                                {
+                                    <span class="btn btn-danger" onclick="deactivateRecord('/AdminOperations/Deactivate?id=@item.Id&menuId=@ViewBag.menuId')">Activate</span>
+                                }
+                            }
+
+                            @*@Html.ActionLink("Customer", "ClientUserMapping", new { userId = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-info" })*@
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/AdminOperations/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery2.0.3.min.js"></script>
+<script>
+    function deleteRecord(url) {
+        if (window.confirm('do you want to delete?')) {
+            $.get(url).then(function (r) {
+                if (r == "ok") {
+                    var loc = window.location.href;
+                    window.location.href = loc;
+                }
+            }, function (e) {
+                alert("Server error");
+            })
+        }
+    }
+
+    function deactivateRecord(url) {
+        if (window.confirm('do you want to change the user status.?')) {
+            $.get(url).then(function (r) {
+                if (r == "ok") {
+                    var loc = window.location.href;
+                    window.location.href = loc;
+                }
+            }, function (e) {
+                alert("Server error");
+            })
+        }
+    }
+</script>
+

@@ -1,0 +1,194 @@
+﻿@model VardaanCab.Models.ViewModels.BookingViewMOdel
+@{
+    ViewBag.Title = "All bookings";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var dt = DateTime.Now;
+    int sn = Model.SrNo;
+}
+<link href="/css/fixtable.css" rel="stylesheet" />
+
+<style>
+    .linkText{
+       font-weight:bold;
+       color:#441b71;
+    }
+    .highlight{
+        font-weight:bold;
+        color:#1cad3a
+    }
+   #bookingId{
+        color: #1a257d !important;
+   }
+    #ctable{
+         border: 1px solid #1a257d;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  margin:0px;
+ font-size:12px !important;
+    }
+    #ctable td,th{
+        color: #1a257d !important;
+  margin:0px;
+   border:1px solid #1a257d;
+         padding: 2px 2px;
+    }
+    
+     hr{
+        border-color: #293ac2 !important;
+
+     }
+</style>
+
+<div id="main">
+    
+        
+    <h2><a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info">Back</a>&nbsp; Bookings</h2>
+    
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="menuId" value="@ViewBag.menuId"/>
+        <div class="row r">
+            <div class="col-md-4">
+                <input type="text" value="@Model.Term" placeholder="BookingId/Name/Company/Mobile" class="form-control" name="term" />
+            </div>
+            <div class="col-md-2">
+                <input type="text" value="@Model.sDate" placeholder="YYYY/MM/DD" class="form-control sdp" name="sDate" autocomplete="off" readonly />
+            </div>
+            <div class="col-md-2">
+                <input type="text" value="@Model.eDate" placeholder="YYYY/MM/DD" class="form-control sdp" name="eDate" autocomplete="off" readonly />
+            </div>
+            <div class="col-md-4">
+                <input type="submit" class="btn btn-info" value="Find" />
+                <a class="btn btn-info" href="/Booking/ShowAllBooking?menuId=@ViewBag.menuId">Show all</a>
+               @* <a class="btn btn-info" href="/Booking/CabBook"><i class="fa fa-plus-circle"></i> New Booking</a>*@
+                <button type="button" class="btn btn-info" onclick="Export()" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+            </div>
+        </div>
+    }
+
+
+    <div class="mainDiv">
+        @*<div class="wrapperTable table-scroll">
+          
+        </div>*@
+        <table id="ctable">
+            <thead>
+                <tr>
+                    <th>Booking Id</th>
+                    <th>Date</th>
+                    <th>Booker Detail</th>
+                    <th>Pickup-Drop</th>
+                    <th>Vehicle & Chauffeur</th>
+                    <th>Rental Type</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Bookings)
+                {
+
+                    <tr id="rowtr">
+
+                        <td style="cursor:pointer" title="@item.UpdateDescription">
+                            <b># @(++sn)</b> <br />
+                          <span id="linkText">@item.BookingId</span>  
+                        </td>
+                        <td>
+
+                            <b>Pickup <br /></b> @item.PickupDate.ToString("dd-MM-yyyy") @item.PickupTime
+                            <hr />
+                            <b>Booked <br /></b>
+                            @item.BookingDate.ToString("dd-MM-yyyy")
+
+                        </td>
+                        <td>
+                        <b>Service City : </b> @item.CityName <br />
+                        <b>Guest : </b>@item.CustomerName <br/>
+                        <b>Booker : </b> @item.BookedByPerson <br/>
+                          <b>Mobile: </b>  @item.ContactNo <br />
+                            <b>Email: </b><span style="word-break:break-all;"> @item.Email</span> <br />
+    <hr />
+    <span class="highlight">  @item.CompanyName </span>
+
+</td>
+                        
+                     
+                        
+
+                        <td>
+                            @item.PickupAddress
+                            @if (!string.IsNullOrEmpty(item.PickupLandMark))
+                            {
+                                <br />
+                                @item.PickupLandMark
+                            }
+                            <hr/>
+                            @item.DropAddress
+                            @if (!string.IsNullOrEmpty(item.DropLandmark))
+                            {
+                                <br />
+                                @item.DropLandmark
+                            }
+                        </td>
+
+                        <td>
+                            <b>Booked : </b> @item.DesiredCar<br />
+                            @if (!string.IsNullOrEmpty(item.VehicleName) && !string.IsNullOrEmpty(item.VehicleNo))
+                            {
+                                <hr />
+                                <b>Alloted :</b> @item.VehicleName<br />
+                                <b><span>Vehicle No: </span></b><span>@item.VehicleNo</span><br />
+                            }
+                            <br />
+                            @if (!string.IsNullOrEmpty(item.DriverName) && !string.IsNullOrEmpty(item.DriverContactNo))
+                            {
+                                <b><span>Driver: </span></b><span>@item.DriverName</span> <br />
+                                <b><span>Contact No: </span></b><span>@item.DriverContactNo</span>
+                            }
+                        </td>
+                        <td>(@item.PackageTypeName) <br />@item.RentalTypeName</td>
+
+
+                        <td id="status">@item.BookingStatusName</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row r r">
+        <div class="col-md-12">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                        <a href="/Booking/ShowAllBooking?term=@Model.Term&page=@i&menuId=@ViewBag.menuId&sDate=@Model.sDate&eDate=@Model.eDate">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+<script src="/Scripts/jquery-1.12.4.min.js"></script>
+<script>
+
+    function Export()
+    {
+        var _term = '@Model.Term';
+        var _page=@Model.Page;
+        var _menuId=@ViewBag.menuId;
+       
+        var _sDate='@Model.sDate';
+        var _eDate='@Model.eDate';
+        var _export = true;
+        window.location.href=`/Booking/ShowAllBooking?term=${_term}&sDate=${_sDate}&eDate=${_eDate}&page=${_page}&menuId=${_menuId}&export=${_export}`;
+    }
+
+   
+</script>
+
+
+
