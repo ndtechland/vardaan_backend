@@ -17,7 +17,7 @@ namespace VardaanCab.Controllers
     [Authorize]
     public class DriverController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
 
         public ActionResult All(string term = "", int page = 1, bool export = false, int menuId=0)
         {

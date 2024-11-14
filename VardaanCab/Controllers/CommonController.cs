@@ -11,7 +11,7 @@ namespace VardaanCab.Controllers
 {
     public class CommonController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         // GET: Common
         public ActionResult GetCityByState(int stateId)
         {

@@ -15,7 +15,7 @@ namespace VardaanCab.Controllers
     public class DriverLeaveController : Controller
     {
         // GET: DriverLeave
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository cr = new CommonRepository();
 
         public ActionResult AssignLeave(int menuId=0)

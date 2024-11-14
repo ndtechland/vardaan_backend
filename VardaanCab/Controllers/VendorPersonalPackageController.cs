@@ -15,7 +15,7 @@ namespace VardaanCab.Controllers
     public class VendorPersonalPackageController : Controller
     {
         // GET: VendorPersonalPackage
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository commonRepo = new CommonRepository();
 
         public ActionResult ViewPackage(int id, string term = "", int page = 1,int menuId=0)

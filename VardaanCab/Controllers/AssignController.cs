@@ -18,7 +18,7 @@ namespace VardaanCab.Controllers
     [Authorize]
     public class AssignController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository cr = new CommonRepository();
         // GET: Assign
 

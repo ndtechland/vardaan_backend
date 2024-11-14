@@ -19,7 +19,7 @@ namespace VardaanCab.Controllers
     public class VendorController : Controller
     {
         // GET: Vendor
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository commonRepo = new CommonRepository();
 
         public ActionResult Add(int menuId=0)

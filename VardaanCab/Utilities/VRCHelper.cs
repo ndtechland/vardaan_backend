@@ -9,7 +9,7 @@ namespace VardaanCab.Utilities
 {
     public class VRCHelper
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         public List<CustomerWithCity> getCustomerWithCity()
         {
             string cpbQuery = @"select c.Id,CompanyName as CustomerName,CompanyName+' - '+ci.CityName as CustomerNameWithCity from Customer c join CityMaster ci

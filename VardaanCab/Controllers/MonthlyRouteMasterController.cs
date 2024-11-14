@@ -13,7 +13,7 @@ namespace VardaanCab.Controllers
 {
     public class MonthlyRouteMasterController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository cr = new CommonRepository();
         StateMasterGstinRepository stateWiseGstinRepo = new StateMasterGstinRepository();
 

@@ -19,7 +19,7 @@ namespace VardaanCab.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository cr = new CommonRepository();
 
         [AllowAnonymous]

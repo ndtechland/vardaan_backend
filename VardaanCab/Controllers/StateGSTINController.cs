@@ -15,7 +15,7 @@ namespace VardaanCab.Controllers
     public class StateGSTINController : Controller
     {
         // GET: StateGSTIN
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         StateMasterGstinRepository swg = new StateMasterGstinRepository();
 
         public ActionResult ChangeStatus(int id,int menuId=0)

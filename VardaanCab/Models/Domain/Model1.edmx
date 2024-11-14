@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="VardaanCabOct24Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Vardaan_AdminModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Booking">
           <Key>
             <PropertyRef Name="Id" />
@@ -834,7 +834,7 @@
           <Property Name="NoOfDays" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'VardaanCabOct24.newVardaan.booking_backup11feb' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Vardaan_Admin.newVardaan.booking_backup11feb' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="booking_backup11feb">
           <Key>
             <PropertyRef Name="Id" />
@@ -906,7 +906,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.booking_backup11feb' do
           <Property Name="BookedByPersonMobileNo" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'VardaanCabOct24.newVardaan.bookingCab1475' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Vardaan_Admin.newVardaan.bookingCab1475' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="bookingCab1475">
           <Key>
             <PropertyRef Name="Id" />
@@ -979,7 +979,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.bookingCab1475' does no
           <Property Name="FinYear" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'VardaanCabOct24.newVardaan.cab1475' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Vardaan_Admin.newVardaan.cab1475' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="cab1475">
           <Key>
             <PropertyRef Name="Id" />
@@ -1021,7 +1021,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.cab1475' does not have 
           <Property Name="IsOutsider" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'VardaanCabOct24.newVardaan.log_2022' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Vardaan_Admin.newVardaan.log_2022' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="log_2022">
           <Key>
             <PropertyRef Name="Id" />
@@ -1036,7 +1036,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.log_2022' does not have
           <Property Name="Booking_Id" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SoftwareLink_15052023">
           <Key>
             <PropertyRef Name="Id" />
@@ -1377,7 +1377,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
           <Parameter Name="pageSize" Type="int" Mode="In" />
           <Parameter Name="TInvID" Type="int" Mode="In" />
         </Function>
-        <EntityContainer Name="VardaanCabOct24ModelStoreContainer">
+        <EntityContainer Name="Vardaan_AdminModelStoreContainer">
           <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cab" EntityType="Self.Cab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CabCategory" EntityType="Self.CabCategory" Schema="dbo" store:Type="Tables" />
@@ -1570,10 +1570,11 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
     FROM [newVardaan].[SoftwareLink_15052023] AS [SoftwareLink_15052023]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="VardaanCabOct24Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Vardaan_AdminModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Booking">
           <Key>
             <PropertyRef Name="Id" />
@@ -2612,7 +2613,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
           <Property Name="Parent_Id" Type="Int32" />
           <Property Name="Counts" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="DbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Vardaan_AdminEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Bookings" EntityType="Self.Booking" />
           <EntitySet Name="Cabs" EntityType="Self.Cab" />
           <EntitySet Name="CabCategories" EntityType="Self.CabCategory" />
@@ -2685,7 +2686,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="username" Mode="In" Type="String" />
             <Parameter Name="sessId" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetAllBooking" ReturnType="Collection(VardaanCabOct24Model.GetAllBooking_Result)">
+          <FunctionImport Name="GetAllBooking" ReturnType="Collection(Vardaan_AdminModel.GetAllBooking_Result)">
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
             <Parameter Name="eDate" Mode="In" Type="DateTime" />
@@ -2703,13 +2704,13 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="isExport" Mode="In" Type="Boolean" />
             <Parameter Name="userid" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="getAllParents" ReturnType="Collection(VardaanCabOct24Model.getAllParents_Result)">
+          <FunctionImport Name="getAllParents" ReturnType="Collection(Vardaan_AdminModel.getAllParents_Result)">
             <Parameter Name="categoryId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="getAutoGenratedInvNo" ReturnType="Collection(VardaanCabOct24Model.getAutoGenratedInvNo_Result)" />
+          <FunctionImport Name="getAutoGenratedInvNo" ReturnType="Collection(Vardaan_AdminModel.getAutoGenratedInvNo_Result)" />
           <FunctionImport Name="getAutoInvNo" ReturnType="Collection(String)" />
           <FunctionImport Name="getAutoProformaNo" ReturnType="Collection(Int64)" />
-          <FunctionImport Name="GetBooking" ReturnType="Collection(VardaanCabOct24Model.GetBooking_Result)">
+          <FunctionImport Name="GetBooking" ReturnType="Collection(Vardaan_AdminModel.GetBooking_Result)">
             <Parameter Name="bookingStatus" Mode="In" Type="Int32" />
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
@@ -2718,7 +2719,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="pageSize" Mode="In" Type="Int32" />
             <Parameter Name="isExport" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetBookingByClintUser" ReturnType="Collection(VardaanCabOct24Model.GetBookingByClintUser_Result)">
+          <FunctionImport Name="GetBookingByClintUser" ReturnType="Collection(Vardaan_AdminModel.GetBookingByClintUser_Result)">
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
             <Parameter Name="eDate" Mode="In" Type="DateTime" />
@@ -2727,7 +2728,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="isExport" Mode="In" Type="Boolean" />
             <Parameter Name="clintUID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetBookingByPendBookCategory" ReturnType="Collection(VardaanCabOct24Model.GetBookingByPendBookCategory_Result)">
+          <FunctionImport Name="GetBookingByPendBookCategory" ReturnType="Collection(Vardaan_AdminModel.GetBookingByPendBookCategory_Result)">
             <Parameter Name="bookingStatus" Mode="In" Type="Int32" />
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
@@ -2738,7 +2739,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="pbookingCat" Mode="In" Type="Int32" />
             <Parameter Name="userid" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetBookingCartDataTemp" ReturnType="Collection(VardaanCabOct24Model.GetBookingCartDataTemp_Result)">
+          <FunctionImport Name="GetBookingCartDataTemp" ReturnType="Collection(Vardaan_AdminModel.GetBookingCartDataTemp_Result)">
             <Parameter Name="isNrg" Mode="In" Type="Boolean" />
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
@@ -2778,7 +2779,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="pbookingCat" Mode="In" Type="Int32" />
             <Parameter Name="userid" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetCorporateDs" ReturnType="Collection(VardaanCabOct24Model.GetCorporateDs_Result)">
+          <FunctionImport Name="GetCorporateDs" ReturnType="Collection(Vardaan_AdminModel.GetCorporateDs_Result)">
             <Parameter Name="isNrg" Mode="In" Type="Boolean" />
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
@@ -2787,7 +2788,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="pageSize" Mode="In" Type="Int32" />
             <Parameter Name="isExport" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetCorporateDsByPType" ReturnType="Collection(VardaanCabOct24Model.GetCorporateDsByPType_Result)">
+          <FunctionImport Name="GetCorporateDsByPType" ReturnType="Collection(Vardaan_AdminModel.GetCorporateDsByPType_Result)">
             <Parameter Name="isNrg" Mode="In" Type="Boolean" />
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
@@ -2833,7 +2834,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="cityId" Mode="In" Type="Int32" />
             <Parameter Name="routeNo" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetCorporateDsEdit" ReturnType="Collection(VardaanCabOct24Model.GetCorporateDsEdit_Result)">
+          <FunctionImport Name="GetCorporateDsEdit" ReturnType="Collection(Vardaan_AdminModel.GetCorporateDsEdit_Result)">
             <Parameter Name="isNrg" Mode="In" Type="Boolean" />
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
@@ -2842,7 +2843,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="pageSize" Mode="In" Type="Int32" />
             <Parameter Name="TInvID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetCorporateDsNew" ReturnType="Collection(VardaanCabOct24Model.GetCorporateDsNew_Result)">
+          <FunctionImport Name="GetCorporateDsNew" ReturnType="Collection(Vardaan_AdminModel.GetCorporateDsNew_Result)">
             <Parameter Name="isNrg" Mode="In" Type="Boolean" />
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
@@ -2853,11 +2854,11 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="cityId" Mode="In" Type="Int32" />
             <Parameter Name="routeNo" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetMISVyTaxInvNo" ReturnType="Collection(VardaanCabOct24Model.GetMISVyTaxInvNo_Result)">
+          <FunctionImport Name="GetMISVyTaxInvNo" ReturnType="Collection(Vardaan_AdminModel.GetMISVyTaxInvNo_Result)">
             <Parameter Name="taxInvId" Mode="In" Type="Int32" />
             <Parameter Name="isExport" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetPendingBookingByClintUser" ReturnType="Collection(VardaanCabOct24Model.GetPendingBookingByClintUser_Result)">
+          <FunctionImport Name="GetPendingBookingByClintUser" ReturnType="Collection(Vardaan_AdminModel.GetPendingBookingByClintUser_Result)">
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
             <Parameter Name="eDate" Mode="In" Type="DateTime" />
@@ -2875,7 +2876,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="isExport" Mode="In" Type="Boolean" />
             <Parameter Name="clintUID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetUnbilledBooking" ReturnType="Collection(VardaanCabOct24Model.GetUnbilledBooking_Result)">
+          <FunctionImport Name="GetUnbilledBooking" ReturnType="Collection(Vardaan_AdminModel.GetUnbilledBooking_Result)">
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
             <Parameter Name="eDate" Mode="In" Type="DateTime" />
@@ -2883,7 +2884,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="pageSize" Mode="In" Type="Int32" />
             <Parameter Name="isExport" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetUnbilledBookingByPType" ReturnType="Collection(VardaanCabOct24Model.GetUnbilledBookingByPType_Result)">
+          <FunctionImport Name="GetUnbilledBookingByPType" ReturnType="Collection(Vardaan_AdminModel.GetUnbilledBookingByPType_Result)">
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
             <Parameter Name="eDate" Mode="In" Type="DateTime" />
@@ -2893,7 +2894,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="bType" Mode="In" Type="String" />
             <Parameter Name="isExport" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetUnbilledBookingByPTypeNew" ReturnType="Collection(VardaanCabOct24Model.GetUnbilledBookingByPTypeNew_Result)">
+          <FunctionImport Name="GetUnbilledBookingByPTypeNew" ReturnType="Collection(Vardaan_AdminModel.GetUnbilledBookingByPTypeNew_Result)">
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
             <Parameter Name="eDate" Mode="In" Type="DateTime" />
@@ -2942,7 +2943,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             <Parameter Name="isExport" Mode="In" Type="Boolean" />
             <Parameter Name="routeNo" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetUnbilledBookingNew" ReturnType="Collection(VardaanCabOct24Model.GetUnbilledBookingNew_Result)">
+          <FunctionImport Name="GetUnbilledBookingNew" ReturnType="Collection(Vardaan_AdminModel.GetUnbilledBookingNew_Result)">
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
             <Parameter Name="eDate" Mode="In" Type="DateTime" />
@@ -2954,18 +2955,18 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
           <FunctionImport Name="getWorkingDayOfMonth" ReturnType="Collection(Int32)">
             <Parameter Name="workingDate" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="uspTaxInvoicelist" ReturnType="Collection(VardaanCabOct24Model.uspTaxInvoicelist_Result)">
+          <FunctionImport Name="uspTaxInvoicelist" ReturnType="Collection(Vardaan_AdminModel.uspTaxInvoicelist_Result)">
             <Parameter Name="taxInvId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="uspTaxInvoicelistbyClintUser" ReturnType="Collection(VardaanCabOct24Model.uspTaxInvoicelistbyClintUser_Result)">
+          <FunctionImport Name="uspTaxInvoicelistbyClintUser" ReturnType="Collection(Vardaan_AdminModel.uspTaxInvoicelistbyClintUser_Result)">
             <Parameter Name="taxInvId" Mode="In" Type="Int32" />
             <Parameter Name="clintUID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="getbookingHeadCount" ReturnType="Collection(VardaanCabOct24Model.getbookingHeadCount_Result)">
+          <FunctionImport Name="getbookingHeadCount" ReturnType="Collection(Vardaan_AdminModel.getbookingHeadCount_Result)">
             <Parameter Name="finyear" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="getCloseBookingDatabyMonth" ReturnType="Collection(VardaanCabOct24Model.getCloseBookingDatabyMonth_Result)" />
-          <FunctionImport Name="GetCorporateDsEdit1" ReturnType="Collection(VardaanCabOct24Model.GetCorporateDsEdit1_Result)">
+          <FunctionImport Name="getCloseBookingDatabyMonth" ReturnType="Collection(Vardaan_AdminModel.getCloseBookingDatabyMonth_Result)" />
+          <FunctionImport Name="GetCorporateDsEdit1" ReturnType="Collection(Vardaan_AdminModel.GetCorporateDsEdit1_Result)">
             <Parameter Name="isNrg" Mode="In" Type="Boolean" />
             <Parameter Name="term" Mode="In" Type="String" />
             <Parameter Name="sDate" Mode="In" Type="DateTime" />
@@ -3977,9 +3978,9 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="VardaanCabOct24ModelStoreContainer" CdmEntityContainer="DbEntities">
+        <EntityContainerMapping StorageEntityContainer="Vardaan_AdminModelStoreContainer" CdmEntityContainer="Vardaan_AdminEntities">
           <EntitySetMapping Name="Bookings">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.Booking">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Booking">
               <MappingFragment StoreEntitySet="Booking">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
@@ -4032,7 +4033,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Cabs">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.Cab">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Cab">
               <MappingFragment StoreEntitySet="Cab">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
@@ -4061,7 +4062,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CabCategories">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.CabCategory">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.CabCategory">
               <MappingFragment StoreEntitySet="CabCategory">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CabCategoryName" ColumnName="CabCategoryName" />
@@ -4069,7 +4070,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Categories">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.Category">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Category">
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
@@ -4078,7 +4079,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CityMasters">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.CityMaster">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.CityMaster">
               <MappingFragment StoreEntitySet="CityMaster">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CityName" ColumnName="CityName" />
@@ -4087,7 +4088,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ClientPackages">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.ClientPackage">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.ClientPackage">
               <MappingFragment StoreEntitySet="ClientPackage">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
@@ -4113,7 +4114,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ClientUsers">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.ClientUser">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.ClientUser">
               <MappingFragment StoreEntitySet="ClientUser">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -4128,7 +4129,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ClientUserBookingMappings">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.ClientUserBookingMapping">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.ClientUserBookingMapping">
               <MappingFragment StoreEntitySet="ClientUserBookingMapping">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CUserId" ColumnName="CUserId" />
@@ -4137,7 +4138,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ClientUserMappings">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.ClientUserMapping">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.ClientUserMapping">
               <MappingFragment StoreEntitySet="ClientUserMapping">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -4146,7 +4147,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CorporateBills">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.CorporateBill">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.CorporateBill">
               <MappingFragment StoreEntitySet="CorporateBill">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
@@ -4215,7 +4216,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CorporateInvoiceFiles">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.CorporateInvoiceFile">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.CorporateInvoiceFile">
               <MappingFragment StoreEntitySet="CorporateInvoiceFile">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
@@ -4231,7 +4232,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CorporateInvoiceFileDetails">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.CorporateInvoiceFileDetail">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.CorporateInvoiceFileDetail">
               <MappingFragment StoreEntitySet="CorporateInvoiceFileDetail">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CorporateInvoiceFile_Id" ColumnName="CorporateInvoiceFile_Id" />
@@ -4240,7 +4241,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CorporatePackages">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.CorporatePackage">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.CorporatePackage">
               <MappingFragment StoreEntitySet="CorporatePackage">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="RentalType_Id" ColumnName="RentalType_Id" />
@@ -4264,7 +4265,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Customers">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.Customer">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
@@ -4285,7 +4286,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CustomerUserMappings">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.CustomerUserMapping">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.CustomerUserMapping">
               <MappingFragment StoreEntitySet="CustomerUserMapping">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -4294,7 +4295,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Drivers">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.Driver">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Driver">
               <MappingFragment StoreEntitySet="Driver">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -4323,7 +4324,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DriverLeaves">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.DriverLeave">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.DriverLeave">
               <MappingFragment StoreEntitySet="DriverLeave">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Driver_Id" ColumnName="Driver_Id" />
@@ -4336,7 +4337,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LoginHistories">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.LoginHistory">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.LoginHistory">
               <MappingFragment StoreEntitySet="LoginHistory">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserLogin_Id" ColumnName="UserLogin_Id" />
@@ -4346,7 +4347,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Logs">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.Log">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Log">
               <MappingFragment StoreEntitySet="Logs">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserLogin_Id" ColumnName="UserLogin_Id" />
@@ -4357,7 +4358,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MonthlyPackages">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MonthlyPackage">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MonthlyPackage">
               <MappingFragment StoreEntitySet="MonthlyPackage">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
@@ -4382,7 +4383,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MonthlyPackageBills">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MonthlyPackageBill">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MonthlyPackageBill">
               <MappingFragment StoreEntitySet="MonthlyPackageBill">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MonthlyPackage_Id" ColumnName="MonthlyPackage_Id" />
@@ -4420,7 +4421,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MonthlyPackageEntries">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MonthlyPackageEntry">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MonthlyPackageEntry">
               <MappingFragment StoreEntitySet="MonthlyPackageEntry">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MonthlyPackage_Id" ColumnName="MonthlyPackage_Id" />
@@ -4456,7 +4457,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MonthlyPackageMasters">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MonthlyPackageMaster">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MonthlyPackageMaster">
               <MappingFragment StoreEntitySet="MonthlyPackageMaster">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CreatedBy_Id" ColumnName="CreatedBy_Id" />
@@ -4471,7 +4472,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MonthlyPackageRoutes">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MonthlyPackageRoute">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MonthlyPackageRoute">
               <MappingFragment StoreEntitySet="MonthlyPackageRoute">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
@@ -4492,7 +4493,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MonthlyPackageRouteBills">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MonthlyPackageRouteBill">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MonthlyPackageRouteBill">
               <MappingFragment StoreEntitySet="MonthlyPackageRouteBill">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MonthlyPackageRoute_Id" ColumnName="MonthlyPackageRoute_Id" />
@@ -4517,7 +4518,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MonthlyPackageRouteEntries">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MonthlyPackageRouteEntry">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MonthlyPackageRouteEntry">
               <MappingFragment StoreEntitySet="MonthlyPackageRouteEntry">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MonthlyPackageRoute_Id" ColumnName="MonthlyPackageRoute_Id" />
@@ -4541,7 +4542,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MonthlyPackageRouteMasters">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MonthlyPackageRouteMaster">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MonthlyPackageRouteMaster">
               <MappingFragment StoreEntitySet="MonthlyPackageRouteMaster">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="VehicleModel_Id" ColumnName="VehicleModel_Id" />
@@ -4555,7 +4556,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MopMasters">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MopMaster">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MopMaster">
               <MappingFragment StoreEntitySet="MopMaster">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Mop" ColumnName="Mop" />
@@ -4563,7 +4564,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MultipleBookingFiles">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MultipleBookingFile">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MultipleBookingFile">
               <MappingFragment StoreEntitySet="MultipleBookingFile">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
@@ -4573,7 +4574,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MultipleBookingFileDetails">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.MultipleBookingFileDetail">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.MultipleBookingFileDetail">
               <MappingFragment StoreEntitySet="MultipleBookingFileDetail">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MultipleBookingFile_Id" ColumnName="MultipleBookingFile_Id" />
@@ -4582,7 +4583,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NrgPackages">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.NrgPackage">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.NrgPackage">
               <MappingFragment StoreEntitySet="NrgPackage">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="RentalType_Id" ColumnName="RentalType_Id" />
@@ -4603,7 +4604,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PackageTypes">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.PackageType">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.PackageType">
               <MappingFragment StoreEntitySet="PackageType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PackageTypeName" ColumnName="PackageTypeName" />
@@ -4612,7 +4613,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RentalTypes">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.RentalType">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.RentalType">
               <MappingFragment StoreEntitySet="RentalType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="RentalTypeName" ColumnName="RentalTypeName" />
@@ -4621,7 +4622,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SoftwareLinks">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.SoftwareLink">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.SoftwareLink">
               <MappingFragment StoreEntitySet="SoftwareLink">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -4634,7 +4635,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="StateMasters">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.StateMaster">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.StateMaster">
               <MappingFragment StoreEntitySet="StateMaster">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StateName" ColumnName="StateName" />
@@ -4644,7 +4645,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="StateWiseGSTINs">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.StateWiseGSTIN">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.StateWiseGSTIN">
               <MappingFragment StoreEntitySet="StateWiseGSTIN">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="State_Id" ColumnName="State_Id" />
@@ -4666,7 +4667,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Taxes">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.Tax">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Tax">
               <MappingFragment StoreEntitySet="Tax">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
@@ -4674,7 +4675,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tempUserBookings">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.tempUserBooking">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.tempUserBooking">
               <MappingFragment StoreEntitySet="tempUserBooking">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingId" ColumnName="BookingId" />
@@ -4685,7 +4686,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_SoftwareLink">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.User_SoftwareLink">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.User_SoftwareLink">
               <MappingFragment StoreEntitySet="User_SoftwareLink">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -4694,7 +4695,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserLogins">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.UserLogin">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.UserLogin">
               <MappingFragment StoreEntitySet="UserLogin">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -4706,7 +4707,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VehicleModels">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.VehicleModel">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.VehicleModel">
               <MappingFragment StoreEntitySet="VehicleModel">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ModelName" ColumnName="ModelName" />
@@ -4715,7 +4716,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Vendors">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.Vendor">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Vendor">
               <MappingFragment StoreEntitySet="Vendor">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="VendorName" ColumnName="VendorName" />
@@ -4738,7 +4739,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VendorBills">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.VendorBill">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.VendorBill">
               <MappingFragment StoreEntitySet="VendorBill">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
@@ -4801,7 +4802,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VendorPackages">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.VendorPackage">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.VendorPackage">
               <MappingFragment StoreEntitySet="VendorPackage">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="RentalType_Id" ColumnName="RentalType_Id" />
@@ -4825,7 +4826,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VendorPersonalPackages">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.VendorPersonalPackage">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.VendorPersonalPackage">
               <MappingFragment StoreEntitySet="VendorPersonalPackage">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
@@ -4852,7 +4853,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="booking_backup11feb">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.booking_backup11feb">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.booking_backup11feb">
               <MappingFragment StoreEntitySet="booking_backup11feb">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
@@ -4903,7 +4904,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="bookingCab1475">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.bookingCab1475">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.bookingCab1475">
               <MappingFragment StoreEntitySet="bookingCab1475">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
@@ -4955,7 +4956,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cab1475">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.cab1475">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.cab1475">
               <MappingFragment StoreEntitySet="cab1475">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
@@ -4984,7 +4985,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="log_2022">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.log_2022">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.log_2022">
               <MappingFragment StoreEntitySet="log_2022">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserLogin_Id" ColumnName="UserLogin_Id" />
@@ -4995,7 +4996,7 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SoftwareLink_15052023">
-            <EntityTypeMapping TypeName="VardaanCabOct24Model.SoftwareLink_15052023">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.SoftwareLink_15052023">
               <MappingFragment StoreEntitySet="SoftwareLink_15052023">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -5007,12 +5008,12 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="checkOneCompanyBookingSelected" FunctionName="VardaanCabOct24Model.Store.checkOneCompanyBookingSelected" />
-          <FunctionImportMapping FunctionImportName="checkOneCompanyBookingSelectedByPtype" FunctionName="VardaanCabOct24Model.Store.checkOneCompanyBookingSelectedByPtype" />
-          <FunctionImportMapping FunctionImportName="CreateInvoiceUsingTempData" FunctionName="VardaanCabOct24Model.Store.CreateInvoiceUsingTempData" />
-          <FunctionImportMapping FunctionImportName="GetAllBooking" FunctionName="VardaanCabOct24Model.Store.GetAllBooking">
+          <FunctionImportMapping FunctionImportName="checkOneCompanyBookingSelected" FunctionName="Vardaan_AdminModel.Store.checkOneCompanyBookingSelected" />
+          <FunctionImportMapping FunctionImportName="checkOneCompanyBookingSelectedByPtype" FunctionName="Vardaan_AdminModel.Store.checkOneCompanyBookingSelectedByPtype" />
+          <FunctionImportMapping FunctionImportName="CreateInvoiceUsingTempData" FunctionName="Vardaan_AdminModel.Store.CreateInvoiceUsingTempData" />
+          <FunctionImportMapping FunctionImportName="GetAllBooking" FunctionName="Vardaan_AdminModel.Store.GetAllBooking">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetAllBooking_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetAllBooking_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
                 <ScalarProperty Name="PickupDate" ColumnName="PickupDate" />
@@ -5075,30 +5076,30 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetAllBookingCount" FunctionName="VardaanCabOct24Model.Store.GetAllBookingCount" />
-          <FunctionImportMapping FunctionImportName="getAllParents" FunctionName="VardaanCabOct24Model.Store.getAllParents">
+          <FunctionImportMapping FunctionImportName="GetAllBookingCount" FunctionName="Vardaan_AdminModel.Store.GetAllBookingCount" />
+          <FunctionImportMapping FunctionImportName="getAllParents" FunctionName="Vardaan_AdminModel.Store.getAllParents">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.getAllParents_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.getAllParents_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ParentCategory_Id" ColumnName="ParentCategory_Id" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getAutoGenratedInvNo" FunctionName="VardaanCabOct24Model.Store.getAutoGenratedInvNo">
+          <FunctionImportMapping FunctionImportName="getAutoGenratedInvNo" FunctionName="Vardaan_AdminModel.Store.getAutoGenratedInvNo">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.getAutoGenratedInvNo_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.getAutoGenratedInvNo_Result">
                 <ScalarProperty Name="TaxInvoiceNo" ColumnName="TaxInvoiceNo" />
                 <ScalarProperty Name="PrevTaxInvoiceNo" ColumnName="PrevTaxInvoiceNo" />
                 <ScalarProperty Name="PrevTaxInvoiceDate" ColumnName="PrevTaxInvoiceDate" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getAutoInvNo" FunctionName="VardaanCabOct24Model.Store.getAutoInvNo" />
-          <FunctionImportMapping FunctionImportName="getAutoProformaNo" FunctionName="VardaanCabOct24Model.Store.getAutoProformaNo" />
-          <FunctionImportMapping FunctionImportName="GetBooking" FunctionName="VardaanCabOct24Model.Store.GetBooking">
+          <FunctionImportMapping FunctionImportName="getAutoInvNo" FunctionName="Vardaan_AdminModel.Store.getAutoInvNo" />
+          <FunctionImportMapping FunctionImportName="getAutoProformaNo" FunctionName="Vardaan_AdminModel.Store.getAutoProformaNo" />
+          <FunctionImportMapping FunctionImportName="GetBooking" FunctionName="Vardaan_AdminModel.Store.GetBooking">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetBooking_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetBooking_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
                 <ScalarProperty Name="PickupDate" ColumnName="PickupDate" />
@@ -5160,74 +5161,9 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetBookingByClintUser" FunctionName="VardaanCabOct24Model.Store.GetBookingByClintUser">
+          <FunctionImportMapping FunctionImportName="GetBookingByClintUser" FunctionName="Vardaan_AdminModel.Store.GetBookingByClintUser">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetBookingByClintUser_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
-                <ScalarProperty Name="PickupDate" ColumnName="PickupDate" />
-                <ScalarProperty Name="ReportingTime" ColumnName="ReportingTime" />
-                <ScalarProperty Name="Cab_Id" ColumnName="Cab_Id" />
-                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
-                <ScalarProperty Name="PickupAddress" ColumnName="PickupAddress" />
-                <ScalarProperty Name="PickupLandMark" ColumnName="PickupLandMark" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="BookedBy" ColumnName="BookedBy" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="Client_Id" ColumnName="Client_Id" />
-                <ScalarProperty Name="EmpCode" ColumnName="EmpCode" />
-                <ScalarProperty Name="CostCode" ColumnName="CostCode" />
-                <ScalarProperty Name="BookingStatus" ColumnName="BookingStatus" />
-                <ScalarProperty Name="RentalType" ColumnName="RentalType" />
-                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
-                <ScalarProperty Name="City_Id" ColumnName="City_Id" />
-                <ScalarProperty Name="DropAddress" ColumnName="DropAddress" />
-                <ScalarProperty Name="DropLandmark" ColumnName="DropLandmark" />
-                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
-                <ScalarProperty Name="PickupTime" ColumnName="PickupTime" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="BookingConfirmFile" ColumnName="BookingConfirmFile" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="ClosedBy" ColumnName="ClosedBy" />
-                <ScalarProperty Name="ClosingDate" ColumnName="ClosingDate" />
-                <ScalarProperty Name="VehicleModel_Id" ColumnName="VehicleModel_Id" />
-                <ScalarProperty Name="BookedByPerson" ColumnName="BookedByPerson" />
-                <ScalarProperty Name="StartKms" ColumnName="StartKms" />
-                <ScalarProperty Name="StartHour" ColumnName="StartHour" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="BookingType" ColumnName="BookingType" />
-                <ScalarProperty Name="NrdBookingMode" ColumnName="NrdBookingMode" />
-                <ScalarProperty Name="NrdStateId" ColumnName="NrdStateId" />
-                <ScalarProperty Name="NrgType" ColumnName="NrgType" />
-                <ScalarProperty Name="PackageType_Id" ColumnName="PackageType_Id" />
-                <ScalarProperty Name="OtherPackage_Id" ColumnName="OtherPackage_Id" />
-                <ScalarProperty Name="DaysInMonth" ColumnName="DaysInMonth" />
-                <ScalarProperty Name="IsReleasedCab" ColumnName="IsReleasedCab" />
-                <ScalarProperty Name="BookingInstruction" ColumnName="BookingInstruction" />
-                <ScalarProperty Name="IsVIP" ColumnName="IsVIP" />
-                <ScalarProperty Name="BookedByPersonMobileNo" ColumnName="BookedByPersonMobileNo" />
-                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
-                <ScalarProperty Name="RouteNo" ColumnName="RouteNo" />
-                <ScalarProperty Name="PickupDateTime" ColumnName="PickupDateTime" />
-                <ScalarProperty Name="CityName" ColumnName="CityName" />
-                <ScalarProperty Name="RentalTypeName" ColumnName="RentalTypeName" />
-                <ScalarProperty Name="UserRole" ColumnName="UserRole" />
-                <ScalarProperty Name="DesiredCar" ColumnName="DesiredCar" />
-                <ScalarProperty Name="VehicleName" ColumnName="VehicleName" />
-                <ScalarProperty Name="VehicleNo" ColumnName="VehicleNo" />
-                <ScalarProperty Name="DriverName" ColumnName="DriverName" />
-                <ScalarProperty Name="PackageTypeName" ColumnName="PackageTypeName" />
-                <ScalarProperty Name="UpdateDescription" ColumnName="UpdateDescription" />
-                <ScalarProperty Name="DriverContactNo" ColumnName="DriverContactNo" />
-                <ScalarProperty Name="RouteNo1" ColumnName="RouteNo1" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetBookingByPendBookCategory" FunctionName="VardaanCabOct24Model.Store.GetBookingByPendBookCategory">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetBookingByPendBookCategory_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetBookingByClintUser_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
                 <ScalarProperty Name="PickupDate" ColumnName="PickupDate" />
@@ -5290,9 +5226,74 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetBookingCartDataTemp" FunctionName="VardaanCabOct24Model.Store.GetBookingCartDataTemp">
+          <FunctionImportMapping FunctionImportName="GetBookingByPendBookCategory" FunctionName="Vardaan_AdminModel.Store.GetBookingByPendBookCategory">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetBookingCartDataTemp_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetBookingByPendBookCategory_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
+                <ScalarProperty Name="PickupDate" ColumnName="PickupDate" />
+                <ScalarProperty Name="ReportingTime" ColumnName="ReportingTime" />
+                <ScalarProperty Name="Cab_Id" ColumnName="Cab_Id" />
+                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+                <ScalarProperty Name="PickupAddress" ColumnName="PickupAddress" />
+                <ScalarProperty Name="PickupLandMark" ColumnName="PickupLandMark" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="BookedBy" ColumnName="BookedBy" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Client_Id" ColumnName="Client_Id" />
+                <ScalarProperty Name="EmpCode" ColumnName="EmpCode" />
+                <ScalarProperty Name="CostCode" ColumnName="CostCode" />
+                <ScalarProperty Name="BookingStatus" ColumnName="BookingStatus" />
+                <ScalarProperty Name="RentalType" ColumnName="RentalType" />
+                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+                <ScalarProperty Name="City_Id" ColumnName="City_Id" />
+                <ScalarProperty Name="DropAddress" ColumnName="DropAddress" />
+                <ScalarProperty Name="DropLandmark" ColumnName="DropLandmark" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="PickupTime" ColumnName="PickupTime" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="BookingConfirmFile" ColumnName="BookingConfirmFile" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="ClosedBy" ColumnName="ClosedBy" />
+                <ScalarProperty Name="ClosingDate" ColumnName="ClosingDate" />
+                <ScalarProperty Name="VehicleModel_Id" ColumnName="VehicleModel_Id" />
+                <ScalarProperty Name="BookedByPerson" ColumnName="BookedByPerson" />
+                <ScalarProperty Name="StartKms" ColumnName="StartKms" />
+                <ScalarProperty Name="StartHour" ColumnName="StartHour" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="BookingType" ColumnName="BookingType" />
+                <ScalarProperty Name="NrdBookingMode" ColumnName="NrdBookingMode" />
+                <ScalarProperty Name="NrdStateId" ColumnName="NrdStateId" />
+                <ScalarProperty Name="NrgType" ColumnName="NrgType" />
+                <ScalarProperty Name="PackageType_Id" ColumnName="PackageType_Id" />
+                <ScalarProperty Name="OtherPackage_Id" ColumnName="OtherPackage_Id" />
+                <ScalarProperty Name="DaysInMonth" ColumnName="DaysInMonth" />
+                <ScalarProperty Name="IsReleasedCab" ColumnName="IsReleasedCab" />
+                <ScalarProperty Name="BookingInstruction" ColumnName="BookingInstruction" />
+                <ScalarProperty Name="IsVIP" ColumnName="IsVIP" />
+                <ScalarProperty Name="BookedByPersonMobileNo" ColumnName="BookedByPersonMobileNo" />
+                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
+                <ScalarProperty Name="RouteNo" ColumnName="RouteNo" />
+                <ScalarProperty Name="PickupDateTime" ColumnName="PickupDateTime" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="RentalTypeName" ColumnName="RentalTypeName" />
+                <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+                <ScalarProperty Name="DesiredCar" ColumnName="DesiredCar" />
+                <ScalarProperty Name="VehicleName" ColumnName="VehicleName" />
+                <ScalarProperty Name="VehicleNo" ColumnName="VehicleNo" />
+                <ScalarProperty Name="DriverName" ColumnName="DriverName" />
+                <ScalarProperty Name="PackageTypeName" ColumnName="PackageTypeName" />
+                <ScalarProperty Name="UpdateDescription" ColumnName="UpdateDescription" />
+                <ScalarProperty Name="DriverContactNo" ColumnName="DriverContactNo" />
+                <ScalarProperty Name="RouteNo1" ColumnName="RouteNo1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetBookingCartDataTemp" FunctionName="Vardaan_AdminModel.Store.GetBookingCartDataTemp">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetBookingCartDataTemp_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingId" ColumnName="BookingId" />
                 <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
@@ -5300,12 +5301,12 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetBookingCount" FunctionName="VardaanCabOct24Model.Store.GetBookingCount" />
-          <FunctionImportMapping FunctionImportName="GetBookingCountByClientUser" FunctionName="VardaanCabOct24Model.Store.GetBookingCountByClientUser" />
-          <FunctionImportMapping FunctionImportName="GetBookingCountByPendBookCategory" FunctionName="VardaanCabOct24Model.Store.GetBookingCountByPendBookCategory" />
-          <FunctionImportMapping FunctionImportName="GetCorporateDs" FunctionName="VardaanCabOct24Model.Store.GetCorporateDs">
+          <FunctionImportMapping FunctionImportName="GetBookingCount" FunctionName="Vardaan_AdminModel.Store.GetBookingCount" />
+          <FunctionImportMapping FunctionImportName="GetBookingCountByClientUser" FunctionName="Vardaan_AdminModel.Store.GetBookingCountByClientUser" />
+          <FunctionImportMapping FunctionImportName="GetBookingCountByPendBookCategory" FunctionName="Vardaan_AdminModel.Store.GetBookingCountByPendBookCategory" />
+          <FunctionImportMapping FunctionImportName="GetCorporateDs" FunctionName="Vardaan_AdminModel.Store.GetCorporateDs">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetCorporateDs_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetCorporateDs_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MiscCharge" ColumnName="MiscCharge" />
                 <ScalarProperty Name="BookedBy" ColumnName="BookedBy" />
@@ -5368,9 +5369,9 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetCorporateDsByPType" FunctionName="VardaanCabOct24Model.Store.GetCorporateDsByPType">
+          <FunctionImportMapping FunctionImportName="GetCorporateDsByPType" FunctionName="Vardaan_AdminModel.Store.GetCorporateDsByPType">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetCorporateDsByPType_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetCorporateDsByPType_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MiscCharge" ColumnName="MiscCharge" />
                 <ScalarProperty Name="BookedBy" ColumnName="BookedBy" />
@@ -5433,12 +5434,12 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetCorporateDsCount" FunctionName="VardaanCabOct24Model.Store.GetCorporateDsCount" />
-          <FunctionImportMapping FunctionImportName="GetCorporateDsCountByPType" FunctionName="VardaanCabOct24Model.Store.GetCorporateDsCountByPType" />
-          <FunctionImportMapping FunctionImportName="GetCorporateDsCountNew" FunctionName="VardaanCabOct24Model.Store.GetCorporateDsCountNew" />
-          <FunctionImportMapping FunctionImportName="GetCorporateDsEdit" FunctionName="VardaanCabOct24Model.Store.GetCorporateDsEdit">
+          <FunctionImportMapping FunctionImportName="GetCorporateDsCount" FunctionName="Vardaan_AdminModel.Store.GetCorporateDsCount" />
+          <FunctionImportMapping FunctionImportName="GetCorporateDsCountByPType" FunctionName="Vardaan_AdminModel.Store.GetCorporateDsCountByPType" />
+          <FunctionImportMapping FunctionImportName="GetCorporateDsCountNew" FunctionName="Vardaan_AdminModel.Store.GetCorporateDsCountNew" />
+          <FunctionImportMapping FunctionImportName="GetCorporateDsEdit" FunctionName="Vardaan_AdminModel.Store.GetCorporateDsEdit">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetCorporateDsEdit_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetCorporateDsEdit_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MiscCharge" ColumnName="MiscCharge" />
                 <ScalarProperty Name="BookedBy" ColumnName="BookedBy" />
@@ -5504,9 +5505,9 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetCorporateDsNew" FunctionName="VardaanCabOct24Model.Store.GetCorporateDsNew">
+          <FunctionImportMapping FunctionImportName="GetCorporateDsNew" FunctionName="Vardaan_AdminModel.Store.GetCorporateDsNew">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetCorporateDsNew_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetCorporateDsNew_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MiscCharge" ColumnName="MiscCharge" />
                 <ScalarProperty Name="BookedBy" ColumnName="BookedBy" />
@@ -5569,9 +5570,9 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetMISVyTaxInvNo" FunctionName="VardaanCabOct24Model.Store.GetMISVyTaxInvNo">
+          <FunctionImportMapping FunctionImportName="GetMISVyTaxInvNo" FunctionName="Vardaan_AdminModel.Store.GetMISVyTaxInvNo">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetMISVyTaxInvNo_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetMISVyTaxInvNo_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MiscCharge" ColumnName="MiscCharge" />
                 <ScalarProperty Name="BookedBy" ColumnName="BookedBy" />
@@ -5634,9 +5635,9 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetPendingBookingByClintUser" FunctionName="VardaanCabOct24Model.Store.GetPendingBookingByClintUser">
+          <FunctionImportMapping FunctionImportName="GetPendingBookingByClintUser" FunctionName="Vardaan_AdminModel.Store.GetPendingBookingByClintUser">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetPendingBookingByClintUser_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetPendingBookingByClintUser_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
                 <ScalarProperty Name="PickupDate" ColumnName="PickupDate" />
@@ -5699,10 +5700,10 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetPendingBookingCountByClientUser" FunctionName="VardaanCabOct24Model.Store.GetPendingBookingCountByClientUser" />
-          <FunctionImportMapping FunctionImportName="GetUnbilledBooking" FunctionName="VardaanCabOct24Model.Store.GetUnbilledBooking">
+          <FunctionImportMapping FunctionImportName="GetPendingBookingCountByClientUser" FunctionName="Vardaan_AdminModel.Store.GetPendingBookingCountByClientUser" />
+          <FunctionImportMapping FunctionImportName="GetUnbilledBooking" FunctionName="Vardaan_AdminModel.Store.GetUnbilledBooking">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetUnbilledBooking_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetUnbilledBooking_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
                 <ScalarProperty Name="PickupDate" ColumnName="PickupDate" />
@@ -5765,9 +5766,9 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetUnbilledBookingByPType" FunctionName="VardaanCabOct24Model.Store.GetUnbilledBookingByPType">
+          <FunctionImportMapping FunctionImportName="GetUnbilledBookingByPType" FunctionName="Vardaan_AdminModel.Store.GetUnbilledBookingByPType">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetUnbilledBookingByPType_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetUnbilledBookingByPType_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
                 <ScalarProperty Name="PickupDate" ColumnName="PickupDate" />
@@ -5830,9 +5831,9 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetUnbilledBookingByPTypeNew" FunctionName="VardaanCabOct24Model.Store.GetUnbilledBookingByPTypeNew">
+          <FunctionImportMapping FunctionImportName="GetUnbilledBookingByPTypeNew" FunctionName="Vardaan_AdminModel.Store.GetUnbilledBookingByPTypeNew">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetUnbilledBookingByPTypeNew_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetUnbilledBookingByPTypeNew_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
                 <ScalarProperty Name="PickupDate" ColumnName="PickupDate" />
@@ -5895,13 +5896,13 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetUnbilledBookingCount" FunctionName="VardaanCabOct24Model.Store.GetUnbilledBookingCount" />
-          <FunctionImportMapping FunctionImportName="GetUnbilledBookingCountByPType" FunctionName="VardaanCabOct24Model.Store.GetUnbilledBookingCountByPType" />
-          <FunctionImportMapping FunctionImportName="GetUnbilledBookingCountByPTypeNew" FunctionName="VardaanCabOct24Model.Store.GetUnbilledBookingCountByPTypeNew" />
-          <FunctionImportMapping FunctionImportName="GetUnbilledBookingCountNew" FunctionName="VardaanCabOct24Model.Store.GetUnbilledBookingCountNew" />
-          <FunctionImportMapping FunctionImportName="GetUnbilledBookingNew" FunctionName="VardaanCabOct24Model.Store.GetUnbilledBookingNew">
+          <FunctionImportMapping FunctionImportName="GetUnbilledBookingCount" FunctionName="Vardaan_AdminModel.Store.GetUnbilledBookingCount" />
+          <FunctionImportMapping FunctionImportName="GetUnbilledBookingCountByPType" FunctionName="Vardaan_AdminModel.Store.GetUnbilledBookingCountByPType" />
+          <FunctionImportMapping FunctionImportName="GetUnbilledBookingCountByPTypeNew" FunctionName="Vardaan_AdminModel.Store.GetUnbilledBookingCountByPTypeNew" />
+          <FunctionImportMapping FunctionImportName="GetUnbilledBookingCountNew" FunctionName="Vardaan_AdminModel.Store.GetUnbilledBookingCountNew" />
+          <FunctionImportMapping FunctionImportName="GetUnbilledBookingNew" FunctionName="Vardaan_AdminModel.Store.GetUnbilledBookingNew">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetUnbilledBookingNew_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetUnbilledBookingNew_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
                 <ScalarProperty Name="PickupDate" ColumnName="PickupDate" />
@@ -5964,10 +5965,10 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getWorkingDayOfMonth" FunctionName="VardaanCabOct24Model.Store.getWorkingDayOfMonth" />
-          <FunctionImportMapping FunctionImportName="uspTaxInvoicelist" FunctionName="VardaanCabOct24Model.Store.uspTaxInvoicelist">
+          <FunctionImportMapping FunctionImportName="getWorkingDayOfMonth" FunctionName="Vardaan_AdminModel.Store.getWorkingDayOfMonth" />
+          <FunctionImportMapping FunctionImportName="uspTaxInvoicelist" FunctionName="Vardaan_AdminModel.Store.uspTaxInvoicelist">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.uspTaxInvoicelist_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.uspTaxInvoicelist_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="InvoiceFile" ColumnName="InvoiceFile" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -5993,9 +5994,9 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="uspTaxInvoicelistbyClintUser" FunctionName="VardaanCabOct24Model.Store.uspTaxInvoicelistbyClintUser">
+          <FunctionImportMapping FunctionImportName="uspTaxInvoicelistbyClintUser" FunctionName="Vardaan_AdminModel.Store.uspTaxInvoicelistbyClintUser">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.uspTaxInvoicelistbyClintUser_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.uspTaxInvoicelistbyClintUser_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="InvoiceFile" ColumnName="InvoiceFile" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -6021,9 +6022,9 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getbookingHeadCount" FunctionName="VardaanCabOct24Model.Store.getbookingHeadCount">
+          <FunctionImportMapping FunctionImportName="getbookingHeadCount" FunctionName="Vardaan_AdminModel.Store.getbookingHeadCount">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.getbookingHeadCount_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.getbookingHeadCount_Result">
                 <ScalarProperty Name="BookingId" ColumnName="BookingId" />
                 <ScalarProperty Name="BookingStatus" ColumnName="BookingStatus" />
                 <ScalarProperty Name="PackageType_Id" ColumnName="PackageType_Id" />
@@ -6034,18 +6035,18 @@ warning 6002: The table/view 'VardaanCabOct24.newVardaan.SoftwareLink_15052023' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getCloseBookingDatabyMonth" FunctionName="VardaanCabOct24Model.Store.getCloseBookingDatabyMonth">
+          <FunctionImportMapping FunctionImportName="getCloseBookingDatabyMonth" FunctionName="Vardaan_AdminModel.Store.getCloseBookingDatabyMonth">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.getCloseBookingDatabyMonth_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.getCloseBookingDatabyMonth_Result">
                 <ScalarProperty Name="BookingId" ColumnName="BookingId" />
                 <ScalarProperty Name="PackageType_Id" ColumnName="PackageType_Id" />
                 <ScalarProperty Name="IsNrg" ColumnName="IsNrg" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetCorporateDsEdit1" FunctionName="VardaanCabOct24Model.Store.GetCorporateDsEdit1">
+          <FunctionImportMapping FunctionImportName="GetCorporateDsEdit1" FunctionName="Vardaan_AdminModel.Store.GetCorporateDsEdit1">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VardaanCabOct24Model.GetCorporateDsEdit1_Result">
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetCorporateDsEdit1_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MiscCharge" ColumnName="MiscCharge" />
                 <ScalarProperty Name="BookedBy" ColumnName="BookedBy" />

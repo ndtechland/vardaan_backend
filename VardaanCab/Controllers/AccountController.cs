@@ -12,7 +12,7 @@ namespace VardaanCab.Controllers
 {
     public class AccountController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         #region customerLogin
         public ActionResult CustomerLogin()
         {

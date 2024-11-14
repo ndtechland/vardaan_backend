@@ -17,7 +17,7 @@ namespace VardaanCab.Controllers
     [Authorize]
     public class CustomerController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository commonRepo = new CommonRepository();
 
 
