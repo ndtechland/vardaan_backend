@@ -1,78 +1,88 @@
 ﻿@model VardaanCab.Models.ViewModels.CabListVm
 @{
     ViewBag.Title = "Available Cabs";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    //Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+
     var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
     int count = Model.SrNo;
 }
 <link href="~/css/fixtable.css" rel="stylesheet" />
-<style>
-    #main {
-        margin: auto;
-        width: 99%;
-    }
-</style>
 
-<div id="main">
-    <h2>@ViewBag.Title</h2>
+
+ 
+<div class="container-fluid">
     <div class="row">
-        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
 
-    </div>
-    @using (Html.BeginForm())
-    {
-        <input name="menuId" value="@ViewBag.menuId" type="hidden" />
-        <div class="row r">
-            <div class="col-md-4">
-                <input type="text" placeholder="Search by model/vehicle no" class="form-control" name="term" />
+                    <div>
+                        <h5>@ViewBag.Title</h5>
+                        @using (Html.BeginForm())
+                        {
+                            <input name="menuId" value="@ViewBag.menuId" type="hidden" />
+                            <div class="row r">
+                                <div class="col-md-9">
+                                    <input type="text" placeholder="Search by model/vehicle no" class="form-control" name="term" />
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="submit" class="btn btn-info" value="Find" />
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <form class="d-inline-flex">
+                        <a class="btn btn-info" href="/Booking/AvailableCabs?menuId=@ViewBag.menuId">Show all</a>
+
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    <div>
+                        <div class=" table-responsive table-desi">
+                            <table class="all-cars-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>SNo.</th>
+                                        <th>Vehicle Model</th>
+                                        <th>Vehicle Number</th>
+                                        <th>Vendor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Cabs)
+                                    {
+                                        <tr>
+                                            <td>@(++count)</td>
+                                            <td>@item.ModelName</td>
+                                            <td>@item.VehicleNumber</td>
+                                            <td>@item.VendorName</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class=" pagination-box">
+                    <nav class="ms-auto me-auto " aria-label="...">
+                        <ul class="pagination pagination-primary">
+                            @for (int i = 1; i <= Model.NumberOfPages; i++)
+                            {
+                                <li class="@if (i == Model.Page) {<text>active</text> }">
+                                    <a class="page-link" href="/Booking/AvailableCabs?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+                 
+
             </div>
-            <div class="col-md-8">
-                <input type="submit" class="btn btn-info" value="Find" />
-                <a class="btn btn-info" href="/Booking/AvailableCabs?menuId=@ViewBag.menuId">Show all</a>
-              
-            </div>
         </div>
-    }
 
-
-    <div class="mainDiv" >
-        <div class="wrapperTable table-scroll">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>SNo.</th>
-                        <th>Vehicle Model</th>
-                        <th>Vehicle Number</th>
-                        <th>Vendor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Cabs)
-                    {
-                        <tr>
-                            <td>@(++count)</td>
-                            <td>@item.ModelName</td>
-                            <td>@item.VehicleNumber</td>
-                            <td>@item.VendorName</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
     </div>
-
-    <div class="row r r">
-        <div class="col-md-12">
-            <ul class="pagination">
-                @for (int i = 1; i <= Model.NumberOfPages; i++)
-                {
-                    <li class="@if (i == Model.Page) {<text>active</text> }">
-                        <a href="/Booking/AvailableCabs?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
-
 </div>
-
+ 

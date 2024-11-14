@@ -1,7 +1,8 @@
 ﻿@model VardaanCab.Models.ViewModels.DriverListVm
 @{
     ViewBag.Title = "Available Drivers";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    //Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
     int count = Model.SrNo;
 }
 <link href="~/css/fixtable.css" rel="stylesheet" />
@@ -12,7 +13,7 @@
     }
 </style>
 
-<div id="main">
+@*<div id="main">
     <h2>@ViewBag.Title</h2>
     <div class="row">
         <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
@@ -76,7 +77,85 @@
         </div>
     </div>
 
+</div>*@
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        @using (Html.BeginForm())
+                        {
+                            <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+                            <div class="row r">
+                                <div class="col-md-5">
+                                    <input type="text" placeholder="Search by Name/MobileNo" class="form-control" name="term" />
+                                </div>
+                                <div class="col-md-7">
+                                    <input type="submit" class="btn btn-info" value="Find" />
+                                    <a class="btn btn-info" href="/Booking/AvailableDrivers?menuId=@ViewBag.menuId">Show all</a>
+                                </div>
+                            </div>
+                        }
+                        <h5>@ViewBag.Title</h5>
+                    </div>
+                    <form class="d-inline-flex">
+                        @*<a class="btn btn-info" href="/Booking/AvailableDrivers?menuId=@ViewBag.menuId">Show all</a>*@
+
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    <div>
+                        <div class=" table-responsive table-desi">
+                            <table class="all-cars-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>SNo.</th>
+                                        <th>Name</th>
+                                        <th>Contact No</th>
+                                        <th>Alter No.</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Drivers)
+                                    {
+                                        <tr>
+                                            <td>@(++count)</td>
+                                            <td>@item.DriverName</td>
+                                            <td>@item.MobileNumber</td>
+                                            <td>@item.AlternateNo1 &nbsp;&nbsp; @item.AlternateNo2</td>
+                                            <td>
+                                                Local Address : @item.LocalAddress <br />
+                                                Permanent Address: @item.PermanentAddress
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class=" pagination-box">
+                    <nav class="ms-auto me-auto " aria-label="...">
+                        <ul class="pagination pagination-primary">
+                            @for (int i = 1; i <= Model.NumberOfPages; i++)
+                            {
+                                <li class="@if (i == Model.Page) {<text>active</text> }">
+                                    <a class="page-link" href="/Booking/AvailableDrivers?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </div>
-
-
-
