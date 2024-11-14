@@ -1,238 +1,173 @@
 ﻿@{
     var UserName =  Session["uEmail"].ToString();
 }
-<div class="nk-header-wrap">
-    <div class="nk-menu-trigger d-xl-none ms-n1">
-        <a href="#"
-           class="nk-nav-toggle nk-quick-nav-icon" data-target="sidebarMenu">
-            <em class="icon ni ni-menu"></em>
-        </a>
+<div class="header-wrapper row m-0">
+
+    <div class="header-logo-wrapper col-auto p-0">
+        <div class="logo-wrapper">
+            <a href="index.html">
+                <img class="img-fluid main-logo"
+                     src="~/adminassets/images/logo/logo.png" alt="logo">
+                <img class="img-fluid white-logo" src="../assets/images/logo/logo-white.png" alt="logo">
+            </a>
+        </div>
+        <div class="toggle-sidebar">
+            <i class="status_toggle middle sidebar-toggle"
+               data-feather="align-center"></i>
+        </div>
     </div>
-    <div class="nk-header-brand d-xl-none">
-        <a href="https://dashlite.net/demo1/#"
-           class="logo-link">
-            <img class="logo-light logo-img" src="../images/logo.png"
-                 srcset="/demo1/images/logo2x.png 2x" alt="logo"><img class="logo-dark logo-img"
-                                                                      src="../images/logo-dark.png" srcset="/demo1/images/logo-dark2x.png 2x"
-                                                                      alt="logo-dark">
-        </a>
-    </div>
-    @* <div class="nk-header-news d-none d-xl-block">
-            <div class="nk-news-list">
-                <a class="nk-news-item" href="#">
-                    <div class="nk-news-icon"><em class="icon ni ni-card-view"></em></div>
-                    <div class="nk-news-text">
-                        <p>
-                            Do you know the latest update of 2022? <span>
-                                A overview of our is now
-                                available on YouTube
-                            </span>
-                        </p><em class="icon ni ni-external"></em>
-                    </div>
-                </a>
-            </div>
-        </div> *@
-    <div class="nk-header-tools">
-        <ul class="nk-quick-nav">
-            @*  <li class="dropdown language-dropdown d-none d-sm-block me-n1">
-                    <a href="#"
-                       class="dropdown-toggle nk-quick-nav-icon" data-bs-toggle="dropdown">
-                        <div class="quick-icon border border-light">
-                            <img class="icon"
-                                 src="../images/flags/english-sq.png" alt="">
-                        </div>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-s1">
-                        <ul class="language-list">
-                            <li>
-                                <a href="#" class="language-item">
-                                    <img src="../images/flags/english.png" alt=""
-                                         class="language-flag"><span class="language-name">English</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="language-item">
-                                    <img src="../images/flags/spanish.png" alt=""
-                                         class="language-flag"><span class="language-name">Español</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="language-item">
-                                    <img src="../images/flags/french.png" alt=""
-                                         class="language-flag"><span class="language-name">Français</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="language-item">
-                                    <img src="../images/flags/turkey.png" alt=""
-                                         class="language-flag"><span class="language-name">Türkçe</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li> *@
-            <li class="dropdown user-dropdown">
-                <a href="#" class="dropdown-toggle"
-                   data-bs-toggle="dropdown">
-                    <div class="user-toggle">
-                        <div class="user-avatar sm"><em class="icon fas fa-user-alt"></em></div>
-                        <div class="user-info d-none d-md-block">
-                            <div class="user-status">@UserName</div>
-                            @*                             <div class="user-name dropdown-indicator">Abu Bin Ishityak</div>
-                            *@
-                        </div>
-                    </div>
-                </a>
-                <div class="dropdown-menu dropdown-menu-md dropdown-menu-end dropdown-menu-s1">
-                    <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
-                        <div class="user-card">
-                            @*                             <div class="user-avatar"><span>CH</span></div>
-                            *@                            <div class="user-info">
-                                <span class="lead-text">
-                                    @UserName
-                                    @*                                 </span><span class="sub-text">Info@Caelumhotels.Com</span>
-                                    *@
-                            </div>
-                        </div>
-                    </div>
-                    @*  <div class="dropdown-inner">
-                            <ul class="link-list">
-                                <li>
-                                    <a href="#">
-                                        <em class="icon ni ni-user-alt"></em><span>
-                                            View
-                                            Profile
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="settings.html">
-                                        <em class="icon ni ni-setting-alt"></em><span>
-                                            Account
-                                            Setting
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="settings-activity-log.html">
-                                        <em class="icon ni ni-activity-alt"></em><span>
-                                            Login
-                                            Activity
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div> *@
-                    <div class="dropdown-inner">
-                        <ul class="link-list">
-                            <li>
-                                <a href="/Home/Logout">
-                                    <em class="icon fas fa-sign-out-alt"></em><span>
-                                        Sign
-                                        out
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
+
+    @*<form class="form-inline search-full col " action="#" method="get">
+        <div class="form-group w-100">
+            <div class="Typeahead Typeahead--twitterUsers">
+                <div class="u-posRelative">
+                    <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
+                           placeholder="Search .." name="q" title="" autofocus>
+                    <i class="close-search" data-feather="x"></i>
+                    <div class="spinner-border Typeahead-spinner" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
+                <div class="Typeahead-menu"></div>
+            </div>
+        </div>
+    </form>*@
+    <div class="nav-right col-4 pull-right right-header p-0">
+        <ul class="nav-menus">
+
+            <li> <span class="header-search"><i data-feather="search"></i></span></li>
+            @*<li class="onhover-dropdown">
+                <div class="notification-box">
+                    <i class="fa fa-bell-o"> </i><span class="badge rounded-pill badge-theme">4 </span>
+                </div>
+                <ul class="notification-dropdown onhover-show-div">
+                    <li>
+                        <i data-feather="bell"></i>
+                        <h6 class="f-18 mb-0">Notitications</h6>
+                    </li>
+                    <li>
+                        <p>
+                            <i class="fa fa-circle-o me-3 font-primary"> </i>Delivery processing <span class="pull-right">
+                                10
+                                min.
+                            </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <i class="fa fa-circle-o me-3 font-success"></i>Order Complete<span class="pull-right">1 hr</span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <i class="fa fa-circle-o me-3 font-info"></i>Tickets Generated<span class="pull-right">3 hr</span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <i class="fa fa-circle-o me-3 font-danger"></i>Delivery Complete<span class="pull-right">
+                                6
+                                hr
+                            </span>
+                        </p>
+                    </li>
+                    <li><a class="btn btn-primary" href="#">Check all notification</a></li>
+                </ul>
+            </li>*@
+
+            <li>
+                <div class="mode">
+                    <i class="fa fa-moon-o" aria-hidden="true"></i>
+                </div>
             </li>
-            @*  <li class="dropdown notification-dropdown me-n1">
-                    <a href="#"
-                       class="dropdown-toggle nk-quick-nav-icon" data-bs-toggle="dropdown">
-                        <div class="icon-status icon-status-info">
-                            <em class="icon ni ni-bell"></em>
-                        </div>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-xl dropdown-menu-end dropdown-menu-s1">
-                        <div class="dropdown-head">
-                            <span class="sub-title nk-dropdown-title">Notifications</span><a href="#">Mark All as Read</a>
-                        </div>
-                        <div class="dropdown-body">
-                            <div class="nk-notification">
-                                <div class="nk-notification-item dropdown-inner">
-                                    <div class="nk-notification-icon">
-                                        <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
-                                    </div>
-                                    <div class="nk-notification-content">
-                                        <div class="nk-notification-text">
-                                            You have requested to
-                                            <span>Widthdrawl</span>
-                                        </div>
-                                        <div class="nk-notification-time">2 hrs ago</div>
-                                    </div>
-                                </div>
-                                <div class="nk-notification-item dropdown-inner">
-                                    <div class="nk-notification-icon">
-                                        <em class="icon icon-circle bg-success-dim ni ni-curve-down-left"></em>
-                                    </div>
-                                    <div class="nk-notification-content">
-                                        <div class="nk-notification-text">
-                                            Your <span>
-                                                Deposit
-                                                Order
-                                            </span> is placed
-                                        </div>
-                                        <div class="nk-notification-time">2 hrs ago</div>
-                                    </div>
-                                </div>
-                                <div class="nk-notification-item dropdown-inner">
-                                    <div class="nk-notification-icon">
-                                        <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
-                                    </div>
-                                    <div class="nk-notification-content">
-                                        <div class="nk-notification-text">
-                                            You have requested to
-                                            <span>Widthdrawl</span>
-                                        </div>
-                                        <div class="nk-notification-time">2 hrs ago</div>
-                                    </div>
-                                </div>
-                                <div class="nk-notification-item dropdown-inner">
-                                    <div class="nk-notification-icon">
-                                        <em class="icon icon-circle bg-success-dim ni ni-curve-down-left"></em>
-                                    </div>
-                                    <div class="nk-notification-content">
-                                        <div class="nk-notification-text">
-                                            Your <span>
-                                                Deposit
-                                                Order
-                                            </span> is placed
-                                        </div>
-                                        <div class="nk-notification-time">2 hrs ago</div>
-                                    </div>
-                                </div>
-                                <div class="nk-notification-item dropdown-inner">
-                                    <div class="nk-notification-icon">
-                                        <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
-                                    </div>
-                                    <div class="nk-notification-content">
-                                        <div class="nk-notification-text">
-                                            You have requested to
-                                            <span>Widthdrawl</span>
-                                        </div>
-                                        <div class="nk-notification-time">2 hrs ago</div>
-                                    </div>
-                                </div>
-                                <div class="nk-notification-item dropdown-inner">
-                                    <div class="nk-notification-icon">
-                                        <em class="icon icon-circle bg-success-dim ni ni-curve-down-left"></em>
-                                    </div>
-                                    <div class="nk-notification-content">
-                                        <div class="nk-notification-text">
-                                            Your <span>
-                                                Deposit
-                                                Order
-                                            </span> is placed
-                                        </div>
-                                        <div class="nk-notification-time">2 hrs ago</div>
-                                    </div>
-                                </div>
+
+            @*<li class="onhover-dropdown">
+                <i data-feather="message-square"></i>
+                <ul class="chat-dropdown onhover-show-div">
+                    <li>
+                        <i data-feather="message-square"></i>
+                        <h6 class="f-18 mb-0">Message Box </h6>
+                    </li>
+                    <li>
+                        <div class="media">
+                            <img class="img-fluid rounded-circle me-3"
+                                 src="../assets/images/user/1.jpg" alt="user1">
+                            <div class="status-circle online"></div>
+                            <div class="media-body">
+                                <span>Erica Hughes</span>
+                                <p>Lorem Ipsum is simply dummy...</p>
                             </div>
+                            <p class="f-12 font-success">58 mins ago</p>
                         </div>
-                        <div class="dropdown-foot center"><a href="#">View All</a></div>
+                    </li>
+                    <li>
+                        <div class="media">
+                            <img class="img-fluid rounded-circle me-3"
+                                 src="../assets/images/user/2.jpg" alt="user2">
+                            <div class="status-circle online"></div>
+                            <div class="media-body">
+                                <span>Kori Thomas</span>
+                                <p>Lorem Ipsum is simply dummy...</p>
+                            </div>
+                            <p class="f-12 font-success">1 hr ago</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="media">
+                            <img class="img-fluid rounded-circle me-3"
+                                 src="../assets/images/user/4.jpg" alt="user3">
+                            <div class="status-circle offline"></div>
+                            <div class="media-body">
+                                <span>Ain Chavez</span>
+                                <p>Lorem Ipsum is simply dummy...</p>
+                            </div>
+                            <p class="f-12 font-danger">32 mins ago</p>
+                        </div>
+                    </li>
+                    <li class="text-center"> <a class="btn btn-primary" href="#">View All </a></li>
+                </ul>
+            </li>*@
+            <li class="maximize">
+                <a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()">
+                    <i data-feather="maximize"></i>
+                </a>
+            </li>
+            <li class="profile-nav onhover-dropdown pe-0 me-0">
+                <div class="media profile-media">
+                    @*<img class="user-profile rounded-circle" src="../assets/images/users/4.jpg"
+                         alt="profile-picture">*@
+                    <div class="user-name-hide media-body">
+                        <span>@UserName</span>
+                        <p class="mb-0 font-roboto">@UserName <i class="middle fa fa-angle-down"></i></p>
                     </div>
-                </li> *@
+                </div>
+                <ul class="profile-dropdown onhover-show-div">
+                    <li><a href="#"><i data-feather="user"></i><span>Account </span></a></li> 
+                    <li><a href="#"><i data-feather="settings"></i><span>Settings</span></a></li>
+                    <li>
+                        <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                           href="javascript:void(0)">
+                            <i data-feather="log-out"> </i><span>
+                                Log
+                                out
+                            </span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
         </ul>
     </div>
+    <script class="result-template" type="text/x-handlebars-template">
+        <div class="ProfileCard u-cf">
+            <div class="ProfileCard-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay m-0"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg></div>
+            <div class="ProfileCard-details">
+                <div class="ProfileCard-realName">{{name}}</div>
+            </div>
+        </div>
+    </script>
+    <script class="empty-template"
+            type="text/x-handlebars-template">
+        <div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div>
+    </script>
 </div>
