@@ -11,7 +11,7 @@ namespace VardaanCab.Repository
 {
     public class CommonRepository
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
 
         public List<RentalTypeDTO> GetRentalTypeList()
         {

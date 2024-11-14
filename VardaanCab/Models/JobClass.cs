@@ -11,7 +11,7 @@ namespace VardaanCab.Models
 {
     public class JobClass:IJob
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
 
         public void Execute(IJobExecutionContext context)
         {

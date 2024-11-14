@@ -15,10 +15,10 @@ namespace VardaanCab.Models.Domain
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class DbEntities : DbContext
+    public partial class Vardaan_AdminEntities : DbContext
     {
-        public DbEntities()
-            : base("name=DbEntities")
+        public Vardaan_AdminEntities()
+            : base("name=Vardaan_AdminEntities")
         {
         }
     

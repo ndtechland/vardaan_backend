@@ -16,7 +16,7 @@ namespace VardaanCab.Controllers
     [AllowAnonymous]
     public class MyController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository cr = new CommonRepository();
         StateMasterGstinRepository stateWiseGstinRepo = new StateMasterGstinRepository();
         //public ActionResult BookingConfirmationInvoice()

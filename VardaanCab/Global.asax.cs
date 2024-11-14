@@ -44,7 +44,7 @@ namespace VardaanCab
                         string loginId = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
                         string roles = string.Empty;
 
-                        using (DbEntities ent = new DbEntities())
+                        using (Vardaan_AdminEntities ent = new Vardaan_AdminEntities())
                         {
                             var user = ent.UserLogins.Find(int.Parse(loginId));
                             if(user!=null)

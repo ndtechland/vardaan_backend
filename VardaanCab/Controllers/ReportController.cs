@@ -20,7 +20,7 @@ namespace VardaanCab.Controllers
     public class ReportController : Controller
     {
         // GET: Report
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository cr = new CommonRepository();
 
         public ActionResult Sale(DateTime? sDate, DateTime? eDate, string term = "",bool export=false,int menuId=0)

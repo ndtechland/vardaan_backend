@@ -20,7 +20,7 @@ namespace VardaanCab.Areas.Clint.Controllers
 {
     public class CabBookingController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository cr = new CommonRepository();
         // GET: Clint/CabBooking
         public ActionResult Index()

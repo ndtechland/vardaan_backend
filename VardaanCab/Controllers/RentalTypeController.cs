@@ -14,7 +14,7 @@ namespace VardaanCab.Controllers
     public class RentalTypeController : Controller
     {
         // GET: RentalType
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
 
         public ActionResult All(string term = "", int page = 1,int menuId=0)
         {

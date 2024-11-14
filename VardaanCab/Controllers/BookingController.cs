@@ -27,7 +27,7 @@ namespace VardaanCab.Controllers
     [CustomFilter]
     public class BookingController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository cr = new CommonRepository();
         StateMasterGstinRepository stateWiseGstinRepo = new StateMasterGstinRepository();
         // GET: Booking

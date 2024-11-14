@@ -17,7 +17,7 @@ namespace VardaanCab.Controllers
     [Authorize]
     public class CabController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
 
         public ActionResult GetVendorList(string term)
         {

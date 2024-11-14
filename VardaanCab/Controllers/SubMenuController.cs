@@ -15,7 +15,7 @@ namespace VardaanCab.Controllers
     public class SubMenuController : Controller
     {
         // GET: SubMenu
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository cr = new CommonRepository();
 
         //public ActionResult MasterEntrySubMenu()

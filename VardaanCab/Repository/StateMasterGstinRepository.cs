@@ -9,7 +9,7 @@ namespace VardaanCab.Repository
 {
     public class StateMasterGstinRepository
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
 
        
 

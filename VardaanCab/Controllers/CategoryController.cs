@@ -15,7 +15,7 @@ namespace VardaanCab.Controllers
     [Authorize(Roles ="admin")]
     public class CategoryController : Controller
     {
-        DbEntities ent = new DbEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository commonRepo = new CommonRepository();
 
         public ActionResult All(string term = "", int page = 1)
