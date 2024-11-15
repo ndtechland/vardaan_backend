@@ -5,8 +5,9 @@ using System.Web;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.Security;
-using VardaanCab.Models.Domain;
-using VardaanCab.Models.DTO;
+//using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.DTO;
+using VardaanCab.DataAccessLayer.DataLayer;
 
 namespace VardaanCab.Controllers
 {

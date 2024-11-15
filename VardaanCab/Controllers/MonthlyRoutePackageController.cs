@@ -6,9 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using VardaanCab.Models.Domain;
-using VardaanCab.Models.DTO;
-using VardaanCab.Models.ViewModels;
+using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.DTO;
+using VardaanCab.Domain.ViewModels;
 using VardaanCab.Repository;
 using VardaanCab.Utilities;
 

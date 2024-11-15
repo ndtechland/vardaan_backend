@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
-using VardaanCab.Models.Domain;
+using VardaanCab.DataAccessLayer.DataLayer;
 using System.Data.Entity;
 
 namespace VardaanCab.Models

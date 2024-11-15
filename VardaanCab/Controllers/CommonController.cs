@@ -4,8 +4,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using VardaanCab.Models.Domain;
-using VardaanCab.Models.DTO;
+using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.DTO;
 
 namespace VardaanCab.Controllers
 {

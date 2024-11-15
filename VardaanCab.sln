@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.35425.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VardaanCab", "VardaanCab\VardaanCab.csproj", "{7B467845-DA40-4F3F-A385-B8DEF71C7942}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VardaanCab.APP", "VardaanCab.APP\VardaanCab.APP.csproj", "{5C36000B-0412-41D6-9505-013222AE7E66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VardaanCab.Domain", "VardaanCab.Domain\VardaanCab.Domain.csproj", "{DE6EAE14-101C-4AD6-AED3-38A3F9A7523E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VardaanCab.DataAccessLayer", "VardaanCab.DataAccessLayer\VardaanCab.DataAccessLayer.csproj", "{1362423C-679A-488C-AA3A-A4DA4EEFF8D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,17 +21,23 @@ Global
 		{7B467845-DA40-4F3F-A385-B8DEF71C7942}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B467845-DA40-4F3F-A385-B8DEF71C7942}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B467845-DA40-4F3F-A385-B8DEF71C7942}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C36000B-0412-41D6-9505-013222AE7E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C36000B-0412-41D6-9505-013222AE7E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C36000B-0412-41D6-9505-013222AE7E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C36000B-0412-41D6-9505-013222AE7E66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE6EAE14-101C-4AD6-AED3-38A3F9A7523E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE6EAE14-101C-4AD6-AED3-38A3F9A7523E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE6EAE14-101C-4AD6-AED3-38A3F9A7523E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE6EAE14-101C-4AD6-AED3-38A3F9A7523E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1362423C-679A-488C-AA3A-A4DA4EEFF8D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1362423C-679A-488C-AA3A-A4DA4EEFF8D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1362423C-679A-488C-AA3A-A4DA4EEFF8D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1362423C-679A-488C-AA3A-A4DA4EEFF8D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://arunkur93.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = VardaanCab\\VardaanCab.csproj
-		SccProjectName1 = VardaanCab
-		SccLocalPath1 = VardaanCab
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D6F8F73-D117-425A-97FF-7B42377C30C9}
 	EndGlobalSection
 EndGlobal

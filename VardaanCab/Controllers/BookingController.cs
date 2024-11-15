@@ -14,9 +14,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using VardaanCab.Models.Domain;
-using VardaanCab.Models.DTO;
-using VardaanCab.Models.ViewModels;
+using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.DTO;
+using VardaanCab.Domain.ViewModels;
 using VardaanCab.Repository;
 using VardaanCab.Utilities;
 using VardaanCab.Filter;
@@ -4929,7 +4929,7 @@ VRC Team";
         }
         public JsonResult getAutoNPreviousTaxInvoiceNo()
         {           
-            AutoTaxInvoice invObj = new VardaanCab.Models.ViewModels.AutoTaxInvoice();
+            AutoTaxInvoice invObj = new VardaanCab.Domain.ViewModels.AutoTaxInvoice();
             string cpbQuery = "exec getAutoGenratedInvNo";
             invObj = ent.Database.SqlQuery<AutoTaxInvoice>(cpbQuery).FirstOrDefault();
             return Json(invObj, JsonRequestBehavior.AllowGet);           
