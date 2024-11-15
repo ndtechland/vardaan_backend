@@ -10,9 +10,9 @@ using System.Data.SqlClient;
 using AutoMapper;
 using Rotativa;
 using System.IO;
-using VardaanCab.Models.Domain;
-using VardaanCab.Models.DTO;
-using VardaanCab.Models.ViewModels;
+using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.DTO;
+using VardaanCab.Domain.ViewModels;
 using VardaanCab.Repository;
 using VardaanCab.Utilities;
 

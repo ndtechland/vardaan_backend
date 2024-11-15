@@ -7,9 +7,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using VardaanCab.Models.Domain;
-using VardaanCab.Models.DTO;
-using VardaanCab.Models.ViewModels;
+using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.DTO;
+using VardaanCab.Domain.ViewModels;
 using VardaanCab.Utilities;
 
 namespace VardaanCab.Controllers

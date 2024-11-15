@@ -4,8 +4,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using VardaanCab.Models.Domain;
-using VardaanCab.Models.ViewModels;
+using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.ViewModels;
 using VardaanCab.Repository;
 using VardaanCab.Utilities;
 

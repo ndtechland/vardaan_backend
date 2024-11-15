@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using VardaanCab.Models.Domain;
-using VardaanCab.Models.DTO;
+using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.DTO;
 
 namespace VardaanCab.Repository
 {

@@ -1973,16 +1973,6 @@
     <Content Include="js\raphael-min.js" />
     <Content Include="js\script.js" />
     <Content Include="js\scripts.js" />
-    <Content Include="Models\Domain\Model1.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\Domain\Model1.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.cs</LastGenOutput>
-    </Content>
     <Content Include="notfound\css\style.css" />
     <Content Include="notfound\images\ban55.jpg" />
     <Content Include="App_Browsers\qt.browser" />
@@ -2623,13 +2613,6 @@
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="Models\Domain\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Domain\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <None Include="Properties\PublishProfiles\vardaan.pubxml" />
     <None Include="Properties\PublishProfiles\vrc.vardaanrentacar.com - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -2701,321 +2684,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Domain\Booking.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\bookingCab1475.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\booking_backup11feb.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\Cab.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\cab1475.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\CabCategory.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\Category.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\CityMaster.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\ClientPackage.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\ClientUser.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\ClientUserBookingMapping.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\ClientUserMapping.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\CorporateBill.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\CorporateInvoiceFile.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\CorporateInvoiceFileDetail.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\CorporatePackage.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\Customer.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\CustomerUserMapping.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\Driver.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\DriverLeave.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetAllBooking_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\getAllParents_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\getAutoGenratedInvNo_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetBookingByClintUser_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetBookingByPendBookCategory_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetBookingCartDataTemp_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\getbookingHeadCount_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetBooking_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\getCloseBookingDatabyMonth_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetCorporateDsByPType_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetCorporateDsEdit1_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetCorporateDsEdit_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetCorporateDsNew_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetCorporateDs_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetMISVyTaxInvNo_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetPendingBookingByClintUser_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetUnbilledBookingByPTypeNew_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetUnbilledBookingByPType_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetUnbilledBookingNew_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\GetUnbilledBooking_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\Log.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\LoginHistory.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\log_2022.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\Model1.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MonthlyPackage.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MonthlyPackageBill.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MonthlyPackageEntry.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MonthlyPackageMaster.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MonthlyPackageRoute.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MonthlyPackageRouteBill.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MonthlyPackageRouteEntry.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MonthlyPackageRouteMaster.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MopMaster.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MultipleBookingFile.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\MultipleBookingFileDetail.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\NrgPackage.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\PackageType.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\RentalType.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\SoftwareLink.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\SoftwareLink_15052023.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\StateMaster.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\StateWiseGSTIN.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\Tax.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\tempUserBooking.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\UserLogin.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\User_SoftwareLink.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\uspTaxInvoicelistbyClintUser_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\uspTaxInvoicelist_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\VehicleModel.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\Vendor.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\VendorBill.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\VendorPackage.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Domain\VendorPersonalPackage.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DTO\AssignCabModel.cs" />
-    <Compile Include="Models\DTO\BookingDTO.cs" />
-    <Compile Include="Models\DTO\CabCategoryDTO.cs" />
-    <Compile Include="Models\DTO\CabDTO.cs" />
-    <Compile Include="Models\DTO\CategoryDTO.cs" />
-    <Compile Include="Models\DTO\ChangePasswordModel.cs" />
-    <Compile Include="Models\DTO\CityMasterDTO.cs" />
-    <Compile Include="Models\DTO\CitywithSatateDTO.cs" />
-    <Compile Include="Models\DTO\ClientPackageDTO.cs" />
-    <Compile Include="Models\DTO\ClientUserDTO.cs" />
-    <Compile Include="Models\DTO\CorporateBillingDTO.cs" />
-    <Compile Include="Models\DTO\DiscountTypeModel.cs" />
-    <Compile Include="Models\DTO\DriverLeaveDTO.cs" />
-    <Compile Include="Models\DTO\LogsDTO.cs" />
-    <Compile Include="Models\DTO\MonthlyPackageBillDTO.cs" />
-    <Compile Include="Models\DTO\MonthlyPackageDTO.cs" />
-    <Compile Include="Models\DTO\MonthlyPackageEntryDTO.cs" />
-    <Compile Include="Models\DTO\MonthlyPackageRouteBillDTO.cs" />
-    <Compile Include="Models\DTO\MonthlyPackageRouteDTO.cs" />
-    <Compile Include="Models\DTO\MonthlyPackageRouteEntryDTO.cs" />
-    <Compile Include="Models\DTO\MonthlyPackageMasterDTO.cs" />
-    <Compile Include="Models\DTO\MonthlyPackageRouteMasterDTO.cs" />
-    <Compile Include="Models\DTO\NrgPackageDTO.cs" />
-    <Compile Include="Models\DTO\RentalTypeDTO.cs" />
-    <Compile Include="Models\DTO\RequiredCab.cs" />
-    <Compile Include="Models\DTO\RoleManageModel.cs" />
-    <Compile Include="Models\DTO\SoftwareLinkDTO.cs" />
-    <Compile Include="Models\DTO\StateWiseGstinDTO.cs" />
-    <Compile Include="Models\DTO\StatusBooking.cs" />
-    <Compile Include="Models\DTO\UserLoginDTO.cs" />
-    <Compile Include="Models\DTO\VehicleModelDTO.cs" />
-    <Compile Include="Models\DTO\VendorPackageDTO.cs" />
-    <Compile Include="Models\DTO\CorporatePackageDTO.cs" />
-    <Compile Include="Models\DTO\CustomerDTO.cs" />
-    <Compile Include="Models\DTO\DriverDTO.cs" />
-    <Compile Include="Models\DTO\LoginModel.cs" />
-    <Compile Include="Models\DTO\MopMasterDTO.cs" />
-    <Compile Include="Models\DTO\StateMasterDTO.cs" />
-    <Compile Include="Models\DTO\VendorDTO.cs" />
-    <Compile Include="Models\DTO\VendorPersonalPackageDTO.cs" />
     <Compile Include="Models\JobClass.cs" />
     <Compile Include="Models\JobScheduler.cs" />
-    <Compile Include="Models\ViewModels\AutoTaxInvoice.cs" />
-    <Compile Include="Models\ViewModels\BookingCartVM.cs" />
-    <Compile Include="Models\ViewModels\BookingReportVm.cs" />
-    <Compile Include="Models\ViewModels\BookingStatusCount.cs" />
-    <Compile Include="Models\ViewModels\BookingViewMOdel.cs" />
-    <Compile Include="Models\ViewModels\CabBookingSubMenuModel.cs" />
-    <Compile Include="Models\ViewModels\CabCategoryVm.cs" />
-    <Compile Include="Models\ViewModels\CabReportData.cs" />
-    <Compile Include="Models\ViewModels\CabReportDetail.cs" />
-    <Compile Include="Models\ViewModels\CIBillingListVm.cs" />
-    <Compile Include="Models\ViewModels\CabListVm.cs" />
-    <Compile Include="Models\ViewModels\CIData.cs" />
-    <Compile Include="Models\ViewModels\ClientUsersViewModel.cs" />
-    <Compile Include="Models\ViewModels\ClientPackageVm.cs" />
-    <Compile Include="Models\ViewModels\CreateDriverModel.cs" />
-    <Compile Include="Models\ViewModels\DashboardModel.cs" />
-    <Compile Include="Models\ViewModels\DispatchBookingModel.cs" />
-    <Compile Include="Models\ViewModels\LoginHistoryViewModel.cs" />
-    <Compile Include="Models\ViewModels\MonthlyPackageRoutVm.cs" />
-    <Compile Include="Models\ViewModels\MonthlyPackageVm.cs" />
-    <Compile Include="Models\ViewModels\MultipleBookingVm.cs" />
-    <Compile Include="Models\ViewModels\RemainingHourModel.cs" />
-    <Compile Include="Models\ViewModels\RentalTypeViewModel.cs" />
-    <Compile Include="Models\ViewModels\SaleDetailModel.cs" />
-    <Compile Include="Models\ViewModels\SaleReportData.cs" />
-    <Compile Include="Models\ViewModels\StateWiseGSTINViewModel.cs" />
-    <Compile Include="Models\ViewModels\TaxInvoiceListVM.cs" />
-    <Compile Include="Models\ViewModels\TaxInvoiceViewModel.cs" />
-    <Compile Include="Models\ViewModels\UserLoginViewModel.cs" />
-    <Compile Include="Models\ViewModels\VehicleViewModel.cs" />
-    <Compile Include="Models\ViewModels\VendorBillModel.cs" />
-    <Compile Include="Models\ViewModels\VendorPackageVm.cs" />
-    <Compile Include="Models\ViewModels\CorporatePackageVm.cs" />
-    <Compile Include="Models\ViewModels\CategoryVm.cs" />
-    <Compile Include="Models\ViewModels\CityMasterVm.cs" />
-    <Compile Include="Models\ViewModels\CustomerListVm.cs" />
-    <Compile Include="Models\ViewModels\DriverListVm.cs" />
-    <Compile Include="Models\ViewModels\MopMasterVm.cs" />
-    <Compile Include="Models\ViewModels\StateMasterVm.cs" />
-    <Compile Include="Models\ViewModels\VendorListVm.cs" />
-    <Compile Include="Models\ViewModels\VendorPersonalPackageVm.cs" />
-    <Compile Include="Models\ViewModels\ViewDriverLeaveDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\CommonRepository.cs" />
     <Compile Include="Repository\StateMasterGstinRepository.cs" />
@@ -3213,11 +2883,25 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Clint\Data\" />
     <Folder Include="Files\" />
+    <Folder Include="Models\Domain\" />
     <Folder Include="Views\Common\" />
     <Folder Include="Views\TestApi\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VardaanCab.DataAccessLayer\VardaanCab.DataAccessLayer.csproj">
+      <Project>{1362423c-679a-488c-aa3a-a4da4eeff8d5}</Project>
+      <Name>VardaanCab.DataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VardaanCab.Domain\VardaanCab.Domain.csproj">
+      <Project>{de6eae14-101c-4ad6-aed3-38a3f9a7523e}</Project>
+      <Name>VardaanCab.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
