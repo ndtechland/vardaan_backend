@@ -1,7 +1,7 @@
 ﻿@model VardaanCab.Domain.DTO.ScheduleBookingDTO
 @{
     ViewBag.Title = "CabBook";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
 }
 
 <style>
@@ -22,315 +22,323 @@
     /*#attrTable {
         min-width:800px;
     }*/
-    hr{
-       border-color: #b1b1b1 !important;
+    hr {
+        border-color: #b1b1b1 !important;
     }
-        #attrTable th, td {
-            border: 1px solid #808080;
-            padding: 5px 3px;
-        }
+
+    #attrTable th, td {
+        border: 1px solid #808080;
+        padding: 5px 3px;
+    }
 </style>
-<div style="width:100%">
 
-    @if (TempData["msg"] != null)
-    {
-        <div class="row r">
-            <div class="col-md-12">
-                <div class="alert alert-info">
-                    @TempData["msg"]
-                </div>
-            </div>
-        </div>
-    }
-    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frm" }))
-    {
-        @Html.HiddenFor(aa => aa.MenuId)
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="/Admin/Dashboard" class="btn btn-primary">Dashboard</a>
+                                @*<a href="/Admin/SubMenu?menuId=@Model.MenuId" class="btn btn-info">Back</a>*@
+                                <a href="/Booking/ShowBooking?menuId=@Model.MenuId" class="btn btn-primary">Show all</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h5>Create Booking</h5>
+                        </div>
+                    </div>
 
-        <div class="row r">
-            <div class="col-md-12">
-                <a href="/Admin/Dashboard" class="btn btn-info">Dashboard</a>
-                <a href="/Admin/SubMenu?menuId=@Model.MenuId" class="btn btn-info">Back</a>
-                <a href="/Booking/ShowBooking?menuId=@Model.MenuId" class="btn btn-info">Show all</a>
-            </div>
-        </div>
-
-        <div class="row r">
-            <div class="col-md-12">
-                <h2 style="text-align:center">Create Booking</h2>
-            </div>
-        </div>
-
-        <div class="row r">
-            <div class="col-md-12">
-                <h2 style="text-align:center" id="msg"></h2>
-            </div>
-        </div>
-
-        <div class="row r">
-            <div class="col-md-2">
-                Booking Type *
-            </div>
-            <div class="col-md-2">
-                @Html.DropDownListFor(a => a.BookingType,
-               new List<SelectListItem> {
-                   new SelectListItem {Text="Regular",Value="regular" },
-                   new SelectListItem {Text="NRD",Value="nrd" }
-               }, "select", new { @class = "form-control" })
-                <div class="text-danger">
-                    @Html.ValidationMessageFor(a => a.BookingType)
-                </div>
-            </div>
-            <div class="col-md-2">
-                VIP : @Html.CheckBoxFor(a => a.IsVIP)
-            </div>
-            <div id="rgState" @if (Model.BookingType == "regular" || Model.BookingType == null) { <text> style="display:none" </text> }>
-                <div class="col-md-1 rgState"> State :</div>
-                <div class="col-md-2 ">
-                    @Html.DropDownListFor(a => a.NrdStateId, Model.StateList
-                   , "Select", new { @class = "form-control", id = "State_Id" })
-                    <span class="text-danger">
-                        @Html.ValidationMessageFor(a => a.NrdStateId)
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row r nrg" @if (Model.BookingType == "regular" || Model.BookingType == null) { <text> style="display:none" </text> }>
-            <div class="col-md-2">
-                Payment Type *
-            </div>
-            <div class="col-md-2">
-                @Html.DropDownListFor(a => a.NrdBookingMode,
-                   new List<SelectListItem>{
-                     new SelectListItem {Text="Complimentry",Value="Complimentry" },
-                     new SelectListItem {Text="Cash",Value="Cash" },
-                     new SelectListItem {Text="Service",Value="Service" }
-                   }
-                   , "Select", new { @class = "form-control" })
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.NrdBookingMode)
-                </span>
-            </div>
-
-
-
-            <div class="col-md-2">
-                Type  *
-            </div>
-
-            <div class="col-md-2">
-                @Html.DropDownListFor(a => a.NrgType,
-                  new List<SelectListItem>
-                  {
-                      new SelectListItem {Text="WalkIn",Value="walkin"},
-                      new SelectListItem {Text="Corporate",Value="corporate"}
-                  }, "Select type", new { @class = "form-control" })
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.NrgType)
-                </span>
-            </div>
-            <div class="col-md-2">
-                Booking State *
-            </div>
-
-            <div class="col-md-2">
-                @Html.DropDownListFor(a => a.NrdStateId, Model.StateList
-                   , "Select", new { @class = "form-control" })
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.NrdStateId)
-                </span>
-            </div>
-
-        </div>
-
-        <div class="row r">
-            <div class="col-md-2">
-                Service City *
-            </div>
-            <div class="col-md-3">
-                @*@Html.HiddenFor(a => a.City_Id)
-                    @Html.TextBox("cityName", null, new { @class = "form-control" })*@
-                @Html.DropDownListFor(a => a.City_Id, Model.Cities, "select city", new { @class = "form-control" })
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.City_Id)
-                </span>
-            </div>
-
-            <div class="regular" @if (Model.BookingType == null || Model.BookingType == "nrd" && Model.NrgType == "walkin") { <text> style="display:none" </text> }>
-                <div class="col-md-2">
-                    Organization *
-                </div>
-                <div class="col-md-5">
-
-                    @Html.DropDownListFor(a => a.Client_Id, Model.OrganizationList, "Select", new { @class = "form-control" })
-                    <span class="text-danger">
-                        @Html.ValidationMessageFor(a => a.Client_Id)
-                    </span>
-                </div>
-            </div>
-        </div>
-        
-
-        <div class="row r">
-            <div class="col-md-2">
-                Guest Name *
-            </div>
-            <div class="col-md-5">
-                @Html.TextBoxFor(a => a.CustomerName, new { @class = "form-control", required = "required" })
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.CustomerName)
-                </span>
-            </div>
-
-
-            <div class="col-md-2">
-                Contact No *
-            </div>
-            <div class="col-md-3">
-                @Html.TextBoxFor(a => a.ContactNo, new { @class = "form-control", required = "required", type = "number" })
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.ContactNo)
-                </span>
-            </div>
-        </div>
-
-        <div class="row r">
-            <div class="col-md-2">Email *</div>
-            <div class="col-md-4">
-                @Html.TextBoxFor(a => a.Email, new { @class = "form-control", required = "required" })
-
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.Email)
-                </span>
-            </div>
-
-            <div class="col-md-2">
-                Booker Name *
-            </div>
-
-            <div class="col-md-4">
-                @Html.TextBoxFor(a => a.BookedByPerson, new { @class = "form-control", required = "required" })
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.BookedByPerson)
-                </span>
-            </div>
-        </div>
-
-      
-
-        <div class="row r">
-            <div class="col-md-3">
-                <input id="noBooking" type="text" value="1" />
-                <span id="addNewabt" class="btn btn-info">
-                    + Add more
-                </span>
-            </div>
-        </div>
-
-
-        <div class="row r" >
-
-            <div class="col-md-12" style="overflow-x:auto">
-                <table id="attrTable">
-                    <tbody>
-                        @for (int i = 0; i < Model.BookingRecords.Count; i++)
+                    <div class="card-body">
+                        @if (TempData["msg"] != null)
                         {
-                            <tr>
-                                <td>@(i + 1)</td>
-                                <td style="width:150px">
-                                    Package Type *
-                                    @Html.DropDownListFor(a => a.BookingRecords[i].PackageType_Id, Model.BookingRecords[i].PacakgeTypes, "Select", new { onchange = "getRetalType(this)", @class = "form-control", required = "required" })
-                                   <hr/>
-                                      Rental Type *
-                                    @Html.DropDownListFor(a => a.BookingRecords[i].RentalType, Model.BookingRecords[i].RentalList, "Select", new { @class = "form-control", required = "required", id = "rentalType" })
-                                    <hr />
-                                    Desired Cab *
-                                    @Html.DropDownListFor(a => a.BookingRecords[i].VehicleModel_Id, Model.BookingRecords[i].VehicleModels, "Select Vehicle", new { @class = "form-control", required = "required" })
-                                </td>
-                                   @*<td style="width:160px">
-                                   
-                                </td>
-                                <td style="width:170px">
-                                
-                                </td>*@
-
-                                <td style="width:300px">
-                                    Pickup Address *
-                                    @Html.TextAreaFor(a => a.BookingRecords[i].PickupAddress, new { @class = "form-control" })
-                                    <hr />
-                                    Pickup Lndmrk
-                                    @Html.TextAreaFor(a => a.BookingRecords[i].PickupLandMark, new { @class = "form-control" })
-                                </td>
-                                @*<td style="width:300px">
-                                  
-                                </td>*@
-                                <td style="width:300px">
-                                    Drop Address *
-                                    @Html.TextAreaFor(a => a.BookingRecords[i].DropAddress, new { @class = "form-control" })
-                                    <hr />
-                                    Drop Lndmrk
-                                    @Html.TextAreaFor(a => a.BookingRecords[i].DropLandmark, new { @class = "form-control" })
-                                </td>
-                                @*<td style="width:300px">
-                                  
-
-                                </td>*@
-
-                                <td style="width:120px">
-                                    Pickup Date*
-                                    @Html.TextBoxFor(a => a.BookingRecords[i].PickupDate, new { @class = "form-control", type = "date", required = "required", onkeydown = "return false;" })
-                                    <hr />
-                                    Pickup Time *
-                                    @Html.TextBoxFor(a => a.BookingRecords[i].PickupTime, new { @class = "form-control tp", required = "required" })
-                                    <hr />
-                                    Reporting time*
-                                    @Html.TextBoxFor(a => a.BookingRecords[i].ReportingTime, new { @class = "form-control tp", required = "required" })
-                                                              </td>
-                                @*<td style="width:108px">
-                                  
-                                </td>
-                                <td style="width:119px">
-                                   
-                                </td>*@
-
-                                <td>
-                                    <span class="btn btn-danger" id="btnDeleteAttr"><i class="fa fa-trash-o"></i></span>
-                                </td>
-                            </tr>
+                            <div class="row r">
+                                <div class="col-md-12">
+                                    <div class="alert alert-info">
+                                        @TempData["msg"]
+                                    </div>
+                                </div>
+                            </div>
                         }
-                    </tbody>
-                </table>
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frm" }))
+                        {
+                            @Html.HiddenFor(aa => aa.MenuId)
+  
+                            <div class="row r">
+                                <div class="col-md-12">
+                                    <h2 style="text-align:center" id="msg"></h2>
+                                </div>
+                            </div>
+
+                            <div class="row r">
+                                <div class="col-md-2">
+                                    Booking Type *
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(a => a.BookingType,
+                                   new List<SelectListItem> {
+                                       new SelectListItem {Text="Regular",Value="regular" },
+                                       new SelectListItem {Text="NRD",Value="nrd" }
+                                   }, "select", new { @class = "form-control" })
+                                    <div class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.BookingType)
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    VIP : @Html.CheckBoxFor(a => a.IsVIP)
+                                </div>
+                                <div id="rgState" @if (Model.BookingType == "regular" || Model.BookingType == null) { <text> style="display:none" </text> }>
+                                    <div class="col-md-1 rgState"> State :</div>
+                                    <div class="col-md-2 ">
+                                        @Html.DropDownListFor(a => a.NrdStateId, Model.StateList
+                                       , "Select", new { @class = "form-control", id = "State_Id" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.NrdStateId)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row r nrg" @if (Model.BookingType == "regular" || Model.BookingType == null) { <text> style="display:none" </text> }>
+                                <div class="col-md-2">
+                                    Payment Type *
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(a => a.NrdBookingMode,
+                                       new List<SelectListItem>{
+                                         new SelectListItem {Text="Complimentry",Value="Complimentry" },
+                                         new SelectListItem {Text="Cash",Value="Cash" },
+                                         new SelectListItem {Text="Service",Value="Service" }
+                                       }
+                                       , "Select", new { @class = "form-control" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.NrdBookingMode)
+                                    </span>
+                                </div>
+
+
+
+                                <div class="col-md-2">
+                                    Type  *
+                                </div>
+
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(a => a.NrgType,
+                                      new List<SelectListItem>
+                                      {
+                                          new SelectListItem {Text="WalkIn",Value="walkin"},
+                                          new SelectListItem {Text="Corporate",Value="corporate"}
+                                      }, "Select type", new { @class = "form-control" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.NrgType)
+                                    </span>
+                                </div>
+                                <div class="col-md-2">
+                                    Booking State *
+                                </div>
+
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(a => a.NrdStateId, Model.StateList
+                                       , "Select", new { @class = "form-control" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.NrdStateId)
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div class="row r">
+                                <div class="col-md-2">
+                                    Service City *
+                                </div>
+                                <div class="col-md-3">
+                                    @*@Html.HiddenFor(a => a.City_Id)
+                                        @Html.TextBox("cityName", null, new { @class = "form-control" })*@
+                                    @Html.DropDownListFor(a => a.City_Id, Model.Cities, "select city", new { @class = "form-control" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.City_Id)
+                                    </span>
+                                </div>
+
+                                <div class="regular" @if (Model.BookingType == null || Model.BookingType == "nrd" && Model.NrgType == "walkin") { <text> style="display:none" </text> }>
+                                    <div class="col-md-2">
+                                        Organization *
+                                    </div>
+                                    <div class="col-md-5">
+
+                                        @Html.DropDownListFor(a => a.Client_Id, Model.OrganizationList, "Select", new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.Client_Id)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row r">
+                                <div class="col-md-2">
+                                    Guest Name *
+                                </div>
+                                <div class="col-md-5">
+                                    @Html.TextBoxFor(a => a.CustomerName, new { @class = "form-control", required = "required" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.CustomerName)
+                                    </span>
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    Contact No *
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.TextBoxFor(a => a.ContactNo, new { @class = "form-control", required = "required", type = "number" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.ContactNo)
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row r">
+                                <div class="col-md-2">Email *</div>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(a => a.Email, new { @class = "form-control", required = "required" })
+
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.Email)
+                                    </span>
+                                </div>
+
+                                <div class="col-md-2">
+                                    Booker Name *
+                                </div>
+
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(a => a.BookedByPerson, new { @class = "form-control", required = "required" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.BookedByPerson)
+                                    </span>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row r">
+                                <div class="col-md-3">
+                                    <input id="noBooking" type="text" value="1" />
+                                    <span id="addNewabt" class="btn btn-primary">
+                                        + Add more
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <div class="row r">
+
+                                <div class="col-md-12" style="overflow-x:auto">
+                                    <table id="attrTable">
+                                        <tbody>
+                                            @for (int i = 0; i < Model.BookingRecords.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td>@(i + 1)</td>
+                                                    <td style="width:150px">
+                                                        Package Type *
+                                                        @Html.DropDownListFor(a => a.BookingRecords[i].PackageType_Id, Model.BookingRecords[i].PacakgeTypes, "Select", new { onchange = "getRetalType(this)", @class = "form-control", required = "required" })
+                                                        <hr />
+                                                        Rental Type *
+                                                        @Html.DropDownListFor(a => a.BookingRecords[i].RentalType, Model.BookingRecords[i].RentalList, "Select", new { @class = "form-control", required = "required", id = "rentalType" })
+                                                        <hr />
+                                                        Desired Cab *
+                                                        @Html.DropDownListFor(a => a.BookingRecords[i].VehicleModel_Id, Model.BookingRecords[i].VehicleModels, "Select Vehicle", new { @class = "form-control", required = "required" })
+                                                    </td>
+                                                    @*<td style="width:160px">
+
+                                                        </td>
+                                                        <td style="width:170px">
+
+                                                        </td>*@
+
+                                                    <td style="width:300px">
+                                                        Pickup Address *
+                                                        @Html.TextAreaFor(a => a.BookingRecords[i].PickupAddress, new { @class = "form-control" })
+                                                        <hr />
+                                                        Pickup Lndmrk
+                                                        @Html.TextAreaFor(a => a.BookingRecords[i].PickupLandMark, new { @class = "form-control" })
+                                                    </td>
+                                                    @*<td style="width:300px">
+
+                                                        </td>*@
+                                                    <td style="width:300px">
+                                                        Drop Address *
+                                                        @Html.TextAreaFor(a => a.BookingRecords[i].DropAddress, new { @class = "form-control" })
+                                                        <hr />
+                                                        Drop Lndmrk
+                                                        @Html.TextAreaFor(a => a.BookingRecords[i].DropLandmark, new { @class = "form-control" })
+                                                    </td>
+                                                    @*<td style="width:300px">
+
+
+                                                        </td>*@
+
+                                                    <td style="width:120px">
+                                                        Pickup Date*
+                                                        @Html.TextBoxFor(a => a.BookingRecords[i].PickupDate, new { @class = "form-control", type = "date", required = "required", onkeydown = "return false;" })
+                                                        <hr />
+                                                        Pickup Time *
+                                                        @Html.TextBoxFor(a => a.BookingRecords[i].PickupTime, new { @class = "form-control tp", required = "required" })
+                                                        <hr />
+                                                        Reporting time*
+                                                        @Html.TextBoxFor(a => a.BookingRecords[i].ReportingTime, new { @class = "form-control tp", required = "required" })
+                                                    </td>
+                                                    @*<td style="width:108px">
+
+                                                        </td>
+                                                        <td style="width:119px">
+
+                                                        </td>*@
+
+                                                    <td>
+                                                        <span class="btn btn-danger" id="btnDeleteAttr"><i class="fa fa-trash-o"></i></span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row r">
+
+                                <div class="col-md-12">
+                                    Instruction
+                                    @Html.TextAreaFor(a => a.BookingInstruction, new { @class = "form-control" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.BookingInstruction)
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div class="row r">
+                                <div class="col-md-12 text-center">
+                                    <input type="submit" class="btn btn-info" id="btnSave" value="Save" />
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="row r">
-
-            <div class="col-md-12">
-                Instruction
-                @Html.TextAreaFor(a => a.BookingInstruction, new { @class = "form-control" })
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.BookingInstruction)
-                </span>
-            </div>
-
-        </div>
-
-        <div class="row r">
-            <div class="col-md-12 text-center">
-                <input  type="submit" class="btn btn-info" id="btnSave" value="Save" />
-            </div>
-        </div>
-
-    }
-
-</div>
+    </div>
+ 
 <link href="/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
 <script src="/js/jquery2.0.3.min.js"></script>
 <script src="/Scripts/jquery-ui-1.12.1.min.js"></script>
 <script src="/Scripts/booking.js"></script>
 <script>
-    function getRetalType(obj)
-    {
+    function getRetalType(obj) {
         var currentDd = $(obj);
         if (!currentDd.val())
             return false;
@@ -386,7 +394,7 @@
     });
     $("#NrdStateId").change(function () {
         var id = $(this).val();
-       // alert("test");
+        // alert("test");
         $.get('/Common/GetCityByState?stateId=' + id, function (r) {
             var dd = $("#City_Id");
             dd.empty();
