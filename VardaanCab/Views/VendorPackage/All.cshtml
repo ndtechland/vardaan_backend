@@ -1,7 +1,7 @@
 ﻿@model VardaanCab.Domain.ViewModels.VendorPackageVm
 @{
     ViewBag.Title = "Vendor Packages";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
     var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
     int sn = Model.SrNo;
 }
@@ -13,119 +13,211 @@
     }
 
 </style>
+<style>
 
-<div id="main">
-    <h2>Vendor Packages</h2>
-    <div class="row">
-        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info">Back</a>
-    </div>
-    @using (Html.BeginForm())
-    {
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" placeholder="Search by Vehicle Model" class="form-control" name="term" />
-            </div>
-            <div class="col-md-8">
-                <input type="submit" class="btn btn-info" value="Find" />
-                <a class="btn btn-info" href="/VendorPackage/All?menuId=@ViewBag.menuId">Show all</a>
-                <a class="btn btn-info" href="/VendorPackage/Add?menuId=@ViewBag.menuId">+ Add More</a>
-            </div>
-        </div>
+
+
+
+    thead tr,
+    tfoot tr {
+        background: hsl(220, 50%, 80%);
     }
 
-    
-    <div class="mainDiv">
-        <div class="wrapperTable table-scroll">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="sticky-col first-col">S.No.</th>
-                        <th class="sticky-col second-col">Package Type</th>
-                        <th class="sticky-col third-col">Booking Type</th>
-                        <th>Vehicle</th>
-                        <th>Fare</th>
-                        <th>MinKm</th>
-                        <th>MinHrs</th>
-                        <th>ExtraPerHour</th>
-                        <th>ExtraPerKm</th>
-                        <th>NightCharges</th>
-                        <th>Outstation TA/day</th>
-                        <th>Created/Updated By</th>
-                        <th>Create/Update Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Packages)
-                    {
-                        <tr>
-                            <td class="sticky-col first-col">@(++sn)</td>
-                            <td class="sticky-col second-col">@item.PackageTypeName</td>
-                            <td class="sticky-col third-col">@item.RentalType
-                                @if (!string.IsNullOrEmpty(item.PickupLocation) && !string.IsNullOrEmpty(item.DropLocation))
-                                {
-                                    <text>
-                                        &nbsp; (@item.PickupLocation to @item.DropLocation)
-                                    </text>
-                                }
-                            </td>
-                            <td>@item.ModelName</td>
-                            <td>@item.Fare</td>
-                            <td>@item.MinKm</td>
-                            <td>@item.MinHrs</td>
-                            <td>@item.ExtraPerHour</td>
-                            <td>@item.ExtraPerKm</td>
-                            <td>@item.NightCharges</td>
-                            <td>@item.OutStationCharge</td>
-                            <td>@item.UpdatedByUser</td>
-                            <td>@item.UpdateDate.ToString("dd-MMM-yyyy")</td>
-                            <td>
-                                @if (links.Contains("Edit Vendor Package"))
-                                {
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
-                                }
-                                @if (links.Contains("Delete Vendor Package"))
-                                {
-                                    <span class="btn btn-danger" onclick="deleteRecord('/VendorPackage/Delete?id=@item.Id')">Delete</span>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+    tbody tr:nth-child(even) {
+        background: hsl(220, 50%, 95%);
+    }
 
-    <div class="row r">
-        <div class="col-md-12">
-            <ul class="pagination">
-                @for (int i = 1; i <= Model.NumberOfPages; i++)
-                {
-                    <li class="@if (i == Model.Page) {<text>active</text> }">
-                        <a href="/VendorPackage/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
+    th, td {
+        border: 1px solid;
+        padding: 0.5em;
+        text-align: left;
+        vertical-align: top;
+        font-weight: normal;
+    }
 
-</div>
+    .scrollable thead,
+    .scrollable tfoot,
+    .scrollable tbody,
+    .scrollable th,
+    .scrollable td {
+        display: block;
+        width: 100%;
+    }
 
-<script src="/js/jquery2.0.3.min.js"></script>
-<script>
-    function deleteRecord(url)
-    {
-        if(window.confirm('do you want to delete?'))
-        {
-            $.get(url).then(function (r) {
-                if (r == "ok") {
-                    var loc = window.location.href;
-                    window.location.href = loc;
-                }
-            }, function (e) {
-                alert("Server error");
-            })
+    .scrollable thead,
+    .scrollable tfoot,
+    .scrollable tbody {
+        overflow-y: scroll;
+    }
+
+    .scrollable thead,
+    .scrollable tfoot {
+        -ms-overflow-style: none;
+    }
+
+        .scrollable thead::-webkit-scrollbar,
+        .scrollable tfoot::-webkit-scrollbar {
+            visibility: hidden;
         }
+
+    .scrollable tbody {
+        max-height: 20em;
+        position: relative;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
     }
-</script>
+
+    .scrollable tr {
+        display: flex;
+    }
+
+    .scrollable tbody th,
+    .scrollable tbody td {
+        border-top: none;
+    }
+
+    .scrollable th:not(:last-child),
+    .scrollable td:not(:last-child) {
+        border-right: none;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!--driver detail start-->
+                    <div class="card">
+                        <div class="card-header  card-header--2">
+
+                            <div>
+                                <h5>Vendor Packages</h5>
+                            </div>
+
+                            <form class="d-inline-flex">
+                                <a href="/VendorPackage/Add?menuId=@ViewBag.menuId" class="align-items-center btn btn-theme">
+                                    <i data-feather="plus-square"></i>Add More
+                                </a>
+                            </form>
+
+                        </div>
+                        <div class="card-body">
+                            @*<h2>Vendor Packages</h2>
+                            <div class="row">
+                                <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info">Back</a>
+                            </div>*@
+                            @using (Html.BeginForm())
+                            {
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <input type="text" placeholder="Search by Vehicle Model" class="form-control" name="term" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="submit" class="btn btn-primary" value="Find" />
+                                        <a class="btn btn-primary" href="/VendorPackage/All?menuId=@ViewBag.menuId">Show all</a>
+                                        @*<a class="btn btn-info" href="/VendorPackage/Add?menuId=@ViewBag.menuId">+ Add More</a>*@
+                                    </div>
+                                </div>
+                            }
+
+
+                            <div class="mainDiv">
+                                <div class="table-responsive table-desi scrollable">
+                                    <table class="user-table table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="sticky-col first-col">S.No.</th>
+                                                <th class="sticky-col second-col">Package Type</th>
+                                                <th class="sticky-col third-col">Booking Type</th>
+                                                <th>Vehicle</th>
+                                                <th>Fare</th>
+                                                <th>MinKm</th>
+                                                <th>MinHrs</th>
+                                                <th>ExtraPerHour</th>
+                                                <th>ExtraPerKm</th>
+                                                <th>NightCharges</th>
+                                                <th>Outstation TA/day</th>
+                                                <th>Created/Updated By</th>
+                                                <th>Create/Update Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.Packages)
+                                            {
+                                                <tr>
+                                                    <td class="sticky-col first-col">@(++sn)</td>
+                                                    <td class="sticky-col second-col">@item.PackageTypeName</td>
+                                                    <td class="sticky-col third-col">
+                                                        @item.RentalType
+                                                        @if (!string.IsNullOrEmpty(item.PickupLocation) && !string.IsNullOrEmpty(item.DropLocation))
+                                                        {
+                                                            <text>
+                                                                &nbsp; (@item.PickupLocation to @item.DropLocation)
+                                                            </text>
+                                                        }
+                                                    </td>
+                                                    <td>@item.ModelName</td>
+                                                    <td>@item.Fare</td>
+                                                    <td>@item.MinKm</td>
+                                                    <td>@item.MinHrs</td>
+                                                    <td>@item.ExtraPerHour</td>
+                                                    <td>@item.ExtraPerKm</td>
+                                                    <td>@item.NightCharges</td>
+                                                    <td>@item.OutStationCharge</td>
+                                                    <td>@item.UpdatedByUser</td>
+                                                    <td>@item.UpdateDate.ToString("dd-MMM-yyyy")</td>
+                                                    <td>
+                                                        @if (links.Contains("Edit Vendor Package"))
+                                                        {
+                                                            @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                                                        }
+                                                        @if (links.Contains("Delete Vendor Package"))
+                                                        {
+                                                            <span class="btn btn-danger" onclick="deleteRecord('/VendorPackage/Delete?id=@item.Id')">Delete</span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row r">
+                                <div class="col-md-12">
+                                    <ul class="pagination">
+                                        @for (int i = 1; i <= Model.NumberOfPages; i++)
+                                        {
+                                            <li class="@if (i == Model.Page) {<text>active</text> }">
+                                                <a href="/VendorPackage/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                        <script src="/js/jquery2.0.3.min.js"></script>
+                        <script>
+                            function deleteRecord(url) {
+                                if (window.confirm('do you want to delete?')) {
+                                    $.get(url).then(function (r) {
+                                        if (r == "ok") {
+                                            var loc = window.location.href;
+                                            window.location.href = loc;
+                                        }
+                                    }, function (e) {
+                                        alert("Server error");
+                                    })
+                                }
+                            }
+                        </script>
 

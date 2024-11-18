@@ -1,7 +1,7 @@
 ﻿@model VardaanCab.Domain.ViewModels.RentalTypeViewModel
 @{
     ViewBag.Title = "Rental Type";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
     var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
     int sn = Model.SrNo;
 }
@@ -13,93 +13,147 @@
     }
 </style>
 
-<div id="main">
-    <h2>Rental Types</h2>
+<div class="container-fluid">
     <div class="row">
-        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
 
-    </div>
-    @using (Html.BeginForm())
-    {
-        <input  type="hidden" name="menuId" value="@ViewBag.menuId"/>
-        <div class="row r">
-            <div class="col-md-4">
-                <input type="text" placeholder="Search by Name" class="form-control" name="term" />
-            </div>
-            <div class="col-md-8">
-                <input type="submit" class="btn btn-info" value="Find" />
-                <a class="btn btn-info" href="/RentalType/All?menuId=@ViewBag.menuId">Show all</a>
-               @* <a class="btn btn-info" href="/RentalType/Add">+ Add More</a>*@
-            </div>
-        </div>
-    }
+                    <div>
+                        <h5>Rental Types</h5>
+                    </div>
 
-    
-    <div class="mainDiv">
-        <div class="wrapperTable table-scroll">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>S.No.</th>
-                        <th>Rental Type</th>
-                        <th>Package Type</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Rentals )
+
+
+                </div>
+
+                <div class="card-body">
+                    @*<h2>Rental Types</h2>
+            <div class="row">
+                <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+
+            </div>*@
+                    @using (Html.BeginForm())
                     {
-                        <tr>
-                            <td>@(++sn)</td>
-                            <td>@item.RentalTypeName</td>
-                            <td>@item.PackageTypeName</td>
-                             <td>
-                                 @if (links.Contains("Edit Rental Type"))
-                                 {
-                                @Html.ActionLink("Edit", "Edit", new { id = item.Id,menuId= ViewBag.menuId }, new { @class = "btn btn-info" })
-                                 }
-                                 @if (links.Contains("Delete Rental Type"))
-                                 {
-                                     <span class="btn btn-danger" onclick="deleteRecord('/RentalType/Delete?id=@item.Id&menuId= @ViewBag.menuId')">Delete</span>
-                                 }
-                            </td>
-                        </tr>
+                        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+                        <div class="row r">
+                            <div class="col-md-4">
+                                <input type="text" placeholder="Search by Name" class="form-control" name="term" />
+                            </div>
+                            <div class="col-md-8">
+                                <input type="submit" class="btn btn-primary" value="Find" />
+                                <a class="btn btn-primary" href="/RentalType/All?menuId=@ViewBag.menuId">Show all</a>
+                                @* <a class="btn btn-info" href="/RentalType/Add">+ Add More</a>*@
+                            </div>
+                        </div>
                     }
-                </tbody>
-            </table>
+
+
+                    <div class="mainDiv">
+                        <div class="table-responsive table-desi scrollable">
+                            <table class="user-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>Rental Type</th>
+                                        <th>Package Type</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Rentals)
+                                    {
+                                        <tr>
+                                            <td>@(++sn)</td>
+                                            <td>@item.RentalTypeName</td>
+                                            <td>@item.PackageTypeName</td>
+                                            <td>
+                                                @if (links.Contains("Edit Rental Type"))
+                                                {
+                                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-primary" })
+                                                }
+                                                @if (links.Contains("Delete Rental Type"))
+                                                {
+                                                    <span class="btn btn-danger" onclick="deleteRecord('/RentalType/Delete?id=@item.Id&menuId= @ViewBag.menuId')">Delete</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    @*<div class="row r r">
+                        <div class="col-md-12">
+                            <ul class="pagination">
+                                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                                {
+                                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                                        <a href="/RentalType/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>*@
+
+                </div>
+                <div class="pagination-box">
+                    <nav class="ms-auto me-auto" aria-label="...">
+                        <ul class="pagination pagination-primary">
+                            <!-- Previous Button -->
+                            <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                                <a class="page-link" href="/RentalType/All?term=@Model.Term&page=@(Model.Page - 1)&menuId=@ViewBag.menuId" tabindex="-1">Previous</a>
+                            </li>
+
+                            <!-- Page Number Buttons -->
+                            @{
+                                int startPage = Math.Max(1, Model.Page - 1);
+                                int endPage = Math.Min(Model.NumberOfPages, Model.Page + 1);
+
+                                // Adjust to always show exactly 3 pages if possible
+                                if (Model.Page == 1)
+                                {
+                                    endPage = Math.Min(3, Model.NumberOfPages);
+                                }
+                                else if (Model.Page == Model.NumberOfPages)
+                                {
+                                    startPage = Math.Max(1, Model.NumberOfPages - 2);
+                                }
+                            }
+                            @for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == Model.Page ? "active" : "")">
+                                    <a class="page-link" href="/RentalType/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                </li>
+                            }
+
+                            <!-- Next Button -->
+                            <li class="page-item @(Model.Page == Model.NumberOfPages ? "disabled" : "")">
+                                <a class="page-link" href="/RentalType/All?term=@Model.Term&page=@(Model.Page + 1)&menuId=@ViewBag.menuId">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            </div>
         </div>
     </div>
 
-    <div class="row r r">
-        <div class="col-md-12">
-            <ul class="pagination">
-                @for (int i = 1; i <= Model.NumberOfPages; i++)
-                {
-                    <li class="@if (i == Model.Page) {<text>active</text> }">
-                        <a href="/RentalType/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
 
-</div>
-
-<script src="/js/jquery2.0.3.min.js"></script>
-<script>
-    function deleteRecord(url)
-    {
-        if(window.confirm('do you want to delete?'))
-        {
-            $.get(url).then(function (r) {
-                if (r == "ok") {
-                    var loc = window.location.href;
-                    window.location.href = loc;
-                }
-            }, function (e) {
-                alert("Server error");
-            })
-        }
-    }
-</script>
+                <script src="/js/jquery2.0.3.min.js"></script>
+                <script>
+                    function deleteRecord(url) {
+                        if (window.confirm('do you want to delete?')) {
+                            $.get(url).then(function (r) {
+                                if (r == "ok") {
+                                    var loc = window.location.href;
+                                    window.location.href = loc;
+                                }
+                            }, function (e) {
+                                alert("Server error");
+                            })
+                        }
+                    }
+                </script>
 

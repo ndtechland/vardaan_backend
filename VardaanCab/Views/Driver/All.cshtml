@@ -1,7 +1,8 @@
 ﻿@model VardaanCab.Domain.ViewModels.DriverListVm
 @{
     ViewBag.Title = "Drivers";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    //Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
     var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
     int count = Model.SrNo;
 }
@@ -13,160 +14,251 @@
     }
 
 </style>
+<style>
 
-<div id="main">
-    <h2>Drivers</h2>
-    <div class="row">
-        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
-    </div>
-    @using (Html.BeginForm())
-    {
-        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
-        <div class="row r">
-            <div class="col-md-4">
-                <input type="text" placeholder="Search by Name/MobileNo" class="form-control" name="term" />
-            </div>
-            <div class="col-md-8">
-                <input type="submit" class="btn btn-info" value="Find" />
-                <a class="btn btn-info" href="/Driver/All?menuId=@ViewBag.menuId">Show all</a>
-                <a class="btn btn-info" href="/Driver/Add?menuId=@ViewBag.menuId">+ Add More</a>
-                <button type="button" onclick="Export()" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
-            </div>
-        </div>
+
+
+
+    thead tr,
+    tfoot tr {
+        background: hsl(220, 50%, 80%);
     }
 
-    
-    <div class="mainDiv">
-        <div class="wrapperTable table-scroll" >
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="sticky-col first-col" >SNo</th>
-                        <th class="sticky-col second-col">Name</th>
-                        <th class="sticky-col third-col" >Contact No</th>
-                        <th>Alter No.</th>
-                        <th>Police Ver.</th>
-                        <th>Registration Date</th>
-                        <th>Address</th>
-                        <th>Driver image</th>
-                        <th>Aadhar detail</th>
-                        <th>Dl detail</th>
-                        <th>PAN detail</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Drivers)
-                    {
-                        <tr>
-                            <td class="sticky-col first-col">@(++count)</td>
-                            <td class="sticky-col second-col">@item.DriverName</td>
-                            <td class="sticky-col third-col">@item.MobileNumber</td>
-                            <td>@item.AlternateNo1 &nbsp;&nbsp; @item.AlternateNo2</td>
-                            <td>
-                                @if (!string.IsNullOrEmpty(item.PolVerifImg))
-                                {
-                                    <a href="/Images/@item.PolVerifImg"> <i class="text-danger fa fa-2x fa-file-pdf-o"></i></a>
-                                }
-                                else
-                                {
-                                    <span>No Doc.</span>
-                                }
-                            </td>
-                            <td>@item.CreateDate.ToString("dd-MMM-yyyy")</td>
-                            <td>
-                             Local Address : @item.LocalAddress <br/>
-                             Permanent Address: @item.PermanentAddress
-                             </td>
-                            <td>
-                               
-                                @if (!string.IsNullOrEmpty(item.DriverImage))
-                                {
-                                    <a href="/Images/@item.DriverImage"> <img src="/Images/@item.DriverImage" class="thumb" /></a>
-                                }
-                                else
-                                {
-                                    <span>No image</span>
-                                }
-                            </td>
-                            <td>@item.AadharNo 
-                              @if(!string.IsNullOrEmpty(item.AadharNo))
-                              {
-                                     <br/>
-                                    <a href="/Images/@item.AadharImage"> <i class="text-danger fa fa-2x fa-file-pdf-o"></i></a>
-                              }
-                            </td>
-                           
-                            <td>
-                                <b>DL No:</b> @item.DlNumber <br />
-                                <b>Expiry Date:</b> @item.LicenceExpDate.ToString("dd-MMM-yyyy") <br/>
-                            @if (!string.IsNullOrEmpty(item.DlImage))
-                            {
-                                <br />
-                                    <a href="/Images/@item.DlImage"> <i class="text-danger fa fa-2x fa-file-pdf-o"></i></a>
-                            }
-                        </td>
-                            <td>
-                                <b>PAN No:</b> @item.PanNumber <br />
-                                @if (!string.IsNullOrEmpty(item.PanImage))
-                                {
-                                    <br />
-                                    <a href="/Images/@item.PanImage"> <i class="text-danger fa fa-2x fa-file-pdf-o"></i></a>
-                                }
-                            </td>
+    tbody tr:nth-child(even) {
+        background: hsl(220, 50%, 95%);
+    }
 
-                            <td>
-                                @if (links.Contains("Update Driver"))
-                                {
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id,menuId= ViewBag.menuId }, new { @class = "btn btn-info" })
-                                }
-                               @if (item.IsActive)
-                               {
-                                   if (links.Contains("Update Driver status"))
-                                   {
-                                    @Html.ActionLink("Active", "ChangeDriverStatus", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-success" })
-                                   }
-                                   else
-                                   {
-                                       <span>Active</span>
-                                   }
-                               }
-                               else
-                               {
-                                   if (links.Contains("Update Driver status"))
-                                   {
-                                @Html.ActionLink("Inactive", "ChangeDriverStatus", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-danger" })
-                                   }
-                                   else
-                                   {
-                                       <span>Inactive</span>
-                                   }
-                               }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+    th, td {
+        border: 1px solid;
+        padding: 0.5em;
+        text-align: left;
+        vertical-align: top;
+        font-weight: normal;
+    }
+
+    .scrollable thead,
+    .scrollable tfoot,
+    .scrollable tbody,
+    .scrollable th,
+    .scrollable td {
+        display: block;
+        width: 100%;
+    }
+
+    .scrollable thead,
+    .scrollable tfoot,
+    .scrollable tbody {
+        overflow-y: scroll;
+    }
+
+    .scrollable thead,
+    .scrollable tfoot {
+        -ms-overflow-style: none;
+    }
+
+        .scrollable thead::-webkit-scrollbar,
+        .scrollable tfoot::-webkit-scrollbar {
+            visibility: hidden;
+        }
+
+    .scrollable tbody {
+        max-height: 20em;
+        position: relative;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+    .scrollable tr {
+        display: flex;
+    }
+
+    .scrollable tbody th,
+    .scrollable tbody td {
+        border-top: none;
+    }
+
+    .scrollable th:not(:last-child),
+    .scrollable td:not(:last-child) {
+        border-right: none;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        <h5>Drivers</h5>
+                    </div>
+
+                    <form class="d-inline-flex">
+                        <a class="btn btn-primary" href="/Driver/Add?menuId=@ViewBag.menuId">+ Add More</a>
+                    </form>
+
+                </div>
+
+                <div class="card-body">
+                    <div id="main">
+                        @*<h2>Drivers</h2>
+                        <div class="row">
+                            <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+                        </div>*@
+                        @using (Html.BeginForm())
+                        {
+                            <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+                            <div class="row r">
+                                <div class="col-md-4">
+                                    <input type="text" placeholder="Search by Name/MobileNo" class="form-control" name="term" />
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="submit" class="btn btn-primary" value="Find" />
+                                    <a class="btn btn-primary" href="/Driver/All?menuId=@ViewBag.menuId">Show all</a>
+                                    @*<a class="btn btn-info" href="/Driver/Add?menuId=@ViewBag.menuId">+ Add More</a>*@
+                                    <button type="button" onclick="Export()" class="btn btn-info" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+                                </div>
+                            </div>
+                        }
+
+
+                    
+                            <div class="table-responsive table-desi scrollable">
+                                <table id="myTable" class="user-table table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="sticky-col first-col" nowrap>SNo</th>
+                                            <th class="sticky-col second-col">Name</th>
+                                            <th class="sticky-col third-col">Contact No</th>
+                                            <th>Alter No.</th>
+                                            <th>Police Ver.</th>
+                                            <th>Registration Date</th>
+                                            <th>Address</th>
+                                            <th>Driver image</th>
+                                            <th>Aadhar detail</th>
+                                            <th>Dl detail</th>
+                                            <th>PAN detail</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Drivers)
+                                        {
+                                            <tr>
+                                                <td class="sticky-col first-col" nowrap>@(++count)</td>
+                                                <td class="sticky-col second-col">@item.DriverName</td>
+                                                <td class="sticky-col third-col">@item.MobileNumber</td>
+                                                <td>@item.AlternateNo1 &nbsp;&nbsp; @item.AlternateNo2</td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(item.PolVerifImg))
+                                                    {
+                                                        <a href="/Images/@item.PolVerifImg"> <i class="text-danger fa fa-2x fa-file-pdf-o"></i></a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No Doc.</span>
+                                                    }
+                                                </td>
+                                                <td>@item.CreateDate.ToString("dd-MMM-yyyy")</td>
+                                                <td>
+                                                    Local Address : @item.LocalAddress <br />
+                                                    Permanent Address: @item.PermanentAddress
+                                                </td>
+                                                <td>
+
+                                                    @if (!string.IsNullOrEmpty(item.DriverImage))
+                                                    {
+                                                        <a href="/Images/@item.DriverImage"> <img src="/Images/@item.DriverImage" class="thumb" /></a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No image</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @item.AadharNo
+                                                    @if (!string.IsNullOrEmpty(item.AadharNo))
+                                                    {
+                                                        <br />
+                                                        <a href="/Images/@item.AadharImage"> <i class="text-danger fa fa-2x fa-file-pdf-o"></i></a>
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    <b>DL No:</b> @item.DlNumber <br />
+                                                    <b>Expiry Date:</b> @item.LicenceExpDate.ToString("dd-MMM-yyyy") <br />
+                                                    @if (!string.IsNullOrEmpty(item.DlImage))
+                                                    {
+                                                        <br />
+                                                        <a href="/Images/@item.DlImage"> <i class="text-danger fa fa-2x fa-file-pdf-o"></i></a>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <b>PAN No:</b> @item.PanNumber <br />
+                                                    @if (!string.IsNullOrEmpty(item.PanImage))
+                                                    {
+                                                        <br />
+                                                        <a href="/Images/@item.PanImage"> <i class="text-danger fa fa-2x fa-file-pdf-o"></i></a>
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    @if (links.Contains("Update Driver"))
+                                                    {
+                                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                                                    }
+                                                    @if (item.IsActive)
+                                                    {
+                                                        if (links.Contains("Update Driver status"))
+                                                        {
+                                                            @Html.ActionLink("Active", "ChangeDriverStatus", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-success" })
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Active</span>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (links.Contains("Update Driver status"))
+                                                        {
+                                                            @Html.ActionLink("Inactive", "ChangeDriverStatus", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-danger" })
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Inactive</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                      
+
+                        <div class="row r r">
+                            <div class="col-md-12">
+                                <ul class="pagination">
+                                    @for (int i = 1; i <= Model.NumberOfPages; i++)
+                                    {
+                                        <li class="@if (i == Model.Page) {<text>active</text> }">
+                                            <a href="/Driver/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row r r">
-        <div class="col-md-12">
-            <ul class="pagination">
-                @for (int i = 1; i <= Model.NumberOfPages; i++)
-                {
-                    <li class="@if (i == Model.Page) {<text>active</text> }">
-                        <a href="/Driver/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
 
-</div>
-
-<script src="/js/jquery2.0.3.min.js"></script>
-<script>
+                    <script src="/js/jquery2.0.3.min.js"></script>
+                    <script>
     function deleteRecord(url)
     {
         if(window.confirm('do you want to delete?'))
@@ -190,5 +282,10 @@
         var _export = true;
         window.location.href=`/Driver/All?term=${_term}&page=${_page}&export=${_export}&menuId=${_menuId}`;
     }
-</script>
+                    </script>
 
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
