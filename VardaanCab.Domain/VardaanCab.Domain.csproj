@@ -81,6 +81,7 @@
     <Compile Include="DTO\DiscountTypeModel.cs" />
     <Compile Include="DTO\DriverDTO.cs" />
     <Compile Include="DTO\DriverLeaveDTO.cs" />
+    <Compile Include="DTO\EmployeeDTO.cs" />
     <Compile Include="DTO\LoginModel.cs" />
     <Compile Include="DTO\LogsDTO.cs" />
     <Compile Include="DTO\MonthlyPackageBillDTO.cs" />

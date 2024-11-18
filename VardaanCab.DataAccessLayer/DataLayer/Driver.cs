@@ -37,5 +37,8 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string PanImage { get; set; }
         public string PanNumber { get; set; }
         public bool IsOutsider { get; set; }
+        public Nullable<bool> IsFirst { get; set; }
+        public string Password { get; set; }
+        public Nullable<int> OTP { get; set; }
     }
 }

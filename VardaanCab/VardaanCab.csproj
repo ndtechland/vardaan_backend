@@ -2658,6 +2658,7 @@
     <Compile Include="Controllers\CityController.cs" />
     <Compile Include="Controllers\ClientPackageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\MonthlyPackageMasterController.cs" />
     <Compile Include="Controllers\MonthlyPackageController.cs" />
     <Compile Include="Controllers\MonthlyRouteMasterController.cs" />
@@ -2885,6 +2886,7 @@
     <Folder Include="Files\" />
     <Folder Include="Models\Domain\" />
     <Folder Include="Views\Common\" />
+    <Folder Include="Views\Employee\" />
     <Folder Include="Views\TestApi\" />
   </ItemGroup>
   <ItemGroup>

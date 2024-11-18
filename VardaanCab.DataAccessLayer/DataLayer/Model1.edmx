@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Vardaan_AdminModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Vardaan_AdminModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Booking">
           <Key>
             <PropertyRef Name="Id" />
@@ -332,6 +332,9 @@
           <Property Name="PanImage" Type="nvarchar" MaxLength="200" />
           <Property Name="PanNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="IsOutsider" Type="bit" Nullable="false" />
+          <Property Name="IsFirst" Type="bit" />
+          <Property Name="Password" Type="nvarchar" MaxLength="500" />
+          <Property Name="OTP" Type="int" />
         </EntityType>
         <EntityType Name="DriverLeave">
           <Key>
@@ -1570,8 +1573,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
     FROM [newVardaan].[SoftwareLink_15052023] AS [SoftwareLink_15052023]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Vardaan_AdminModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1902,6 +1904,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="PanImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PanNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsOutsider" Type="Boolean" Nullable="false" />
+          <Property Name="IsFirst" Type="Boolean" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="OTP" Type="Int32" />
         </EntityType>
         <EntityType Name="DriverLeave">
           <Key>
@@ -2705,7 +2710,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="userid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="getAllParents" ReturnType="Collection(Vardaan_AdminModel.getAllParents_Result)">
-            <Parameter Name="categoryId" Mode="In" Type="Int32" />
+          <Parameter Name="categoryId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="getAutoGenratedInvNo" ReturnType="Collection(Vardaan_AdminModel.getAutoGenratedInvNo_Result)" />
           <FunctionImport Name="getAutoInvNo" ReturnType="Collection(String)" />
@@ -2953,17 +2958,17 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="routeNo" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="getWorkingDayOfMonth" ReturnType="Collection(Int32)">
-            <Parameter Name="workingDate" Mode="In" Type="DateTime" />
+          <Parameter Name="workingDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="uspTaxInvoicelist" ReturnType="Collection(Vardaan_AdminModel.uspTaxInvoicelist_Result)">
-            <Parameter Name="taxInvId" Mode="In" Type="Int32" />
+          <Parameter Name="taxInvId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="uspTaxInvoicelistbyClintUser" ReturnType="Collection(Vardaan_AdminModel.uspTaxInvoicelistbyClintUser_Result)">
             <Parameter Name="taxInvId" Mode="In" Type="Int32" />
             <Parameter Name="clintUID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="getbookingHeadCount" ReturnType="Collection(Vardaan_AdminModel.getbookingHeadCount_Result)">
-            <Parameter Name="finyear" Mode="In" Type="Int32" />
+          <Parameter Name="finyear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="getCloseBookingDatabyMonth" ReturnType="Collection(Vardaan_AdminModel.getCloseBookingDatabyMonth_Result)" />
           <FunctionImport Name="GetCorporateDsEdit1" ReturnType="Collection(Vardaan_AdminModel.GetCorporateDsEdit1_Result)">
@@ -4297,6 +4302,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Drivers">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Driver">
               <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsFirst" ColumnName="IsFirst" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="DriverName" ColumnName="DriverName" />
