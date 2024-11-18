@@ -1,7 +1,7 @@
 ﻿@model VardaanCab.Domain.ViewModels.UserLoginViewModel
 @{
     ViewBag.Title = "Users";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
     var links = new VardaanCab.Repository.CommonRepository().GetNonMenuLinks();
     int sn = Model.SrNo;
 }
@@ -13,118 +13,172 @@
     }
 </style>
 
-<div id="main">
-    <h2>Users</h2>
+<div class="container-fluid">
     <div class="row">
-        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
-    </div>
-    @using (Html.BeginForm())
-    {
-        <div class="row r">
-            <div class="col-md-6">
-                <input type="text" placeholder="Search by Name/Phone number" class="form-control" name="term" />
-            </div>
-            <div class="col-md-6">
-                <input type="submit" class="btn btn-info" value="Find" />
-                <a class="btn btn-info" href="/AdminOperations/All?menuId=@ViewBag.menuId">Show all</a>
-                @*<a class="btn btn-info" href="/AdminOperations/Add">+ Add More</a>*@
-            </div>
-        </div>
-    }
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
 
+                    <div>
+                        <h5>Users</h5>
+                    </div>
 
-    <div class="mainDiv">
-        <div class="wrapperTable table-scroll">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>S.No.</th>
-                        <th>User Name</th>
-                        <th>Phone Number</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.UsersLogin)
+                    
+                </div>
+
+                <div class="card-body">
+                    @*<h2>Users</h2>
+            <div class="row">
+                <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+            </div>*@
+                    @using (Html.BeginForm())
                     {
-                        <tr>
-                            <td>@(++sn)</td>
-                            <td>@item.Email</td>
-                            <td>@item.MobileNumber</td>
-                            <td>
-                                @if (links.Contains("Edit User Detail"))
-                                {
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-info" })
-                                }
-                                @*@if (links.Contains("Delete User Detail"))
-        {
-            <span class="btn btn-danger" onclick="deleteRecord('/AdminOperations/Delete?id=@item.Id&menuId=@ViewBag.menuId')">Delete</span>
-        }*@
-                                @if (links.Contains("Deactivate User"))
-                                {
-                                    if (Convert.ToBoolean(item.IsActive))
-                                    {
-                                        <span class="btn btn-danger" onclick="deactivateRecord('/AdminOperations/Deactivate?id=@item.Id&menuId=@ViewBag.menuId')">Deactivate</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="btn btn-danger" onclick="deactivateRecord('/AdminOperations/Deactivate?id=@item.Id&menuId=@ViewBag.menuId')">Activate</span>
-                                    }
-                                }
-                                @if (links.Contains("View Rights"))
-                                {
-                                    @Html.ActionLink("View Rights", "UserRights", new { userId = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-info" })
-                                }
-                                @Html.ActionLink("Customer", "CustomerUserMapping", new { userId = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-info" })
-                            </td>
-                        </tr>
+                        <div class="row r">
+                            <div class="col-md-6">
+                                <input type="text" placeholder="Search by Name/Phone number" class="form-control" name="term" />
+                            </div>
+                            <div class="col-md-6">
+                                <input type="submit" class="btn btn-primary" value="Find" />
+                                <a class="btn btn-primary" href="/AdminOperations/All?menuId=@ViewBag.menuId">Show all</a>
+                                @*<a class="btn btn-info" href="/AdminOperations/Add">+ Add More</a>*@
+                            </div>
+                        </div>
                     }
-                </tbody>
-            </table>
+
+
+
+                    <div class="table-responsive table-desi scrollable">
+                        <table class="user-table table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>User Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.UsersLogin)
+                                {
+                                    <tr>
+                                        <td>@(++sn)</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.MobileNumber</td>
+                                        <td>
+                                            @if (links.Contains("Edit User Detail"))
+                                            {
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-primary" })
+                                            }
+                                            @*@if (links.Contains("Delete User Detail"))
+                                    {
+                                        <span class="btn btn-danger" onclick="deleteRecord('/AdminOperations/Delete?id=@item.Id&menuId=@ViewBag.menuId')">Delete</span>
+                                    }*@
+                                            @if (links.Contains("Deactivate User"))
+                                            {
+                                                if (Convert.ToBoolean(item.IsActive))
+                                                {
+                                                    <span class="btn btn-danger" onclick="deactivateRecord('/AdminOperations/Deactivate?id=@item.Id&menuId=@ViewBag.menuId')">Deactivate</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="btn btn-danger" onclick="deactivateRecord('/AdminOperations/Deactivate?id=@item.Id&menuId=@ViewBag.menuId')">Activate</span>
+                                                }
+                                            }
+                                            @if (links.Contains("View Rights"))
+                                            {
+                                                @Html.ActionLink("View Rights", "UserRights", new { userId = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-primary" })
+                                            }
+                                            @Html.ActionLink("Customer", "CustomerUserMapping", new { userId = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-primary" })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    @*<div class="row r r">
+                        <div class="col-md-12">
+                            <ul class="pagination">
+                                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                                {
+                                    <li class="@if (i == Model.Page) {<text>active</text> }">
+                                        <a href="/AdminOperations/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>*@
+
+                </div>
+                <div class="pagination-box">
+                    <nav class="ms-auto me-auto" aria-label="...">
+                        <ul class="pagination pagination-primary">
+                            <!-- Previous Button -->
+                            <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                                <a class="page-link" href="/AdminOperations/All?term=@Model.Term&page=@(Model.Page - 1)&menuId=@ViewBag.menuId" tabindex="-1">Previous</a>
+                            </li>
+
+                            <!-- Page Number Buttons -->
+                            @{
+                                int startPage = Math.Max(1, Model.Page - 1);
+                                int endPage = Math.Min(Model.NumberOfPages, Model.Page + 1);
+
+                                // Adjust to always show exactly 3 pages if possible
+                                if (Model.Page == 1)
+                                {
+                                    endPage = Math.Min(3, Model.NumberOfPages);
+                                }
+                                else if (Model.Page == Model.NumberOfPages)
+                                {
+                                    startPage = Math.Max(1, Model.NumberOfPages - 2);
+                                }
+                            }
+                            @for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == Model.Page ? "active" : "")">
+                                    <a class="page-link" href="/AdminOperations/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                </li>
+                            }
+
+                            <!-- Next Button -->
+                            <li class="page-item @(Model.Page == Model.NumberOfPages ? "disabled" : "")">
+                                <a class="page-link" href="/AdminOperations/All?term=@Model.Term&page=@(Model.Page + 1)&menuId=@ViewBag.menuId">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            </div>
         </div>
     </div>
 
-    <div class="row r r">
-        <div class="col-md-12">
-            <ul class="pagination">
-                @for (int i = 1; i <= Model.NumberOfPages; i++)
-                {
-                    <li class="@if (i == Model.Page) {<text>active</text> }">
-                        <a href="/AdminOperations/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
+                <script src="/js/jquery2.0.3.min.js"></script>
+                <script>
+                    function deleteRecord(url) {
+                        if (window.confirm('do you want to delete?')) {
+                            $.get(url).then(function (r) {
+                                if (r == "ok") {
+                                    var loc = window.location.href;
+                                    window.location.href = loc;
+                                }
+                            }, function (e) {
+                                alert("Server error");
+                            })
+                        }
+                    }
 
-</div>
-
-<script src="/js/jquery2.0.3.min.js"></script>
-<script>
-    function deleteRecord(url) {
-        if (window.confirm('do you want to delete?')) {
-            $.get(url).then(function (r) {
-                if (r == "ok") {
-                    var loc = window.location.href;
-                    window.location.href = loc;
-                }
-            }, function (e) {
-                alert("Server error");
-            })
-        }
-    }
-
-    function deactivateRecord(url) {
-        if (window.confirm('do you want to change the user status.?')) {
-            $.get(url).then(function (r) {
-                if (r == "ok") {
-                    var loc = window.location.href;
-                    window.location.href = loc;
-                }
-            }, function (e) {
-                alert("Server error");
-            })
-        }
-    }
-</script>
+                    function deactivateRecord(url) {
+                        if (window.confirm('do you want to change the user status.?')) {
+                            $.get(url).then(function (r) {
+                                if (r == "ok") {
+                                    var loc = window.location.href;
+                                    window.location.href = loc;
+                                }
+                            }, function (e) {
+                                alert("Server error");
+                            })
+                        }
+                    }
+                </script>
 
