@@ -1219,5 +1219,122 @@ namespace VardaanCab.DataAccessLayer.DataLayer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCorporateDsEdit1_Result>("GetCorporateDsEdit1", isNrgParameter, termParameter, sDateParameter, eDateParameter, pageParameter, pageSizeParameter, tInvIDParameter);
         }
+    
+        public virtual int ManageEmployee(string action, Nullable<int> id, Nullable<int> company_Id, string company_location, string employee_Id, string employee_First_Name, string employee_Middle_Name, string employee_Last_Name, string mobileNumber, string email, Nullable<int> stateId, Nullable<int> cityId, Nullable<int> pincode, string employeeCurrentAddress, string loginUserName, string weekOff, string employeeGeoCode, string employeeBusinessUnit, string employeeDepartment, string employeeProjectName, string reportingManager, Nullable<int> primaryFacilityZone, Nullable<int> homeRouteName, Nullable<int> employeeDestinationArea, Nullable<int> employeeRegistrationType, Nullable<bool> isActive, string password, Nullable<bool> isFirst)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            var company_IdParameter = company_Id.HasValue ?
+                new ObjectParameter("Company_Id", company_Id) :
+                new ObjectParameter("Company_Id", typeof(int));
+    
+            var company_locationParameter = company_location != null ?
+                new ObjectParameter("Company_location", company_location) :
+                new ObjectParameter("Company_location", typeof(string));
+    
+            var employee_IdParameter = employee_Id != null ?
+                new ObjectParameter("Employee_Id", employee_Id) :
+                new ObjectParameter("Employee_Id", typeof(string));
+    
+            var employee_First_NameParameter = employee_First_Name != null ?
+                new ObjectParameter("Employee_First_Name", employee_First_Name) :
+                new ObjectParameter("Employee_First_Name", typeof(string));
+    
+            var employee_Middle_NameParameter = employee_Middle_Name != null ?
+                new ObjectParameter("Employee_Middle_Name", employee_Middle_Name) :
+                new ObjectParameter("Employee_Middle_Name", typeof(string));
+    
+            var employee_Last_NameParameter = employee_Last_Name != null ?
+                new ObjectParameter("Employee_Last_Name", employee_Last_Name) :
+                new ObjectParameter("Employee_Last_Name", typeof(string));
+    
+            var mobileNumberParameter = mobileNumber != null ?
+                new ObjectParameter("MobileNumber", mobileNumber) :
+                new ObjectParameter("MobileNumber", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var stateIdParameter = stateId.HasValue ?
+                new ObjectParameter("StateId", stateId) :
+                new ObjectParameter("StateId", typeof(int));
+    
+            var cityIdParameter = cityId.HasValue ?
+                new ObjectParameter("CityId", cityId) :
+                new ObjectParameter("CityId", typeof(int));
+    
+            var pincodeParameter = pincode.HasValue ?
+                new ObjectParameter("Pincode", pincode) :
+                new ObjectParameter("Pincode", typeof(int));
+    
+            var employeeCurrentAddressParameter = employeeCurrentAddress != null ?
+                new ObjectParameter("EmployeeCurrentAddress", employeeCurrentAddress) :
+                new ObjectParameter("EmployeeCurrentAddress", typeof(string));
+    
+            var loginUserNameParameter = loginUserName != null ?
+                new ObjectParameter("LoginUserName", loginUserName) :
+                new ObjectParameter("LoginUserName", typeof(string));
+    
+            var weekOffParameter = weekOff != null ?
+                new ObjectParameter("WeekOff", weekOff) :
+                new ObjectParameter("WeekOff", typeof(string));
+    
+            var employeeGeoCodeParameter = employeeGeoCode != null ?
+                new ObjectParameter("EmployeeGeoCode", employeeGeoCode) :
+                new ObjectParameter("EmployeeGeoCode", typeof(string));
+    
+            var employeeBusinessUnitParameter = employeeBusinessUnit != null ?
+                new ObjectParameter("EmployeeBusinessUnit", employeeBusinessUnit) :
+                new ObjectParameter("EmployeeBusinessUnit", typeof(string));
+    
+            var employeeDepartmentParameter = employeeDepartment != null ?
+                new ObjectParameter("EmployeeDepartment", employeeDepartment) :
+                new ObjectParameter("EmployeeDepartment", typeof(string));
+    
+            var employeeProjectNameParameter = employeeProjectName != null ?
+                new ObjectParameter("EmployeeProjectName", employeeProjectName) :
+                new ObjectParameter("EmployeeProjectName", typeof(string));
+    
+            var reportingManagerParameter = reportingManager != null ?
+                new ObjectParameter("ReportingManager", reportingManager) :
+                new ObjectParameter("ReportingManager", typeof(string));
+    
+            var primaryFacilityZoneParameter = primaryFacilityZone.HasValue ?
+                new ObjectParameter("PrimaryFacilityZone", primaryFacilityZone) :
+                new ObjectParameter("PrimaryFacilityZone", typeof(int));
+    
+            var homeRouteNameParameter = homeRouteName.HasValue ?
+                new ObjectParameter("HomeRouteName", homeRouteName) :
+                new ObjectParameter("HomeRouteName", typeof(int));
+    
+            var employeeDestinationAreaParameter = employeeDestinationArea.HasValue ?
+                new ObjectParameter("EmployeeDestinationArea", employeeDestinationArea) :
+                new ObjectParameter("EmployeeDestinationArea", typeof(int));
+    
+            var employeeRegistrationTypeParameter = employeeRegistrationType.HasValue ?
+                new ObjectParameter("EmployeeRegistrationType", employeeRegistrationType) :
+                new ObjectParameter("EmployeeRegistrationType", typeof(int));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            var isFirstParameter = isFirst.HasValue ?
+                new ObjectParameter("IsFirst", isFirst) :
+                new ObjectParameter("IsFirst", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ManageEmployee", actionParameter, idParameter, company_IdParameter, company_locationParameter, employee_IdParameter, employee_First_NameParameter, employee_Middle_NameParameter, employee_Last_NameParameter, mobileNumberParameter, emailParameter, stateIdParameter, cityIdParameter, pincodeParameter, employeeCurrentAddressParameter, loginUserNameParameter, weekOffParameter, employeeGeoCodeParameter, employeeBusinessUnitParameter, employeeDepartmentParameter, employeeProjectNameParameter, reportingManagerParameter, primaryFacilityZoneParameter, homeRouteNameParameter, employeeDestinationAreaParameter, employeeRegistrationTypeParameter, isActiveParameter, passwordParameter, isFirstParameter);
+        }
     }
 }

@@ -1068,26 +1068,26 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Company_Id" Type="int" />
-          <Property Name="Company_location" Type="varchar(max)" />
-          <Property Name="Employee_Id" Type="varchar" MaxLength="50" />
-          <Property Name="Employee_First_Name" Type="varchar" MaxLength="100" />
-          <Property Name="Employee_Middle_Name" Type="varchar" MaxLength="100" />
-          <Property Name="Employee_Last_Name" Type="varchar" MaxLength="100" />
-          <Property Name="MobileNumber" Type="varchar" MaxLength="15" />
-          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="Company_location" Type="nvarchar(max)" />
+          <Property Name="Employee_Id" Type="nvarchar" MaxLength="50" />
+          <Property Name="Employee_First_Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Employee_Middle_Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Employee_Last_Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="MobileNumber" Type="nvarchar" MaxLength="15" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
           <Property Name="StateId" Type="int" />
           <Property Name="CityId" Type="int" />
           <Property Name="Pincode" Type="int" />
-          <Property Name="EmployeeCurrentAddress" Type="varchar" MaxLength="255" />
-          <Property Name="LoginUserName" Type="varchar" MaxLength="50" />
-          <Property Name="WeekOff" Type="varchar" MaxLength="50" />
-          <Property Name="EmployeeGeoCode" Type="varchar" MaxLength="50" />
-          <Property Name="EmployeeBusinessUnit" Type="varchar" MaxLength="100" />
-          <Property Name="EmployeeDepartment" Type="varchar" MaxLength="100" />
-          <Property Name="EmployeeProjectName" Type="varchar" MaxLength="100" />
-          <Property Name="ReportingManager" Type="varchar" MaxLength="100" />
+          <Property Name="EmployeeCurrentAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="LoginUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="WeekOff" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmployeeGeoCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmployeeBusinessUnit" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmployeeDepartment" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmployeeProjectName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ReportingManager" Type="nvarchar" MaxLength="100" />
           <Property Name="PrimaryFacilityZone" Type="int" />
           <Property Name="HomeRouteName" Type="int" />
           <Property Name="EmployeeDestinationArea" Type="int" />
@@ -1420,6 +1420,36 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="page" Type="int" Mode="In" />
           <Parameter Name="pageSize" Type="int" Mode="In" />
           <Parameter Name="TInvID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ManageEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
+          <Parameter Name="Action" Type="nvarchar" Mode="In" />
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="Company_location" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Employee_Id" Type="nvarchar" Mode="In" />
+          <Parameter Name="Employee_First_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Employee_Middle_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Employee_Last_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="MobileNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="StateId" Type="int" Mode="In" />
+          <Parameter Name="CityId" Type="int" Mode="In" />
+          <Parameter Name="Pincode" Type="int" Mode="In" />
+          <Parameter Name="EmployeeCurrentAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="LoginUserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="WeekOff" Type="nvarchar" Mode="In" />
+          <Parameter Name="EmployeeGeoCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="EmployeeBusinessUnit" Type="nvarchar" Mode="In" />
+          <Parameter Name="EmployeeDepartment" Type="nvarchar" Mode="In" />
+          <Parameter Name="EmployeeProjectName" Type="nvarchar" Mode="In" />
+          <Parameter Name="ReportingManager" Type="nvarchar" Mode="In" />
+          <Parameter Name="PrimaryFacilityZone" Type="int" Mode="In" />
+          <Parameter Name="HomeRouteName" Type="int" Mode="In" />
+          <Parameter Name="EmployeeDestinationArea" Type="int" Mode="In" />
+          <Parameter Name="EmployeeRegistrationType" Type="int" Mode="In" />
+          <Parameter Name="IsActive" Type="bit" Mode="In" />
+          <Parameter Name="Password" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsFirst" Type="bit" Mode="In" />
         </Function>
         <EntityContainer Name="Vardaan_AdminModelStoreContainer">
           <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
@@ -3025,6 +3055,36 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           </FunctionImport>
           <EntitySet Name="Employees" EntityType="Vardaan_AdminModel.Employee" />
           <EntitySet Name="AreaMasters" EntityType="Vardaan_AdminModel.AreaMaster" />
+          <FunctionImport Name="ManageEmployee">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Company_location" Mode="In" Type="String" />
+            <Parameter Name="Employee_Id" Mode="In" Type="String" />
+            <Parameter Name="Employee_First_Name" Mode="In" Type="String" />
+            <Parameter Name="Employee_Middle_Name" Mode="In" Type="String" />
+            <Parameter Name="Employee_Last_Name" Mode="In" Type="String" />
+            <Parameter Name="MobileNumber" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="StateId" Mode="In" Type="Int32" />
+            <Parameter Name="CityId" Mode="In" Type="Int32" />
+            <Parameter Name="Pincode" Mode="In" Type="Int32" />
+            <Parameter Name="EmployeeCurrentAddress" Mode="In" Type="String" />
+            <Parameter Name="LoginUserName" Mode="In" Type="String" />
+            <Parameter Name="WeekOff" Mode="In" Type="String" />
+            <Parameter Name="EmployeeGeoCode" Mode="In" Type="String" />
+            <Parameter Name="EmployeeBusinessUnit" Mode="In" Type="String" />
+            <Parameter Name="EmployeeDepartment" Mode="In" Type="String" />
+            <Parameter Name="EmployeeProjectName" Mode="In" Type="String" />
+            <Parameter Name="ReportingManager" Mode="In" Type="String" />
+            <Parameter Name="PrimaryFacilityZone" Mode="In" Type="Int32" />
+            <Parameter Name="HomeRouteName" Mode="In" Type="Int32" />
+            <Parameter Name="EmployeeDestinationArea" Mode="In" Type="Int32" />
+            <Parameter Name="EmployeeRegistrationType" Mode="In" Type="Int32" />
+            <Parameter Name="IsActive" Mode="In" Type="Boolean" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="IsFirst" Mode="In" Type="Boolean" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4029,24 +4089,24 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Company_Id" Type="Int32" />
-          <Property Name="Company_location" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Employee_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Employee_First_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Employee_Middle_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Employee_Last_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="MobileNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Company_location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_First_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_Middle_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_Last_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="StateId" Type="Int32" />
           <Property Name="CityId" Type="Int32" />
           <Property Name="Pincode" Type="Int32" />
-          <Property Name="EmployeeCurrentAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="LoginUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="WeekOff" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EmployeeGeoCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EmployeeBusinessUnit" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="EmployeeDepartment" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="EmployeeProjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ReportingManager" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeCurrentAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LoginUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WeekOff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeGeoCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeBusinessUnit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeDepartment" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeProjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ReportingManager" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PrimaryFacilityZone" Type="Int32" />
           <Property Name="HomeRouteName" Type="Int32" />
           <Property Name="EmployeeDestinationArea" Type="Int32" />
@@ -6248,6 +6308,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ManageEmployee" FunctionName="Vardaan_AdminModel.Store.ManageEmployee" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
