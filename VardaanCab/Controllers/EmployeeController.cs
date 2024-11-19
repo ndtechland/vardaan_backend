@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -35,54 +36,58 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                var connectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
 
-                    using (var command = new SqlCommand("ManageEmployee", connection))
+                using (var entityConnection = new EntityConnection(entityConnectionString))
+                {
+                    entityConnection.Open();
+
+                    using (var command = entityConnection.CreateCommand())
                     {
+                        command.CommandText = "Vardaan_AdminEntities.ManageEmployee";
                         command.CommandType = CommandType.StoredProcedure;
 
+                        // Remove '@' from parameter names for EntityParameter
+                        command.Parameters.Add(new EntityParameter("Action", DbType.String) { Value = "INSERT" });
+                        command.Parameters.Add(new EntityParameter("Company_Id", DbType.Int32) { Value = model.Company_Id });
+                        command.Parameters.Add(new EntityParameter("Company_location", DbType.String) { Value = model.Company_location });
+                        command.Parameters.Add(new EntityParameter("Employee_Id", DbType.Int32) { Value = model.Employee_Id });
+                        command.Parameters.Add(new EntityParameter("Employee_First_Name", DbType.String) { Value = model.Employee_First_Name });
+                        command.Parameters.Add(new EntityParameter("Employee_Middle_Name", DbType.String) { Value = model.Employee_Middle_Name ?? (object)DBNull.Value });
+                        command.Parameters.Add(new EntityParameter("Employee_Last_Name", DbType.String) { Value = model.Employee_Last_Name });
+                        command.Parameters.Add(new EntityParameter("MobileNumber", DbType.String) { Value = model.MobileNumber });
+                        command.Parameters.Add(new EntityParameter("Email", DbType.String) { Value = model.Email });
+                        command.Parameters.Add(new EntityParameter("StateId", DbType.Int32) { Value = model.StateId });
+                        command.Parameters.Add(new EntityParameter("CityId", DbType.Int32) { Value = model.CityId });
+                        command.Parameters.Add(new EntityParameter("Pincode", DbType.String) { Value = model.Pincode });
+                        command.Parameters.Add(new EntityParameter("EmployeeCurrentAddress", DbType.String) { Value = model.EmployeeCurrentAddress });
+                        command.Parameters.Add(new EntityParameter("LoginUserName", DbType.String) { Value = model.LoginUserName });
+                        command.Parameters.Add(new EntityParameter("WeekOff", DbType.String) { Value = model.WeekOff ?? (object)DBNull.Value });
+                        command.Parameters.Add(new EntityParameter("EmployeeGeoCode", DbType.String) { Value = model.EmployeeGeoCode ?? (object)DBNull.Value });
+                        command.Parameters.Add(new EntityParameter("EmployeeBusinessUnit", DbType.String) { Value = model.EmployeeBusinessUnit ?? (object)DBNull.Value });
+                        command.Parameters.Add(new EntityParameter("EmployeeDepartment", DbType.String) { Value = model.EmployeeDepartment ?? (object)DBNull.Value });
+                        command.Parameters.Add(new EntityParameter("EmployeeProjectName", DbType.String) { Value = model.EmployeeProjectName ?? (object)DBNull.Value });
+                        command.Parameters.Add(new EntityParameter("ReportingManager", DbType.String) { Value = model.ReportingManager ?? (object)DBNull.Value });
+                        command.Parameters.Add(new EntityParameter("PrimaryFacilityZone", DbType.String) { Value = model.PrimaryFacilityZone });
+                        command.Parameters.Add(new EntityParameter("HomeRouteName", DbType.String) { Value = model.HomeRouteName });
+                        command.Parameters.Add(new EntityParameter("EmployeeDestinationArea", DbType.String) { Value = model.EmployeeDestinationArea });
+                        command.Parameters.Add(new EntityParameter("EmployeeRegistrationType", DbType.String) { Value = model.EmployeeRegistrationType });
+                        command.Parameters.Add(new EntityParameter("IsActive", DbType.Boolean) { Value = true });
+                        command.Parameters.Add(new EntityParameter("Password", DbType.String) { Value = "12345" });
 
-                        command.Parameters.AddWithValue("@Action", "INSERT");
-                        command.Parameters.AddWithValue("@Company_Id", model.Company_Id);
-                        command.Parameters.AddWithValue("@Company_location", model.Company_location);
-                        command.Parameters.AddWithValue("@Employee_Id", model.Employee_Id);
-                        command.Parameters.AddWithValue("@Employee_First_Name", model.Employee_First_Name);
-                        command.Parameters.AddWithValue("@Employee_Middle_Name", model.Employee_Middle_Name ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@Employee_Last_Name", model.Employee_Last_Name);
-                        command.Parameters.AddWithValue("@MobileNumber", model.MobileNumber);
-                        command.Parameters.AddWithValue("@Email", model.Email);
-                        command.Parameters.AddWithValue("@StateId", model.StateId);
-                        command.Parameters.AddWithValue("@CityId", model.CityId);
-                        command.Parameters.AddWithValue("@Pincode", model.Pincode);
-                        command.Parameters.AddWithValue("@EmployeeCurrentAddress", model.EmployeeCurrentAddress);
-                        command.Parameters.AddWithValue("@LoginUserName", model.LoginUserName);
-                        command.Parameters.AddWithValue("@WeekOff", model.WeekOff ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@EmployeeGeoCode", model.EmployeeGeoCode ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@EmployeeBusinessUnit", model.EmployeeBusinessUnit ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@EmployeeDepartment", model.EmployeeDepartment ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@EmployeeProjectName", model.EmployeeProjectName ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@ReportingManager", model.ReportingManager ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@PrimaryFacilityZone", model.PrimaryFacilityZone);
-                        command.Parameters.AddWithValue("@HomeRouteName", model.HomeRouteName);
-                        command.Parameters.AddWithValue("@EmployeeDestinationArea", model.EmployeeDestinationArea);
-                        command.Parameters.AddWithValue("@EmployeeRegistrationType", model.EmployeeRegistrationType);
-                        command.Parameters.AddWithValue("@IsActive", true);
-                        command.Parameters.AddWithValue("@Password", "12345");
-
-                        // Execute the command
                         command.ExecuteNonQuery();
                     }
                 }
 
-                return RedirectToAction("Add");  
+                return RedirectToAction("Add");
             }
             catch (Exception ex)
             {
                 throw new Exception("Server Error: " + ex.Message);
             }
         }
+
+
+
     }
 }
