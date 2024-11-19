@@ -1,69 +1,77 @@
 ﻿@model VardaanCab.Domain.DTO.VehicleModelDTO
 @{
     ViewBag.Title = "Add Cab Category";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
 }
 
 <style>
-    .row{
-        margin-top:1% !important;
+    .row {
+        margin-top: 1% !important;
     }
 </style>
 
 
 @using (Html.BeginForm())
 {
-    <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
-<div style="width:50%">
+    <div class="container-fluid">
+        <div class="row">
 
-    <div class="row r">
-        <div class="col-md-12">
-            <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
-              @*<a href="/VehicleModel/All" class="btn btn-info">Show all</a>*@
-        </div>
-    </div>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!--driver detail start-->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Add Vehicle Model</h5>
+                            </div>
+                            <div class="card-body">
+                                <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
+                                
 
-    <div class="row r">
-        <div class="col-md-12">
-            <h2>Add Vehicle Model</h2>
-        </div>
-    </div>
+                                    @if (TempData["msg"] != null)
+                                    {
+                                        <div class="row r">
+                                            <div class="col-md-12">
+                                                <div class="alert alert-info">
+                                                    @TempData["msg"]
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
 
-    @if (TempData["msg"] != null)
-    {
-        <div class="row r">
-            <div class="col-md-12">
-                <div class="alert alert-info">
-                    @TempData["msg"]
+                                    <div class="row r">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                Manufacture Name *
+                                                @Html.TextBoxFor(a => a.ManufactureName, new { @class = "form-control", required = "required" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.ManufactureName)
+                                                </span>
+                                            </div>
+                                            <div class="form-group">
+                                                Model Name *
+                                                @Html.TextBoxFor(a => a.ModelName, new { @class = "form-control", required = "required" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.ModelName)
+                                                </span>
+                                            </div>
+
+                                            @*<div class="form-group">
+                                                <input type="submit" class="btn btn-info" value="Save" />
+                                            </div>*@
+
+                                        </div>
+                                    </div> 
+                            </div>
+                            <div class="card-footer text-end">
+                                <input type="submit" class="btn btn-primary" value="Save" />
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    }
 
-    <div class="row r">
-        <div class="col-md-12">
-            <div class="form-group">
-                 Manufacture Name *
-                @Html.TextBoxFor(a => a.ManufactureName, new { @class = "form-control", required = "required" })
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.ManufactureName)
-                </span>
-            </div>
-            <div class="form-group">
-                Model Name *
-                @Html.TextBoxFor(a => a.ModelName, new { @class = "form-control", required = "required" })
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.ModelName)
-                </span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" class="btn btn-info" value="Save" />
-            </div>
-
-        </div>
-    </div>
-
-</div>
-
-}
+                                }
