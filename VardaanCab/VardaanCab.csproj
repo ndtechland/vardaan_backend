@@ -2650,6 +2650,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminOperationsController.cs" />
+    <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\AssignController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\CabCategoryController.cs" />
@@ -2873,6 +2874,7 @@
     <Content Include="Views\Shared\Master\Footer.cshtml" />
     <Content Include="Views\Shared\Master\Sidebar.cshtml" />
     <Content Include="Views\Admin\ShowSidebarMenus.cshtml" />
+    <Content Include="Views\Employee\Add.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2885,8 +2887,8 @@
     <Folder Include="Areas\Clint\Data\" />
     <Folder Include="Files\" />
     <Folder Include="Models\Domain\" />
+    <Folder Include="Views\Area\" />
     <Folder Include="Views\Common\" />
-    <Folder Include="Views\Employee\" />
     <Folder Include="Views\TestApi\" />
   </ItemGroup>
   <ItemGroup>

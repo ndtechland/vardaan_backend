@@ -77,6 +77,8 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<cab1475> cab1475 { get; set; }
         public virtual DbSet<log_2022> log_2022 { get; set; }
         public virtual DbSet<SoftwareLink_15052023> SoftwareLink_15052023 { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<AreaMaster> AreaMasters { get; set; }
     
         public virtual ObjectResult<Nullable<int>> checkOneCompanyBookingSelected(Nullable<bool> isNrg, string term, Nullable<System.DateTime> sDate, Nullable<System.DateTime> eDate, Nullable<int> cityId, Nullable<int> routeNo)
         {
