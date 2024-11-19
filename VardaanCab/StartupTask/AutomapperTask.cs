@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
+using VardaanCab.Domain.DTOAPI;
 
 namespace orps.StartupTask
 {
@@ -111,6 +112,11 @@ namespace orps.StartupTask
 
             Mapper.CreateMap<ClientUser, ClientUserDTO>();
             Mapper.CreateMap<ClientUserDTO, ClientUser>();
+
+
+            //New 
+            Mapper.CreateMap<Driver, DriverProfileDTO>();
+            Mapper.CreateMap<DriverProfileDTO, Driver>();
         }
     }
 }
