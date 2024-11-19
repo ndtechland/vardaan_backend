@@ -42,12 +42,11 @@ namespace VardaanCab.Controllers
                 {
                     entityConnection.Open();
 
-                    using (var command = entityConnection.CreateCommand())
+                    using (var command = entityConnection.CreateCommand()) 
                     {
                         command.CommandText = "Vardaan_AdminEntities.ManageEmployee";
                         command.CommandType = CommandType.StoredProcedure;
 
-                        // Remove '@' from parameter names for EntityParameter
                         command.Parameters.Add(new EntityParameter("Action", DbType.String) { Value = "INSERT" });
                         command.Parameters.Add(new EntityParameter("Company_Id", DbType.Int32) { Value = model.Company_Id });
                         command.Parameters.Add(new EntityParameter("Company_location", DbType.String) { Value = model.Company_location });
