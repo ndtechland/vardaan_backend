@@ -42,5 +42,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string Password { get; set; }
         public Nullable<bool> IsFirst { get; set; }
+        public Nullable<int> OTP { get; set; }
     }
 }
