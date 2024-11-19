@@ -13,12 +13,9 @@ namespace VardaanCab.Domain.DTOAPI
         public string DriverName { get; set; }
         public string DlNumber { get; set; }
         public string DlImage { get; set; }
-        public string AadharNo { get; set; }
-        public string AadharImage { get; set; }
         public string DriverImage { get; set; } 
         public string MobileNumber { get; set; } 
-        public string DriverAddress { get; set; } 
-        public string PanImage { get; set; }
-        public string PanNumber { get; set; } 
+        public string Address { get; set; }
+        public string AlternateNo1 { get; set; }
     }
 }
