@@ -101,10 +101,10 @@
 
                 <div class="card-body">
                     @*<h2>Clients</h2>
-                    <div class="row">
-                        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+            <div class="row">
+                <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
 
-                    </div>*@
+            </div>*@
                     <input type="hidden" id="page" value="@Model.Page" />
                     @using (Html.BeginForm())
                     {
@@ -221,7 +221,7 @@
                     </div>
 
 
-                    <div class="row r r">
+                    @*<div class="row r r">
                         <div class="col-md-12">
                             <ul class="pagination">
                                 @for (int i = 1; i <= Model.NumberOfPages; i++)
@@ -232,10 +232,47 @@
                                 }
                             </ul>
                         </div>
-                    </div>
+                    </div>*@
 
                 </div>
+                <div class="pagination-box">
+                    <nav class="ms-auto me-auto" aria-label="...">
+                        <ul class="pagination pagination-primary">
+                            <!-- Previous Button -->
+                            <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                                <a class="page-link" href="/Customer/All?term=@Model.Term&page=@(Model.Page - 1)&menuId=@ViewBag.menuId" tabindex="-1">Previous</a>
+                            </li>
+
+                            <!-- Page Number Buttons -->
+                            @{
+                                int startPage = Math.Max(1, Model.Page - 1);
+                                int endPage = Math.Min(Model.NumberOfPages, Model.Page + 1);
+
+                                // Adjust to always show exactly 3 pages if possible
+                                if (Model.Page == 1)
+                                {
+                                    endPage = Math.Min(3, Model.NumberOfPages);
+                                }
+                                else if (Model.Page == Model.NumberOfPages)
+                                {
+                                    startPage = Math.Max(1, Model.NumberOfPages - 2);
+                                }
+                            }
+                            @for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == Model.Page ? "active" : "")">
+                                    <a class="page-link" href="/Customer/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                </li>
+                            }
+
+                            <!-- Next Button -->
+                            <li class="page-item @(Model.Page == Model.NumberOfPages ? "disabled" : "")">
+                                <a class="page-link" href="/Customer/All?term=@Model.Term&page=@(Model.Page + 1)&menuId=@ViewBag.menuId">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
+            </div>
             </div>
         </div>
     </div>

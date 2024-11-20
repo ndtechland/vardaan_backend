@@ -187,6 +187,7 @@ namespace VardaanCab.Controllers
                 driver.Email = model.Email;
                 driver.Password = rendompass;
                 driver.IsAvailable = true;
+                driver.IsFirst = true;
                 ent.Drivers.Add(driver);
                 ent.SaveChanges();
                 TempData["msg"] = "Record has saved.";
