@@ -17,7 +17,6 @@ namespace VardaanCab.APP.Controllers
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         private readonly CommonOperations _random = new CommonOperations();
-
         [HttpPost]
         [Route("api/Account/LoginMaster")]
         public IHttpActionResult LoginMaster(MasterLoginDTO model)
@@ -27,17 +26,16 @@ namespace VardaanCab.APP.Controllers
             {
                 var EmployeeResult = ent.Employees.Where(x => x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
                 var DriverResult = ent.Drivers.Where(x => x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
-                if(EmployeeResult != null)
+                if (EmployeeResult != null)
                 {
-                    if(EmployeeResult.IsActive==false)
+                    if (EmployeeResult.IsActive == false)
                     {
                         return BadRequest("Employee is not active.");
                     }
-                    if(EmployeeResult.IsFirst == true)
+                    if (EmployeeResult.IsFirst == true)
                     {
 
-                        Random ran = new Random();
-                        int OTPNumber = ran.Next(1000, 9999);
+                        int OTPNumber = _random.GenerateRandomOTP();
                         string msg = "Hi " + EmployeeResult.Employee_First_Name + EmployeeResult.Employee_Middle_Name + EmployeeResult.Employee_Last_Name + ",\n Welcome to the Vardaan Employee Login. \n OTP :" + OTPNumber + "";
                         SmsOperation.SendSms(DriverResult.MobileNumber, msg);
                         DriverResult.OTP = OTPNumber;
@@ -59,7 +57,7 @@ namespace VardaanCab.APP.Controllers
                         return Ok(response);
                     }
                 }
-                else if(DriverResult != null)
+                else if (DriverResult != null)
                 {
                     if (DriverResult.IsActive == false)
                     {
@@ -67,8 +65,8 @@ namespace VardaanCab.APP.Controllers
                     }
                     if (DriverResult.IsFirst == true)
                     {
-                        Random ran = new Random();
-                        int OTPNumber = ran.Next(1000, 9999);
+
+                        int OTPNumber = _random.GenerateRandomOTP();
                         string msg = "Hi " + DriverResult.DriverName + ",\n Welcome to the Vardaan Driver Login. \n OTP :" + OTPNumber + "";
                         SmsOperation.SendSms(DriverResult.MobileNumber, msg);
                         DriverResult.OTP = OTPNumber;
@@ -98,7 +96,7 @@ namespace VardaanCab.APP.Controllers
                     response.StatusCode = StatusCodes.Status404NotFound; // Not Found
                     response.Message = "You Are not a Authrized Person...!";
                     return Content(HttpStatusCode.NotFound, response);
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -118,7 +116,7 @@ namespace VardaanCab.APP.Controllers
             var response = new Utilities.Response<bool>();
             try
             {
-                var EmployeeResult = ent.Employees.Where(x => x.OTP == model.OTP || x.Password == model.Password  && x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
+                var EmployeeResult = ent.Employees.Where(x => x.OTP == model.OTP || x.Password == model.Password && x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
                 var DriverResult = ent.Drivers.Where(x => x.OTP == model.OTP || x.Password == model.Password && x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
                 if (EmployeeResult != null)
                 {
@@ -136,11 +134,11 @@ namespace VardaanCab.APP.Controllers
                             return BadRequest("Invalid OTP.");
                         }
                     }
-                    else 
+                    else
                     {
                         if (EmployeeResult.Password == model.Password)
                         {
-                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!",Role= "Employee", Data = EmployeeResult });
+                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Role = "Employee", Data = EmployeeResult });
 
                         }
                         else
@@ -148,25 +146,25 @@ namespace VardaanCab.APP.Controllers
                             return BadRequest("Invalid password.");
                         }
                     }
-                    
+
                 }
                 else if (DriverResult != null)
-                {  
+                {
                     if (DriverResult.IsFirst == true)
                     {
-                        if(DriverResult.OTP == model.OTP)
+                        if (DriverResult.OTP == model.OTP)
                         {
                             DriverResult.OTP = 0;
                             DriverResult.IsFirst = false;
                             ent.SaveChanges();
-                            return Ok(new { Status = HttpStatusCode.OK,Message = "Login Successfuly...!", Role = "Driver", Data = DriverResult });
+                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Role = "Driver", Data = DriverResult });
                         }
                         else
                         {
                             return BadRequest("Invalid OTP.");
                         }
                     }
-                    else 
+                    else
                     {
                         if (DriverResult.Password == model.Password)
                         {
@@ -186,7 +184,7 @@ namespace VardaanCab.APP.Controllers
                     response.StatusCode = StatusCodes.Status404NotFound; // Not Found
                     response.Message = "You Are not a Authrized Person...!";
                     return Content(HttpStatusCode.NotFound, response);
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -194,7 +192,7 @@ namespace VardaanCab.APP.Controllers
                 response.Succeeded = false;
                 response.StatusCode = StatusCodes.Status400BadRequest;
                 response.Message = "An error occurred while retrieving the driver profile.";
-                response.Error = ex.Message; 
+                response.Error = ex.Message;
                 return Content(HttpStatusCode.BadRequest, response);
             }
         }
@@ -206,7 +204,7 @@ namespace VardaanCab.APP.Controllers
 
             if (emp == null)
             {
-                return NotFound();  
+                return NotFound();
             }
             var otp = _random.GenerateRandomPassword();
 
@@ -240,7 +238,7 @@ namespace VardaanCab.APP.Controllers
 
             EmailOperation.SendEmail(ef);
 
-            return Ok(new {Status=200,Message= "Check your email for your new password. You can now log in with it" });
+            return Ok(new { Status = 200, Message = "Check your email for your new password. You can now log in with it" });
         }
         //private string GenerateRandomOtp()
         //{
@@ -262,13 +260,13 @@ namespace VardaanCab.APP.Controllers
                         if (model.Password == model.ConfirmPassword)
                         {
                             if (emp.Password == model.Password)
-                            { 
+                            {
                                 return BadRequest("New password cannot be the same as the old password.");
                             }
 
                             emp.Password = model.Password;
                             ent.SaveChanges();
-                            return Ok(new {Status=200,Message= "Password has been updated successfully." });
+                            return Ok(new { Status = 200, Message = "Password has been updated successfully." });
                         }
                         else
                         {

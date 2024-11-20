@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 using VardaanCab.Domain.ViewModels;
+using VardaanCab.Utilities;
 
 
 namespace VardaanCab.Controllers
@@ -17,6 +18,7 @@ namespace VardaanCab.Controllers
     public class EmployeeController : Controller
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
+        private readonly CommonOperations _random = new CommonOperations();
 
         [HttpGet]
         public ActionResult Add()
@@ -36,6 +38,7 @@ namespace VardaanCab.Controllers
         {
             try
             {
+                string RandomPassword = _random.GenerateRandomPassword();
                 var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
 
                 using (var entityConnection = new EntityConnection(entityConnectionString))
@@ -72,7 +75,7 @@ namespace VardaanCab.Controllers
                         command.Parameters.Add(new EntityParameter("EmployeeDestinationArea", DbType.String) { Value = model.EmployeeDestinationArea });
                         command.Parameters.Add(new EntityParameter("EmployeeRegistrationType", DbType.String) { Value = model.EmployeeRegistrationType });
                         command.Parameters.Add(new EntityParameter("IsActive", DbType.Boolean) { Value = true });
-                        command.Parameters.Add(new EntityParameter("Password", DbType.String) { Value = "12345" });
+                        command.Parameters.Add(new EntityParameter("Password", DbType.String) { Value = RandomPassword });
 
                         command.ExecuteNonQuery();
                     }

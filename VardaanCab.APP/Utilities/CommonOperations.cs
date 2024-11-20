@@ -17,5 +17,11 @@ namespace VardaanCab.APP.Utilities
 
             return new string(randomBytes.Select(b => chars[b % chars.Length]).ToArray());
         }
+        public int GenerateRandomOTP()
+        {
+            Random ran = new Random();
+            int OTPNumber = ran.Next(1000, 9999);
+            return OTPNumber;
+        }
     }
 }
