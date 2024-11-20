@@ -296,6 +296,7 @@
           <Property Name="State_Id" Type="int" Nullable="false" />
           <Property Name="UserLogin_Id" Type="int" Nullable="false" />
           <Property Name="City_Id" Type="int" />
+          <Property Name="GeoLocation" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="CustomerUserMapping">
           <Key>
@@ -1943,6 +1944,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="State_Id" Type="Int32" Nullable="false" />
           <Property Name="UserLogin_Id" Type="Int32" Nullable="false" />
           <Property Name="City_Id" Type="Int32" />
+          <Property Name="GeoLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CustomerUserMapping">
           <Key>
@@ -4422,6 +4424,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="GeoLocation" ColumnName="GeoLocation" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="ProfilePic" ColumnName="ProfilePic" />

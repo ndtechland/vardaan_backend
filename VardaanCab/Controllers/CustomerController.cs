@@ -167,6 +167,7 @@ join VehicleModel vm on cp.VehicleModel_Id= vm.Id order by vm.ModelName").ToList
                     var data = Mapper.Map<Customer>(model);
                     data.CreateDate = DateTime.Now;
                     data.IsActive = true;
+                    data.GeoLocation = model.GeoLocation;
                     ent.Customers.Add(data);
                     ent.SaveChanges();
 
@@ -262,6 +263,7 @@ join VehicleModel vm on cp.VehicleModel_Id= vm.Id order by vm.ModelName").ToList
                     return View(model);
                 }
                 var state = Mapper.Map<Customer>(model);
+                state.GeoLocation = model.GeoLocation;
                 ent.Entry(state).State = System.Data.Entity.EntityState.Modified;
                 ent.SaveChanges();
                 TempData["msg"] = "Record has updated.";
