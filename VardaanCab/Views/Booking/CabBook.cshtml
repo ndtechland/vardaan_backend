@@ -52,10 +52,10 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <a href="/Admin/Dashboard" class="btn btn-info">Dashboard</a>
-                                    <a href="/Admin/SubMenu?menuId=@Model.MenuId" class="btn btn-info">Back</a>
-                                    <a href="/Booking/ShowBooking?menuId=@Model.MenuId" class="btn btn-info">Show all</a>
-                                    <a href="/Booking/ScheduleCabBook?menuId=@Model.MenuId" class="btn btn-info">Scheduled Booking</a>
+                                    <a href="/Admin/Dashboard" class="btn btn-primary">Dashboard</a>
+                                    @*<a href="/Admin/SubMenu?menuId=@Model.MenuId" class="btn btn-info">Back</a>*@
+                                    <a href="/Booking/ShowBooking?menuId=@Model.MenuId" class="btn btn-primary">Show all</a>
+                                    <a href="/Booking/ScheduleCabBook?menuId=@Model.MenuId" class="btn btn-primary">Scheduled Booking</a>
                                 </div>
                             </div>
                             <div class="row">
@@ -370,7 +370,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <input id="noBooking" type="text" value="1" />
-                                    <span id="addNewabt" class="btn btn-info">
+                                    <span id="addNewabt" class="btn btn-primary">
                                         + Add more date
                                     </span>
                                 </div>
@@ -443,8 +443,7 @@
 
         </div>*@
                             <div class="card-footer text-end">
-                                <button class="btn btn-info" id="btnSave">Submit</button>
-                                <button class="btn btn-outline-primary">Cancel</button>
+                                <button type="submit" class="btn btn-primary" id="btnSave">Submit</button> 
                             </div>
 
                              
