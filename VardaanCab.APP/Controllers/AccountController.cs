@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,13 +16,13 @@ namespace VardaanCab.APP.Controllers
     public class AccountController : ApiController
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
-
         private readonly CommonOperations _random = new CommonOperations();
 
         [HttpPost]
         [Route("api/Account/LoginMaster")]
         public IHttpActionResult LoginMaster(MasterLoginDTO model)
         {
+            var response = new Utilities.Response<bool>();
             try
             {
                 var EmployeeResult = ent.Employees.Where(x => x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
@@ -40,12 +42,21 @@ namespace VardaanCab.APP.Controllers
                         SmsOperation.SendSms(DriverResult.MobileNumber, msg);
                         DriverResult.OTP = OTPNumber;
                         ent.SaveChangesAsync();
-                        return Ok(new { Status = 200, Message = "Otp Send SuccessFully...!", Data = EmployeeResult.IsFirst });
+                        //return Ok(new { Status = 200, Message = "Otp Send SuccessFully...!", Data = EmployeeResult.IsFirst });
+                        response.Succeeded = true;
+                        response.StatusCode = StatusCodes.Status200OK; // OK
+                        response.Data = DriverResult.IsFirst == null ? false : DriverResult.IsFirst.Value;
+                        response.Message = "Otp Send SuccessFully...!";
+                        return Ok(response);
                     }
                     else
                     {
-                        return Ok(new { Status = 200, Message = "Please Enter the Password...!", Data = EmployeeResult.IsFirst });
-                     
+                        //return Ok(new { Status = 200, Message = "Please Enter the Password...!", Data = EmployeeResult.IsFirst });
+                        response.Succeeded = true;
+                        response.StatusCode = StatusCodes.Status200OK; // OK
+                        response.Data = DriverResult.IsFirst == null ? false : DriverResult.IsFirst.Value;
+                        response.Message = "Please Enter the Password...!";
+                        return Ok(response);
                     }
                 }
                 else if(DriverResult != null)
@@ -62,23 +73,41 @@ namespace VardaanCab.APP.Controllers
                         SmsOperation.SendSms(DriverResult.MobileNumber, msg);
                         DriverResult.OTP = OTPNumber;
                         ent.SaveChangesAsync();
-                        return Ok(new { Status = 200, Message = "Otp Send SuccessFully...!", Data = DriverResult.IsFirst });
+
+                        //return Ok(new { Status = 200, Message = "Otp Send SuccessFully...!", Data = DriverResult.IsFirst });
+                        response.Succeeded = true;
+                        response.StatusCode = StatusCodes.Status200OK; // OK
+                        response.Data = DriverResult.IsFirst == null ? false : DriverResult.IsFirst.Value;
+                        response.Message = "Otp Send SuccessFully...!";
+                        return Ok(response);
                     }
                     else
                     {
-                        return Ok(new { Status = 200, Message = "Please Enter the Password...!", Data = DriverResult.IsFirst });
+                        //return Ok(new { Status = 200, Message = "Please Enter the Password...!", Data = DriverResult.IsFirst });
+                        response.Succeeded = true;
+                        response.StatusCode = StatusCodes.Status200OK; // OK
+                        response.Data = DriverResult.IsFirst == null ? false : DriverResult.IsFirst.Value;
+                        response.Message = "Please Enter the Password...!";
+                        return Ok(response);
                     }
 
                 }
                 else
                 {
-                    return Ok(new { Status = HttpStatusCode.NonAuthoritativeInformation, Message = "You Are not a Authrized Person...!" });
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound; // Not Found
+                    response.Message = "You Are not a Authrized Person...!";
+                    return Content(HttpStatusCode.NotFound, response);
                 } 
             }
             catch (Exception ex)
             {
 
-                throw new Exception("Server Error : " + ex.Message);
+                response.Succeeded = false;
+                response.StatusCode = StatusCodes.Status400BadRequest; // Bad Request
+                response.Message = "An error occurred while retrieving the driver profile.";
+                response.Error = ex.Message; // Optional: Include the exception message for debugging
+                return Content(HttpStatusCode.BadRequest, response);
             }
         }
 
@@ -86,6 +115,7 @@ namespace VardaanCab.APP.Controllers
         [Route("api/Account/VerifieyOtpOrPassword")]
         public IHttpActionResult VerifieyOtpOrPassword(MasterLoginDTO model)
         {
+            var response = new Utilities.Response<bool>();
             try
             {
                 var EmployeeResult = ent.Employees.Where(x => x.OTP == model.OTP || x.Password == model.Password  && x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
@@ -151,13 +181,21 @@ namespace VardaanCab.APP.Controllers
                 }
                 else
                 {
-                    return Ok(new { Status = HttpStatusCode.NonAuthoritativeInformation, Message = "You Are not a Authrized Person...!" });
+                    //return Ok(new { Status = HttpStatusCode.NonAuthoritativeInformation, Message = "You Are not a Authrized Person...!" });
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound; // Not Found
+                    response.Message = "You Are not a Authrized Person...!";
+                    return Content(HttpStatusCode.NotFound, response);
                 } 
             }
             catch (Exception ex)
             {
 
-                throw new Exception("Server Error : " + ex.Message);
+                response.Succeeded = false;
+                response.StatusCode = StatusCodes.Status400BadRequest;
+                response.Message = "An error occurred while retrieving the driver profile.";
+                response.Error = ex.Message; 
+                return Content(HttpStatusCode.BadRequest, response);
             }
         }
         [HttpPost]
