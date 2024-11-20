@@ -17,7 +17,7 @@
  * that contains the map. 
  */
     #map {
-        height: 500px;
+        height: 300px;
         width: 100%;
     }
 
@@ -84,10 +84,10 @@
         font-family: Roboto;
         font-size: 15px;
         font-weight: 300;
-        margin-left: 12px;
-        padding: 0 11px 0 13px;
+        /*margin-left: 12px;*/
+       /* padding: 0 11px 0 13px;*/
         text-overflow: ellipsis;
-        width: 400px;
+        /*width: 400px;*/
     }
 
         #pac-input:focus {
@@ -193,123 +193,140 @@
                     <div class="card-body">
                         <input type="hidden" name="MenuId" value="@ViewBag.menuId" />
 
-                        <div style="width:100%">
 
-                            @*<div class="row r">
-                                    <div class="col-md-12">
-                                        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
 
-                                        <a href="/Customer/All?menuId=@ViewBag.menuId" class="btn btn-info">Show all</a>
+                        @*<div class="row r">
+            <div class="col-md-12">
+                <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+
+                <a href="/Customer/All?menuId=@ViewBag.menuId" class="btn btn-info">Show all</a>
+            </div>
+        </div>*@
+
+                        @if (TempData["msg"] != null)
+                        {
+                            <div class="row r">
+                                <div class="col-md-12">
+                                    <div class="alert alert-info">
+                                        @TempData["msg"]
                                     </div>
-                                </div>*@
-
-                            @if (TempData["msg"] != null)
-                            {
-                                <div class="row r">
-                                    <div class="col-md-12">
-                                        <div class="alert alert-info">
-                                            @TempData["msg"]
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-
-
-                            <div class="row r">
-                                <div class="col-md-6">
-                                    State *
-                                    @Html.DropDownListFor(a => a.State_Id, Model.StateList, "Select", new { @class = "form-control", required = "required" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.State_Id)
-                                    </span>
-                                </div>
-                                <div class="col-md-6">
-                                    City *
-                                    @Html.DropDownListFor(a => a.City_Id, Enumerable.Empty<SelectListItem>(), "Select City", new { @class = "form-control", required = "required" })
-
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.City_Id)
-                                    </span>
-                                </div>
-
-                            </div>
-
-                            <div class="row r">
-
-                                <div class="col-md-6">
-                                    Company Name *
-                                    @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.CompanyName)
-                                    </span>
-                                </div>
-                                <div class="col-md-6">
-                                    Parent Customer (If any)
-                                    @Html.DropDownListFor(a => a.ParentCustomer_Id, Model.CustomerList, "Select", new { @class = "form-control" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.CustomerName)
-                                    </span>
                                 </div>
                             </div>
-
-                            <div class="row r">
-                                <div class="col-md-6">
-                                    Contact Person Name *
-                                    @Html.TextBoxFor(a => a.CustomerName, new { @class = "form-control" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.CustomerName)
-                                    </span>
-                                </div>
-                                <div class="col-md-6">
-                                    Email *
-                                    @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.Email)
-                                    </span>
-                                </div>
+                        }
 
 
+                        <div class="row r">
+                            <div class="col-md-6">
+                                State *
+                                @Html.DropDownListFor(a => a.State_Id, Model.StateList, "Select", new { @class = "form-control", required = "required" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.State_Id)
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                City *
+                                @Html.DropDownListFor(a => a.City_Id, Enumerable.Empty<SelectListItem>(), "Select City", new { @class = "form-control", required = "required" })
+
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.City_Id)
+                                </span>
                             </div>
 
-                            <div class="row r">
-                                <div class="col-md-6">
-                                    Contact No *
-                                    @Html.TextBoxFor(a => a.ContactNo, new { @class = "form-control" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.ContactNo)
-                                    </span>
-                                </div>
-                                <div class="col-md-6">
-                                    Alternate Contact No
-                                    @Html.TextBoxFor(a => a.AlternateNo, new { @class = "form-control" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.AlternateNo)
-                                    </span>
-                                </div>
+                        </div>
 
+                        <div class="row r">
 
+                            <div class="col-md-6">
+                                Company Name *
+                                @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.CompanyName)
+                                </span>
                             </div>
-
-
-                            <div class="row r">
-                                <div class="col-md-6">
-                                    GSTIN
-                                    @Html.TextBoxFor(a => a.GSTIN, new { @class = "form-control" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.GSTIN)
-                                    </span>
-                                </div>
-                                <div class="col-md-6">
-                                    Full Address *
-                                    @Html.TextAreaFor(a => a.FullAddress, new { @class = "form-control" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.FullAddress)
-                                    </span>
-                                </div>
-
+                            <div class="col-md-6">
+                                Parent Customer (If any)
+                                @Html.DropDownListFor(a => a.ParentCustomer_Id, Model.CustomerList, "Select", new { @class = "form-control" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.CustomerName)
+                                </span>
                             </div>
                         </div>
 
+                        <div class="row r">
+                            <div class="col-md-6">
+                                Contact Person Name *
+                                @Html.TextBoxFor(a => a.CustomerName, new { @class = "form-control" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.CustomerName)
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                Email *
+                                @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.Email)
+                                </span>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row r">
+                            <div class="col-md-6">
+                                Contact No *
+                                @Html.TextBoxFor(a => a.ContactNo, new { @class = "form-control" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.ContactNo)
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                Alternate Contact No
+                                @Html.TextBoxFor(a => a.AlternateNo, new { @class = "form-control" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.AlternateNo)
+                                </span>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="row r">
+                            <div class="col-md-6">
+                                GSTIN
+                                @Html.TextBoxFor(a => a.GSTIN, new { @class = "form-control" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.GSTIN)
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                Full Address *
+                                @Html.TextAreaFor(a => a.FullAddress, new { @class = "form-control" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.FullAddress)
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                GEO Location
+                                @Html.TextBoxFor(a => a.GeoLocation, new { @class = "form-control", id = "pac-input", placeholder = "Enter a location" })
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.GeoLocation)
+                                </span>
+
+
+                            </div>
+                        </div>
+                        <!--Map-->
+                        <div class="row">
+                            <div class="row gx-3 mb-3">
+                                <div class="col-md-12">
+                                    <div id="map"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group" style="margin-top:2%;" id="packageDiv">
                             Packages *
                             @if (Model.Packages.Count() > 0)
@@ -384,19 +401,11 @@
                         </div>
 
 
-                        <input id="pac-input"
-                               class="controls"
-                               type="text"
-                               placeholder="Enter a location" />
-                        <!--Map-->
-                        <div class="row gx-3 mb-3">
-                            <div class="col-md-12">
-                                <div id="map"></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-primary" value="Save" />
-                        </div>
+
+
+                    </div>
+                    <div class="card-footer text-end">
+                        <input type="submit" class="btn btn-primary" value="Save" />
                     </div>
                 </div>
             </div>

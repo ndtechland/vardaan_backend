@@ -44,6 +44,7 @@ namespace VardaanCab.Domain.DTO
         public string StateCode { get; set; }
         public int MenuId { get; set; }
         public string City_Name { get; set; }
+        public string GeoLocation { get; set; }
 
     }
 

@@ -29,5 +29,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public int State_Id { get; set; }
         public int UserLogin_Id { get; set; }
         public Nullable<int> City_Id { get; set; }
+        public string GeoLocation { get; set; }
     }
 }
