@@ -1,10 +1,13 @@
-﻿using AutoMapper;
+﻿using AutoMapper; 
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
+using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 using VardaanCab.Domain.DTOAPI;
@@ -21,29 +24,45 @@ namespace VardaanCab.APP.Controllers
         [Route("api/Driver/GetDriverProfile")]
         public IHttpActionResult GetDriverProfile(int id)
         {
-            var driver = ent.Drivers.SingleOrDefault(d => d.Id == id && d.IsActive);
-
-            if (driver == null)
+            var response = new Response<DriverProfileDTO>();
+            try
             {
-                return NotFound();
+                
+                var driver = ent.Drivers.SingleOrDefault(d => d.Id == id && d.IsActive);
+
+                if (driver == null)
+                {
+                    return NotFound();
+                }
+
+                //var model = Mapper.Map<DriverProfileDTO>(driver); 
+                var model = new DriverProfileDTO
+                {
+                    Id = driver.Id,
+                    DriverName = driver.DriverName,
+                    Address = driver.DriverAddress,
+                    MobileNumber = driver.MobileNumber,
+                    DlImage = driver.DlImage,
+                    DriverImage = driver.DriverImage,
+                    DlNumber = driver.DlNumber,
+                    CreateDate = driver.CreateDate,
+                    AlternateNo1 = driver.AlternateNo1,
+
+                };
+                response.Succeeded = true;
+                response.StatusCode = StatusCodes.Status200OK;
+                response.Data = model;
+                response.Message = "Driver profile retrieved successfully.";
+                return Ok(response);
             }
-
-            //var model = Mapper.Map<DriverProfileDTO>(driver); 
-            var model = new DriverProfileDTO
+            catch (Exception)
             {
-                Id = driver.Id,
-                DriverName= driver.DriverName,
-                Address= driver.DriverAddress,
-                MobileNumber= driver.MobileNumber,
-                DlImage= driver.DlImage,
-                DriverImage= driver.DriverImage,
-                DlNumber= driver.DlNumber, 
-                CreateDate = driver.CreateDate,
-                AlternateNo1 = driver.AlternateNo1,
-
-            };
-
-            return Ok(new {Status=200,Message="Driver profile retrieved successfully.",data= model });
+                response.Succeeded = true;
+                response.StatusCode = StatusCodes.Status200OK; 
+                response.Message = "Driver profile retrieved successfully.";
+                throw;
+            }
+            
         }
 
     }
