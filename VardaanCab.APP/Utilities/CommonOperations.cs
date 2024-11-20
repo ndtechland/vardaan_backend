@@ -20,7 +20,8 @@ namespace VardaanCab.APP.Utilities
         public int GenerateRandomOTP()
         {
             Random ran = new Random();
-            int OTPNumber = ran.Next(1000, 9999);
+            int OTPNumber = 1111;
+            //int OTPNumber = ran.Next(1000, 9999);
             return OTPNumber;
         }
     }
