@@ -8,11 +8,14 @@ using System.Web.Http.Results;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTOAPI;
+using VardaanCab.Utilities;
+using static VardaanCab.Utilities.EmailOperation;
 namespace VardaanCab.APP.Controllers
 {
     public class AccountController : ApiController
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
+        private readonly Random _random = new Random();
         [HttpPost]
         [Route("api/Account/LoginMaster")]
         public IHttpActionResult LoginMaster(MasterLoginDTO model)
@@ -154,6 +157,98 @@ namespace VardaanCab.APP.Controllers
             {
 
                 throw new Exception("Server Error : " + ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("api/Account/EmployeeForgotPassword")]
+        public IHttpActionResult EmployeeForgotPassword(ForgetPasswordDTO model)
+        {
+            var emp = ent.Employees.Where(a => a.Email == model.EmailId).FirstOrDefault();
+
+            if (emp == null)
+            {
+                return NotFound();  
+            } 
+            var otp = GenerateRandomOtp(); 
+
+
+            if (emp == null)
+            {
+                return NotFound();
+            }
+            emp.Password = otp;
+            ent.SaveChanges();
+
+            EmailEF ef = new EmailEF()
+            {
+                Email = model.EmailId,
+                Subject = "Change password",
+
+                Message = @"<!DOCTYPE html>
+<html>
+<head>
+    <title>Change password request.</title>
+</head>
+<body> 
+    
+    <ul>
+        <li><strong>Your new password is:</strong> " + otp + @"</li> 
+    </ul>
+    <p>You can now login with your new password.</p>
+</body>
+</html>"
+            };
+
+            EmailOperation.SendEmail(ef);
+
+            return Ok(new {Status=200,Message= "Check your email for your new password. You can now log in with it" });
+        }
+        private string GenerateRandomOtp()
+        {
+            const string chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789";
+            return new string(Enumerable.Repeat(chars, 6).Select(s => s[_random.Next(s.Length)]).ToArray());
+        }
+        [HttpPost]
+        [Route("api/Account/EmployeeChangePassword")]
+        public IHttpActionResult EmployeeChangePassword(ChangePasswordDTO model)
+        {
+            try
+            {
+                var emp = ent.Employees.Find(model.Id);
+
+                if (emp != null)
+                {
+                    if (emp.Password == model.OldPassword)
+                    {
+                        if (model.Password == model.ConfirmPassword)
+                        {
+                            if (emp.Password == model.Password)
+                            { 
+                                return BadRequest("New password cannot be the same as the old password.");
+                            }
+
+                            emp.Password = model.Password;
+                            ent.SaveChanges();
+                            return Ok(new {Status=200,Message= "Password has been updated successfully." });
+                        }
+                        else
+                        {
+                            return BadRequest("Confirm Password not matched.");
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest("Old password is incorrect.");
+                    }
+                }
+                else
+                {
+                    return BadRequest("Invalid User Id");
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
             }
         }
     }
