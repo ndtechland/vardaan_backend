@@ -335,6 +335,7 @@
           <Property Name="IsFirst" Type="bit" />
           <Property Name="Password" Type="nvarchar" MaxLength="500" />
           <Property Name="OTP" Type="int" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="DriverLeave">
           <Key>
@@ -1981,6 +1982,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsFirst" Type="Boolean" />
           <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="OTP" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DriverLeave">
           <Key>
@@ -4450,6 +4452,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Drivers">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Driver">
               <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="OTP" ColumnName="OTP" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="IsFirst" ColumnName="IsFirst" />
