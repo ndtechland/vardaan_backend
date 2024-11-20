@@ -97,11 +97,24 @@ namespace VardaanCab.APP.Controllers
                             EmployeeResult.IsFirst = false;
                             return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Data = EmployeeResult });
                         }
+                        else
+                        {
+                            return BadRequest("Invalid OTP.");
+                        }
                     }
-                    else if (EmployeeResult.Password == model.Password)
+                    else 
                     {
-                        return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Data = EmployeeResult });
+                        if (EmployeeResult.Password == model.Password)
+                        {
+                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Data = EmployeeResult });
+
+                        }
+                        else
+                        {
+                            return BadRequest("Invalid password.");
+                        }
                     }
+                    
                 }
                 else if (DriverResult != null)
                 {  
@@ -114,17 +127,28 @@ namespace VardaanCab.APP.Controllers
                             ent.SaveChanges();
                             return Ok(new { Status = HttpStatusCode.OK,Message = "Login Successfuly...!", Data = DriverResult });
                         }
+                        else
+                        {
+                            return BadRequest("Invalid OTP.");
+                        }
                     }
-                    else if(DriverResult.Password == model.Password)
+                    else 
                     {
-                        return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Data = DriverResult });
+                        if (DriverResult.Password == model.Password)
+                        {
+                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Data = DriverResult });
+
+                        }
+                        else
+                        {
+                            return BadRequest("Invalid password.");
+                        }
                     }
                 }
                 else
                 {
                     return Ok(new { Status = HttpStatusCode.NonAuthoritativeInformation, Message = "You Are not a Authrized Person...!" });
-                }
-                return Ok();
+                } 
             }
             catch (Exception ex)
             {
