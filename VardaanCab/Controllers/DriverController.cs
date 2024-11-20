@@ -180,7 +180,7 @@ namespace VardaanCab.Controllers
                     }
                     model.PanImage = img;
                 }
-                var rendompass = _random.GenerateRandomOtp();
+                var rendompass = _random.GenerateRandomPassword();
                 var driver = Mapper.Map<Driver>(model);
                 driver.CreateDate = DateTime.Now;
                 driver.IsActive = true;

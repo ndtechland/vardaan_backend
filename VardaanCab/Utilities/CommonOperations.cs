@@ -9,7 +9,7 @@ namespace VardaanCab.Utilities
     public class CommonOperations
     {
         private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
-        public string GenerateRandomOtp(int length = 6)
+        public string GenerateRandomPassword(int length = 6)
         {
             const string chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789";
             byte[] randomBytes = new byte[length];

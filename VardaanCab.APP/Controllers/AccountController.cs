@@ -170,7 +170,7 @@ namespace VardaanCab.APP.Controllers
             {
                 return NotFound();  
             }
-            var otp = _random.GenerateRandomOtp();
+            var otp = _random.GenerateRandomPassword();
 
 
             if (emp == null)
@@ -262,7 +262,7 @@ namespace VardaanCab.APP.Controllers
             {
                 return NotFound();
             }
-            var otp = _random.GenerateRandomOtp();
+            var otp = _random.GenerateRandomPassword();
 
 
             if (emp == null)
