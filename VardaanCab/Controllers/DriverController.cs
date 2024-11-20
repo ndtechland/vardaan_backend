@@ -18,7 +18,7 @@ namespace VardaanCab.Controllers
     public class DriverController : Controller
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
-
+        private readonly CommonOperations _random = new CommonOperations();
         public ActionResult All(string term = "", int page = 1, bool export = false, int menuId=0)
         {
             var model = new DriverListVm();
@@ -180,10 +180,12 @@ namespace VardaanCab.Controllers
                     }
                     model.PanImage = img;
                 }
-
+                var rendompass = _random.GenerateRandomOtp();
                 var driver = Mapper.Map<Driver>(model);
                 driver.CreateDate = DateTime.Now;
                 driver.IsActive = true;
+                driver.Email = model.Email;
+                driver.Password = rendompass;
                 driver.IsAvailable = true;
                 ent.Drivers.Add(driver);
                 ent.SaveChanges();
@@ -303,6 +305,7 @@ namespace VardaanCab.Controllers
                 }
                 var driver = Mapper.Map<Driver>(model);
                 driver.CreateDate = DateTime.Now;
+                driver.Email = model.Email;
                 ent.Entry(driver).State=System.Data.Entity.EntityState.Modified;
                 ent.SaveChanges();
                 TempData["msg"] = "Records have updated successfully.";

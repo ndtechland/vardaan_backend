@@ -42,6 +42,7 @@ namespace VardaanCab.APP.Controllers
                     Id = driver.Id,
                     DriverName = driver.DriverName,
                     Address = driver.DriverAddress,
+                    Email = driver.Email,
                     MobileNumber = driver.MobileNumber,
                     DlImage = driver.DlImage,
                     DriverImage = driver.DriverImage,

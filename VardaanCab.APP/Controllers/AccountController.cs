@@ -8,14 +8,15 @@ using System.Web.Http.Results;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTOAPI;
-using VardaanCab.Utilities;
-using static VardaanCab.Utilities.EmailOperation;
+using static VardaanCab.APP.Utilities.EmailOperation;
 namespace VardaanCab.APP.Controllers
 {
     public class AccountController : ApiController
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
-        private readonly Random _random = new Random();
+
+        private readonly CommonOperations _random = new CommonOperations();
+
         [HttpPost]
         [Route("api/Account/LoginMaster")]
         public IHttpActionResult LoginMaster(MasterLoginDTO model)
@@ -168,8 +169,8 @@ namespace VardaanCab.APP.Controllers
             if (emp == null)
             {
                 return NotFound();  
-            } 
-            var otp = GenerateRandomOtp(); 
+            }
+            var otp = _random.GenerateRandomOtp();
 
 
             if (emp == null)
@@ -203,11 +204,11 @@ namespace VardaanCab.APP.Controllers
 
             return Ok(new {Status=200,Message= "Check your email for your new password. You can now log in with it" });
         }
-        private string GenerateRandomOtp()
-        {
-            const string chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789";
-            return new string(Enumerable.Repeat(chars, 6).Select(s => s[_random.Next(s.Length)]).ToArray());
-        }
+        //private string GenerateRandomOtp()
+        //{
+        //    const string chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789";
+        //    return new string(Enumerable.Repeat(chars, 6).Select(s => s[_random.Next(s.Length)]).ToArray());
+        //}
         [HttpPost]
         [Route("api/Account/EmployeeChangePassword")]
         public IHttpActionResult EmployeeChangePassword(ChangePasswordDTO model)
@@ -261,7 +262,7 @@ namespace VardaanCab.APP.Controllers
             {
                 return NotFound();
             }
-            var otp = GenerateRandomOtp();
+            var otp = _random.GenerateRandomOtp();
 
 
             if (emp == null)

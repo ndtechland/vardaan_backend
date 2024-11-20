@@ -351,6 +351,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="startuptask\AutomapperTask.cs" />
     <Compile Include="Utilities\EmailOperation.cs" />
+    <Compile Include="Utilities\CommonOperations.cs" />
     <Compile Include="Utilities\Response.cs" />
     <Compile Include="Utilities\SmsOperation.cs" />
   </ItemGroup>

@@ -12,6 +12,7 @@ namespace VardaanCab.Domain.DTO
         public System.DateTime CreateDate { get; set; }
         [Required]
         public string DriverName { get; set; }
+        public string Email { get; set; }
         public Nullable<int> Vendor_Id { get; set; }
         public int UserLogin_Id { get; set; }
         public string DlNumber { get; set; }

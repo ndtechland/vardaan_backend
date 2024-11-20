@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web;
 
-namespace VardaanCab.Utilities
+namespace VardaanCab.APP.Utilities
 {
     public class EmailOperation
     {
