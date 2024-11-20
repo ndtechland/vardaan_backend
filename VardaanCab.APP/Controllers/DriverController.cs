@@ -1,4 +1,4 @@
-﻿using AutoMapper; 
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -27,15 +27,16 @@ namespace VardaanCab.APP.Controllers
             var response = new Response<DriverProfileDTO>();
             try
             {
-                
                 var driver = ent.Drivers.SingleOrDefault(d => d.Id == id && d.IsActive);
 
                 if (driver == null)
                 {
-                    return NotFound();
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound; // Not Found
+                    response.Message = "Driver not found.";
+                    return Content(HttpStatusCode.NotFound, response);
                 }
 
-                //var model = Mapper.Map<DriverProfileDTO>(driver); 
                 var model = new DriverProfileDTO
                 {
                     Id = driver.Id,
@@ -47,22 +48,22 @@ namespace VardaanCab.APP.Controllers
                     DlNumber = driver.DlNumber,
                     CreateDate = driver.CreateDate,
                     AlternateNo1 = driver.AlternateNo1,
-
                 };
+
                 response.Succeeded = true;
-                response.StatusCode = StatusCodes.Status200OK;
+                response.StatusCode = StatusCodes.Status200OK; // OK
                 response.Data = model;
                 response.Message = "Driver profile retrieved successfully.";
                 return Ok(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                response.Succeeded = true;
-                response.StatusCode = StatusCodes.Status200OK; 
-                response.Message = "Driver profile retrieved successfully.";
-                throw;
+                response.Succeeded = false;
+                response.StatusCode = StatusCodes.Status400BadRequest; // Bad Request
+                response.Message = "An error occurred while retrieving the driver profile.";
+                response.Error = ex.Message; // Optional: Include the exception message for debugging
+                return Content(HttpStatusCode.BadRequest, response);
             }
-            
         }
 
     }
