@@ -2696,6 +2696,7 @@
     <Compile Include="Utilities\Converter.cs" />
     <Compile Include="Utilities\EmailOperation.cs" />
     <Compile Include="Utilities\FileOperation.cs" />
+    <Compile Include="Utilities\CommonOperations.cs" />
     <Compile Include="Utilities\SmsOperation.cs" />
     <Compile Include="Utilities\VRCHelper.cs" />
   </ItemGroup>
