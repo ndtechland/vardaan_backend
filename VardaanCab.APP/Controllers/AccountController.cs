@@ -169,7 +169,7 @@ namespace VardaanCab.APP.Controllers
                     {
                         if (DriverResult.Password == model.Password)
                         {
-                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Data = DriverResult });
+                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Role = "Employee", Data = DriverResult });
 
                         }
                         else
