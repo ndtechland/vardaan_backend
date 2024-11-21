@@ -19,5 +19,6 @@ namespace VardaanCab.Domain.DTOAPI
         public string AlternateNo1 { get; set; }
         public string Email { get; set; }
         public string Pincode { get; set; }
+        public string DriverImageBase64 { get; set; }
     }
 }

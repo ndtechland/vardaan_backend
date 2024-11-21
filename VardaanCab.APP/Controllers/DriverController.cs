@@ -15,7 +15,7 @@ using VardaanCab.Domain.DTOAPI;
 
 namespace VardaanCab.APP.Controllers
 {
-    //[Route("api/Controller")]
+    [RoutePrefix("api/Driver")]
     public class DriverController : ApiController
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
@@ -66,6 +66,71 @@ namespace VardaanCab.APP.Controllers
                 return Content(HttpStatusCode.BadRequest, response);
             }
         }
+
+        [HttpPut]
+        [Route("api/Driver/UpdateDriverProfile")]
+        public IHttpActionResult UpdateDriverProfile(DriverProfileDTO model)
+        {
+            try
+            {
+                var checkdriver = ent.Drivers.Find(model.Id);
+                if(checkdriver != null)
+                {
+                    checkdriver.DriverName = model.DriverName;
+                    checkdriver.MobileNumber = model.MobileNumber;
+                    checkdriver.Email = model.Email;
+                    checkdriver.DriverAddress = model.Address;
+                    checkdriver.AlternateNo1 = model.AlternateNo1;
+                    ent.SaveChanges();
+                    return Ok(new { Status = 200, Message = "Profile updated successfully." });
+                }
+                else
+                {
+                    return BadRequest("Driver profile not found.");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateDriverProfile")]
+        public IHttpActionResult UpdateDriverProfilePic(DriverProfileDTO model)
+        {
+            try
+            {
+                string[] allowedExtensions = { ".jpg", ".jpeg", ".png" };
+                var data = ent.Drivers.Find(model.Id);
+
+                if (data != null)
+                {
+                    var imagePath = @"\VardaanCab\Images";
+                    var profilepic = FileOperation.UploadFileWithBase64(imagePath, model.DriverImage, model.DriverImageBase64, allowedExtensions);
+
+                    if (profilepic == "not allowed")
+                    {
+                        return BadRequest("Only png, jpg, jpeg files are allowed as Profile picture.");
+                    }
+                    model.DriverImage = profilepic;
+
+                    data.DriverImage = model.DriverImage;
+                    ent.SaveChanges();
+                    return Ok(new { Status = 200, Message = "Profile picture updated successfully." });
+                }
+                else
+                {
+                    return BadRequest("Driver profile not found.");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
     }
 }
