@@ -5,192 +5,191 @@
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
 }
 
-<h2>GetEmployeeList</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Company_Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Company_location)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Employee_Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Employee_First_Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Employee_Middle_Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Employee_Last_Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MobileNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StateId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CityId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Pincode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmployeeCurrentAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoginUserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WeekOff)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmployeeGeoCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmployeeBusinessUnit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmployeeDepartment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmployeeProjectName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReportingManager)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PrimaryFacilityZone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HomeRouteName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmployeeDestinationArea)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmployeeRegistrationType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsFirst)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OTP)
-        </th>
-        <th></th>
-    </tr>
+                    <div>
+                        <h5>Employee List</h5>
+                    </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Company_Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Company_location)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee_Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee_First_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee_Middle_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee_Last_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MobileNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StateId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CityId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Pincode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeCurrentAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoginUserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WeekOff)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeGeoCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeBusinessUnit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeDepartment)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeProjectName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReportingManager)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PrimaryFacilityZone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HomeRouteName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeDestinationArea)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeRegistrationType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsFirst)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OTP)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+                    <form class="d-inline-flex">
+                        <a class="btn btn-primary" href="/Employee/Add?menuId=@ViewBag.menuId">+ Add More</a>
+                    </form>
 
-</table>
+                </div>
+                <div class="card-body">
+                    <div class="mainDiv">
+                        <div class="table-responsive table-desi scrollable">
+                            <table id="table1" class="user-table table table-striped">
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Company_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Company_location)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Employee_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Employee_First_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Employee_Middle_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Employee_Last_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.MobileNumber)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.StateId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CityId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Pincode)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EmployeeCurrentAddress)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.LoginUserName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.WeekOff)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EmployeeGeoCode)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EmployeeBusinessUnit)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EmployeeDepartment)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EmployeeProjectName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ReportingManager)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.PrimaryFacilityZone)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.HomeRouteName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EmployeeDestinationArea)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EmployeeRegistrationType)
+                                    </th>
+                                  
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CreatedDate)
+                                    </th>
+                                    <th>Action</th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Company_Id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Company_location)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Employee_Id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Employee_First_Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Employee_Middle_Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Employee_Last_Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.MobileNumber)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Email)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StateId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CityId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Pincode)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmployeeCurrentAddress)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LoginUserName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.WeekOff)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmployeeGeoCode)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmployeeBusinessUnit)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmployeeDepartment)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmployeeProjectName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ReportingManager)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.PrimaryFacilityZone)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.HomeRouteName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmployeeDestinationArea)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmployeeRegistrationType)
+                                        </td>
+                                        
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CreatedDate)
+                                        </td>
+                                        <td nowrap>
+                                            <a href="/Employee/Add?id=@item.Id&menuId=@ViewBag.menuId" class="danger"><i class="fa fa-edit info"></i></a> |
+                                            <a href="/Employee/Delete?id=@item.Id&menuId=@ViewBag.menuId" class="danger"><i class="fa fa-trash danger"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+</div>
+</div>
+</div>
+</div>

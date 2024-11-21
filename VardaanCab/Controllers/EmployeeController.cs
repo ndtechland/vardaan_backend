@@ -20,7 +20,7 @@ namespace VardaanCab.Controllers
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         private readonly CommonOperations _random = new CommonOperations();
 
-        public ActionResult GetEmployeeList()
+        public ActionResult GetEmployeeList(string term = "", int page = 1, bool export = false, int menuId = 0)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpGet]
-        public ActionResult Add()
+        public ActionResult Add(int id = 0)
         {
             try
             {
