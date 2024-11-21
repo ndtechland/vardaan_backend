@@ -240,12 +240,7 @@ namespace VardaanCab.APP.Controllers
             EmailOperation.SendEmail(ef);
 
             return Ok(new { Status = 200, Message = "Check your email for your new password. You can now log in with it" });
-        }
-        //private string GenerateRandomOtp()
-        //{
-        //    const string chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789";
-        //    return new string(Enumerable.Repeat(chars, 6).Select(s => s[_random.Next(s.Length)]).ToArray());
-        //}
+        } 
         [HttpPost]
         [Route("api/Account/EmployeeChangePassword")]
         public IHttpActionResult EmployeeChangePassword(ChangePasswordDTO model)

@@ -11,6 +11,8 @@ using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 using VardaanCab.Domain.DTOAPI;
+using static System.Net.WebRequestMethods;
+using static VardaanCab.APP.Utilities.EmailOperation;
 
 
 namespace VardaanCab.APP.Controllers
@@ -21,7 +23,7 @@ namespace VardaanCab.APP.Controllers
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
 
         [HttpGet]
-        [Route("api/Driver/GetDriverProfile")]
+        [Route("GetDriverProfile")]
         public IHttpActionResult GetDriverProfile(int id)
         {
             var response = new Response<DriverProfileDTO>();
@@ -68,7 +70,7 @@ namespace VardaanCab.APP.Controllers
         }
 
         [HttpPut]
-        [Route("api/Driver/UpdateDriverProfile")]
+        [Route("UpdateDriverProfile")]
         public IHttpActionResult UpdateDriverProfile(DriverProfileDTO model)
         {
             try
@@ -97,7 +99,7 @@ namespace VardaanCab.APP.Controllers
         }
 
         [HttpPut]
-        [Route("UpdateDriverProfile")]
+        [Route("UpdateDriverProfilePic")]
         public IHttpActionResult UpdateDriverProfilePic(DriverProfileDTO model)
         {
             try
@@ -125,9 +127,29 @@ namespace VardaanCab.APP.Controllers
                     return BadRequest("Driver profile not found.");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+//                EmailEF ef = new EmailEF()
+//                {
+//                    Email = "madhund108@gmail.com",
+//                    Subject = "Get error",
+
+//                    Message = @"<!DOCTYPE html>
+//<html>
+//<head>
+//    <title>Find error.</title>
+//</head>
+//<body> 
+    
+//    <ul>
+//        <li>Error" + ex + @"</li> 
+//    </ul>
+//</body>
+//</html>"
+//                };
+
+//                EmailOperation.SendEmail(ef);
+                return BadRequest($"error.{ex}");
             }
         }
 
