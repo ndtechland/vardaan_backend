@@ -38,7 +38,11 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                return View();
+                var model = new EmployeeDTO();
+                model.States = new SelectList(ent.StateMasters.ToList(), "Id", "StateName");
+                model.DayLists = new SelectList(ent.DaysNames.ToList(), "Id", "DayName");
+                model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).ToList(), "Id", "CustomerName");
+                return View(model);
             }
             catch (Exception ex)
             {

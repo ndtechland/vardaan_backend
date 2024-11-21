@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace VardaanCab.Domain.DTO
@@ -34,5 +35,8 @@ namespace VardaanCab.Domain.DTO
         public int HomeRouteName { get; set;}
         public int EmployeeDestinationArea { get; set;}
         public int EmployeeRegistrationType { get; set;}
+        public SelectList States { get; set; }
+        public SelectList Customers { get; set; }
+        public SelectList DayLists { get; set; }
     }
 }

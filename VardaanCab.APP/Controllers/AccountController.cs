@@ -37,13 +37,13 @@ namespace VardaanCab.APP.Controllers
 
                         int OTPNumber = _random.GenerateRandomOTP();
                         string msg = "Hi " + EmployeeResult.Employee_First_Name + EmployeeResult.Employee_Middle_Name + EmployeeResult.Employee_Last_Name + ",\n Welcome to the Vardaan Employee Login. \n OTP :" + OTPNumber + "";
-                        SmsOperation.SendSms(DriverResult.MobileNumber, msg);
-                        DriverResult.OTP = OTPNumber;
+                        SmsOperation.SendSms(EmployeeResult.MobileNumber, msg);
+                        EmployeeResult.OTP = OTPNumber;
                         ent.SaveChangesAsync();
                         //return Ok(new { Status = 200, Message = "Otp Send SuccessFully...!", Data = EmployeeResult.IsFirst });
                         response.Succeeded = true;
                         response.StatusCode = StatusCodes.Status200OK; // OK
-                        response.Data = DriverResult.IsFirst == null ? false : DriverResult.IsFirst.Value;
+                        response.Data = EmployeeResult.IsFirst == null ? false : EmployeeResult.IsFirst.Value;
                         response.Message = "Otp Send SuccessFully...!";
                         return Ok(response);
                     }
