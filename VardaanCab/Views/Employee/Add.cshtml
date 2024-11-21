@@ -2,16 +2,38 @@
 
 @{
     ViewBag.Title = "Add";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = null;
+
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
-@using (Html.BeginForm())
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+
+
+    @*<div class="">
+            <strong>Select Language:</strong>
+            <select id="multiple-checkboxes" multiple="multiple">
+                <option value="php">PHP</option>
+                <option value="javascript">JavaScript</option>
+                <option value="java">Java</option>
+                <option value="sql">SQL</option>
+                <option value="jquery">Jquery</option>
+                <option value=".net">.Net</option>
+            </select>
+        </div>*@
+
+    @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
@@ -151,18 +173,22 @@
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.WeekOff, htmlAttributes: new { @class = "control-label" })
                                 <div class="form-group">
-                                    @*@Html.DropDownListFor(a => a.WeekOff, Model.DayLists, "Select Days", new { @class = "form-control" })
+                                    
+                                    <div class="">
+                                        @Html.ListBoxFor(a => a.WeekOff, Model.DayLists, new { @class = "form-control", id = "multiple-checkboxes" })
                                         <span class="text-danger">
                                             @Html.ValidationMessageFor(a => a.WeekOff)
-                                        </span>*@
-                                    <select id="multiple-checkboxes" multiple="multiple">
-                                        <option value="php">PHP</option>
-                                        <option value="javascript">JavaScript</option>
-                                        <option value="java">Java</option>
-                                        <option value="sql">SQL</option>
-                                        <option value="jquery">Jquery</option>
-                                        <option value=".net">.Net</option>
-                                    </select>
+                                        </span>
+
+                                        @*<select id="multiple-checkboxes" multiple="multiple">
+            <option value="php">PHP</option>
+            <option value="javascript">JavaScript</option>
+            <option value="java">Java</option>
+            <option value="sql">SQL</option>
+            <option value="jquery">Jquery</option>
+            <option value=".net">.Net</option>
+        </select>*@
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -254,24 +280,28 @@
     </div>
 }
 
-<script>
-    $("#StateId").change(function () {
-        var id = $(this).val();
-        $.get('/Common/GetCityByState?stateId=' + id, function (r) {
-            var dd = $("#CityId");
-            dd.empty();
-            dd.append('<option value="">Select City</option>');
-            $.each(r, function (k, v) {
-                dd.append('<option value="' + v.Id + '">' + v.CityName + '</option>');
+    <script>
+        $("#StateId").change(function () {
+            var id = $(this).val();
+            $.get('/Common/GetCityByState?stateId=' + id, function (r) {
+                var dd = $("#CityId");
+                dd.empty();
+                dd.append('<option value="">Select City</option>');
+                $.each(r, function (k, v) {
+                    dd.append('<option value="' + v.Id + '">' + v.CityName + '</option>');
 
+                })
             })
-        })
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $('#multiple-checkboxes').multiselect({
-            includeSelectAllOption: true,
         });
-    });
-</script>
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#multiple-checkboxes').multiselect({
+                includeSelectAllOption: true,
+            });
+        });
+    </script>
+</body>
+</html>
+
+
