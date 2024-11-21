@@ -107,6 +107,9 @@
     <Compile Include="DataLayer\CustomerUserMapping.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataLayer\DaysName.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer\Driver.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

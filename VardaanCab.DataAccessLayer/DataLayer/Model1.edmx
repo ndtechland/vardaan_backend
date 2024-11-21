@@ -1066,6 +1066,13 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="AreaName" Type="nvarchar(max)" />
           <Property Name="CityMaster_Id" Type="int" />
         </EntityType>
+        <EntityType Name="DaysName">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DayName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="Id" />
@@ -1501,6 +1508,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="VendorPackage" EntityType="Self.VendorPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VendorPersonalPackage" EntityType="Self.VendorPersonalPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AreaMaster" EntityType="Self.AreaMaster" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="DaysName" EntityType="Self.DaysName" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="booking_backup11feb" EntityType="Self.booking_backup11feb" store:Type="Tables" store:Schema="newVardaan">
             <DefiningQuery>SELECT 
@@ -3090,6 +3098,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="Password" Mode="In" Type="String" />
             <Parameter Name="IsFirst" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <EntitySet Name="DaysNames" EntityType="Vardaan_AdminModel.DaysName" />
         </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4129,6 +4138,13 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AreaName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CityMaster_Id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="DaysName">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DayName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6318,6 +6334,14 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="ManageEmployee" FunctionName="Vardaan_AdminModel.Store.ManageEmployee" />
+          <EntitySetMapping Name="DaysNames">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.DaysName">
+              <MappingFragment StoreEntitySet="DaysName">
+                <ScalarProperty Name="DayName" ColumnName="DayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

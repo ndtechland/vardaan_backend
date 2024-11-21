@@ -1,11 +1,16 @@
-﻿@model VardaanCab.DataAccessLayer.DataLayer.Employee
+﻿@model VardaanCab.Domain.DTO.EmployeeDTO
 
 @{
     ViewBag.Title = "Add";
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
 }
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -29,8 +34,10 @@
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.Company_Id, htmlAttributes: new { @class = "control-label" })
                                 <div class="form-group">
-                                    @Html.EditorFor(model => model.Company_Id, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Company_Id, "", new { @class = "text-danger" })
+                                    @Html.DropDownListFor(a => a.Company_Id, Model.Customers, "Select Company", new { @class = "form-control" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.Company_Id)
+                                    </span>
                                 </div>
                             </div>
 
@@ -98,16 +105,20 @@
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "control-label" })
                                 <div class="form-group">
-                                    @Html.EditorFor(model => model.StateId, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                                    @Html.DropDownListFor(a => a.StateId, Model.States, "Select State", new { @class = "form-control" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.StateId)
+                                    </span>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.CityId, htmlAttributes: new { @class = "control-label" })
                                 <div class="form-group">
-                                    @Html.EditorFor(model => model.CityId, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+                                    @Html.DropDownListFor(a => a.CityId, Enumerable.Empty<SelectListItem>(), "Select City", new { @class = "form-control" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.CityId)
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -140,8 +151,18 @@
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.WeekOff, htmlAttributes: new { @class = "control-label" })
                                 <div class="form-group">
-                                    @Html.EditorFor(model => model.WeekOff, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.WeekOff, "", new { @class = "text-danger" })
+                                    @*@Html.DropDownListFor(a => a.WeekOff, Model.DayLists, "Select Days", new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.WeekOff)
+                                        </span>*@
+                                    <select id="multiple-checkboxes" multiple="multiple">
+                                        <option value="php">PHP</option>
+                                        <option value="javascript">JavaScript</option>
+                                        <option value="java">Java</option>
+                                        <option value="sql">SQL</option>
+                                        <option value="jquery">Jquery</option>
+                                        <option value=".net">.Net</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -228,8 +249,29 @@
                         <input type="submit" class="btn btn-primary" value="Save" />
                     </div>
                 </div>
-                </div>
             </div>
-        </div>      
+        </div>
+    </div>
 }
-                   
+
+<script>
+    $("#StateId").change(function () {
+        var id = $(this).val();
+        $.get('/Common/GetCityByState?stateId=' + id, function (r) {
+            var dd = $("#CityId");
+            dd.empty();
+            dd.append('<option value="">Select City</option>');
+            $.each(r, function (k, v) {
+                dd.append('<option value="' + v.Id + '">' + v.CityName + '</option>');
+
+            })
+        })
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#multiple-checkboxes').multiselect({
+            includeSelectAllOption: true,
+        });
+    });
+</script>
