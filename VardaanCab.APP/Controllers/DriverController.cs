@@ -32,7 +32,7 @@ namespace VardaanCab.APP.Controllers
                 if (driver == null)
                 {
                     response.Succeeded = false;
-                    response.StatusCode = StatusCodes.Status404NotFound; // Not Found
+                    response.StatusCode = StatusCodes.Status404NotFound;
                     response.Message = "Driver not found.";
                     return Content(HttpStatusCode.NotFound, response);
                 }

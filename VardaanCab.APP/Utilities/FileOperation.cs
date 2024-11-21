@@ -65,21 +65,12 @@ namespace VardaanCab.APP.Utilities
             string fileName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + DateTime.Now.Millisecond.ToString() + Guid.NewGuid().ToString();
             var filePath = HttpContext.Current.Server.MapPath("~/" + folderName);
             //File.WriteAllBytes(filePath + "/" + fileName + ext, imageBytes);
-          
-            //new
-            // Log or inspect the original file path
-            Console.WriteLine("Original file path: " + filePath);
-
-            // Ensure we're using the correct directory separator (for Windows or Linux)
-            filePath = filePath.Replace("\\VardaanCab.APP", "").Replace("/VardaanCab.APP", "");
-
-            // Log or inspect the modified file path
-            Console.WriteLine("Modified file path: " + filePath);
-
-            // Combine with file name and extension to ensure proper path formatting
-            string fullPath = Path.Combine(filePath, fileName + ext);
-
-            // Save the file
+           
+        
+            Console.WriteLine("Original file path: " + filePath); 
+            filePath = filePath.Replace("\\VardaanCab.APP", "").Replace("/VardaanCab.APP", "");  
+            Console.WriteLine("Modified file path: " + filePath); 
+            string fullPath = Path.Combine(filePath, fileName + ext);  
             File.WriteAllBytes(fullPath, imageBytes);
             return fileName + ext;
         }
