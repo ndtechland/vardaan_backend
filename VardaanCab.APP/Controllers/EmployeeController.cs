@@ -5,10 +5,12 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Http;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTOAPI;
+using static System.Windows.Forms.AxHost;
 
 namespace VardaanCab.APP.Controllers
 {
@@ -59,6 +61,46 @@ namespace VardaanCab.APP.Controllers
                     response.Succeeded = false;
                     response.StatusCode = StatusCodes.Status404NotFound;
                     response.Message = "Employee not found.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPut]
+        [Route("UpdateEmployeeProfile")]
+        public IHttpActionResult UpdateEmployeeProfile(EmployeeProfileDTO model)
+        {
+            try
+            {
+                var response = new Response<EmployeeProfileDTO>();
+                var emp = ent.Employees.Find(model.Id);
+                if (emp != null)
+                {
+                    emp.Employee_First_Name = model.Employee_First_Name;
+                    emp.Employee_Middle_Name = model.Employee_Middle_Name;
+                    emp.Employee_Last_Name = model.Employee_Last_Name;
+                    emp.Email = model.Email;
+                    emp.MobileNumber = model.MobileNumber;
+                    emp.EmployeeCurrentAddress = model.EmployeeCurrentAddress;
+                    emp.StateId = model.StateId;
+                    emp.CityId = model.CityId;
+                    emp.Pincode = model.Pincode;
+
+                    ent.SaveChanges();
+                    response.Succeeded = true;
+                    response.StatusCode = StatusCodes.Status200OK;
+                    response.Message = "Employee profile updated successfully.";
+                    return Ok(response);
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Employee data not found.";
                     return Content(HttpStatusCode.NotFound, response);
                 }
             }
