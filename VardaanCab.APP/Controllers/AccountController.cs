@@ -43,7 +43,7 @@ namespace VardaanCab.APP.Controllers
                         //return Ok(new { Status = 200, Message = "Otp Send SuccessFully...!", Data = EmployeeResult.IsFirst });
                         response.Succeeded = true;
                         response.StatusCode = StatusCodes.Status200OK; // OK
-                        response.Data = EmployeeResult.IsFirst == null ? false : EmployeeResult.IsFirst.Value;
+                        response.Data = (bool)EmployeeResult.IsFirst;
                         response.Message = "Otp Send SuccessFully...!";
                         return Ok(response);
                     }
@@ -52,7 +52,7 @@ namespace VardaanCab.APP.Controllers
                         //return Ok(new { Status = 200, Message = "Please Enter the Password...!", Data = EmployeeResult.IsFirst });
                         response.Succeeded = true;
                         response.StatusCode = StatusCodes.Status200OK; // OK
-                        response.Data = DriverResult.IsFirst == null ? false : DriverResult.IsFirst.Value;
+                        response.Data = (bool)EmployeeResult.IsFirst;
                         response.Message = "Please Enter the Password...!";
                         return Ok(response);
                     }
@@ -75,7 +75,7 @@ namespace VardaanCab.APP.Controllers
                         //return Ok(new { Status = 200, Message = "Otp Send SuccessFully...!", Data = DriverResult.IsFirst });
                         response.Succeeded = true;
                         response.StatusCode = StatusCodes.Status200OK; // OK
-                        response.Data = DriverResult.IsFirst == null ? false : DriverResult.IsFirst.Value;
+                        response.Data = (bool)DriverResult.IsFirst;
                         response.Message = "Otp Send SuccessFully...!";
                         return Ok(response);
                     }
@@ -84,7 +84,7 @@ namespace VardaanCab.APP.Controllers
                         //return Ok(new { Status = 200, Message = "Please Enter the Password...!", Data = DriverResult.IsFirst });
                         response.Succeeded = true;
                         response.StatusCode = StatusCodes.Status200OK; // OK
-                        response.Data = DriverResult.IsFirst == null ? false : DriverResult.IsFirst.Value;
+                        response.Data = (bool)DriverResult.IsFirst;
                         response.Message = "Please Enter the Password...!";
                         return Ok(response);
                     }
