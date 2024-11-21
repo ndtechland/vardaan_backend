@@ -126,9 +126,9 @@ namespace VardaanCab.APP.Controllers
                         if (EmployeeResult.OTP == model.OTP)
                         {
                             EmployeeResult.OTP = 0;
-                            EmployeeResult.IsFirst = true;
+                            EmployeeResult.IsFirst = false;
                             ent.SaveChanges();
-                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Data = EmployeeResult });
+                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Role = "Employee", Data = EmployeeResult });
                         }
                         else
                         {
@@ -156,7 +156,7 @@ namespace VardaanCab.APP.Controllers
                         if (DriverResult.OTP == model.OTP)
                         {
                             DriverResult.OTP = 0;
-                            DriverResult.IsFirst = true;
+                            DriverResult.IsFirst = false;
                             ent.SaveChanges();
                             return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Role = "Driver", Data = DriverResult });
                         }
@@ -169,7 +169,7 @@ namespace VardaanCab.APP.Controllers
                     {
                         if (DriverResult.Password == model.Password)
                         {
-                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Role = "Employee", Data = DriverResult });
+                            return Ok(new { Status = HttpStatusCode.OK, Message = "Login Successfuly...!", Role = "Driver", Data = DriverResult });
 
                         }
                         else
