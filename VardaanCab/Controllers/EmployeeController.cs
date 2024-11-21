@@ -20,6 +20,19 @@ namespace VardaanCab.Controllers
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         private readonly CommonOperations _random = new CommonOperations();
 
+        public ActionResult GetEmployeeList()
+        {
+            try
+            {
+                var employee = ent.Employees.ToList();
+                return View(employee);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
+        }
         [HttpGet]
         public ActionResult Add()
         {
