@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -67,9 +68,12 @@ namespace VardaanCab.APP.Utilities
             //File.WriteAllBytes(filePath + "/" + fileName + ext, imageBytes);
            
         
-            Console.WriteLine("Original file path: " + filePath); 
+            Console.WriteLine("Original file path: " + filePath);
 
-            filePath = filePath.Replace("\\VardaanCab.APP", "").Replace("/VardaanCab.APP", "");  
+            //filePath = filePath.Replace("\\VardaanCab.APP", "").Replace("/VardaanCab.APP", "");  
+            string RemoverPath = ConfigurationManager.AppSettings["ImageRemovePath"];
+
+            filePath = filePath.Replace(RemoverPath, "").Replace(RemoverPath, "");
             Console.WriteLine("Modified file path: " + filePath); 
             string fullPath = Path.Combine(filePath, fileName + ext);  
             File.WriteAllBytes(fullPath, imageBytes);

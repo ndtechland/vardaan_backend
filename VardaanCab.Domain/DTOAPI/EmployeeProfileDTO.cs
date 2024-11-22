@@ -14,6 +14,7 @@ namespace VardaanCab.Domain.DTOAPI
         public string Employee_Middle_Name { get; set; }
         public string Employee_Last_Name { get; set; }
         public string MobileNumber { get; set; }
+        public string EmergencyContactNumber { get; set; }
         public string Email { get; set; }
         public string StateName { get; set; }
         public string CityName { get; set; }
@@ -22,6 +23,7 @@ namespace VardaanCab.Domain.DTOAPI
         public Nullable<int> Pincode { get; set; }
         public string EmployeeCurrentAddress { get; set; }
         public string EmployeeDepartment { get; set; }
+        public string EmployeePic { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
     }
 }

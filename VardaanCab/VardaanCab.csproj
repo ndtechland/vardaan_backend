@@ -2652,6 +2652,7 @@
     <Compile Include="Controllers\AdminOperationsController.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\AssignController.cs" />
+    <Compile Include="Controllers\BannerController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\CabCategoryController.cs" />
     <Compile Include="Controllers\CabController.cs" />
@@ -2879,6 +2880,8 @@
     <Content Include="Views\Employee\GetEmployeeList.cshtml" />
     <Content Include="Views\Area\Add.cshtml" />
     <Content Include="Views\Area\All.cshtml" />
+    <Content Include="Views\Banner\Add.cshtml" />
+    <Content Include="Views\Banner\All.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

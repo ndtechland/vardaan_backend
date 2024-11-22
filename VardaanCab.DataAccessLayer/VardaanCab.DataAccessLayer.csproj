@@ -53,6 +53,9 @@
     <Compile Include="DataLayer\AreaMaster.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataLayer\BannerMaster.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer\Booking.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

@@ -80,6 +80,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<AreaMaster> AreaMasters { get; set; }
         public virtual DbSet<DaysName> DaysNames { get; set; }
+        public virtual DbSet<BannerMaster> BannerMasters { get; set; }
     
         public virtual ObjectResult<Nullable<int>> checkOneCompanyBookingSelected(Nullable<bool> isNrg, string term, Nullable<System.DateTime> sDate, Nullable<System.DateTime> eDate, Nullable<int> cityId, Nullable<int> routeNo)
         {

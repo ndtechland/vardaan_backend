@@ -1,0 +1,111 @@
+﻿@model IEnumerable<VardaanCab.DataAccessLayer.DataLayer.BannerMaster>
+@{
+    ViewBag.Title = "All";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    int count = 1;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        <h5>All Banners</h5>
+                    </div>
+                    <form class="d-inline-flex">
+                        <a href="/Banner/Add" class="btn btn-theme">
+                            <i data-feather="plus-square"></i>Add New
+                        </a>
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    @if (TempData["dltmsg"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["dltmsg"]</div>
+                    }
+                    <div>
+                        <div class=" table-responsive table-desi">
+                            <table class="all-cars-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sr No.</th>
+                                        <th>Image</th>
+                                        <th>Role</th>
+                                        <th>Created Date</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@count</td>
+                                            <td>
+                                                <span>
+                                                    <a href="/images/@item.BannerImage">
+                                                        <img src="~/images/@item.BannerImage"
+                                                             alt="users">
+                                                    </a>
+                                                </span>
+                                            </td>
+                                            <td>@item.Role</td>
+                                            <td>@item.CreatedDate</td>
+                                            <td>
+                                                <a href="/Banner/Add?Id=@item.Id">
+                                                    <i class="fa fa-pencil-square-o"
+                                                       aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="/Banner/DeleteBanner?Id=@item.Id" onclick="return confirm('Are you sure want to delete?')">
+                                                    <i class="fa fa-trash-o"
+                                                       aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        count++;
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class=" pagination-box">
+                    <nav class="ms-auto me-auto " aria-label="...">
+                        <ul class="pagination pagination-primary">
+                            <li class="page-item disabled">
+                                <a class="page-link"
+                                   href="javascript:void(0)" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)">1</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link"
+                                   href="javascript:void(0)">
+                                    2 <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)">3</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="javascript:void(0)">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

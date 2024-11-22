@@ -1067,6 +1067,15 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CityMaster_Id" Type="int" />
           <Property Name="StateMaster_Id" Type="int" />
         </EntityType>
+        <EntityType Name="BannerMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BannerImage" Type="nvarchar(max)" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="DaysName">
           <Key>
             <PropertyRef Name="Id" />
@@ -1509,6 +1518,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="VendorPackage" EntityType="Self.VendorPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VendorPersonalPackage" EntityType="Self.VendorPersonalPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AreaMaster" EntityType="Self.AreaMaster" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="BannerMaster" EntityType="Self.BannerMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DaysName" EntityType="Self.DaysName" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="booking_backup11feb" EntityType="Self.booking_backup11feb" store:Type="Tables" store:Schema="newVardaan">
@@ -3100,6 +3110,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="IsFirst" Mode="In" Type="Boolean" />
           </FunctionImport>
           <EntitySet Name="DaysNames" EntityType="Vardaan_AdminModel.DaysName" />
+          <EntitySet Name="BannerMasters" EntityType="Vardaan_AdminModel.BannerMaster" />
         </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4147,6 +4158,15 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DayName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BannerMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BannerImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6341,6 +6361,16 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <EntityTypeMapping TypeName="Vardaan_AdminModel.DaysName">
               <MappingFragment StoreEntitySet="DaysName">
                 <ScalarProperty Name="DayName" ColumnName="DayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BannerMasters">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.BannerMaster">
+              <MappingFragment StoreEntitySet="BannerMaster">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="BannerImage" ColumnName="BannerImage" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
