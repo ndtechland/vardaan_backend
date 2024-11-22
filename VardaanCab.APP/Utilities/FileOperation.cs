@@ -68,6 +68,7 @@ namespace VardaanCab.APP.Utilities
            
         
             Console.WriteLine("Original file path: " + filePath); 
+
             filePath = filePath.Replace("\\VardaanCab.APP", "").Replace("/VardaanCab.APP", "");  
             Console.WriteLine("Modified file path: " + filePath); 
             string fullPath = Path.Combine(filePath, fileName + ext);  

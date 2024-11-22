@@ -108,7 +108,9 @@ namespace VardaanCab.APP.Controllers
 
                 if (data != null)
                 {
-                    var imagePath = @"\VardaanCab\Images";
+                    //var imagePath = @"\VardaanCab\Images";
+                    var imagePath = @"/admin.vardaan.ndinfotech.com/images
+";
                     var profilepic = FileOperation.UploadFileWithBase64(imagePath, model.DriverImage, model.DriverImageBase64, allowedExtensions);
 
                     if (profilepic == "not allowed")
