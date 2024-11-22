@@ -17,5 +17,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public int Id { get; set; }
         public string AreaName { get; set; }
         public Nullable<int> CityMaster_Id { get; set; }
+        public Nullable<int> StateMaster_Id { get; set; }
     }
 }

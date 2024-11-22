@@ -1,0 +1,121 @@
+﻿@model VardaanCab.Domain.ViewModels.AreaMasterVM
+@{
+    ViewBag.Title = "All";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    int count = 1;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        <h5>Area List</h5>
+                    </div>
+                    <form class="d-inline-flex">
+                        <a href="~/Area/Add" class="btn btn-theme">
+                            <i data-feather="plus-square"></i>Add New
+                        </a>
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    @if (TempData["dltmsg"] != null)
+                    {
+                        <div class="row r">
+                            <div class="col-md-12">
+                                <div class="alert alert-success">
+                                    @TempData["dltmsg"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div>
+                        <div class="table-responsive table-desi">
+                            <table class="all-cars-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sr No.</th>
+                                        <th>Area Name</th>
+                                        <th>City</th>
+                                        <th>State</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Areas)
+                                    {
+                                        <tr>
+                                            <td>@count</td>
+                                            <td>@item.AreaName</td>
+                                            <td>@item.CityName</td>
+                                            <td>@item.StateName</td>
+                                            <td>
+                                                <a href="/Area/Add?Id=@item.Id">
+                                                    <i class="fa fa-pencil-square-o"
+                                                       aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="javascript:void(0)">
+                                                    <i class="fa fa-trash-o"
+                                                       aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        count++;
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pagination-box">
+                    <nav class="ms-auto me-auto" aria-label="...">
+                        <ul class="pagination pagination-primary">
+                            <!-- Previous Button -->
+                            <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                                <a class="page-link" href="/Area/All?term=@Model.Term&page=@(Model.Page - 1)&menuId=@ViewBag.menuId" tabindex="-1">Previous</a>
+                            </li>
+
+                            <!-- Page Number Buttons -->
+                            @{
+                                int startPage = Math.Max(1, Model.Page - 1);
+                                int endPage = Math.Min(Model.NumberOfPages, Model.Page + 1);
+
+                                // Adjust to always show exactly 3 pages if possible
+                                if (Model.Page == 1)
+                                {
+                                    endPage = Math.Min(3, Model.NumberOfPages);
+                                }
+                                else if (Model.Page == Model.NumberOfPages)
+                                {
+                                    startPage = Math.Max(1, Model.NumberOfPages - 2);
+                                }
+                            }
+                            @for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == Model.Page ? "active" : "")">
+                                    <a class="page-link" href="/Area/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                </li>
+                            }
+
+                            <!-- Next Button -->
+                            <li class="page-item @(Model.Page == Model.NumberOfPages ? "disabled" : "")">
+                                <a class="page-link" href="/Area/All?term=@Model.Term&page=@(Model.Page + 1)&menuId=@ViewBag.menuId">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+ 

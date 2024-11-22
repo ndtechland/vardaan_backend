@@ -1065,6 +1065,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AreaName" Type="nvarchar(max)" />
           <Property Name="CityMaster_Id" Type="int" />
+          <Property Name="StateMaster_Id" Type="int" />
         </EntityType>
         <EntityType Name="DaysName">
           <Key>
@@ -4138,6 +4139,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AreaName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CityMaster_Id" Type="Int32" />
+          <Property Name="StateMaster_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="DaysName">
           <Key>
@@ -6327,6 +6329,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="AreaMasters">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.AreaMaster">
               <MappingFragment StoreEntitySet="AreaMaster">
+                <ScalarProperty Name="StateMaster_Id" ColumnName="StateMaster_Id" />
                 <ScalarProperty Name="CityMaster_Id" ColumnName="CityMaster_Id" />
                 <ScalarProperty Name="AreaName" ColumnName="AreaName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

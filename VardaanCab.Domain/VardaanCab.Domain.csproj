@@ -69,6 +69,7 @@
     <Compile Include="DTOAPI\EmployeeProfileDTO.cs" />
     <Compile Include="DTOAPI\ForgetPasswordDTO.cs" />
     <Compile Include="DTOAPI\MasterLoginDTO.cs" />
+    <Compile Include="DTO\AreaMasterDTO.cs" />
     <Compile Include="DTO\AssignCabModel.cs" />
     <Compile Include="DTO\BookingDTO.cs" />
     <Compile Include="DTO\CabCategoryDTO.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="DTO\VendorPersonalPackageDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Constant.cs" />
+    <Compile Include="ViewModels\AreaMasterVM.cs" />
     <Compile Include="ViewModels\AutoTaxInvoice.cs" />
     <Compile Include="ViewModels\BookingCartVM.cs" />
     <Compile Include="ViewModels\BookingReportVm.cs" />
