@@ -3,7 +3,11 @@
     ViewBag.Title = "Add";
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
 }
-
+<style>
+    .form-check {
+        padding-left: 0em;
+    }
+</style>
 <div class="container-fluid">
     <div class="row">
 
@@ -36,17 +40,20 @@
                                 }
                                 <div class="mb-3">
                                     <label class="form-label-title">Select Role</label>
-                                    <div>
-                                        <input type="radio" id="employee" name="role" value="Employee"
-                                               @(Model.Role == "Employee" ? "checked" : "") required>
-                                        <label for="employee">Employee</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" id="driver" name="role" value="Driver"
-                                               @(Model.Role == "Driver" ? "checked" : "") required>
-                                        <label for="driver">Driver</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check me-3">
+                                            <input type="radio" id="employee" name="role" value="Employee"
+                                                   @(Model.Role == "Employee" ? "checked" : "") required>
+                                            <label for="employee" class="form-check-label">Employee</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" id="driver" name="role" value="Driver"
+                                                   @(Model.Role == "Driver" ? "checked" : "") required>
+                                            <label for="driver" class="form-check-label">Driver</label>
+                                        </div>
                                     </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label class="form-label-title">Banner Image</label>
                                     @if (!string.IsNullOrEmpty(Model.BannerImage))
