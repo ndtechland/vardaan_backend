@@ -23,7 +23,7 @@ namespace VardaanCab.Controllers
                         orderby a.Id descending
                         select new AreaMasterDTO
                         {
-                            Id = c.Id,
+                            Id = a.Id,
                             AreaName = a.AreaName,
                             StateName = s.StateName,
                             CityName = c.CityName
