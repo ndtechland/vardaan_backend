@@ -116,8 +116,8 @@ namespace VardaanCab.APP.Controllers
             var response = new Utilities.Response<bool>();
             try
             {
-                var EmployeeResult = ent.Employees.Where(x => x.OTP == model.OTP || x.Password == model.Password && x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
-                var DriverResult = ent.Drivers.Where(x => x.OTP == model.OTP || x.Password == model.Password && x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
+                var EmployeeResult = ent.Employees.Where(x => (x.OTP == model.OTP || x.Password == model.Password) && x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
+                var DriverResult = ent.Drivers.Where(x => (x.OTP == model.OTP || x.Password == model.Password) && x.MobileNumber == model.UserName && x.IsActive == true).FirstOrDefault();
                 if (EmployeeResult != null)
                 {
                     if (EmployeeResult.IsFirst == true)
