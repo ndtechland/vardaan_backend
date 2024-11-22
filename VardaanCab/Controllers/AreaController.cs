@@ -24,9 +24,9 @@ namespace VardaanCab.Controllers
                         select new AreaMasterDTO
                         {
                             Id = c.Id,
-                            AreaName = c.CityName,
+                            AreaName = a.AreaName,
                             StateName = s.StateName,
-                            CityName = s.StateName
+                            CityName = c.CityName
                         }
                         ).ToList();
             if (!string.IsNullOrEmpty(term))
