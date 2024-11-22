@@ -79,7 +79,6 @@ namespace VardaanCab.APP.Controllers
                 if(checkdriver != null)
                 {
                     checkdriver.DriverName = model.DriverName;
-                    checkdriver.MobileNumber = model.MobileNumber;
                     checkdriver.Email = model.Email;
                     checkdriver.DriverAddress = model.Address;
                     checkdriver.AlternateNo1 = model.AlternateNo1;
