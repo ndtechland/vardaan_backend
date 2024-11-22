@@ -2877,6 +2877,8 @@
     <Content Include="Views\Admin\ShowSidebarMenus.cshtml" />
     <Content Include="Views\Employee\Add.cshtml" />
     <Content Include="Views\Employee\GetEmployeeList.cshtml" />
+    <Content Include="Views\Area\Add.cshtml" />
+    <Content Include="Views\Area\All.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2889,7 +2891,6 @@
     <Folder Include="Areas\Clint\Data\" />
     <Folder Include="Files\" />
     <Folder Include="Models\Domain\" />
-    <Folder Include="Views\Area\" />
     <Folder Include="Views\Common\" />
     <Folder Include="Views\TestApi\" />
   </ItemGroup>

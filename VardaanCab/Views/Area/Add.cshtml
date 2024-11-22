@@ -1,0 +1,95 @@
+﻿@model VardaanCab.Domain.DTO.AreaMasterDTO
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header  card-header--2">
+
+                            <div>
+                                <h5>@ViewBag.Heading</h5>
+                            </div>
+                            <form class="d-inline-flex">
+                                <a href="/Area/All" class="btn btn-primary">Show all</a>
+
+                            </form>
+                        </div>
+
+                        @using (Html.BeginForm())
+                        {
+                            <div class="card-body">
+
+                                <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
+                                <input name="MenuId" type="hidden" value="@Model.Id" />
+
+                                @if (TempData["msg"] != null)
+                                {
+                                    <div class="row r">
+                                        <div class="col-md-12">
+                                            <div class="alert alert-info">
+                                                @TempData["msg"]
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="row r">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            Area Name *
+                                            @Html.TextBoxFor(a => a.AreaName, new { @class = "form-control" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.AreaName)
+                                            </span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            State *
+                                            @Html.DropDownListFor(a => a.StateMaster_Id, Model.States, "Select State", new { @class = "form-control" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.StateMaster_Id)
+                                            </span>
+                                        </div>
+                                        <div class="form-group">
+                                            City *
+                                            @Html.DropDownListFor(a => a.CityMaster_Id, Enumerable.Empty<SelectListItem>(), "Select City", new { @class = "form-control" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.CityMaster_Id)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <input type="submit" class="btn btn-primary" value="@ViewBag.BtnTXT" />
+                                <a href="/Area/All" class="btn btn-outline-primary">Cancel</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#StateMaster_Id").change(function () {
+        var id = $(this).val();
+        $.get('/Common/GetCityByState?stateId=' + id, function (r) {
+            var dd = $("#CityMaster_Id");
+            dd.empty();
+            dd.append('<option value="">Select City</option>');
+            $.each(r, function (k, v) {
+                dd.append('<option value="' + v.Id + '">' + v.CityName + '</option>');
+
+            })
+        })
+    });
+</script>
+ 
