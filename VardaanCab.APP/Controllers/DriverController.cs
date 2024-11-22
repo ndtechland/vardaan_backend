@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -109,8 +110,8 @@ namespace VardaanCab.APP.Controllers
                 if (data != null)
                 {
                     //var imagePath = @"\VardaanCab\Images";
-                    var imagePath = @"/admin.vardaan.ndinfotech.com/images
-";
+                   // var imagePath = @"/admin.vardaan.ndinfotech.com/images"; 
+                    string imagePath = ConfigurationManager.AppSettings["ImagePath"];
                     var profilepic = FileOperation.UploadFileWithBase64(imagePath, model.DriverImage, model.DriverImageBase64, allowedExtensions);
 
                     if (profilepic == "not allowed")
@@ -130,27 +131,8 @@ namespace VardaanCab.APP.Controllers
             }
             catch (Exception ex)
             {
-//                EmailEF ef = new EmailEF()
-//                {
-//                    Email = "madhund108@gmail.com",
-//                    Subject = "Get error",
-
-//                    Message = @"<!DOCTYPE html>
-//<html>
-//<head>
-//    <title>Find error.</title>
-//</head>
-//<body> 
-    
-//    <ul>
-//        <li>Error" + ex + @"</li> 
-//    </ul>
-//</body>
-//</html>"
-//                };
-
-//                EmailOperation.SendEmail(ef);
-                return BadRequest($"error.{ex}");
+                throw new Exception("Internal server error occurred. Please check the details.", ex);
+                //return BadRequest($"error.{ex}");
             }
         }
 

@@ -1,0 +1,77 @@
+﻿@model VardaanCab.Domain.DTO.BannerDTO
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header  card-header--2">
+
+                            <div>
+                                <h5>@ViewBag.Heading</h5>
+                            </div>
+                            <form class="d-inline-flex">
+                                <a href="/Banner/All" class="btn btn-theme">
+                                    Show All
+                                </a>
+                            </form>
+                        </div>
+                        <form class="theme-form mega-form" method="post" action="Add" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <input name="Id" type="hidden" value="@Model.Id" />
+                                @if (TempData["msg"] != null)
+                                {
+                                    <div class="alert alert-success">@TempData["msg"]</div>
+                                }
+                                else if (TempData["errormsg"] != null)
+                                {
+                                    <div class="alert alert-danger">@TempData["errormsg"]</div>
+
+                                }
+                                <div class="mb-3">
+                                    <label class="form-label-title">Select Role</label>
+                                    <div>
+                                        <input type="radio" id="employee" name="role" value="Employee"
+                                               @(Model.Role == "Employee" ? "checked" : "") required>
+                                        <label for="employee">Employee</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="driver" name="role" value="Driver"
+                                               @(Model.Role == "Driver" ? "checked" : "") required>
+                                        <label for="driver">Driver</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label-title">Banner Image</label>
+                                    @if (!string.IsNullOrEmpty(Model.BannerImage))
+                                    {
+                                        <a href="/images/@Model.BannerImage"> <img class="thumb" src="/images/@Model.BannerImage" /></a>
+                                    }
+                                    @Html.TextBoxFor(a => a.ImageFile, new { @class = "form-control", type = "file" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.ImageFile)
+                                    </span>
+                                </div>
+
+
+                            </div>
+
+                            <div class="card-footer text-end">
+                                <button class="btn btn-primary me-3">@ViewBag.BtnTXT</button>
+                                <a href="/Banner/All" class="btn btn-outline-primary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

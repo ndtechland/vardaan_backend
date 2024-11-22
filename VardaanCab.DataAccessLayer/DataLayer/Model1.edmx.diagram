@@ -58,6 +58,7 @@
         <EntityTypeShape EntityType="Vardaan_AdminModel.Employee" Width="1.5" PointX="13.375" PointY="22.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.AreaMaster" Width="1.5" PointX="23.375" PointY="11.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.DaysName" Width="1.5" PointX="23.375" PointY="14.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.BannerMaster" Width="1.5" PointX="15.375" PointY="23.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

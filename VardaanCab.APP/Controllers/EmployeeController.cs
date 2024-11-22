@@ -41,6 +41,7 @@ namespace VardaanCab.APP.Controllers
                         Employee_Last_Name=empdata.Employee_Last_Name,
                         Email=empdata.Email,
                         MobileNumber=empdata.MobileNumber,
+                        EmergencyContactNumber=empdata.MobileNumber,
                         Employee_Id=empdata.Employee_Id,
                         EmployeeDepartment=empdata.EmployeeDepartment,
                         StateId=empdata.StateId,
@@ -84,7 +85,7 @@ namespace VardaanCab.APP.Controllers
                     emp.Employee_Middle_Name = model.Employee_Middle_Name;
                     emp.Employee_Last_Name = model.Employee_Last_Name;
                     emp.Email = model.Email;
-                    emp.MobileNumber = model.MobileNumber;
+                    //emp.MobileNumber = model.MobileNumber;
                     emp.EmployeeCurrentAddress = model.EmployeeCurrentAddress;
                     emp.StateId = model.StateId;
                     emp.CityId = model.CityId;
