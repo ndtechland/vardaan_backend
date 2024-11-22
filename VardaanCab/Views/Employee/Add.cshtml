@@ -2,37 +2,43 @@
 
 @{
     ViewBag.Title = "Add";
-    Layout = null;
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    //Layout = null;
 
 }
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Page Title</title>
+   <style>
+       .dropdown-menu {
+           padding: 10px;
+       }
+
+           .dropdown-menu label {
+               display: block;
+               cursor: pointer;
+               padding: 5px;
+           }
+
+           .dropdown-menu input {
+               margin-right: 10px;
+           }
+       .dropdown .dropdown-toggle {
+           background-color: rgba(115, 102, 255, 0.08);
+           color: #1d1e26;
+           border-radius: 0px;
+           padding: 12px 10px;
+           width: 100%;
+           text-align: left;
+       }
+
+       .dropdown .dropdown-toggle {
+           background-color: rgb(11 32 11 / 2%) !important;
+           border: 1px solid;
+       }
+   </style>
 </head>
 <body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
-
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
-
-
-    @*<div class="">
-            <strong>Select Language:</strong>
-            <select id="multiple-checkboxes" multiple="multiple">
-                <option value="php">PHP</option>
-                <option value="javascript">JavaScript</option>
-                <option value="java">Java</option>
-                <option value="sql">SQL</option>
-                <option value="jquery">Jquery</option>
-                <option value=".net">.Net</option>
-            </select>
-        </div>*@
-
     @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -173,24 +179,33 @@
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.WeekOff, htmlAttributes: new { @class = "control-label" })
                                 <div class="form-group">
-                                    
-                                    <div class="">
-                                        @Html.ListBoxFor(a => a.WeekOff, Model.DayLists, new { @class = "form-control", id = "multiple-checkboxes" })
-                                        <span class="text-danger">
-                                            @Html.ValidationMessageFor(a => a.WeekOff)
-                                        </span>
-
-                                        @*<select id="multiple-checkboxes" multiple="multiple">
-            <option value="php">PHP</option>
-            <option value="javascript">JavaScript</option>
-            <option value="java">Java</option>
-            <option value="sql">SQL</option>
-            <option value="jquery">Jquery</option>
-            <option value=".net">.Net</option>
-        </select>*@
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-default dropdown-toggle form-control" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Select Days
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 100%; max-height: 200px; overflow-y: auto;">
+                                            <li>
+                                                <label>
+                                                    <input type="checkbox" id="selectAll"> Select All
+                                                </label>
+                                            </li>
+                                            @foreach (var day in Model.DayLists)
+                                            {
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" class="day-checkbox" value="@day.Value" @(Model.WeekOffs.Contains(day.Value) ? "checked" : "")>
+                                                        @day.Text
+                                                    </label>
+                                                </li>
+                                            }
+                                        </ul>
                                     </div>
+                                    <input type="hidden" id="WeekOff" name="WeekOffs" value="@string.Join(",", Model.WeekOffs)" />
+                                    <span class="text-danger">@Html.ValidationMessageFor(a => a.WeekOffs)</span>
                                 </div>
                             </div>
+
+
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -294,12 +309,67 @@
             })
         });
     </script>
+   
     <script>
-        $(document).ready(function () {
-            $('#multiple-checkboxes').multiselect({
-                includeSelectAllOption: true,
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectAllCheckbox = document.getElementById("selectAll");
+            const dayCheckboxes = document.querySelectorAll(".day-checkbox");
+            const hiddenInput = document.getElementById("WeekOff");
+            const dropdownButton = document.getElementById("dropdownMenuButton");
+
+            // Update hidden input value and dropdown button text
+            function updateSelectedDays() {
+                const selectedDays = Array.from(dayCheckboxes)
+                    .filter((checkbox) => checkbox.checked)
+                    .map((checkbox) => {
+                        const dayText = checkbox.closest('label').textContent.trim(); // Get the text
+                        const dayValue = checkbox.value; // Get the value
+                        return { text: dayText, value: dayValue }; // Return both as an object
+                    });
+
+                // Update hidden input with selected values (only values)
+                hiddenInput.value = selectedDays.map(day => day.value).join(",");
+
+                // Update the dropdown button text to display the selected days' text
+                if (selectedDays.length === 0) {
+                    dropdownButton.textContent = "Select Days";
+                } else if (selectedDays.length === dayCheckboxes.length) {
+                    dropdownButton.textContent = "All Selected";
+                } else {
+                    dropdownButton.textContent = selectedDays.map(day => day.text).join(", ");
+                }
+
+                // Optionally, log selected days for inspection (both text and value)
+                console.log(selectedDays); // [{text: 'Monday', value: '1'}, {text: 'Tuesday', value: '2'}]
+            }
+
+            // Handle "Select All" checkbox
+            selectAllCheckbox.addEventListener("change", () => {
+                const isChecked = selectAllCheckbox.checked;
+                dayCheckboxes.forEach((checkbox) => {
+                    checkbox.checked = isChecked;
+                });
+                updateSelectedDays();
             });
+
+            // Update "Select All" checkbox state and selected days
+            dayCheckboxes.forEach((checkbox) => {
+                checkbox.addEventListener("change", () => {
+                    const allChecked = Array.from(dayCheckboxes).every((box) => box.checked);
+                    const anyChecked = Array.from(dayCheckboxes).some((box) => box.checked);
+
+                    selectAllCheckbox.checked = allChecked;
+                    selectAllCheckbox.indeterminate = !allChecked && anyChecked;
+
+                    updateSelectedDays();
+                });
+            });
+
+            // Initialize dropdown text
+            updateSelectedDays();
         });
+
+
     </script>
 </body>
 </html>
