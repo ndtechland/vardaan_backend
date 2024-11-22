@@ -59,6 +59,7 @@ namespace VardaanCab.Controllers
                 var existdata = ent.AreaMasters.Where(x => x.Id == id).FirstOrDefault();
                 model.StateMaster_Id = existdata.StateMaster_Id;
                 model.CityMaster_Id = existdata.CityMaster_Id;
+                ViewBag.Cityid = existdata.CityMaster_Id;
                 model.AreaName = existdata.AreaName;
                 ViewBag.Heading = "Update Area";
                 ViewBag.BtnTXT = "Update";

@@ -40,7 +40,13 @@ namespace VardaanCab.Controllers
             {
                 var model = new EmployeeDTO();
                 model.States = new SelectList(ent.StateMasters.ToList(), "Id", "StateName");
-                model.DayLists = new SelectList(ent.DaysNames.ToList(), "Id", "DayName");
+                //model.DayLists = new SelectList(ent.DaysNames.ToList(), "Id", "DayName");
+                model.DayLists = ent.DaysNames
+                .Select(d => new SelectListItem
+                {
+                   Value = d.Id.ToString(),
+                  Text = d.DayName
+                  }).ToList();
                 model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).ToList(), "Id", "CustomerName");
                 return View(model);
             }
