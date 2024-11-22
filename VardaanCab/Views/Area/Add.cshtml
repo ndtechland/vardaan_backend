@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
 }
 
+
 <div class="container-fluid">
     <div class="row">
 
@@ -21,50 +22,41 @@
 
                             </form>
                         </div>
-
                         @using (Html.BeginForm())
                         {
                             <div class="card-body">
-
                                 <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
                                 <input name="MenuId" type="hidden" value="@Model.Id" />
-
                                 @if (TempData["msg"] != null)
                                 {
-                                    <div class="row r">
-                                        <div class="col-md-12">
-                                            <div class="alert alert-info">
-                                                @TempData["msg"]
-                                            </div>
+                                    <div class="mb-3">
+                                        <div class="alert alert-info">
+                                            @TempData["msg"]
                                         </div>
                                     </div>
                                 }
 
-                                <div class="row r">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            Area Name *
-                                            @Html.TextBoxFor(a => a.AreaName, new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.AreaName)
-                                            </span>
-                                        </div>
+                                <div class="mb-3">
+                                    <label class="form-label-title ">Area Name <span class="text-danger">*</span></label>
+                                    @Html.TextBoxFor(a => a.AreaName, new { @class = "form-control",@required="required" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.AreaName)
+                                    </span>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label-title ">State <span class="text-danger">*</span></label>
+                                    @Html.DropDownListFor(a => a.StateMaster_Id, Model.States, "Select State", new { @class = "form-control", @required = "required" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.StateMaster_Id)
+                                    </span>
+                                </div>
 
-                                        <div class="form-group">
-                                            State *
-                                            @Html.DropDownListFor(a => a.StateMaster_Id, Model.States, "Select State", new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.StateMaster_Id)
-                                            </span>
-                                        </div>
-                                        <div class="form-group">
-                                            City *
-                                            @Html.DropDownListFor(a => a.CityMaster_Id, Enumerable.Empty<SelectListItem>(), "Select City", new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.CityMaster_Id)
-                                            </span>
-                                        </div>
-                                    </div>
+                                <div class="mb-3">
+                                    <label class="form-label-title ">City <span class="text-danger">*</span></label>
+                                    @Html.DropDownListFor(a => a.CityMaster_Id, Enumerable.Empty<SelectListItem>(), "Select City", new { @class = "form-control", @required = "required" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.CityMaster_Id)
+                                    </span>
                                 </div>
                             </div>
                             <div class="card-footer text-end">
@@ -72,8 +64,9 @@
                                 <a href="/Area/All" class="btn btn-outline-primary">Cancel</a>
                             </div>
                         }
-                    </div>
+                        </div>
                 </div>
+
             </div>
         </div>
     </div>
