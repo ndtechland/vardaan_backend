@@ -1,0 +1,84 @@
+﻿@model VardaanCab.Domain.DTO.EmployeeHomeRouteDTO
+@{
+    ViewBag.Title = "AllHomeRoute";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    int Count = 1;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        <h5>All Home Routes</h5>
+                    </div>
+                    <form class="d-inline-flex">
+                        <a href="/CompanyZoneETS/HomeRoute?menuId=@ViewBag.menuId" class="btn btn-theme">
+                            <i data-feather="plus-square"></i>Add New
+                        </a>
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    @if (TempData["dltmsg"] != null)
+                    {
+                        <div class="row r">
+                            <div class="col-md-12">
+                                <div class="alert alert-success">
+                                    @TempData["dltmsg"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div>
+                        <div class="table-responsive table-desi">
+                            <table class="datatable user-table all-driver-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th nowrap>Sr No.</th>
+                                        <th nowrap>Home Route Name</th>
+                                        <th nowrap>Company Zone</th>
+                                        <th nowrap>Created Date</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.HomeRouteLists)
+                                    {
+                                        <tr>
+                                            <td nowrap>@Count</td>
+                                            <td>@item.HomeRouteName</td>
+                                            <td>@item.CompanyZone</td>
+                                            <td>@item.CreatedDate</td>
+                                            <td>
+                                                <a href="/CompanyZoneETS/HomeRoute?Id=@item.Id">
+                                                    <i class="fa fa-pencil-square-o"
+                                                       aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="/CompanyZoneETS/DeleteHomeRoute?Id=@item.Id" onclick="return confirm('Are you sure want to delete?')">
+                                                    <i class="fa fa-trash-o"
+                                                       aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        Count++;
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                 
+            </div>
+        </div>
+
+    </div>
+</div>
+

@@ -2660,6 +2660,7 @@
     <Compile Include="Controllers\CityController.cs" />
     <Compile Include="Controllers\ClientPackageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\CompanyZoneETSController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\MonthlyPackageMasterController.cs" />
     <Compile Include="Controllers\MonthlyPackageController.cs" />
@@ -2882,6 +2883,12 @@
     <Content Include="Views\Area\All.cshtml" />
     <Content Include="Views\Banner\Add.cshtml" />
     <Content Include="Views\Banner\All.cshtml" />
+    <Content Include="Views\CompanyZoneETS\AddCompanyZone.cshtml" />
+    <Content Include="Views\CompanyZoneETS\AllCompanyZones.cshtml" />
+    <Content Include="Views\CompanyZoneETS\HomeRoute.cshtml" />
+    <Content Include="Views\CompanyZoneETS\EmployeeDestinationArea.cshtml" />
+    <Content Include="Views\CompanyZoneETS\AllHomeRoute.cshtml" />
+    <Content Include="Views\CompanyZoneETS\AllEmployeeDestinationArea.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

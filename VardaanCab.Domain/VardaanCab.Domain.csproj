@@ -81,13 +81,16 @@
     <Compile Include="DTO\CitywithSatateDTO.cs" />
     <Compile Include="DTO\ClientPackageDTO.cs" />
     <Compile Include="DTO\ClientUserDTO.cs" />
+    <Compile Include="DTO\CompanyZoneDTO.cs" />
     <Compile Include="DTO\CorporateBillingDTO.cs" />
     <Compile Include="DTO\CorporatePackageDTO.cs" />
     <Compile Include="DTO\CustomerDTO.cs" />
     <Compile Include="DTO\DiscountTypeModel.cs" />
     <Compile Include="DTO\DriverDTO.cs" />
     <Compile Include="DTO\DriverLeaveDTO.cs" />
+    <Compile Include="DTO\EmployeeDestinationAreaDTO.cs" />
     <Compile Include="DTO\EmployeeDTO.cs" />
+    <Compile Include="DTO\EmployeeHomeRouteDTO.cs" />
     <Compile Include="DTO\LoginModel.cs" />
     <Compile Include="DTO\LogsDTO.cs" />
     <Compile Include="DTO\MonthlyPackageBillDTO.cs" />

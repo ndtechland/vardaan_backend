@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Web.Http;
+using System.Windows.Forms;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTOAPI;
@@ -51,11 +52,7 @@ namespace VardaanCab.APP.Controllers
                         Pincode=empdata.Pincode,
                         CreatedDate=empdata.CreatedDate,
                     };
-                    response.Succeeded = true;
-                    response.StatusCode = StatusCodes.Status200OK;
-                    response.Data = data;
-                    response.Message = "Employee profile retrieved successfully.";
-                    return Ok(response);
+                    return Ok(new { Succeeded = true,StatusCode = 200, Message = "Employee profile retrieved successfully.", Role = "Employee", Data=data });
                 }
                 else
                 {
