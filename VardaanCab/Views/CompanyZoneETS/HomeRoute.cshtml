@@ -1,0 +1,66 @@
+﻿@model VardaanCab.Domain.DTO.EmployeeHomeRouteDTO
+@{
+    ViewBag.Title = "HomeRoute";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header  card-header--2">
+                            <div>
+                                <h5>@ViewBag.Heading</h5>
+                            </div>
+                            <form class="d-inline-flex">
+                                <a href="/CompanyZoneETS/AllHomeRoute?menuId=@ViewBag.menuId" class="btn btn-theme">
+                                    Show All
+                                </a>
+                            </form>
+                        </div>
+                        <form class="theme-form mega-form" action="HomeRoute" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
+                                <input name="Id" type="hidden" value="@Model.Id" />
+                                @if (TempData["msg"] != null)
+                                {
+                                    <div class="mb-3">
+                                        <div class="alert alert-info">
+                                            @TempData["msg"]
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="mb-3">
+                                    <label for="menu-type" class="form-label-title ">
+                                        Company
+                                    </label>
+                                    @Html.DropDownListFor(a => a.CompanyZoneId, Model.CompanyZones, "Select Company Zone", new { @class = "form-control", @required = "required" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.CompanyZoneId)
+                                    </span>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label-title">Home Route Name</label>
+                                    @Html.TextBoxFor(a => a.HomeRouteName, new { @class = "form-control", @required = "required" })
+                                    <span class="text-danger">
+                                        @Html.ValidationMessageFor(a => a.HomeRouteName)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <button type="submit" class="btn btn-primary me-3">@ViewBag.BtnTXT</button>
+                                <a href="/CompanyZoneETS/AllHomeRoute?menuId=@ViewBag.menuId" class="btn btn-outline-primary">Cancel</a>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
