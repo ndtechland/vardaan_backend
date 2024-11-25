@@ -41,13 +41,17 @@ namespace VardaanCab.Controllers
                 var model = new EmployeeDTO();
                 model.States = new SelectList(ent.StateMasters.ToList(), "Id", "StateName");
                 //model.DayLists = new SelectList(ent.DaysNames.ToList(), "Id", "DayName");
-                model.DayLists = ent.DaysNames
-                .Select(d => new SelectListItem
-                {
+                model.DayLists = ent.DaysNames.Select(d => new SelectListItem
+                  {
                    Value = d.Id.ToString(),
                   Text = d.DayName
                   }).ToList();
                 model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).ToList(), "Id", "CustomerName");
+                model.CompanyZone = new SelectList(ent.CompanyZones.ToList(), "Id", "CompanyZone");
+                model.CompanyZoneHomeRoute = new SelectList(ent.CompanyZoneHomeRoutes.ToList(), "Id", "HomeRouteName");
+                model.DestinationArea = new SelectList(ent.EmployeeDestinationAreas.ToList(), "Id", "DestinationAreaName");
+                model.RegistrationTypes = new SelectList(ent.EmployeeRegistrationTypes.ToList(), "Id", "TypeName");
+                
                 return View(model);
             }
             catch (Exception ex)
