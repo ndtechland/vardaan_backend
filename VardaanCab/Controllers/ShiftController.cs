@@ -13,27 +13,35 @@ namespace VardaanCab.Controllers
     {
         Vardaan_AdminEntities ent=new Vardaan_AdminEntities();
         // GET: Shift
-        public ActionResult ShiftTime(int id=0)
+        public ActionResult ShiftTime(int menuId = 0, int id = 0)
         {
-            var model = new ShiftDTO();
-            var data = ent.ShiftMasters.ToList();
-            model.ShiftList = data;
-           // ViewBag.menuId = menuId;
+             var model = new ShiftDTO();
+            var data = (from sm in ent.ShiftMasters
+                        join tt in ent.TripTypes on sm.TripTypeId equals tt.Id
+                        orderby sm.Id descending
+                        select new GetShift
+                        {
+                            Id = sm.Id,
+                            TripType = tt.TripTypeName,
+                            ShiftTime = sm.ShiftTime
+                        }
+                       ).ToList();
+             ViewBag.menuId = menuId;
             if (id > 0)
             {
                 var existdata = ent.ShiftMasters.Where(x => x.Id == id).FirstOrDefault();
-                model.Id = existdata.Id;
-                model.TripTypeId = existdata.TripTypeId;
-                model.ShiftTime = existdata.ShiftTime;
+                ViewBag.Id = existdata.Id;
+                ViewBag.TripTypeId = existdata.TripTypeId;
+                ViewBag.ShiftTime = existdata.ShiftTime;
                 ViewBag.Heading = "Update Shift Time";
                 ViewBag.BtnTXT = "Update";
                 return View(model);
             }
             else
             {
-                model.Id = 0;
-                model.TripTypeId = 0;
-                model.ShiftTime = "";
+                ViewBag.Id = 0;
+                ViewBag.TripTypeId = 0;
+                ViewBag.ShiftTime = "";
                 ViewBag.BtnTXT = "Save";
                 ViewBag.Heading = "Add Shift Time";
                 return View(model);
