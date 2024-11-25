@@ -26,6 +26,8 @@ namespace VardaanCab.Domain.DTO
         public string Employee_Middle_Name { get; set;}
         [Display(Name = "Employee Last Name")]
         public string Employee_Last_Name { get; set;}
+        [Display(Name = "Gender")]
+        public string Gender { get; set;}
         [Display(Name = "Mobile Number")]
         public string MobileNumber { get; set;}
         [Display(Name = "Email ID")]
