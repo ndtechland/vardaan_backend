@@ -1,0 +1,133 @@
+﻿@model VardaanCab.Domain.DTO.ShiftDTO
+@{
+    ViewBag.Title = "ShiftTime";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    int Count = 1;
+}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!--Hotel detail start-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>@ViewBag.Heading</h5>
+                        </div>
+                        <div class="card-body">
+                            <form class="theme-form mega-form">
+
+                                <div class="mb-3">
+                                    <label for="hotel-category" class="form-label-title ">
+                                        Trip Type
+                                    </label>
+                                    <select id="hotel-category"
+                                            class="form-control js-example-basic-single col-sm-12">
+
+                                        <option value="1">PICKUP</option>
+                                        <option value="2">DROP</option>
+
+
+                                    </select>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-6">
+                                        <label class="form-label-title ">Shift Time</label>
+                                        <div class="input-group date" id="CheckIn"
+                                             data-target-input="nearest">
+                                            <input class="form-control datetimepicker-input digits"
+                                                   type="text" data-target="#CheckIn">
+                                            <div class="input-group-text" data-target="#CheckIn"
+                                                 data-toggle="datetimepicker">
+                                                <i class="fa fa-clock-o"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer text-end">
+                            <button class="btn btn-primary me-3">@ViewBag.BtnTXT</button>
+                            <button class="btn btn-outline-primary">Cancel</button>
+                        </div>
+
+                    </div>
+                    <!--Hotel detail end-->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Get shift List-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        <h5>All Cars</h5>
+                    </div>
+                    <form class="d-inline-flex">
+                        <a href="add-new-cars.html" class="btn btn-theme">
+                            <i data-feather="plus-square"></i>Add New
+                        </a>
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    <div>
+                        <div class=" table-responsive table-desi">
+                            <table class="all-cars-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sr No.</th>
+                                        <th>Trip Type</th>
+                                        <th>Shift Type</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ShiftList)
+                                    {
+                                        <tr>
+                                            <td nowrap>@Count</td>
+                                            <td>@item.TripType</td>
+                                            <td>@item.ShiftTime</td>
+                                            <td>
+                                                <a href="/CompanyZoneETS/AddCompanyZone?Id=@item.Id">
+                                                    <i class="fa fa-pencil-square-o"
+                                                       aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="/CompanyZoneETS/DeleteCompanyZone?Id=@item.Id" onclick="return confirm('Are you sure want to delete?')">
+                                                    <i class="fa fa-trash-o"
+                                                       aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        Count++;
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </div>
+
+    </div>
+</div>

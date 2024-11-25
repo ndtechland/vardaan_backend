@@ -85,6 +85,9 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<EmployeeRegistrationType> EmployeeRegistrationTypes { get; set; }
         public virtual DbSet<CompanyZoneHomeRoute> CompanyZoneHomeRoutes { get; set; }
         public virtual DbSet<CompanyZone> CompanyZones { get; set; }
+        public virtual DbSet<ShiftMaster> ShiftMasters { get; set; }
+        public virtual DbSet<TripMaster> TripMasters { get; set; }
+        public virtual DbSet<TripType> TripTypes { get; set; }
     
         public virtual ObjectResult<Nullable<int>> checkOneCompanyBookingSelected(Nullable<bool> isNrg, string term, Nullable<System.DateTime> sDate, Nullable<System.DateTime> eDate, Nullable<int> cityId, Nullable<int> routeNo)
         {

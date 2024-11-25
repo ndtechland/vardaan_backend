@@ -54,10 +54,7 @@ namespace VardaanCab.APP.Controllers
                     AlternateNo1 = driver.AlternateNo1,
                 };
 
-                response.Succeeded = true;
-                response.StatusCode = StatusCodes.Status200OK; // OK
-                response.Data = model;
-                response.Message = "Driver profile retrieved successfully.";
+               
                 return Ok(new { Succeeded = true, StatusCode = 200, Message = "Driver profile retrieved successfully.", Role = "Driver", Data = model });
             }
             catch (Exception ex)

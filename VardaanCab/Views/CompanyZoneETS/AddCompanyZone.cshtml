@@ -46,9 +46,9 @@
                                 <div class="mb-3">
                                     <label class="form-label-title">Company Zone</label>
                                     @Html.TextBoxFor(a => a.CompanyZone, new { @class = "form-control", @required = "required" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.CompanyZone)
-                                    </span>
+                                <span class="text-danger">
+                                    @Html.ValidationMessageFor(a => a.CompanyZone)
+                                </span>
                                 </div>
                             </div>
                             <div class="card-footer text-end">
