@@ -1151,6 +1151,29 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TypeName" Type="nvarchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="ShiftMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TripTypeId" Type="int" />
+          <Property Name="ShiftTime" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TripMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TripName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TripType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TripMasterId" Type="int" />
+          <Property Name="TripTypeName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
         <Function Name="checkOneCompanyBookingSelected" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="isNrg" Type="bit" Mode="In" />
           <Parameter Name="term" Type="nvarchar" Mode="In" />
@@ -1559,6 +1582,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeDestinationArea" EntityType="Self.EmployeeDestinationArea" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeRegistrationTypes" EntityType="Self.EmployeeRegistrationTypes" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="ShiftMaster" EntityType="Self.ShiftMaster" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="TripMaster" EntityType="Self.TripMaster" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="TripType" EntityType="Self.TripType" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="booking_backup11feb" EntityType="Self.booking_backup11feb" store:Type="Tables" store:Schema="newVardaan">
             <DefiningQuery>SELECT 
     [booking_backup11feb].[Id] AS [Id], 
@@ -3153,6 +3179,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="EmployeeRegistrationTypes" EntityType="Vardaan_AdminModel.EmployeeRegistrationType" />
           <EntitySet Name="CompanyZoneHomeRoutes" EntityType="Vardaan_AdminModel.CompanyZoneHomeRoute" />
           <EntitySet Name="CompanyZones" EntityType="Vardaan_AdminModel.CompanyZone" />
+          <EntitySet Name="ShiftMasters" EntityType="Vardaan_AdminModel.ShiftMaster" />
+          <EntitySet Name="TripMasters" EntityType="Vardaan_AdminModel.TripMaster" />
+          <EntitySet Name="TripTypes" EntityType="Vardaan_AdminModel.TripType" />
         </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4243,6 +4272,29 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="CompanyZone1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ShiftMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TripTypeId" Type="Int32" />
+          <Property Name="ShiftTime" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TripMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TripName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TripType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TripMasterId" Type="Int32" />
+          <Property Name="TripTypeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6485,6 +6537,32 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="CompanyZone1" ColumnName="CompanyZone" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShiftMasters">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.ShiftMaster">
+              <MappingFragment StoreEntitySet="ShiftMaster">
+                <ScalarProperty Name="ShiftTime" ColumnName="ShiftTime" />
+                <ScalarProperty Name="TripTypeId" ColumnName="TripTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TripMasters">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.TripMaster">
+              <MappingFragment StoreEntitySet="TripMaster">
+                <ScalarProperty Name="TripName" ColumnName="TripName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TripTypes">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.TripType">
+              <MappingFragment StoreEntitySet="TripType">
+                <ScalarProperty Name="TripTypeName" ColumnName="TripTypeName" />
+                <ScalarProperty Name="TripMasterId" ColumnName="TripMasterId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

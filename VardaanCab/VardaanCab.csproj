@@ -2670,6 +2670,7 @@
     <Compile Include="Controllers\DriverLeaveController.cs" />
     <Compile Include="Controllers\RentalTypeController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ShiftController.cs" />
     <Compile Include="Controllers\StateGSTINController.cs" />
     <Compile Include="Controllers\SubMenuController.cs" />
     <Compile Include="Controllers\TestApiController.cs" />
@@ -2889,6 +2890,7 @@
     <Content Include="Views\CompanyZoneETS\EmployeeDestinationArea.cshtml" />
     <Content Include="Views\CompanyZoneETS\AllHomeRoute.cshtml" />
     <Content Include="Views\CompanyZoneETS\AllEmployeeDestinationArea.cshtml" />
+    <Content Include="Views\Shift\ShiftTime.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
