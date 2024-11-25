@@ -62,6 +62,10 @@ namespace VardaanCab.Domain.DTO
         public int EmployeeRegistrationType { get; set;}
         public SelectList States { get; set; }
         public SelectList Customers { get; set; }
+        public SelectList CompanyZone { get; set; }
+        public SelectList CompanyZoneHomeRoute { get; set; }
+        public SelectList DestinationArea { get; set; }
+        public SelectList RegistrationTypes { get; set; }
         public IEnumerable<SelectListItem> DayLists { get; set; }
         public List<string> WeekOffs { get; set; } = new List<string>();
     }
