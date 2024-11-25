@@ -36,27 +36,31 @@ namespace VardaanCab.Controllers
             try
             {
                 var data = ent.UserLogins.FirstOrDefault(a => (a.Email == model.Username || a.MobileNumber == model.Username) && a.Password == model.Password && a.IsActive==true);
+                
                 if (data == null)
                 {
                     TempData["msg"] = "Invalid username or password";
                     return View(model);
                 }
-                FormsAuthentication.SetAuthCookie(data.Id.ToString(), true);
-                string hostName = Dns.GetHostName();
-                string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
-                Session["uEmail"]=data.Email;
-                var lh = new LoginHistory
-                {
-                    UserLogin_Id = data.Id,
-                    Ip_Address = ip,
-                    UpdateDate = DateTime.Now
-                };
-                ent.LoginHistories.Add(lh);
-                ent.SaveChanges();
+              
+                    FormsAuthentication.SetAuthCookie(data.Id.ToString(), true);
+                    string hostName = Dns.GetHostName();
+                    string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
+                    Session["uEmail"] = data.Email;
+                    var lh = new LoginHistory
+                    {
+                        UserLogin_Id = data.Id,
+                        Ip_Address = ip,
+                        UpdateDate = DateTime.Now
+                    };
+                    ent.LoginHistories.Add(lh);
+                    ent.SaveChanges();
 
-                if (!string.IsNullOrEmpty(model.ReturnUrl))
-                    return Redirect(model.ReturnUrl);
-                return RedirectToAction("Dashboard");
+                    if (!string.IsNullOrEmpty(model.ReturnUrl))
+                        return Redirect(model.ReturnUrl);
+                    return RedirectToAction("Dashboard");
+                
+                
             }
             catch (Exception ex)
             {
@@ -96,12 +100,11 @@ namespace VardaanCab.Controllers
 
             //}
             int userId = int.Parse(User.Identity.Name);
-
-            var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
-            var softwareLinks = ent.Database.SqlQuery<SoftwareLink>(query).ToList();
-            var model = new DashboardModel();
-            model.Data = softwareLinks;
-            return View(model);
+                var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
+                var softwareLinks = ent.Database.SqlQuery<SoftwareLink>(query).ToList();
+                var model = new DashboardModel();
+                model.Data = softwareLinks;
+                return View(model); 
         }
 
         public ActionResult Submenu(int menuId)
@@ -384,15 +387,30 @@ namespace VardaanCab.Controllers
         public ActionResult ShowSidebarMenus()
         {
             int userId = int.Parse(User.Identity.Name);
-            var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
-            var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
-            foreach (var item in softwareLinks)
+            if (!ent.UserLogins.Any(x => x.Id == userId && x.Role == "Customer"))
             {
-                var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + " and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
-                var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
-                item.ChildMenus = l;
+                var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
+                var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
+                foreach (var item in softwareLinks)
+                {
+                    var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + " and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
+                    var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
+                    item.ChildMenus = l;
+                }
+                return PartialView(softwareLinks);
             }
-            return PartialView(softwareLinks);
+            else
+            {
+                var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (" + 1141 + "," + 1142 + ")";
+                var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
+                foreach (var item in softwareLinks)
+                {
+                    var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + "";
+                    var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
+                    item.ChildMenus = l;
+                }
+                return PartialView(softwareLinks);
+            }
         }
     }
 }

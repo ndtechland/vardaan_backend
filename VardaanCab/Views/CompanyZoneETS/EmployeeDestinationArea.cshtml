@@ -36,7 +36,7 @@
 
                                 <div class="mb-3">
                                     <label for="menu-type" class="form-label-title ">
-                                        Home Route
+                                        Home Route<span class="text-danger">*</span>
                                     </label>
                                     @Html.DropDownListFor(a => a.HomeRouteId, Model.HomeRoutes, "Select Home Route", new { @class = "form-control", @required = "required" })
                                     <span class="text-danger">
@@ -44,7 +44,7 @@
                                     </span>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label-title">Destination Area Name</label>
+                                    <label class="form-label-title">Destination Area Name<span class="text-danger">*</span></label>
                                     @Html.TextBoxFor(a => a.DestinationAreaName, new { @class = "form-control", @required = "required" })
                                     <span class="text-danger">
                                         @Html.ValidationMessageFor(a => a.DestinationAreaName)

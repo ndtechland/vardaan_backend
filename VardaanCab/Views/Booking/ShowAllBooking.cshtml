@@ -52,7 +52,7 @@
 
                     <div>
                         <div class="row">
-                            <h2><a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info">Back</a>&nbsp; Bookings</h2>
+                            <h2>@*<a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info">Back</a>&nbsp;*@ Bookings</h2>
 
                             @using (Html.BeginForm())
                             {
@@ -62,22 +62,41 @@
                                         <input type="text" value="@Model.Term" placeholder="BookingId/Name/Company/Mobile" class="form-control" name="term" />
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" value="@Model.sDate" placeholder="YYYY/MM/DD" class="form-control sdp" name="sDate" autocomplete="off" readonly />
+                                        <div class="input-group date" id="dt-date" data-target-input="nearest">
+                                            <div class="input-group">
+                                                <input class="datepicker-here form-control digits" type="text" data-language="en" name="sDate" autocomplete="off" readonly
+                                                       data-target="#dt-date">
+
+                                                <div class="input-group-text" data-target="#dt-date" data-toggle="datetimepicker">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<input type="text" value="@Model.sDate" placeholder="YYYY/MM/DD" class="form-control sdp" name="sDate" autocomplete="off" readonly />*@
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" value="@Model.eDate" placeholder="YYYY/MM/DD" class="form-control sdp" name="eDate" autocomplete="off" readonly />
+                                        <div class="input-group date" id="dt-date" data-target-input="nearest">
+                                            <div class="input-group">
+                                                <input class="datepicker-here form-control digits" type="text" data-language="en" name="eDate" autocomplete="off" readonly
+                                                       data-target="#dt-date">
+
+                                                <div class="input-group-text" data-target="#dt-date" data-toggle="datetimepicker">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<input type="text" value="@Model.eDate" placeholder="YYYY/MM/DD" class="form-control sdp" name="eDate" autocomplete="off" readonly />*@
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="submit" class="btn btn-info" value="Find" />
-                                        <a class="btn btn-info" href="/Booking/ShowAllBooking?menuId=@ViewBag.menuId">Show all</a>
+                                        <input type="submit" class="btn btn-primary" value="Find" />
+                                        <a class="btn btn-primary" href="/Booking/ShowAllBooking?menuId=@ViewBag.menuId">Show all</a>
                                         @* <a class="btn btn-info" href="/Booking/CabBook"><i class="fa fa-plus-circle"></i> New Booking</a>*@
-                                        <button type="button" class="btn btn-info" onclick="Export()" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
+                                        <button type="button" class="btn btn-success" onclick="Export()" id="btnExport"> <i class="fa fa-file-excel-o"></i></button>
                                     </div>
                                 </div>
                             }
 
                         </div>
-                        <h5>Bookings</h5>
                     </div>
                     @*<form class="d-inline-flex">
                         <a href="add-new-cars.html" class="btn btn-theme">

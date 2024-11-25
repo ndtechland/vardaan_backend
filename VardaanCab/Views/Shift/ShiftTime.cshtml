@@ -31,7 +31,7 @@
                             <div class="mb-3">
                                 <div class="col-6">
                                     <label for="hotel-category" class="form-label-title ">
-                                        Trip Type
+                                        Trip Type<span class="text-danger">*</span>
                                     </label>
                                     <select id="hotel-category" name="TripTypeId" class="form-control js-example-basic-single col-sm-12" required="required">
                                         <option value="1" @(ViewBag.TripTypeId == 1 ? "selected" : "")>PICKUP</option>
@@ -46,7 +46,7 @@
                                 <div class="row">
 
                                     <div class="col-6">
-                                        <label class="form-label-title ">Shift Time</label>
+                                        <label class="form-label-title ">Shift Time<span class="text-danger">*</span></label>
                                         <div class="input-group date" id="CheckIn"
                                              data-target-input="nearest">
                                             <input class="form-control datetimepicker-input digits" name="ShiftTime" value="@ViewBag.ShiftTime" type="text" data-target="#CheckIn" required="required">
@@ -107,7 +107,7 @@
                     }
                 <div>
                     <div class="table-responsive table-desi">
-                        <table class="datatable user-table all-driver-table table table-striped">
+                        <table class="datatable all-cars-table table table-striped">
                             <thead>
                                 <tr>
                                     <th nowrap>Sr No.</th>
