@@ -1508,6 +1508,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="Employee_First_Name" Type="nvarchar" Mode="In" />
           <Parameter Name="Employee_Middle_Name" Type="nvarchar" Mode="In" />
           <Parameter Name="Employee_Last_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Gender" Type="nvarchar" Mode="In" />
           <Parameter Name="MobileNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="Email" Type="nvarchar" Mode="In" />
           <Parameter Name="StateId" Type="int" Mode="In" />
@@ -3153,6 +3154,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="Employee_First_Name" Mode="In" Type="String" />
             <Parameter Name="Employee_Middle_Name" Mode="In" Type="String" />
             <Parameter Name="Employee_Last_Name" Mode="In" Type="String" />
+            <Parameter Name="Gender" Mode="In" Type="String" />
             <Parameter Name="MobileNumber" Mode="In" Type="String" />
             <Parameter Name="Email" Mode="In" Type="String" />
             <Parameter Name="StateId" Mode="In" Type="Int32" />

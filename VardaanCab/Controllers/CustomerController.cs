@@ -19,7 +19,7 @@ namespace VardaanCab.Controllers
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository commonRepo = new CommonRepository();
-
+        private readonly CommonOperations _random = new CommonOperations();
 
         public ActionResult ChangeStatus(int id,int menuId=0)
         {
@@ -146,6 +146,7 @@ join VehicleModel vm on cp.VehicleModel_Id= vm.Id order by vm.ModelName").ToList
         [HttpPost]
         public ActionResult Add(CustomerDTO model)
         {
+            string RandomPassword = _random.GenerateRandomPassword();
             model.CustomerList = new SelectList(ent.Customers.ToList(), "Id", "CompanyName");
             model.StateList = new SelectList(ent.StateMasters.ToList(), "Id", "StateName");
             //model.Packages = ent.Database.SqlQuery<ClientPackageDTO>(@"select cp.*,cp.Id as CorporatePackage_Id,rt.RentalTypeName,vm.ModelName from corporatepackage cp
@@ -169,6 +170,17 @@ join VehicleModel vm on cp.VehicleModel_Id= vm.Id order by vm.ModelName").ToList
                     data.IsActive = true;
                     data.GeoLocation = model.GeoLocation;
                     ent.Customers.Add(data);
+                    ent.SaveChanges();
+                    //data saved in userlogin
+                    var userlogin = new UserLogin()
+                    {
+                        Email=data.CompanyName,
+                        MobileNumber=data.ContactNo,
+                        Password= RandomPassword,
+                        Role="Customer",
+                        IsActive=true
+                    };
+                    ent.UserLogins.Add(userlogin);
                     ent.SaveChanges();
 
                     // add client package
