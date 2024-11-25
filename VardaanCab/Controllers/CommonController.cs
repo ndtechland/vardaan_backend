@@ -18,6 +18,21 @@ namespace VardaanCab.Controllers
             var data = ent.CityMasters.Where(a => a.StateMaster_Id == stateId).ToList();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult GetCompanyZonesByID(int Customer_Id)
+        {
+            var data = ent.CompanyZones.Where(a => a.CompanyId == Customer_Id).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetHomeRouteNameByID(int CompanyZone_ID)
+        {
+            var data = ent.CompanyZoneHomeRoutes.Where(a => a.CompanyZoneId == CompanyZone_ID).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetDestinationAreaByID(int DestinationArea_ID)
+        {
+            var data = ent.EmployeeDestinationAreas.Where(a => a.CompanyZoneHomeRouteId == DestinationArea_ID).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult GetRentalTypeByPackage(int packageId)
         {
