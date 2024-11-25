@@ -16,7 +16,7 @@ namespace VardaanCab.Controllers
         public ActionResult ShiftTime(int menuId = 0, int id = 0)
         {
              var model = new ShiftDTO();
-            var data = (from sm in ent.ShiftMasters
+             var data = (from sm in ent.ShiftMasters
                         join tt in ent.TripTypes on sm.TripTypeId equals tt.Id
                         orderby sm.Id descending
                         select new GetShift
@@ -26,6 +26,7 @@ namespace VardaanCab.Controllers
                             ShiftTime = sm.ShiftTime
                         }
                        ).ToList();
+            model.ShiftList = data;
              ViewBag.menuId = menuId;
             if (id > 0)
             {
@@ -80,6 +81,22 @@ namespace VardaanCab.Controllers
                 TempData["msg"] = "Server error";
             }
             return RedirectToAction("ShiftTime");
+        }
+        public ActionResult DeleteShiftTime(int id)
+        {
+            try
+            {
+                var data = ent.ShiftMasters.Find(id);
+                ent.ShiftMasters.Remove(data);
+                ent.SaveChanges();
+                TempData["dltmsg"] = "Deleted successfully.";
+                return RedirectToAction("ShiftTime");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
