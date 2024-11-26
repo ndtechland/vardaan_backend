@@ -35,36 +35,36 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                var data = ent.UserLogins.FirstOrDefault(a => (a.Email == model.Username || a.MobileNumber == model.Username) && a.Password == model.Password && a.IsActive==true);
-                
+                var data = ent.UserLogins.FirstOrDefault(a => (a.Email == model.Username || a.MobileNumber == model.Username) && a.Password == model.Password && a.IsActive == true);
+
                 if (data == null)
                 {
                     TempData["msg"] = "Invalid username or password";
                     return View(model);
                 }
-              
-                    FormsAuthentication.SetAuthCookie(data.Id.ToString(), true);
-                    string hostName = Dns.GetHostName();
-                    string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
-                    Session["uEmail"] = data.Email;
-                    var lh = new LoginHistory
-                    {
-                        UserLogin_Id = data.Id,
-                        Ip_Address = ip,
-                        UpdateDate = DateTime.Now
-                    };
-                    ent.LoginHistories.Add(lh);
-                    ent.SaveChanges();
 
-                    if (!string.IsNullOrEmpty(model.ReturnUrl))
-                        return Redirect(model.ReturnUrl);
-                    return RedirectToAction("Dashboard");
-                
-                
+                FormsAuthentication.SetAuthCookie(data.Id.ToString(), true);
+                string hostName = Dns.GetHostName();
+                string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
+                Session["uEmail"] = data.Email;
+                var lh = new LoginHistory
+                {
+                    UserLogin_Id = data.Id,
+                    Ip_Address = ip,
+                    UpdateDate = DateTime.Now
+                };
+                ent.LoginHistories.Add(lh);
+                ent.SaveChanges();
+
+                if (!string.IsNullOrEmpty(model.ReturnUrl))
+                    return Redirect(model.ReturnUrl);
+                return RedirectToAction("Dashboard");
+
+
             }
             catch (Exception ex)
             {
-                TempData["msg"] = "Server Error"+"StackTrace-"+ex.Message+ex.StackTrace+"innerExpes-"+ex.InnerException;
+                TempData["msg"] = "Server Error" + "StackTrace-" + ex.Message + ex.StackTrace + "innerExpes-" + ex.InnerException;
             }
             return View(model);
         }

@@ -103,9 +103,9 @@
                         </div>
                         <div class="card-body">
                             @*<h2>Vendor Packages</h2>
-                            <div class="row">
-                                <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info">Back</a>
-                            </div>*@
+            <div class="row">
+                <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info">Back</a>
+            </div>*@
                             @using (Html.BeginForm())
                             {
                                 <div class="row">
@@ -126,7 +126,7 @@
                                     <table class="user-table table table-striped">
                                         <thead>
                                             <tr>
-                                                <th class="sticky-col first-col">S.No.</th>
+                                                <th class="sticky-col first-col" nowrap>S.No.</th>
                                                 <th class="sticky-col second-col">Package Type</th>
                                                 <th class="sticky-col third-col">Booking Type</th>
                                                 <th>Vehicle</th>
@@ -146,7 +146,7 @@
                                             @foreach (var item in Model.Packages)
                                             {
                                                 <tr>
-                                                    <td class="sticky-col first-col">@(++sn)</td>
+                                                    <td class="sticky-col first-col" nowrap>@(++sn)</td>
                                                     <td class="sticky-col second-col">@item.PackageTypeName</td>
                                                     <td class="sticky-col third-col">
                                                         @item.RentalType
@@ -184,21 +184,58 @@
                                 </div>
                             </div>
 
-                            <div class="row r">
-                                <div class="col-md-12">
-                                    <ul class="pagination">
-                                        @for (int i = 1; i <= Model.NumberOfPages; i++)
-                                        {
-                                            <li class="@if (i == Model.Page) {<text>active</text> }">
-                                                <a href="/VendorPackage/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
+                            @*<div class="row r">
+                <div class="col-md-12">
+                    <ul class="pagination">
+                        @for (int i = 1; i <= Model.NumberOfPages; i++)
+                        {
+                            <li class="@if (i == Model.Page) {<text>active</text> }">
+                                <a href="/VendorPackage/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>*@
 
                         </div>
+                        <div class="pagination-box">
+                            <nav class="ms-auto me-auto" aria-label="...">
+                                <ul class="pagination pagination-primary">
+                                    <!-- Previous Button -->
+                                    <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                                        <a class="page-link" href="/VendorPackage/All?term=@Model.Term&page=@(Model.Page - 1)&menuId=@ViewBag.menuId" tabindex="-1">Previous</a>
+                                    </li>
+
+                                    <!-- Page Number Buttons -->
+                                    @{
+                                        int startPage = Math.Max(1, Model.Page - 1);
+                                        int endPage = Math.Min(Model.NumberOfPages, Model.Page + 1);
+
+                                        // Adjust to always show exactly 3 pages if possible
+                                        if (Model.Page == 1)
+                                        {
+                                            endPage = Math.Min(3, Model.NumberOfPages);
+                                        }
+                                        else if (Model.Page == Model.NumberOfPages)
+                                        {
+                                            startPage = Math.Max(1, Model.NumberOfPages - 2);
+                                        }
+                                    }
+                                    @for (int i = startPage; i <= endPage; i++)
+                                    {
+                                        <li class="page-item @(i == Model.Page ? "active" : "")">
+                                            <a class="page-link" href="/VendorPackage/All?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                                        </li>
+                                    }
+
+                                    <!-- Next Button -->
+                                    <li class="page-item @(Model.Page == Model.NumberOfPages ? "disabled" : "")">
+                                        <a class="page-link" href="/VendorPackage/All?term=@Model.Term&page=@(Model.Page + 1)&menuId=@ViewBag.menuId">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
