@@ -9,6 +9,7 @@
     .row {
         margin-top: 1% !important;
     }
+
 </style>
 
 @using (Html.BeginForm("Add", "Vendor", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -160,15 +161,15 @@
                                             </span>
                                         </div>
                                         <h4>Packages</h4>
-                                        <div class="mainDiv">
+                                       
                                             <div class="table-responsive table-desi">
-                                                <table id="table1" class="user-table table table-striped">
+                                                <table class="datatable user-table table table-striped">
 
                                                     <thead>
                                                         <tr>
-                                                            <th class="sticky-col first-col" nowrap>Vehicle</th>
-                                                            <th class="sticky-col second-col">PackageType</th>
-                                                            <th class="sticky-col third-col">RentalType</th>
+                                                            <th class="sticky-col first-col" style="background-color: #4aa4d9; z-index:1" nowrap>Vehicle</th>
+                                                            <th class="sticky-col second-col" style="background-color: #4aa4d9; z-index: 1 ">PackageType</th>
+                                                            <th class="sticky-col third-col" style="background-color: #4aa4d9; z-index: 1 ">RentalType</th>
                                                             <th>Fare</th>
                                                             <th>MinKm</th>
                                                             <th>MinHrs</th>
@@ -186,17 +187,17 @@
                                                         @for (int i = 0; i < Model.Packages.Count(); i++)
                                                         {
                                                             <tr>
-                                                                <td class="sticky-col first-col" nowrap>
+                                                                <td class="sticky-col first-col" style="background-color:white;" nowrap>
                                                                     @Html.HiddenFor(a => a.Packages[i].VendorPackage_Id)
                                                                     @Html.HiddenFor(a => a.Packages[i].RentalType_Id)
                                                                     @Html.HiddenFor(a => a.Packages[i].VehicleModel_Id)
 
                                                                     @Model.Packages[i].ModelName
                                                                 </td>
-                                                                <td class="sticky-col second-col">
+                                                                <td class="sticky-col second-col" style="background-color:white;">
                                                                     @Model.Packages[i].PackageTypeName
                                                                 </td>
-                                                                <td class="sticky-col third-col">
+                                                                <td class="sticky-col third-col" style="background-color:white;">
                                                                     @Model.Packages[i].RentalTypeName
                                                                 </td>
 
@@ -219,7 +220,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        </div>
+                                        
 
 
                                         @*<div class="form-group">
