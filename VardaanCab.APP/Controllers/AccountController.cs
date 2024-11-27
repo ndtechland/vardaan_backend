@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -369,6 +370,43 @@ namespace VardaanCab.APP.Controllers
             catch (Exception ex)
             {
                 return InternalServerError(ex);
+            }
+        }
+        [HttpPost]
+        [Route("api/Account/CreateEmployeePassword")]
+        public IHttpActionResult CreateEmployeePassword(ChangePasswordDTO model)
+        {
+            try
+            {
+                var emp = ent.Employees.Find(model.Id);
+
+                if (emp != null)
+                {
+                        if (model.Password == model.ConfirmPassword)
+                        {
+                            if (emp.Password == model.Password)
+                            {
+                                return BadRequest("New password cannot be the same as the old password.");
+                            }
+
+                            emp.Password = model.Password;
+                            ent.SaveChanges();
+                            return Ok(new { Status = 200, Message = "Password has been updated successfully." });
+                        }
+                        else
+                        {
+                            return BadRequest("Confirm Password not matched.");
+                        } 
+                }
+                else
+                {
+                    return BadRequest("Invalid User Id");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
             }
         }
     }
