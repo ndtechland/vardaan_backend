@@ -396,7 +396,7 @@ namespace VardaanCab.APP.Controllers
                         else
                         {
                             return BadRequest("Confirm Password not matched.");
-                        } 
+                        }  
                 }
                 else
                 {
