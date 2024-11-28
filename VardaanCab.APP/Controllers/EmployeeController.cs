@@ -51,6 +51,8 @@ namespace VardaanCab.APP.Controllers
                         CityName= getcity.CityName,
                         Pincode=empdata.Pincode,
                         CreatedDate=empdata.CreatedDate,
+                        EmployeeCurrentAddress=empdata.EmployeeCurrentAddress,
+                        Gender=empdata.Gender,
                     };
                     return Ok(new { Succeeded = true,StatusCode = 200, Message = "Employee profile retrieved successfully.", Role = "Employee", Data=data });
                 }

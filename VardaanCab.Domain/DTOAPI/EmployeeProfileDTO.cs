@@ -24,6 +24,7 @@ namespace VardaanCab.Domain.DTOAPI
         public string EmployeeCurrentAddress { get; set; }
         public string EmployeeDepartment { get; set; }
         public string EmployeePic { get; set; }
+        public string Gender { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
     }
 }
