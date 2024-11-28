@@ -1,4 +1,4 @@
-﻿
+﻿@model VardaanCab.Domain.DTO.CreateRequestDTO
 @{
     ViewBag.Title = "CreateRequest";
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
@@ -12,16 +12,24 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5>AD-HOC Request</h5>
+                            <h5>Employee Request</h5>
                         </div>
-                        <div class="card-body">
-                            <form class="theme-form mega-form">
+                        <form class="theme-form mega-form" action="CreateRequest" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                @if (TempData["msg"] != null)
+                                {
+                                    <div class="mb-3">
+                                        <div class="alert alert-success">
+                                            @TempData["msg"]
+                                        </div>
+                                    </div>
+                                }
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Request Type</label>
-                                                <select name="requestType" id="requestType" class="form-control">
+                                                <select name="RequestType" id="RequestType" class="form-control">
                                                     <option value="">--Select Request Type--</option>
                                                     <option value="SELF">SELF</option>
                                                     <option value="EMPLOYEE">EMPLOYEE</option>
@@ -31,29 +39,27 @@
 
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Select Company</label>
-                                                <select id="genderFacility" class="form-control js-example-basic-single col-sm-12">
-                                                    <option value="">--Select Facility--</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                    <option value="Other">Other</option>
-                                                </select>
+                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control", @required = "required" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.CompanyId)
+                                                </span>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Employee Id</label>
-                                                <input id="employeeId" class="form-control" type="text" placeholder="Employee Id">
+                                                <input id="employeeId" name="EmployeeId" class="form-control" type="text" placeholder="Employee Id">
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">First Name</label>
-                                                <input id="firstName" class="form-control" type="text" placeholder="Employee First Name" disabled>
+                                                <input id="firstName" name="FirstName" class="form-control" type="text" placeholder="Employee First Name" readonly>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Last Name</label>
-                                                <input id="lastName" class="form-control" type="text" placeholder="Employee Last Name" disabled>
+                                                <input id="lastName" name="LastName" class="form-control" type="text" placeholder="Employee Last Name" readonly>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Gender</label>
-                                                <select id="gender"
-                                                        class="form-control js-example-basic-single col-sm-12" disabled>
+                                                <select id="gender" name="Gender" style="pointer-events: none; background-color: #e9ecef;"
+                                                        class="form-control js-example-basic-single col-sm-12" readonly>
                                                     <option value="">--Select Gender--</option>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
@@ -65,64 +71,64 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Email</label>
-                                                <input id="email" class="form-control" type="text" placeholder="Employee Email" disabled>
+                                                <input id="email" name="Email" class="form-control" type="text" placeholder="Employee Email" readonly>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Guest Contact Number With Country Code</label>
-                                                <input id="guestContact" class="form-control" type="text" placeholder="eg.919999999999" disabled>
+                                                <input id="guestContact" name="GuestContact" class="form-control" type="text" placeholder="eg.919999999999" readonly>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Unit (ASPL/AZTEC)</label>
-                                                    <select id="unit" class="form-control">
-                                                        <option value="aspl">ASPL</option>
-                                                        <option value="aztec">AZTEC</option>
+                                                    <select name="Unit" id="unit" class="form-control">
+                                                        <option value="ASPL">ASPL</option>
+                                                        <option value="AZTEC">AZTEC</option>
                                                     </select>
                                                 </div>
-                                                </div>
+                                            </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Department</label>
-                                                    <input type="text" id="department" class="form-control" placeholder="Enter Department">
+                                                    <input type="text" name="Department" id="department" class="form-control" placeholder="Enter Department">
                                                 </div>
 
-                                                    
-                                                </div>
+
+                                            </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Cost Centre</label>
-                                                    <input class="form-control" type="text" placeholder="Cost Centre">
+                                                    <input class="form-control" name="CostCentre" type="text" placeholder="Cost Centre">
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Expence Code</label>
-                                                    <input class="form-control" type="text" placeholder="Expence Code">
+                                                    <input class="form-control" name="ExpenseCode" type="text" placeholder="Expence Code">
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Requestor Emp ID</label>
-                                                    <input class="form-control" type="text" placeholder="Requestor Emp ID">
+                                                    <input class="form-control" name="RequestorEmpId" type="text" placeholder="Requestor Emp ID">
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Requestor Name</label>
-                                                    <input class="form-control" type="text" placeholder="Requestor Name">
+                                                    <input class="form-control" name="RequestorName" type="text" placeholder="Requestor Name">
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Requestor Contact Numbers Comma Separated</label>
-                                                    <input class="form-control" type="text" placeholder="Eg.919811172193,919999999999">
+                                                    <input class="form-control" name="RequestorContacts" type="text" placeholder="Eg.919811172193,919999999999">
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
@@ -130,151 +136,166 @@
                                                     <div class="input-group date" id="dt-date"
                                                          data-target-input="nearest">
                                                         <div class="input-group">
-                                                            <input class="datepicker-here form-control digits" placeholder="Date of Booking Received"
-                                                                   type="text" data-language="en" data-target="#dt-date">
+                                                            <input name="BookingReceivedDate" class="form-control" placeholder="Date of Booking Received"
+                                                                   type="date">
 
-                                                            <div class="input-group-text" data-target="#dt-date"
-                                                                 data-toggle="datetimepicker">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>
+                                                            @*<div class="input-group-text" data-target="#dt-date"
+                                                                     data-toggle="datetimepicker">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </div>*@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Request Trip Type</label>
-                                                    <select id="tripType" class="form-control">
+                                                    <select name="RequestTripType" id="requesttripType" class="form-control">
                                                         <option value="">Select Trip Type</option>
-                                                        <option value="single">Single</option>
-                                                        <option value="round">Round</option>
+                                                        <option value="1">Airport Pickup</option>
+                                                        <option value="2">Airport Drop</option>
+                                                        <option value="3">Medical Emergency</option>
+                                                        <option value="4">Office Transfer</option>
+                                                        <option value="5">Hotel Transfer</option>
+                                                        <option value="6">Railway Station Pickup</option>
+                                                        <option value="7">Administration</option>
                                                     </select>
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Destination Request Method</label>
-                                                    <select class="form-control" disabled>
+                                                    <select name="DestinationRequestMethod" class="form-control" disabled>
                                                         <option value="Single">Single</option>
                                                         <option value="Multiple">Multiple</option>
                                                     </select>
                                                 </div>
-                                                
+
                                             </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="guestpart">
-                                                            <label class="form-label-title ">Location Types</label>
-                                                            <select id="locationType" class="form-control">
-                                                                <option value="">Select Location Type</option>
-                                                                <option value="Multiple Location">Multiple Location</option>
-                                                                <option value="Single Location">Single Location</option>
-                                                            </select>
-                                                        </div>
-                                                        
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="guestpart">
+                                                        <label class="form-label-title ">Location Types</label>
+                                                        <select name="LocationType" id="locationType" class="form-control">
+                                                            <option value="">Select Location Type</option>
+                                                            <option value="Multiple Location">Multiple Location</option>
+                                                            <option value="Single Location">Single Location</option>
+                                                        </select>
                                                     </div>
+
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="form-label-title ">Start Request Date</label>
-                                                    <div class="input-group date" id="dt-date"
-                                                         data-target-input="nearest">
-                                                        <div class="input-group">
-                                                            <input class="datepicker-here form-control digits" placeholder="Start Request Date"
-                                                                   type="text" data-language="en" data-target="#dt-date">
+                                                    <div class="guestpart">
+                                                        <div id="smstriggerlocation">
+                                                            <label class="form-label-title ">SMS Triggered Location</label>
+                                                            <input class="form-control" name="SMSTriggeredLocation" type="text">
 
-                                                            <div class="input-group-text" data-target="#dt-date"
-                                                                 data-toggle="datetimepicker">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label-title ">End Request Date</label>
-                                                    <div class="input-group date" id="dt-date"
-                                                         data-target-input="nearest">
-                                                        <div class="input-group">
-                                                            <input class="datepicker-here form-control digits" placeholder="End Request Date"
-                                                                   type="text" data-language="en" data-target="#dt-date">
 
-                                                            <div class="input-group-text" data-target="#dt-date"
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label-title ">Start Request Date</label>
+                                                <div class="input-group date" id="sdt-date"
+                                                     data-target-input="nearest">
+                                                    <div class="input-group">
+                                                        <input name="StartRequestDate" class="form-control" placeholder="Start Request Date"
+                                                               type="date">
+
+                                                        @*<div class="input-group-text" data-target="#sdt-date"
                                                                  data-toggle="datetimepicker">
                                                                 <i class="fa fa-calendar"></i>
-                                                            </div>
-                                                        </div>
+                                                            </div>*@
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label-title ">End Request Date</label>
+                                                <div class="input-group date" id="edt-date"
+                                                     data-target-input="nearest">
+                                                    <div class="input-group">
+                                                        <input name="EndRequestDate" class="form-control" placeholder="End Request Date"
+                                                               type="date">
+
+                                                        @*<div class="input-group-text" data-target="#edt-date"
+                                                                 data-toggle="datetimepicker">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
                                                         <label class="form-label-title ">Trip Type</label>
-                                                        <select id="shiftType" class="form-control">
+                                                        <select id="triptype" name="TripType" class="form-control" disabled>
                                                             <option value="">--Select Trip Type--</option>
-                                                            <option value="morning">Morning</option>
-                                                            <option value="evening">Evening</option>
-                                                            <option value="night">Night</option>
+                                                            <option value="PICKUP">PICKUP</option>
+                                                            <option value="DROP">DROP</option>
                                                         </select>
-                                                    </div>
-                                                    <div class="col-md-3">
+
+                                                </div>
+                                                <div class="col-md-3"> 
                                                         <label class="form-label-title ">Shift Type</label>
-                                                        <select id="shiftType" class="form-control">
+                                                        <select id="shifttype" name="ShiftType" class="form-control" disabled>
                                                             <option value="">--Select Shift Type--</option>
-                                                            <option value="morning">Morning</option>
-                                                            <option value="evening">Evening</option>
-                                                            <option value="night">Night</option>
+                                                            <option value="NORMAL">NORMAL</option>
                                                         </select>
-                                                    </div>
+                                                    
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    <div id="pickupLocation">
-                                                        <label class="form-label-title">Pickup Location</label>
-                                                        <div class="input-group">
-                                                            <select class="form-control">
-                                                                <option value="">--Select Pickup Location--</option>
-                                                                <option value="sector1">Sector 1</option>
-                                                                <option value="sector2">Sector 2</option>
-                                                                <option value="sector3">Sector 3</option>
-                                                            </select>
-                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                                                                <i class="fa fa-location-arrow text-primary"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div id="dropLocation">
-                                                        <label class="form-label-title">Drop Location</label>
-                                                        <div class="input-group">
-                                                            <select id="dropLocation" class="form-control">
-                                                                <option value="">--Select Drop Location--</option>
-                                                                <option value="sector1">Sector 1</option>
-                                                                <option value="sector2">Sector 2</option>
-                                                                <option value="sector3">Sector 3</option>
-                                                            </select>
-                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                                                                <i class="fa fa-location-arrow text-primary"></i>
-                                                            </button>
+                                                @*<div class="col-md-6">
+                                                        <div id="pickupLocation">
+                                                            <label class="form-label-title">Pickup Location</label>
+                                                            <div class="input-group">
+                                                                <select name="PickupLocation" class="form-control">
+                                                                    <option value="">--Select Pickup Location--</option>
+                                                                    <option value="sector1">Sector 1</option>
+                                                                    <option value="sector2">Sector 2</option>
+                                                                    <option value="sector3">Sector 3</option>
+                                                                </select>
+                                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
+                                                                    <i class="fa fa-location-arrow text-primary"></i>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
 
-                                                </div>
+                                                    <div class="col-md-6">
+                                                        <div id="dropLocation">
+                                                            <label class="form-label-title">Drop Location</label>
+                                                            <div class="input-group">
+                                                                <select name="DropLocation" id="dropLocation" class="form-control">
+                                                                    <option value="">--Select Drop Location--</option>
+                                                                    <option value="sector1">Sector 1</option>
+                                                                    <option value="sector2">Sector 2</option>
+                                                                    <option value="sector3">Sector 3</option>
+                                                                </select>
+                                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
+                                                                    <i class="fa fa-location-arrow text-primary"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>*@
                                             </div>
+
+                                        </div>
 
                                     </div>
 
                                 </div>
-                            </form>
-                        </div>
-                        <div class="card-footer text-end">
-                            <button type="button" class="btn btn-primary">Create New Request</button>
-                            <button type="reset" class="btn btn-outline-primary">Reset</button>
-                        </div>
-
+                            </div>
+                            <div class="card-footer text-end">
+                                <button type="submit" class="btn btn-primary">Create New Request</button>
+                                <button type="reset" class="btn btn-outline-primary">Reset</button>
+                            </div>
+                        </form>
                     </div>
-                    
+
                 </div>
 
             </div>
@@ -282,21 +303,21 @@
     </div>
 </div>
 <!-- Modal Popup -->
- 
+
 <div class="modal fade" id="geoLocationModal" tabindex="-1" aria-labelledby="geoLocationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          
+
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="geoLocationModalLabel">
                     <i class="fa fa-pencil"></i> Add Geo Location Name
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-              
+
             <div class="modal-body">
                 <div class="row mb-3">
-                    
+
                     <div class="col-md-6">
                         <label for="searchLocation" class="form-label">Search</label>
                         <div class="input-group">
@@ -307,14 +328,14 @@
                         </div>
                     </div>
 
-                    
+
                     <div class="col-md-6">
                         <label for="geocodeAddress" class="form-label">Geocode Address</label>
                         <textarea id="geocodeAddress" class="form-control" rows="1" placeholder="Address"></textarea>
                     </div>
                 </div>
 
-                
+
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="locationName" class="form-label">Location Name</label>
@@ -329,7 +350,7 @@
                     </div>
                 </div>
             </div>
-             
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-success">Save Location</button>
@@ -337,11 +358,108 @@
         </div>
     </div>
 </div>
- 
+
+@*<script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const RequestType = document.querySelector('[name="RequestType"]');
+            const pickupLocation = document.querySelector('#pickupLocation');
+            const dropLocation = document.querySelector('#dropLocation');
+            const destinationRequestMethod = document.querySelector('#destinationRequestMethod');
+            const employeeId = document.querySelector('#employeeId');
+            const gender = document.querySelector('#gender');
+            const firstName = document.querySelector('#firstName');
+            const lastName = document.querySelector('#lastName');
+            const email = document.querySelector('#email');
+            const guestContact = document.querySelector('#guestContact');
+            const triptype = document.querySelector('#triptype');
+            const ShiftType = document.querySelector('#shifttype');
+            const guestparts = document.querySelectorAll('.guestpart');
+            const smstriggerlocation = document.querySelector('#smstriggerlocation');
+            const LocationType = document.querySelector('[name="LocationType"]');
+            const StartRequestDate = document.querySelector('[name="StartRequestDate"]');
+            const EndRequestDate = document.querySelector('[name="EndRequestDate"]');
+
+
+            function handleRequestTypeChange() {
+                const value = RequestType.value;
+
+                if (value === "GUEST") {
+                    guestparts.forEach(part => {
+                        part.parentElement.style.display = "block";
+                    });
+                    employeeId.disabled = false
+                }
+                else if (value === "SELF" || value === "") {
+                    employeeId.disabled = true;
+                    guestparts.forEach(part => {
+                        part.parentElement.style.display = "none";
+                    });
+                    resetEmployeeDetails();
+                }
+                else {
+                    guestparts.forEach(part => {
+                        part.parentElement.style.display = "none";
+                    });
+
+                    employeeId.disabled = false;
+                    resetEmployeeDetails();
+                }
+            }
+
+            function handleLocationTypeChange() {
+                const value = LocationType.value;
+
+                if (value === "Single Location") {
+                    smstriggerlocation.parentElement.style.display = "block";
+
+                }
+                else {
+                    smstriggerlocation.parentElement.style.display = "none";
+
+                }
+            }
+
+            function handleStartEndDateSelectChange() {
+                const StartRequestDateselect = StartRequestDate.value;
+                const EndRequestDateselect = EndRequestDate.value;
+
+                if (StartRequestDateselect != null && EndRequestDateselect!=null) {
+                    triptype.parentElement.style.display = "block";
+                    shifttype.parentElement.style.display = "block";
+
+                }
+                else {
+                    triptype.parentElement.style.display = "none";
+                    shifttype.parentElement.style.display = "none";
+
+                }
+            }
+            function resetEmployeeDetails() {
+                employeeId.value = "";
+                firstName.value = "";
+                lastName.value = "";
+                gender.value = "";
+                email.value = "";
+                guestContact.value = "";
+                //$("#gender").css("pointer-events", "auto");
+                //$("#gender").css("background-color", "");
+            }
+
+
+
+            RequestType.addEventListener("change", handleRequestTypeChange);
+            LocationType.addEventListener("change", handleLocationTypeChange);
+
+            handleRequestTypeChange();
+            handleLocationTypeChange();
+            handleStartEndDateSelectChange();
+        });
+    </script>*@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        
-        const requestType = document.querySelector('[name="requestType"]');
+        // Query Selectors
+        const requestType = document.querySelector('[name="RequestType"]');
         const pickupLocation = document.querySelector('#pickupLocation');
         const dropLocation = document.querySelector('#dropLocation');
         const destinationRequestMethod = document.querySelector('#destinationRequestMethod');
@@ -351,37 +469,49 @@
         const lastName = document.querySelector('#lastName');
         const email = document.querySelector('#email');
         const guestContact = document.querySelector('#guestContact');
-        const guestparts = document.querySelectorAll('.guestpart');
+        const tripType = document.querySelector('#triptype');
+        const shiftType = document.querySelector('#shifttype');
+        const guestParts = document.querySelectorAll('.guestpart');
+        const smsTriggerLocation = document.querySelector('#smstriggerlocation');
+        const locationType = document.querySelector('[name="LocationType"]');
+        const startRequestDate = document.querySelector('[name="StartRequestDate"]');
+        const endRequestDate = document.querySelector('[name="EndRequestDate"]');
 
-
-        
+        // Handle Request Type Change
         function handleRequestTypeChange() {
             const value = requestType.value;
 
             if (value === "GUEST") {
-                guestparts.forEach(part => {
-                    part.parentElement.style.display = "block";
-                });
-                pickupLocation.parentElement.style.display = "none";
-                dropLocation.parentElement.style.display = "none";
-            }
-            else if (value === "SELF" || value === "") {
-                employeeId.disabled = true;  
-                guestparts.forEach(part => {
-                    part.parentElement.style.display = "none";
-                });
-                resetEmployeeDetails();  
-            }
-            else {
-                guestpart.parentElement.style.display = "none";
-                pickupLocation.parentElement.style.display = "block";
-                dropLocation.parentElement.style.display = "block";
-                employeeId.disabled = false;   
-                resetEmployeeDetails(); 
+                toggleElementsVisibility(guestParts, true);
+                employeeId.disabled = false;
+            } else if (value === "SELF" || value === "") {
+                employeeId.disabled = true;
+                toggleElementsVisibility(guestParts, false);
+                resetEmployeeDetails();
+            } else {
+                toggleElementsVisibility(guestParts, false);
+                employeeId.disabled = false;
+                resetEmployeeDetails();
             }
         }
 
-        
+        // Handle Location Type Change
+        function handleLocationTypeChange() {
+            const value = locationType.value;
+            toggleElementVisibility(smsTriggerLocation, value === "Single Location");
+        }
+
+        // Handle Start and End Date Change
+        function handleStartEndDateSelectChange() {
+            const startDate = startRequestDate.value.trim();
+            const endDate = endRequestDate.value.trim();
+            const isEnabled = startDate && endDate;
+
+            toggleElementDisabled(tripType, !isEnabled);
+            toggleElementDisabled(shiftType, !isEnabled);
+        }
+
+        // Reset Employee Details
         function resetEmployeeDetails() {
             employeeId.value = "";
             firstName.value = "";
@@ -389,31 +519,38 @@
             gender.value = "";
             email.value = "";
             guestContact.value = "";
-            $("#gender").css("pointer-events", "auto");
-            $("#gender").css("background-color", "");   
         }
 
-        // 
-        function handleEmployeeIdChange() {
-            const value = employeeId.value.trim();
-            const disable = value !== "";
-            firstName.disabled = disable;
-            lastName.disabled = disable;
-            $("#gender").css("pointer-events", "none");
-            $("#gender").css("background-color", "#e9ecef");
-
-            email.disabled = disable;
-            guestContact.disabled = disable;
+        // Helper Function: Toggle Single Element Visibility
+        function toggleElementVisibility(element, show) {
+            element.parentElement.style.display = show ? "block" : "none";
         }
 
-        
+        // Helper Function: Toggle Single Element Disabled State
+        function toggleElementDisabled(element, disable) {
+            element.disabled = disable;
+        }
+
+        // Helper Function: Toggle Multiple Elements Visibility
+        function toggleElementsVisibility(elements, show) {
+            elements.forEach(element => {
+                element.parentElement.style.display = show ? "block" : "none";
+            });
+        }
+
+        // Event Listeners
         requestType.addEventListener("change", handleRequestTypeChange);
-        employeeId.addEventListener("input", handleEmployeeIdChange);
+        locationType.addEventListener("change", handleLocationTypeChange);
+        startRequestDate.addEventListener("change", handleStartEndDateSelectChange);
+        endRequestDate.addEventListener("change", handleStartEndDateSelectChange);
 
-        
+        // Initial Setup
         handleRequestTypeChange();
+        handleLocationTypeChange();
+        handleStartEndDateSelectChange();
     });
 </script>
+
 
 <script>
     $(document).ready(function () {
@@ -461,5 +598,5 @@
         defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw&callback=initMap&libraries=places&callback=initAutocomplete"></script>
 
- 
+
 

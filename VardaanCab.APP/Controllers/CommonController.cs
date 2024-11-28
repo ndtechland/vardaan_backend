@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Web.Http;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
@@ -31,6 +32,57 @@ namespace VardaanCab.APP.Controllers
                 response.StatusCode = StatusCodes.Status404NotFound;
                 response.Message = "Banner list not available.";
                 return Content(HttpStatusCode.NotFound, response);
+            }
+        }
+        [HttpGet]
+        [Route("GetStates")]
+        public IHttpActionResult GetStates()
+        {
+            try
+            {
+                var response = new Response<StateMaster>();
+                var states = ent.StateMasters.ToList();
+                if (states.Count > 0) {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "States retrieved successfully.", data = states });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "States not available.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("GetCityByStateId")]
+        public IHttpActionResult GetCityByStateId(int StateId)
+        {
+            try
+            {
+                var response = new Response<CityMaster>();
+                var city = ent.CityMasters.Where(x=>x.StateMaster_Id==StateId).ToList();
+                if (city.Count > 0)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Cities retrieved successfully.", data = city });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Cities not available.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
