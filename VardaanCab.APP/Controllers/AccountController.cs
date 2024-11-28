@@ -1,5 +1,4 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -377,20 +376,26 @@ namespace VardaanCab.APP.Controllers
         {
             try
             {
+                var response = new Response<ChangePasswordDTO>();
                 var emp = ent.Employees.Find(model.Id);
 
                 if (emp != null)
                 {
                     if (model.Password == model.ConfirmPassword)
                     {
-                        if (emp.Password == model.Password)
+                        if (string.IsNullOrEmpty(emp.Password) )
                         {
-                            return BadRequest("New password cannot be the same as the old password.");
+                            emp.Password = model.Password;
+                            ent.SaveChanges();
+                            return Ok(new { Status = 200, Message = "Password has been created successfully." });
                         }
-
-                        emp.Password = model.Password;
-                        ent.SaveChanges();
-                        return Ok(new { Status = 200, Message = "Password has been updated successfully." });
+                        else
+                        {
+                            response.Succeeded = false;
+                            response.StatusCode = StatusCodes.Status400BadRequest;
+                            response.Message = "A password is already set for this account. Please reset it if you want to update.";
+                            return Content(HttpStatusCode.NotFound, response);
+                        }
                     }
                     else
                     {
