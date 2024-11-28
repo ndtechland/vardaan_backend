@@ -1152,6 +1152,39 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TypeName" Type="nvarchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="EmployeeRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequestType" Type="nvarchar" MaxLength="100" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="EmployeeId" Type="nvarchar" MaxLength="100" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="10" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="GuestContact" Type="nvarchar" MaxLength="50" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="250" />
+          <Property Name="Department" Type="nvarchar" MaxLength="100" />
+          <Property Name="CostCentre" Type="nvarchar" MaxLength="200" />
+          <Property Name="ExpenseCode" Type="nvarchar" MaxLength="200" />
+          <Property Name="RequestorEmpId" Type="nvarchar" MaxLength="250" />
+          <Property Name="RequestorName" Type="nvarchar" MaxLength="100" />
+          <Property Name="RequestorContacts" Type="nvarchar(max)" />
+          <Property Name="BookingReceivedDate" Type="date" />
+          <Property Name="RequestTripType" Type="nvarchar" MaxLength="100" />
+          <Property Name="DestinationRequestMethod" Type="nvarchar" MaxLength="100" />
+          <Property Name="LocationType" Type="nvarchar" MaxLength="100" />
+          <Property Name="StartRequestDate" Type="date" />
+          <Property Name="EndRequestDate" Type="date" />
+          <Property Name="TripType" Type="nvarchar" MaxLength="50" />
+          <Property Name="ShiftType" Type="nvarchar" MaxLength="50" />
+          <Property Name="PickupLocation" Type="nvarchar" MaxLength="500" />
+          <Property Name="DropLocation" Type="nvarchar" MaxLength="500" />
+          <Property Name="SMSTriggeredLocation" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="ShiftMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -1584,6 +1617,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeDestinationArea" EntityType="Self.EmployeeDestinationArea" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeRegistrationTypes" EntityType="Self.EmployeeRegistrationTypes" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="EmployeeRequest" EntityType="Self.EmployeeRequest" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="ShiftMaster" EntityType="Self.ShiftMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="TripMaster" EntityType="Self.TripMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="TripType" EntityType="Self.TripType" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -3185,6 +3219,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="ShiftMasters" EntityType="Vardaan_AdminModel.ShiftMaster" />
           <EntitySet Name="TripMasters" EntityType="Vardaan_AdminModel.TripMaster" />
           <EntitySet Name="TripTypes" EntityType="Vardaan_AdminModel.TripType" />
+          <EntitySet Name="EmployeeRequests" EntityType="Vardaan_AdminModel.EmployeeRequest" />
         </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4299,6 +4334,39 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TripMasterId" Type="Int32" />
           <Property Name="TripTypeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="EmployeeRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="EmployeeId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GuestContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Unit" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CostCentre" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ExpenseCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RequestorEmpId" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="RequestorName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RequestorContacts" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BookingReceivedDate" Type="DateTime" Precision="0" />
+          <Property Name="RequestTripType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DestinationRequestMethod" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LocationType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StartRequestDate" Type="DateTime" Precision="0" />
+          <Property Name="EndRequestDate" Type="DateTime" Precision="0" />
+          <Property Name="TripType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShiftType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PickupLocation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DropLocation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SMSTriggeredLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6568,6 +6636,40 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               <MappingFragment StoreEntitySet="TripType">
                 <ScalarProperty Name="TripTypeName" ColumnName="TripTypeName" />
                 <ScalarProperty Name="TripMasterId" ColumnName="TripMasterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeRequests">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.EmployeeRequest">
+              <MappingFragment StoreEntitySet="EmployeeRequest">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="SMSTriggeredLocation" ColumnName="SMSTriggeredLocation" />
+                <ScalarProperty Name="DropLocation" ColumnName="DropLocation" />
+                <ScalarProperty Name="PickupLocation" ColumnName="PickupLocation" />
+                <ScalarProperty Name="ShiftType" ColumnName="ShiftType" />
+                <ScalarProperty Name="TripType" ColumnName="TripType" />
+                <ScalarProperty Name="EndRequestDate" ColumnName="EndRequestDate" />
+                <ScalarProperty Name="StartRequestDate" ColumnName="StartRequestDate" />
+                <ScalarProperty Name="LocationType" ColumnName="LocationType" />
+                <ScalarProperty Name="DestinationRequestMethod" ColumnName="DestinationRequestMethod" />
+                <ScalarProperty Name="RequestTripType" ColumnName="RequestTripType" />
+                <ScalarProperty Name="BookingReceivedDate" ColumnName="BookingReceivedDate" />
+                <ScalarProperty Name="RequestorContacts" ColumnName="RequestorContacts" />
+                <ScalarProperty Name="RequestorName" ColumnName="RequestorName" />
+                <ScalarProperty Name="RequestorEmpId" ColumnName="RequestorEmpId" />
+                <ScalarProperty Name="ExpenseCode" ColumnName="ExpenseCode" />
+                <ScalarProperty Name="CostCentre" ColumnName="CostCentre" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="GuestContact" ColumnName="GuestContact" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="RequestType" ColumnName="RequestType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
