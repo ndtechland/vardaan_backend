@@ -124,8 +124,7 @@ namespace VardaanCab.Controllers
 
         public ActionResult ExportToExcel()
         {
-            // Get data from the database
-            DataTable dt = GetTableData();
+            DataTable dt = GetTableData(); // Get data from the database
 
             var columnsToRemove = new List<string> { "Id", "IsActive", "CreatedDate", "Password", "IsFirst", "OTP" };
 
@@ -137,40 +136,32 @@ namespace VardaanCab.Controllers
                 }
             }
 
+            // Create a new DataTable with only the column names
+            DataTable dtWithColumnNames = new DataTable();
 
-            // Fetch the list of active customers for the dropdown
-            var activeCustomers = ent.Customers.Where(a => a.IsActive).ToList();
+            // Add columns to the new DataTable
+            foreach (DataColumn column in dt.Columns)
+            {
+                dtWithColumnNames.Columns.Add(column.ColumnName);
+            }
 
-            // Create a SelectList for the Company_Id column (assuming Company_Id maps to Customer.Id)
-            SelectList companySelectList = new SelectList(activeCustomers, "Id", "CustomerName");
-
-            // Get the available options for the dropdown
-            var companyIds = companySelectList.Items.Cast<SelectListItem>()
-                                                    .Select(item => item.Value)
-                                                    .ToList();
+            // Add a single row with column names as values
+            DataRow headerRow = dtWithColumnNames.NewRow();
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                headerRow[i] = dt.Columns[i].ColumnName;
+            }
+            dtWithColumnNames.Rows.Add(headerRow);
 
             // Export to Excel
             using (XLWorkbook workbook = new XLWorkbook())
             {
-                var worksheet = workbook.Worksheets.Add(dt, "Employee");
-
-                // Find the column index of the "Company_Id" column
-                int companyIdColumnIndex = -1;
-                for (int colIndex = 0; colIndex < dt.Columns.Count; colIndex++)
-                {
-                    if (dt.Columns[colIndex].ColumnName == "Company_Id")
-                    {
-                        companyIdColumnIndex = colIndex + 1; // Excel columns are 1-indexed
-                        break;
-                    }
-                }
-
-                // Save the workbook to a memory stream
+                var worksheet = workbook.Worksheets.Add(dtWithColumnNames, "Employee");
                 using (MemoryStream stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
                     stream.Position = 0;
-                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeDataWithCompanyDropdown.xlsx");
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeData.xlsx");
                 }
             }
         }
