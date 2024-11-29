@@ -89,7 +89,7 @@ namespace VardaanCab.Controllers
                 model.PickupShiftTimeId = 0;
                 model.DropShiftTimeId = 0;
                 ViewBag.BtnTXT = "Save";
-                ViewBag.Heading = "Add Employee Request";
+                ViewBag.Heading = "Create New Request";
                 return View(model);
             }
         }
