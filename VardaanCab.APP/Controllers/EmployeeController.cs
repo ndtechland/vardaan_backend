@@ -42,7 +42,7 @@ namespace VardaanCab.APP.Controllers
                         Employee_Last_Name=empdata.Employee_Last_Name,
                         Email=empdata.Email,
                         MobileNumber=empdata.MobileNumber,
-                        EmergencyContactNumber=empdata.MobileNumber,
+                        EmergencyContactNumber=empdata.AlternateNumber,
                         Employee_Id=empdata.Employee_Id,
                         EmployeeDepartment=empdata.EmployeeDepartment,
                         StateId=empdata.StateId,
@@ -89,7 +89,7 @@ namespace VardaanCab.APP.Controllers
                     emp.StateId = model.StateId;
                     emp.CityId = model.CityId;
                     emp.Pincode = model.Pincode;
-
+                    emp.AlternateNumber = model.EmergencyContactNumber;
                     ent.SaveChanges();
                     response.Succeeded = true;
                     response.StatusCode = StatusCodes.Status200OK;

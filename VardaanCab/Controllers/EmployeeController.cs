@@ -108,7 +108,7 @@ namespace VardaanCab.Controllers
                         command.Parameters.Add(new EntityParameter("EmployeeDestinationArea", DbType.String) { Value = model.EmployeeDestinationArea });
                         command.Parameters.Add(new EntityParameter("EmployeeRegistrationType", DbType.String) { Value = model.EmployeeRegistrationType });
                         command.Parameters.Add(new EntityParameter("IsActive", DbType.Boolean) { Value = true });
-                        command.Parameters.Add(new EntityParameter("Password", DbType.String) { Value = RandomPassword });
+                        command.Parameters.Add(new EntityParameter("Password", DbType.String) { Value = null });
 
                         command.ExecuteNonQuery();
                     }
@@ -124,20 +124,53 @@ namespace VardaanCab.Controllers
 
         public ActionResult ExportToExcel()
         {
-            DataTable dt = GetTableData(); // Get data from the database
-            if (dt.Columns.Contains("Id"))
+            // Get data from the database
+            DataTable dt = GetTableData();
+
+            var columnsToRemove = new List<string> { "Id", "IsActive", "CreatedDate", "Password", "IsFirst", "OTP" };
+
+            foreach (string columnName in columnsToRemove)
             {
-                dt.Columns.Remove("Id");
+                if (dt.Columns.Contains(columnName))
+                {
+                    dt.Columns.Remove(columnName);
+                }
             }
 
+
+            // Fetch the list of active customers for the dropdown
+            var activeCustomers = ent.Customers.Where(a => a.IsActive).ToList();
+
+            // Create a SelectList for the Company_Id column (assuming Company_Id maps to Customer.Id)
+            SelectList companySelectList = new SelectList(activeCustomers, "Id", "CustomerName");
+
+            // Get the available options for the dropdown
+            var companyIds = companySelectList.Items.Cast<SelectListItem>()
+                                                    .Select(item => item.Value)
+                                                    .ToList();
+
+            // Export to Excel
             using (XLWorkbook workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add(dt, "Employee");
+
+                // Find the column index of the "Company_Id" column
+                int companyIdColumnIndex = -1;
+                for (int colIndex = 0; colIndex < dt.Columns.Count; colIndex++)
+                {
+                    if (dt.Columns[colIndex].ColumnName == "Company_Id")
+                    {
+                        companyIdColumnIndex = colIndex + 1; // Excel columns are 1-indexed
+                        break;
+                    }
+                }
+
+                // Save the workbook to a memory stream
                 using (MemoryStream stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
                     stream.Position = 0;
-                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeData.xlsx");
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeDataWithCompanyDropdown.xlsx");
                 }
             }
         }
@@ -147,6 +180,7 @@ namespace VardaanCab.Controllers
             var entityBuilder = new EntityConnectionStringBuilder(efConnectionString);
             string sqlConnectionString = entityBuilder.ProviderConnectionString;
             DataTable dt = new DataTable();
+
             using (SqlConnection con = new SqlConnection(sqlConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("SELECT * FROM Employee", con))
@@ -156,6 +190,7 @@ namespace VardaanCab.Controllers
                     da.Fill(dt);
                 }
             }
+
             return dt;
         }
 
@@ -164,8 +199,8 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                // Check if a file is uploaded
-                if (file != null && file.ContentLength > 0)
+             // Check if a file is uploaded
+            if (file != null && file.ContentLength > 0)
             {
                 using (var workbook = new XLWorkbook(file.InputStream))
                 {
@@ -174,53 +209,60 @@ namespace VardaanCab.Controllers
                     var rows = worksheet.RowsUsed().Skip(1); // Skip the header row
 
                     // Create a list to store employee data
-                    Employee employees = new Employee();
+                    //Employee employees = new Employee();
 
-                    foreach (var row in rows)
-                    {
-                        // Create an Employee object for each row
-                        Employee employee = new Employee();
+                        List<Employee> employees = new List<Employee>();
 
-                        employee.Company_Id = row.Cell(2).GetValue<int>();
-                        employee.Company_location = row.Cell(3).GetValue<string>();
-                        employee.Employee_Id = row.Cell(4).GetValue<string>();
-                        employee.Employee_First_Name = row.Cell(5).GetValue<string>();
-                        employee.Employee_Middle_Name = row.Cell(6).GetValue<string>();
-                        employee.Employee_Last_Name = row.Cell(7).GetValue<string>();
-                        employee.MobileNumber = "222";//row.Cell(8).GetValue<string>();
-                        employee.Email = row.Cell(9).GetValue<string>();
-                        employee.StateId = row.Cell(10).GetValue<int>();
-                        employee.CityId = row.Cell(11).GetValue<int>();
-                        employee.Pincode = 0;// row.Cell(12).GetValue<int>();
-                        employee.EmployeeCurrentAddress = row.Cell(13).GetValue<string>();
-                        employee.LoginUserName = row.Cell(14).GetValue<string>();
-                        employee.WeekOff = row.Cell(15).GetValue<string>();
-                        employee.EmployeeGeoCode = row.Cell(16).GetValue<string>();
-                        employee.EmployeeBusinessUnit = row.Cell(17).GetValue<string>();
-                        employee.EmployeeDepartment = row.Cell(18).GetValue<string>();
-                        employee.EmployeeProjectName = row.Cell(19).GetValue<string>();
-                        employee.ReportingManager = row.Cell(20).GetValue<string>();
-                        employee.PrimaryFacilityZone = row.Cell(21).GetValue<int>();
-                        employee.HomeRouteName = row.Cell(22).GetValue<int>();
-                        employee.EmployeeDestinationArea = row.Cell(23).GetValue<int>();
-                        employee.EmployeeRegistrationType = 0; //row.Cell(24).GetValue<int>();
-                        employee.IsActive = true; //row.Cell(25).GetValue<bool>();
-                        employee.CreatedDate = DateTime.Now;// row.Cell(26).GetValue<DateTime>();
-                        employee.Password = "0"; // row.Cell(27).GetValue<string>();
-                        employee.IsFirst = true; // row.Cell(28).GetValue<bool>();
-                        employee.OTP = 0;// row.Cell(29).GetValue<int>();
-                        employee.Gender = row.Cell(30).GetValue<string>();
-                        employee.AlternateNumber = row.Cell(31).GetValue<string>();
+                        foreach (var row in rows)
+                        {
+                            // Initialize a new Employee object
+                            Employee employee = new Employee
+                            {
+                                Company_Id = row.Cell(1).GetValue<int>(),
+                                Company_location = row.Cell(2).GetValue<int>().ToString(),
+                                Employee_Id = row.Cell(3).GetValue<string>() ?? string.Empty,
+                                Employee_First_Name = row.Cell(4).GetValue<string>() ?? string.Empty,
+                                Employee_Middle_Name = row.Cell(5).GetValue<string>() ?? string.Empty,
+                                Employee_Last_Name = row.Cell(6).GetValue<string>() ?? string.Empty,
+                                MobileNumber = row.Cell(7).GetValue<string>() ?? string.Empty,
+                                Email = row.Cell(8).GetValue<string>() ?? string.Empty,
+                                StateId = row.Cell(9).GetValue<int>(),
+                                CityId = row.Cell(10).GetValue<int>(),
+                                Pincode = row.Cell(11).GetValue<int>(),
+                                EmployeeCurrentAddress = row.Cell(12).GetValue<string>() ?? string.Empty,
+                                LoginUserName = row.Cell(13).GetValue<string>() ?? string.Empty,
+                                WeekOff = row.Cell(14).GetValue<string>() ?? "Sunday",  // Default to "Sunday" if null
+                                EmployeeGeoCode = row.Cell(15).GetValue<string>() ?? string.Empty,
+                                EmployeeBusinessUnit = row.Cell(16).GetValue<string>() ?? string.Empty,
+                                EmployeeDepartment = row.Cell(17).GetValue<string>() ?? string.Empty,
+                                EmployeeProjectName = row.Cell(18).GetValue<string>() ?? string.Empty,
+                                ReportingManager = row.Cell(19).GetValue<string>() ?? string.Empty,
+                                PrimaryFacilityZone = row.Cell(20).GetValue<int>(),
+                                HomeRouteName = row.Cell(21).GetValue<int>(),
+                                EmployeeDestinationArea = row.Cell(22).GetValue<int>(),
+                                EmployeeRegistrationType = row.Cell(23).GetValue<int>(),
+                                IsActive = true,
+                                CreatedDate = DateTime.Now,
+                                IsFirst = true,
+                                Gender = row.Cell(24).GetValue<string>(),
+                                AlternateNumber = row.Cell(25).GetValue<string>() ?? string.Empty
+                            };
 
-                        // Add employee to the list
-                        //employees.Add(employee);
-                        ent.Employees.Add(employee);
-                         ent.SaveChanges();
-                        employees = null;
-                    }
-                   
-                    // Return success message
-                    ViewBag.Message = "Data imported successfully!";
+                            // Add the Employee object to the list
+                            employees.Add(employee);
+                        }
+
+                        // Save all Employee objects to the database in bulk
+                        if (employees.Any())
+                        {
+                            ent.Employees.AddRange(employees);
+                            ent.SaveChanges();
+                        }
+
+
+
+                        // Return success message
+                        ViewBag.Message = "Data imported successfully!";
                     return RedirectToAction("GetEmployeeList");
                 }
             }

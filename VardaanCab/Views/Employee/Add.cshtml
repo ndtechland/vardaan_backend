@@ -137,13 +137,19 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="card">
+
                 @using (Html.BeginForm("ImportEmployeeData", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    <input type="file" class="form-control" name="file" /><br />
-                   
-                        <button type="submit" class="btn btn-primary">Import</button>
-                   
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="file" class="form-control" name="file" />
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary">Import</button>
+                        </div>
+                    </div>
+                    
                 }
 
                 @* Display the success/error message *@
