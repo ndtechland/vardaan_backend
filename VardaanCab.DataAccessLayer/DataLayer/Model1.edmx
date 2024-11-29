@@ -1135,6 +1135,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsFirst" Type="bit" />
           <Property Name="OTP" Type="int" />
           <Property Name="Gender" Type="nvarchar" MaxLength="200" />
+          <Property Name="AlternateNumber" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="EmployeeDestinationArea">
           <Key>
@@ -4217,6 +4218,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsFirst" Type="Boolean" />
           <Property Name="OTP" Type="Int32" />
           <Property Name="Gender" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AlternateNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AreaMaster">
           <Key>
@@ -6446,6 +6448,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="AlternateNumber" ColumnName="AlternateNumber" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="OTP" ColumnName="OTP" />
                 <ScalarProperty Name="IsFirst" ColumnName="IsFirst" />

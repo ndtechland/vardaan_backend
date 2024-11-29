@@ -44,5 +44,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<bool> IsFirst { get; set; }
         public Nullable<int> OTP { get; set; }
         public string Gender { get; set; }
+        public string AlternateNumber { get; set; }
     }
 }
