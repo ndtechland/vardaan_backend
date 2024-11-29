@@ -11,6 +11,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
+
                         <div class="card-header  card-header--2">
                             <div>
                                 <h5>Employee Request</h5>
@@ -26,6 +27,9 @@
                                     <button type="submit" class="btn btn-primary">Import</button>
                                 }
                             </div>
+
+                        <div class="card-header">
+                            <h5>@ViewBag.Heading</h5>
                         </div>
                         <form class="theme-form mega-form" action="CreateRequest" method="post" enctype="multipart/form-data">
                             <div class="card-body">
@@ -55,24 +59,24 @@
 
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Select Company</label>
-                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control" })
+                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control" ,@required=""})
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.CompanyId)
                                                 </span>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Employee Id</label>
-                                                @*<input id="employeeId" name="EmployeeId" class="form-control" type="text" placeholder="Employee Id">*@
                                                 @Html.TextBoxFor(a => a.EmployeeId, new { @class = "form-control", id = "employeeId", placeholder = "Employee Id" })
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">First Name</label>
+
                                                 @*<input id="firstName" name="FirstName" class="form-control" type="text" placeholder="Employee First Name" readonly>*@
+
                                                 @Html.TextBoxFor(a => a.FirstName, new { @class = "form-control", id = "firstName", placeholder = "Employee First Name", @readonly = "true" })
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Last Name</label>
-                                                @*<input id="lastName" name="LastName" class="form-control" type="text" placeholder="Employee Last Name" readonly>*@
                                                 @Html.TextBoxFor(a => a.LastName, new { @class = "form-control", id = "lastName", placeholder = "Employee Last Name", @readonly = "true" })
                                             </div>
                                             <div class="col-md-3">
@@ -89,12 +93,10 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Email</label>
-                                                @*<input id="email" name="Email" class="form-control" type="text" placeholder="Employee Email" readonly>*@
                                                 @Html.TextBoxFor(a => a.Email, new { @class = "form-control", id = "email", placeholder = "Employee Email", @readonly = "true" })
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Guest Contact Number With Country Code</label>
-                                                @*<input id="guestContact" name="GuestContact" class="form-control" type="text" placeholder="eg.919999999999" readonly>*@
                                                 @Html.TextBoxFor(a => a.GuestContact, new { @class = "form-control", id = "guestContact", placeholder = "eg.919999999999", @readonly = "true" })
                                             </div>
 
@@ -110,7 +112,6 @@
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Department</label>
-                                                    @*<input type="text" name="Department" id="department" class="form-control" placeholder="Enter Department">*@
                                                     @Html.TextBoxFor(a => a.Department, new { @class = "form-control", id = "department", placeholder = "Enter Department" })
                                                 </div>
 
@@ -119,7 +120,6 @@
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Cost Centre</label>
-                                                    @*<input class="form-control" name="CostCentre" type="text" placeholder="Cost Centre">*@
                                                     @Html.TextBoxFor(a => a.CostCentre, new { @class = "form-control", placeholder = "Cost Centre" })
 
                                                 </div>
@@ -128,7 +128,6 @@
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Expence Code</label>
-                                                    @*<input class="form-control" name="ExpenseCode" type="text" placeholder="Expence Code">*@
                                                     @Html.TextBoxFor(a => a.ExpenseCode, new { @class = "form-control", placeholder = "Expence Code" })
                                                 </div>
 
@@ -136,7 +135,6 @@
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Requestor Emp ID</label>
-                                                    @*<input class="form-control" name="RequestorEmpId" type="text" placeholder="Requestor Emp ID">*@
                                                     @Html.TextBoxFor(a => a.RequestorEmpId, new { @class = "form-control", placeholder = "Requestor Emp ID" })
                                                 </div>
 
@@ -144,7 +142,6 @@
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Requestor Name</label>
-                                                    @*<input class="form-control" name="RequestorName" type="text" placeholder="Requestor Name">*@
                                                     @Html.TextBoxFor(a => a.RequestorName, new { @class = "form-control", placeholder = "Requestor Name" })
                                                 </div>
 
@@ -152,7 +149,6 @@
                                             <div class="col-md-6">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Requestor Contact Numbers Comma Separated</label>
-                                                    @*<input class="form-control" name="RequestorContacts" type="text" placeholder="Eg.919811172193,919999999999">*@
                                                     @Html.TextBoxFor(a => a.RequestorContacts, new { @class = "form-control", placeholder = "Eg.919811172193,919999999999" })
                                                 </div>
 
@@ -163,6 +159,7 @@
                                                     <div class="input-group date" id="dt-date"
                                                          data-target-input="nearest">
                                                         <div class="input-group">
+
                                                             @*<input name="BookingReceivedDate" class="form-control" placeholder="Date of Booking Received"
                                             type="date">*@
                                                             @Html.TextBoxFor(a => a.BookingReceivedDate, new { @class = "form-control", type = "date", placeholder = "Date of Booking Received" })
@@ -170,6 +167,10 @@
                                                  data-toggle="datetimepicker">
                                                 <i class="fa fa-calendar"></i>
                                             </div>*@
+
+
+                                                            @Html.TextBoxFor(a => a.BookingReceivedDate, new { @class = "form-control", type = "date", placeholder = "Date of Booking Received" })
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -216,7 +217,6 @@
                                                     <div class="guestpart">
                                                         <div id="smstriggerlocation">
                                                             <label class="form-label-title ">SMS Triggered Location</label>
-                                                            @*<input class="form-control" name="SMSTriggeredLocation" type="text">*@
                                                             @Html.TextBoxFor(a => a.SMSTriggeredLocation, new { @class = "form-control" })
                                                         </div>
                                                     </div>
@@ -229,6 +229,7 @@
                                                 <div class="input-group date" id="sdt-date"
                                                      data-target-input="nearest">
                                                     <div class="input-group">
+
                                                         @*<input name="StartRequestDate" class="form-control" placeholder="Start Request Date"
                                         type="date">*@
                                                         @Html.TextBoxFor(a => a.StartRequestDate, new { @class = "form-control", type = "date", placeholder = "Start Request Date" })
@@ -236,6 +237,18 @@
                                              data-toggle="datetimepicker">
                                             <i class="fa fa-calendar"></i>
                                         </div>*@
+
+
+                                                        @Html.TextBoxFor(a => a.StartRequestDate, new
+{
+@class = "form-control",
+type = "date",
+placeholder = "Start Request Date",
+min = DateTime.Now.ToString("yyyy-MM-dd")
+})
+
+
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -244,6 +257,7 @@
                                                 <div class="input-group date" id="edt-date"
                                                      data-target-input="nearest">
                                                     <div class="input-group">
+
                                                         @*<input name="EndRequestDate" class="form-control" placeholder="End Request Date"
                                         type="date">*@
                                                         @Html.TextBoxFor(a => a.EndRequestDate, new { @class = "form-control", type = "date", placeholder = "End Request Date" })
@@ -251,10 +265,14 @@
                                              data-toggle="datetimepicker">
                                             <i class="fa fa-calendar"></i>
                                         </div>*@
+
+                                                        @Html.TextBoxFor(a => a.EndRequestDate, new { @class = "form-control", type = "date", placeholder = "End Request Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
+
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            
                                                 <div class="col-md-3">
                                                     <label class="form-label-title">Trip Type</label>
                                                     @Html.DropDownListFor(a => a.TripType, Model.TripTypes, "--Select Trip Types--", new { @class = "form-control", id = "tripType" })
@@ -262,9 +280,15 @@
                                                 <div class="col-md-3">
                                                     <label class="form-label-title ">Shift Type</label>
                                                     @*<select id="shifttype" name="ShiftType" class="form-control" disabled>
+
                                         <option value="">--Select Shift Type--</option>
                                         <option value="NORMAL" @(Model.ShiftType == "NORMAL" ? "selected" : "")>NORMAL</option>
                                     </select>*@
+
+                    <option value="">--Select Shift Type--</option>
+                    <option value="NORMAL" @(Model.ShiftType == "NORMAL" ? "selected" : "")>NORMAL</option>
+                </select>*@
+
                                                     @Html.DropDownListFor(a => a.ShiftType, Model.ShiftTypes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
 
                                                 </div>
@@ -289,6 +313,7 @@
                                                 </div>
 
                                                 @*<div class="col-md-6">
+
                                     <div id="pickupLocation">
                                         <label class="form-label-title">Pickup Location</label>
                                         <div class="input-group">
@@ -322,16 +347,52 @@
                                     </div>
 
                                 </div>*@
+
+                <div id="pickupLocation">
+                    <label class="form-label-title">Pickup Location</label>
+                    <div class="input-group">
+                        <select name="PickupLocation" class="form-control">
+                            <option value="">--Select Pickup Location--</option>
+                            <option value="sector1">Sector 1</option>
+                            <option value="sector2">Sector 2</option>
+                            <option value="sector3">Sector 3</option>
+                        </select>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
+                            <i class="fa fa-location-arrow text-primary"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div id="dropLocation">
+                    <label class="form-label-title">Drop Location</label>
+                    <div class="input-group">
+                        <select name="DropLocation" id="dropLocation" class="form-control">
+                            <option value="">--Select Drop Location--</option>
+                            <option value="sector1">Sector 1</option>
+                            <option value="sector2">Sector 2</option>
+                            <option value="sector3">Sector 3</option>
+                        </select>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
+                            <i class="fa fa-location-arrow text-primary"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>*@
+                                            
+                                        </div>
+                                            
+
                                             </div>
+                                            
 
                                         </div>
 
                                     </div>
-
-                                </div>
-                            </div>
                             <div class="card-footer text-end">
-                                <button type="submit" class="btn btn-primary">Create New Request</button>
+                                <button type="submit" class="btn btn-primary">@ViewBag.BtnTXT</button>
                                 <button type="reset" class="btn btn-outline-primary">Reset</button>
                             </div>
                         </form>
