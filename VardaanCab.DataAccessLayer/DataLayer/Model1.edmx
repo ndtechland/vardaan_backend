@@ -1179,12 +1179,14 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="LocationType" Type="nvarchar" MaxLength="100" />
           <Property Name="StartRequestDate" Type="date" />
           <Property Name="EndRequestDate" Type="date" />
-          <Property Name="TripType" Type="nvarchar" MaxLength="50" />
-          <Property Name="ShiftType" Type="nvarchar" MaxLength="50" />
+          <Property Name="TripType" Type="int" />
+          <Property Name="ShiftType" Type="int" />
           <Property Name="PickupLocation" Type="nvarchar" MaxLength="500" />
           <Property Name="DropLocation" Type="nvarchar" MaxLength="500" />
           <Property Name="SMSTriggeredLocation" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="PickupShiftTimeId" Type="int" />
+          <Property Name="DropShiftTimeId" Type="int" />
         </EntityType>
         <EntityType Name="ShiftMaster">
           <Key>
@@ -4363,12 +4365,14 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="LocationType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="StartRequestDate" Type="DateTime" Precision="0" />
           <Property Name="EndRequestDate" Type="DateTime" Precision="0" />
-          <Property Name="TripType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ShiftType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TripType" Type="Int32" />
+          <Property Name="ShiftType" Type="Int32" />
           <Property Name="PickupLocation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="DropLocation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="SMSTriggeredLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="PickupShiftTimeId" Type="Int32" />
+          <Property Name="DropShiftTimeId" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6646,6 +6650,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="EmployeeRequests">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.EmployeeRequest">
               <MappingFragment StoreEntitySet="EmployeeRequest">
+                <ScalarProperty Name="DropShiftTimeId" ColumnName="DropShiftTimeId" />
+                <ScalarProperty Name="PickupShiftTimeId" ColumnName="PickupShiftTimeId" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="SMSTriggeredLocation" ColumnName="SMSTriggeredLocation" />
                 <ScalarProperty Name="DropLocation" ColumnName="DropLocation" />

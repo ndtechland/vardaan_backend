@@ -36,11 +36,13 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string LocationType { get; set; }
         public Nullable<System.DateTime> StartRequestDate { get; set; }
         public Nullable<System.DateTime> EndRequestDate { get; set; }
-        public string TripType { get; set; }
-        public string ShiftType { get; set; }
+        public Nullable<int> TripType { get; set; }
+        public Nullable<int> ShiftType { get; set; }
         public string PickupLocation { get; set; }
         public string DropLocation { get; set; }
         public string SMSTriggeredLocation { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> PickupShiftTimeId { get; set; }
+        public Nullable<int> DropShiftTimeId { get; set; }
     }
 }
