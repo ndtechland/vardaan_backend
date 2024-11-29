@@ -1,6 +1,12 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Configuration;
+using System.Data;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +19,8 @@ namespace VardaanCab.Controllers
     public class ETSController : Controller
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
+        private readonly string efConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+
         // GET: ETS
         public ActionResult CreateRequest(int menuId = 0, int id = 0)
         {
@@ -268,6 +276,69 @@ namespace VardaanCab.Controllers
 
                 throw;
             }
+        }
+
+        public ActionResult ExportToExcel()
+        {
+            DataTable dt = GetTableData(); // Get data from the database
+
+            var columnsToRemove = new List<string> { "Id", "RequestType", "CompanyId", "FirstName", "LastName", "Gender", "Email", "GuestContact" };
+
+            foreach (string columnName in columnsToRemove)
+            {
+                if (dt.Columns.Contains(columnName))
+                {
+                    dt.Columns.Remove(columnName);
+                }
+            }
+
+            // Create a new DataTable with only the column names
+            DataTable dtWithColumnNames = new DataTable();
+
+            // Add columns to the new DataTable
+            foreach (DataColumn column in dt.Columns)
+            {
+                dtWithColumnNames.Columns.Add(column.ColumnName);
+            }
+
+            // Add a single row with column names as values
+            DataRow headerRow = dtWithColumnNames.NewRow();
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                headerRow[i] = dt.Columns[i].ColumnName;
+            }
+            dtWithColumnNames.Rows.Add(headerRow);
+
+            // Export to Excel
+            using (XLWorkbook workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add(dtWithColumnNames, "EmployeeRequest");
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    stream.Position = 0;
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeRequestData.xlsx");
+                }
+            }
+        }
+
+        private DataTable GetTableData()
+        {
+            var entityBuilder = new EntityConnectionStringBuilder(efConnectionString);
+            string sqlConnectionString = entityBuilder.ProviderConnectionString;
+            DataTable dt = new DataTable();
+
+            using (SqlConnection con = new SqlConnection(sqlConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM EmployeeRequest", con))
+                {
+                    con.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+            }
+
+            return dt;
         }
     }
 }
