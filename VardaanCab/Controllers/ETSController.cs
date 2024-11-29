@@ -18,8 +18,80 @@ namespace VardaanCab.Controllers
         {
             var model = new CreateRequestDTO();
             model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
+            model.TripTypes = new SelectList(ent.TripTypes.Where(x=>x.TripMasterId==1).ToList(), "Id", "TripTypeName");
+            model.ShiftTypes = new SelectList(ent.TripMasters.Where(x=>x.Id==1).ToList(), "Id", "TripName");
+            model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x=>x.TripTypeId==1).ToList(), "Id", "ShiftTime");
+            model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x=>x.TripTypeId==2).ToList(), "Id", "ShiftTime");
             ViewBag.menuId = menuId;
-            return View(model);
+            if (id > 0)
+            {
+                var data = ent.EmployeeRequests.Where(x => x.Id == id).FirstOrDefault();
+                model.Id = data.Id;
+                model.RequestType = data.RequestType;
+                model.CompanyId = data.CompanyId;
+                model.EmployeeId = data.EmployeeId;
+                model.FirstName = data.FirstName;
+                model.LastName = data.LastName;
+                model.Gender = data.Gender;
+                model.Email = data.Email;
+                model.GuestContact = data.GuestContact;
+                model.Unit = data.Unit;
+                model.Department = data.Department;
+                model.CostCentre = data.CostCentre;
+                model.ExpenseCode = data.ExpenseCode;
+                model.RequestorEmpId = data.RequestorEmpId;
+                model.RequestorName = data.RequestorName;
+                model.RequestorContacts = data.RequestorContacts;
+                model.BookingReceivedDate = data.BookingReceivedDate;
+                model.RequestTripType = data.RequestTripType;
+                model.DestinationRequestMethod = data.DestinationRequestMethod;
+                model.LocationType = data.LocationType;
+                model.StartRequestDate = data.StartRequestDate;
+                model.EndRequestDate = data.EndRequestDate;
+                //model.StartRequestDate = Convert.ToDateTime(data.StartRequestDate.Value.ToString("dd-MM-yyyy"));
+                //model.EndRequestDate = Convert.ToDateTime(data.EndRequestDate.Value.ToString("dd-MM-yyyy"));
+                model.TripType = data.TripType;
+                model.ShiftType = data.ShiftType;
+                model.SMSTriggeredLocation = data.SMSTriggeredLocation;
+                model.PickupShiftTimeId = data.PickupShiftTimeId;
+                model.DropShiftTimeId = data.DropShiftTimeId;
+                ViewBag.Heading = "Update Employee Request";
+                ViewBag.BtnTXT = "Update";
+                return View(model);
+            }
+            else
+            {
+                model.Id = 0;
+                model.CompanyId = 0;
+                model.RequestType = "";
+                model.EmployeeId = "";
+                model.FirstName = "";
+                model.LastName = "";
+                model.Gender = "";
+                model.Email = "";
+                model.GuestContact = "";
+                model.Unit = "";
+                model.Department = "";
+                model.CostCentre = "";
+                model.ExpenseCode = "";
+                model.RequestorEmpId = "";
+                model.RequestorName = "";
+                model.RequestorContacts = "";
+                model.BookingReceivedDate = null;
+                model.RequestTripType = null;
+                model.DestinationRequestMethod = null;
+                model.LocationType = null;
+                model.StartRequestDate = null;
+                model.EndRequestDate = null;
+                model.TripType = null;
+                model.ShiftType = null;
+                model.SMSTriggeredLocation = null;
+                model.PickupShiftTimeId = 0;
+                model.DropShiftTimeId = 0;
+                ViewBag.BtnTXT = "Save";
+                ViewBag.Heading = "Add Employee Request";
+                return View(model);
+            }
         }
         [HttpPost]
         public ActionResult CreateRequest(CreateRequestDTO model)
@@ -57,6 +129,8 @@ namespace VardaanCab.Controllers
                         TripType = model.TripType,
                         ShiftType = model.ShiftType,
                         SMSTriggeredLocation = model.SMSTriggeredLocation,
+                        PickupShiftTimeId = model.PickupShiftTimeId,
+                        DropShiftTimeId = model.DropShiftTimeId,
                         CreatedDate = DateTime.Now
                         
                     };
@@ -89,6 +163,8 @@ namespace VardaanCab.Controllers
                     data.TripType = model.TripType;
                     data.ShiftType = model.ShiftType;
                     data.SMSTriggeredLocation = model.SMSTriggeredLocation;
+                    data.PickupShiftTimeId = model.PickupShiftTimeId;
+                    data.DropShiftTimeId = model.DropShiftTimeId;
 
                 }
                 ent.SaveChanges();
@@ -125,5 +201,73 @@ namespace VardaanCab.Controllers
             }
         }
 
+        public ActionResult EmployeeRequestList(int menuId = 0)
+        {
+            try
+            {
+                var model = new CreateRequestDTO();
+                var data = (from er in ent.EmployeeRequests
+                            join c in ent.Customers on er.CompanyId equals c.Id
+                            join tt in ent.TripTypes on er.TripType equals tt.Id
+                            join st in ent.TripMasters on er.ShiftType equals st.Id
+                            orderby er.Id descending
+                            select new EmployeeRequests
+                            {
+                                Id = er.Id,
+                                CompanyName = c.CustomerName,
+                                RequestType = er.RequestType,
+                                EmployeeId = er.EmployeeId,
+                                FirstName = er.FirstName,
+                                LastName = er.LastName,
+                                Gender = er.Gender,
+                                Email = er.Email,
+                                GuestContact = er.GuestContact,
+                                Unit = er.Unit,
+                                Department = er.Department,
+                                CostCentre = er.CostCentre,
+                                ExpenseCode = er.ExpenseCode,
+                                RequestorEmpId = er.RequestorEmpId,
+                                RequestorName = er.RequestorName,
+                                RequestorContacts = er.RequestorContacts,
+                                BookingReceivedDate = er.BookingReceivedDate,
+                                RequestTripType = er.RequestTripType,
+                                DestinationRequestMethod = er.DestinationRequestMethod,
+                                LocationType = er.LocationType,
+                                StartRequestDate = er.StartRequestDate,
+                                EndRequestDate = er.EndRequestDate,
+                                TripType = tt.TripTypeName,
+                                ShiftType = st.TripName,
+                                SMSTriggeredLocation = er.SMSTriggeredLocation,
+                                CreatedDate = er.CreatedDate
+                            }
+                            ).ToList();
+
+                ViewBag.menuId = menuId;
+                model.EmployeeRequestList = data;
+                return View(model);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public ActionResult DeleteEmployeeRequest(int id)
+        {
+            try
+            {
+                var dt = ent.EmployeeRequests.Find(id);
+                ent.EmployeeRequests.Remove(dt);
+                ent.SaveChanges();
+                TempData["dltmsg"] = "Deleted successfully.";
+                return RedirectToAction("EmployeeRequestList");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

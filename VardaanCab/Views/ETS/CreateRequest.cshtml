@@ -16,6 +16,8 @@
                         </div>
                         <form class="theme-form mega-form" action="CreateRequest" method="post" enctype="multipart/form-data">
                             <div class="card-body">
+                                <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
+                                <input name="Id" type="hidden" value="@Model.Id" />
                                 @if (TempData["msg"] != null)
                                 {
                                     <div class="mb-3">
@@ -31,66 +33,72 @@
                                                 <label class="form-label-title ">Request Type</label>
                                                 <select name="RequestType" id="RequestType" class="form-control">
                                                     <option value="">--Select Request Type--</option>
-                                                    <option value="SELF">SELF</option>
-                                                    <option value="EMPLOYEE">EMPLOYEE</option>
-                                                    <option value="GUEST">GUEST</option>
+                                                    <option value="SELF" @(Model.RequestType == "SELF" ? "selected" : "")>SELF</option>
+                                                    <option value="EMPLOYEE" @(Model.RequestType == "EMPLOYEE" ? "selected" : "")>EMPLOYEE</option>
+                                                    <option value="GUEST" @(Model.RequestType == "GUEST" ? "selected" : "")>GUEST</option>
+                                                     
                                                 </select>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Select Company</label>
-                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control", @required = "required" })
+                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control" })
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.CompanyId)
                                                 </span>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Employee Id</label>
-                                                <input id="employeeId" name="EmployeeId" class="form-control" type="text" placeholder="Employee Id">
+                                                @*<input id="employeeId" name="EmployeeId" class="form-control" type="text" placeholder="Employee Id">*@
+                                                @Html.TextBoxFor(a => a.EmployeeId, new { @class = "form-control", id = "employeeId", placeholder = "Employee Id" })
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">First Name</label>
-                                                <input id="firstName" name="FirstName" class="form-control" type="text" placeholder="Employee First Name" readonly>
+                                                @*<input id="firstName" name="FirstName" class="form-control" type="text" placeholder="Employee First Name" readonly>*@
+                                                @Html.TextBoxFor(a => a.FirstName, new { @class = "form-control", id = "firstName", placeholder = "Employee First Name", @readonly="true" })
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Last Name</label>
-                                                <input id="lastName" name="LastName" class="form-control" type="text" placeholder="Employee Last Name" readonly>
+                                                @*<input id="lastName" name="LastName" class="form-control" type="text" placeholder="Employee Last Name" readonly>*@
+                                                @Html.TextBoxFor(a => a.LastName, new { @class = "form-control", id = "lastName", placeholder = "Employee Last Name", @readonly = "true" })
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Gender</label>
                                                 <select id="gender" name="Gender" style="pointer-events: none; background-color: #e9ecef;"
                                                         class="form-control js-example-basic-single col-sm-12" readonly>
                                                     <option value="">--Select Gender--</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                    <option value="Other">Other</option>
-
+                                                    <option value="Male" @(Model.Gender == "Male" ? "selected" : "")>Male</option>
+                                                    <option value="Female" @(Model.Gender == "Female" ? "selected" : "")>Female</option>
+                                                    <option value="Other" @(Model.Gender == "Other" ? "Other" : "")>Other</option>
 
 
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Email</label>
-                                                <input id="email" name="Email" class="form-control" type="text" placeholder="Employee Email" readonly>
+                                                @*<input id="email" name="Email" class="form-control" type="text" placeholder="Employee Email" readonly>*@
+                                                @Html.TextBoxFor(a => a.Email, new { @class = "form-control", id = "email", placeholder = "Employee Email", @readonly = "true" })
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Guest Contact Number With Country Code</label>
-                                                <input id="guestContact" name="GuestContact" class="form-control" type="text" placeholder="eg.919999999999" readonly>
+                                                @*<input id="guestContact" name="GuestContact" class="form-control" type="text" placeholder="eg.919999999999" readonly>*@
+                                                @Html.TextBoxFor(a => a.GuestContact, new { @class = "form-control", id = "guestContact", placeholder = "eg.919999999999", @readonly = "true" })
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Unit (ASPL/AZTEC)</label>
                                                     <select name="Unit" id="unit" class="form-control">
-                                                        <option value="ASPL">ASPL</option>
-                                                        <option value="AZTEC">AZTEC</option>
+                                                        <option value="ASPL" @(Model.Unit == "ASPL" ? "ASPL" : "")>ASPL</option>
+                                                        <option value="AZTEC" @(Model.Unit == "AZTEC" ? "AZTEC" : "")>AZTEC</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Department</label>
-                                                    <input type="text" name="Department" id="department" class="form-control" placeholder="Enter Department">
+                                                    @*<input type="text" name="Department" id="department" class="form-control" placeholder="Enter Department">*@
+                                                    @Html.TextBoxFor(a => a.Department, new { @class = "form-control", id = "department", placeholder = "Enter Department" })
                                                 </div>
 
 
@@ -98,35 +106,41 @@
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Cost Centre</label>
-                                                    <input class="form-control" name="CostCentre" type="text" placeholder="Cost Centre">
+                                                    @*<input class="form-control" name="CostCentre" type="text" placeholder="Cost Centre">*@
+                                                    @Html.TextBoxFor(a => a.CostCentre, new { @class = "form-control", placeholder = "Cost Centre" })
+
                                                 </div>
 
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Expence Code</label>
-                                                    <input class="form-control" name="ExpenseCode" type="text" placeholder="Expence Code">
+                                                    @*<input class="form-control" name="ExpenseCode" type="text" placeholder="Expence Code">*@
+                                                    @Html.TextBoxFor(a => a.ExpenseCode, new { @class = "form-control", placeholder = "Expence Code" })
                                                 </div>
 
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Requestor Emp ID</label>
-                                                    <input class="form-control" name="RequestorEmpId" type="text" placeholder="Requestor Emp ID">
+                                                    @*<input class="form-control" name="RequestorEmpId" type="text" placeholder="Requestor Emp ID">*@
+                                                    @Html.TextBoxFor(a => a.RequestorEmpId, new { @class = "form-control", placeholder = "Requestor Emp ID" })
                                                 </div>
 
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Requestor Name</label>
-                                                    <input class="form-control" name="RequestorName" type="text" placeholder="Requestor Name">
+                                                    @*<input class="form-control" name="RequestorName" type="text" placeholder="Requestor Name">*@
+                                                    @Html.TextBoxFor(a => a.RequestorName, new { @class = "form-control", placeholder = "Requestor Name" })
                                                 </div>
 
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Requestor Contact Numbers Comma Separated</label>
-                                                    <input class="form-control" name="RequestorContacts" type="text" placeholder="Eg.919811172193,919999999999">
+                                                    @*<input class="form-control" name="RequestorContacts" type="text" placeholder="Eg.919811172193,919999999999">*@
+                                                    @Html.TextBoxFor(a => a.RequestorContacts, new { @class = "form-control", placeholder = "Eg.919811172193,919999999999" })
                                                 </div>
 
                                             </div>
@@ -136,13 +150,13 @@
                                                     <div class="input-group date" id="dt-date"
                                                          data-target-input="nearest">
                                                         <div class="input-group">
-                                                            <input name="BookingReceivedDate" class="form-control" placeholder="Date of Booking Received"
-                                                                   type="date">
-
+                                                            @*<input name="BookingReceivedDate" class="form-control" placeholder="Date of Booking Received"
+                                                                   type="date">*@
+                                                            @Html.TextBoxFor(a => a.BookingReceivedDate, new { @class = "form-control",type = "date", placeholder = "Date of Booking Received" })
                                                             @*<div class="input-group-text" data-target="#dt-date"
-                                                                     data-toggle="datetimepicker">
-                                                                    <i class="fa fa-calendar"></i>
-                                                                </div>*@
+             data-toggle="datetimepicker">
+            <i class="fa fa-calendar"></i>
+        </div>*@
                                                         </div>
                                                     </div>
                                                 </div>
@@ -152,14 +166,13 @@
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Request Trip Type</label>
                                                     <select name="RequestTripType" id="requesttripType" class="form-control">
-                                                        <option value="">Select Trip Type</option>
-                                                        <option value="1">Airport Pickup</option>
-                                                        <option value="2">Airport Drop</option>
-                                                        <option value="3">Medical Emergency</option>
-                                                        <option value="4">Office Transfer</option>
-                                                        <option value="5">Hotel Transfer</option>
-                                                        <option value="6">Railway Station Pickup</option>
-                                                        <option value="7">Administration</option>
+                                                        <option value="1" @(Model.RequestTripType == "1" ? "selected" : "")>Airport Pickup</option>
+                                                        <option value="2" @(Model.RequestTripType == "2" ? "selected" : "")>Airport Drop</option>
+                                                        <option value="3" @(Model.RequestTripType == "3" ? "selected" : "")>Medical Emergency</option>
+                                                        <option value="4" @(Model.RequestTripType == "4" ? "selected" : "")>Office Transfer</option>
+                                                        <option value="5" @(Model.RequestTripType == "5" ? "selected" : "")>Hotel Transfer</option>
+                                                        <option value="6" @(Model.RequestTripType == "6" ? "selected" : "")>Railway Station Pickup</option>
+                                                        <option value="7" @(Model.RequestTripType == "7" ? "selected" : "")>Administration</option>
                                                     </select>
                                                 </div>
 
@@ -168,8 +181,8 @@
                                                 <div class="guestpart">
                                                     <label class="form-label-title ">Destination Request Method</label>
                                                     <select name="DestinationRequestMethod" class="form-control" disabled>
-                                                        <option value="Single">Single</option>
-                                                        <option value="Multiple">Multiple</option>
+                                                        <option value="Single" @(Model.DestinationRequestMethod=="Single"?"selected":"")>Single</option>
+                                                        <option value="Multiple" @(Model.DestinationRequestMethod == "Multiple" ? "selected" : "")>Multiple</option>
                                                     </select>
                                                 </div>
 
@@ -180,8 +193,8 @@
                                                         <label class="form-label-title ">Location Types</label>
                                                         <select name="LocationType" id="locationType" class="form-control">
                                                             <option value="">Select Location Type</option>
-                                                            <option value="Multiple Location">Multiple Location</option>
-                                                            <option value="Single Location">Single Location</option>
+                                                            <option value="Multiple Location" @(Model.LocationType == "Multiple Location" ? "selected" : "")>Multiple Location</option>
+                                                            <option value="Single Location" @(Model.LocationType == "Single Location" ? "selected" : "")>Single Location</option>
                                                         </select>
                                                     </div>
 
@@ -190,8 +203,8 @@
                                                     <div class="guestpart">
                                                         <div id="smstriggerlocation">
                                                             <label class="form-label-title ">SMS Triggered Location</label>
-                                                            <input class="form-control" name="SMSTriggeredLocation" type="text">
-
+                                                            @*<input class="form-control" name="SMSTriggeredLocation" type="text">*@
+                                                            @Html.TextBoxFor(a => a.SMSTriggeredLocation, new { @class = "form-control" })
                                                         </div>
                                                     </div>
 
@@ -203,13 +216,13 @@
                                                 <div class="input-group date" id="sdt-date"
                                                      data-target-input="nearest">
                                                     <div class="input-group">
-                                                        <input name="StartRequestDate" class="form-control" placeholder="Start Request Date"
-                                                               type="date">
-
+                                                        @*<input name="StartRequestDate" class="form-control" placeholder="Start Request Date"
+                                                               type="date">*@
+                                                        @Html.TextBoxFor(a => a.StartRequestDate, new { @class = "form-control", type = "date", placeholder = "Start Request Date" })
                                                         @*<div class="input-group-text" data-target="#sdt-date"
-                                                                 data-toggle="datetimepicker">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>*@
+             data-toggle="datetimepicker">
+            <i class="fa fa-calendar"></i>
+        </div>*@
                                                     </div>
                                                 </div>
                                             </div>
@@ -218,69 +231,84 @@
                                                 <div class="input-group date" id="edt-date"
                                                      data-target-input="nearest">
                                                     <div class="input-group">
-                                                        <input name="EndRequestDate" class="form-control" placeholder="End Request Date"
-                                                               type="date">
-
+                                                        @*<input name="EndRequestDate" class="form-control" placeholder="End Request Date"
+                                                               type="date">*@
+                                                        @Html.TextBoxFor(a => a.EndRequestDate, new { @class = "form-control", type = "date", placeholder = "End Request Date" })
                                                         @*<div class="input-group-text" data-target="#edt-date"
-                                                                 data-toggle="datetimepicker">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>*@
+             data-toggle="datetimepicker">
+            <i class="fa fa-calendar"></i>
+        </div>*@
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
-                                                        <label class="form-label-title ">Trip Type</label>
-                                                        <select id="triptype" name="TripType" class="form-control" disabled>
-                                                            <option value="">--Select Trip Type--</option>
-                                                            <option value="PICKUP">PICKUP</option>
-                                                            <option value="DROP">DROP</option>
-                                                        </select>
+                                                    <label class="form-label-title">Trip Type</label>
+                                                    @Html.DropDownListFor(a => a.TripType, Model.TripTypes, "--Select Trip Types--", new { @class = "form-control", id = "tripType" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label-title ">Shift Type</label>
+                                                    @*<select id="shifttype" name="ShiftType" class="form-control" disabled>
+                                                        <option value="">--Select Shift Type--</option>
+                                                        <option value="NORMAL" @(Model.ShiftType == "NORMAL" ? "selected" : "")>NORMAL</option>
+                                                    </select>*@
+                                                    @Html.DropDownListFor(a => a.ShiftType, Model.ShiftTypes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
 
                                                 </div>
-                                                <div class="col-md-3"> 
-                                                        <label class="form-label-title ">Shift Type</label>
-                                                        <select id="shifttype" name="ShiftType" class="form-control" disabled>
-                                                            <option value="">--Select Shift Type--</option>
-                                                            <option value="NORMAL">NORMAL</option>
-                                                        </select>
-                                                    
+                                                <div class="col-md-3" id="pickupShiftTimeContainer">
+                                                    <label class="form-label-title">Pickup Shift Time</label>
+
+                                                    @Html.DropDownListFor(a => a.PickupShiftTimeId, Model.PickUpshiftTimes, "--Select Pickup Shift Time--", new { @class = "form-control", id = "pickupshifttime" })
+                                                </div>
+                                                <div class="col-md-3" id="dropShiftTimeContainer">
+                                                    <label class="form-label-title">Drop Shift Time</label>
+                                                    @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "dropshifttime" })
+
+                                                </div>
+                                                <div class="col-md-3" id="pickupshift">
+                                                    <label class="form-label-title ">Shift Time</label>
+                                                    @Html.DropDownListFor(a => a.PickupShiftTimeId,Model.PickUpshiftTimes, "--Select Shift Time--", new { @class = "form-control" }) 
+                                                </div>
+                                                <div class="col-md-3" id="dropshift">
+                                                    <label class="form-label-title ">Shift Time</label>
+ 
+                                                    @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Shift Time--", new { @class = "form-control" })
                                                 </div>
 
                                                 @*<div class="col-md-6">
-                                                        <div id="pickupLocation">
-                                                            <label class="form-label-title">Pickup Location</label>
-                                                            <div class="input-group">
-                                                                <select name="PickupLocation" class="form-control">
-                                                                    <option value="">--Select Pickup Location--</option>
-                                                                    <option value="sector1">Sector 1</option>
-                                                                    <option value="sector2">Sector 2</option>
-                                                                    <option value="sector3">Sector 3</option>
-                                                                </select>
-                                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                                                                    <i class="fa fa-location-arrow text-primary"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+            <div id="pickupLocation">
+                <label class="form-label-title">Pickup Location</label>
+                <div class="input-group">
+                    <select name="PickupLocation" class="form-control">
+                        <option value="">--Select Pickup Location--</option>
+                        <option value="sector1">Sector 1</option>
+                        <option value="sector2">Sector 2</option>
+                        <option value="sector3">Sector 3</option>
+                    </select>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
+                        <i class="fa fa-location-arrow text-primary"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-                                                    <div class="col-md-6">
-                                                        <div id="dropLocation">
-                                                            <label class="form-label-title">Drop Location</label>
-                                                            <div class="input-group">
-                                                                <select name="DropLocation" id="dropLocation" class="form-control">
-                                                                    <option value="">--Select Drop Location--</option>
-                                                                    <option value="sector1">Sector 1</option>
-                                                                    <option value="sector2">Sector 2</option>
-                                                                    <option value="sector3">Sector 3</option>
-                                                                </select>
-                                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                                                                    <i class="fa fa-location-arrow text-primary"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
+        <div class="col-md-6">
+            <div id="dropLocation">
+                <label class="form-label-title">Drop Location</label>
+                <div class="input-group">
+                    <select name="DropLocation" id="dropLocation" class="form-control">
+                        <option value="">--Select Drop Location--</option>
+                        <option value="sector1">Sector 1</option>
+                        <option value="sector2">Sector 2</option>
+                        <option value="sector3">Sector 3</option>
+                    </select>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
+                        <i class="fa fa-location-arrow text-primary"></i>
+                    </button>
+                </div>
+            </div>
 
-                                                    </div>*@
+        </div>*@
                                             </div>
 
                                         </div>
@@ -456,7 +484,7 @@
             handleStartEndDateSelectChange();
         });
     </script>*@
-<script>
+@*<script>
     document.addEventListener("DOMContentLoaded", function () {
         // Query Selectors
         const requestType = document.querySelector('[name="RequestType"]');
@@ -476,6 +504,7 @@
         const locationType = document.querySelector('[name="LocationType"]');
         const startRequestDate = document.querySelector('[name="StartRequestDate"]');
         const endRequestDate = document.querySelector('[name="EndRequestDate"]');
+ 
 
         // Handle Request Type Change
         function handleRequestTypeChange() {
@@ -488,7 +517,13 @@
                 employeeId.disabled = true;
                 toggleElementsVisibility(guestParts, false);
                 resetEmployeeDetails();
-            } else {
+            }
+            else if (value === "EMPLOYEE") {
+                toggleElementsVisibility(guestParts, false);
+                employeeId.disabled = false;
+                employeeId.disabled = false;
+            }
+            else {
                 toggleElementsVisibility(guestParts, false);
                 employeeId.disabled = false;
                 resetEmployeeDetails();
@@ -510,7 +545,8 @@
             toggleElementDisabled(tripType, !isEnabled);
             toggleElementDisabled(shiftType, !isEnabled);
         }
-
+       
+          
         // Reset Employee Details
         function resetEmployeeDetails() {
             employeeId.value = "";
@@ -549,9 +585,144 @@
         handleLocationTypeChange();
         handleStartEndDateSelectChange();
     });
+</script>*@
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Query Selectors
+        const requestType = document.querySelector('[name="RequestType"]');
+        const pickupLocation = document.querySelector('#pickupLocation');
+        const dropLocation = document.querySelector('#dropLocation');
+        const destinationRequestMethod = document.querySelector('#destinationRequestMethod');
+        const employeeId = document.querySelector('#employeeId');
+        const gender = document.querySelector('#gender');
+        const firstName = document.querySelector('#firstName');
+        const lastName = document.querySelector('#lastName');
+        const email = document.querySelector('#email');
+        const guestContact = document.querySelector('#guestContact');
+        const tripType = document.querySelector('#triptype');
+        const shiftType = document.querySelector('#shifttype');
+        const guestParts = document.querySelectorAll('.guestpart');
+        const smsTriggerLocation = document.querySelector('#smstriggerlocation');
+        const locationType = document.querySelector('[name="LocationType"]');
+        const startRequestDate = document.querySelector('[name="StartRequestDate"]');
+        const endRequestDate = document.querySelector('[name="EndRequestDate"]');
+        const pickupShiftTimeContainer = document.querySelector('#pickupShiftTimeContainer');
+        const dropShiftTimeContainer = document.querySelector('#dropShiftTimeContainer');
+        //const shiftTimeContainer = document.querySelector('#shiftTimeContainer');
+        const pickupshift = document.querySelector('#pickupshift');
+        const dropshift = document.querySelector('#dropshift');
+
+        // Handle Request Type Change
+        function handleRequestTypeChange() {
+            const value = requestType.value;
+
+            if (value === "GUEST") {
+                toggleElementsVisibility(guestParts, true);
+                employeeId.disabled = false;
+            } else if (value === "SELF" || value === "") {
+                employeeId.disabled = true;
+                toggleElementsVisibility(guestParts, false);
+                resetEmployeeDetails();
+            }
+            else if (value === "EMPLOYEE") {
+                toggleElementsVisibility(guestParts, false);
+                employeeId.disabled = false;
+            }
+            else {
+                toggleElementsVisibility(guestParts, false);
+                employeeId.disabled = false;
+                resetEmployeeDetails();
+            }
+        }
+
+        // Handle Location Type Change
+        function handleLocationTypeChange() {
+            const value = locationType.value;
+            toggleElementVisibility(smsTriggerLocation, value === "Single Location");
+        }
+
+        // Handle Start and End Date Change
+        function handleStartEndDateSelectChange() {
+            const startDate = startRequestDate.value.trim();
+            const endDate = endRequestDate.value.trim();
+            const isEnabled = startDate && endDate;
+
+            toggleElementDisabled(tripType, !isEnabled);
+            toggleElementDisabled(shiftType, !isEnabled);
+        }
+
+        // Handle Trip Type and Shift Type Change
+        function handleTripTypeShiftTypeChange() {
+            const tripTypeValue = tripType.value;
+            const shiftTypeValue = shiftType.value;
+
+            if (tripTypeValue === "3" && shiftTypeValue !== "") {
+                toggleElementVisibility(pickupShiftTimeContainer, true);
+                toggleElementVisibility(dropShiftTimeContainer, true);
+                toggleElementVisibility(dropshift, false);
+                toggleElementVisibility(pickupshift, false);
+            } else if (tripTypeValue === "1" && shiftTypeValue !== "") {
+                toggleElementVisibility(pickupShiftTimeContainer, false);
+                toggleElementVisibility(dropShiftTimeContainer, false);
+                toggleElementVisibility(dropshift, false);
+                toggleElementVisibility(pickupshift, true);
+            }
+            else if (tripTypeValue === "2" && shiftTypeValue !== "") {
+            toggleElementVisibility(pickupShiftTimeContainer, false);
+            toggleElementVisibility(dropShiftTimeContainer, false);
+                toggleElementVisibility(dropshift, true);
+                toggleElementVisibility(pickupshift, false);
+            } else {
+                toggleElementVisibility(pickupShiftTimeContainer, false);
+                toggleElementVisibility(dropShiftTimeContainer, false);
+                toggleElementVisibility(dropshift, false);
+                toggleElementVisibility(pickupshift, false);
+            }
+        }
+
+        // Reset Employee Details
+        function resetEmployeeDetails() {
+            employeeId.value = "";
+            firstName.value = "";
+            lastName.value = "";
+            gender.value = "";
+            email.value = "";
+            guestContact.value = "";
+        }
+
+        // Helper Function: Toggle Single Element Visibility
+        function toggleElementVisibility(element, show) {
+            element.style.display = show ? "block" : "none";
+        }
+
+        // Helper Function: Toggle Multiple Elements Visibility
+        function toggleElementsVisibility(elements, show) {
+            elements.forEach(element => {
+                element.parentElement.style.display = show ? "block" : "none";
+            });
+        }
+
+        // Helper Function: Toggle Single Element Disabled State
+        function toggleElementDisabled(element, disable) {
+            element.disabled = disable;
+        }
+
+        // Event Listeners
+        requestType.addEventListener("change", handleRequestTypeChange);
+        locationType.addEventListener("change", handleLocationTypeChange);
+        startRequestDate.addEventListener("change", handleStartEndDateSelectChange);
+        endRequestDate.addEventListener("change", handleStartEndDateSelectChange);
+        tripType.addEventListener("change", handleTripTypeShiftTypeChange);
+        shiftType.addEventListener("change", handleTripTypeShiftTypeChange);
+
+        // Initial Setup
+        handleRequestTypeChange();
+        handleLocationTypeChange();
+        handleStartEndDateSelectChange();
+        handleTripTypeShiftTypeChange();
+    });
 </script>
-
-
 <script>
     $(document).ready(function () {
         $('#employeeId').on('keyup', function () {

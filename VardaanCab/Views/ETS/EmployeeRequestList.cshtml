@@ -1,0 +1,125 @@
+﻿@model VardaanCab.Domain.DTO.CreateRequestDTO
+@{
+    ViewBag.Title = "EmployeeRequestList";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    int Count = 1;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        <h5>Employee Request List</h5>
+                    </div>
+                    <form class="d-inline-flex">
+                        <a href="/ETS/CreateRequest?menuId=@ViewBag.menuId" class="btn btn-theme">
+                            <i data-feather="plus-square"></i>Add New
+                        </a>
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    @if (TempData["dltmsg"] != null)
+                    {
+                        <div class="row r">
+                            <div class="col-md-12">
+                                <div class="alert alert-success">
+                                    @TempData["dltmsg"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div>
+                        <div class="table-responsive table-desi">
+                            <table class="datatable user-table all-driver-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th nowrap>Sr No.</th>
+                                        <th nowrap>Request Type</th>
+                                        <th nowrap>Company Name</th>
+                                        <th nowrap>Employee ID</th>
+                                        <th nowrap>First Name</th>
+                                        <th nowrap>Last Name</th>
+                                        <th nowrap>Gender</th>
+                                        <th nowrap>Email</th>
+                                        <th nowrap>Guest Contact</th>
+                                        <th nowrap>Unit</th>
+                                        <th nowrap>Department</th>
+                                        <th nowrap>Cost Centre</th>
+                                        <th nowrap>Expense Code</th>
+                                        <th nowrap>Requestor Emp ID</th>
+                                        <th nowrap>Requestor Name</th>
+                                        <th nowrap>Requestor Contacts</th>
+                                        <th nowrap>Booking Received Date</th>
+                                        <th nowrap>Request Trip Type</th>
+                                        <th nowrap>Destination Request Method</th>
+                                        <th nowrap>Location Type</th>
+                                        <th nowrap>Start Request Date</th>
+                                        <th nowrap>End Request Date</th>
+                                        <th nowrap>Trip Type</th>
+                                        <th nowrap>Shift Type</th>
+                                        <th nowrap>SMS Triggered Location</th>
+                                        <th nowrap>Created Date</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.EmployeeRequestList)
+                                    {
+                                        <tr>
+                                            <td nowrap>@Count</td>
+                                            <td>@item.RequestType</td>
+                                            <td>@item.CompanyName</td>
+                                            <td>@item.EmployeeId</td>
+                                            <td>@item.FirstName</td>
+                                            <td>@item.LastName</td>
+                                            <td>@item.Gender</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.GuestContact</td>
+                                            <td>@item.Unit</td>
+                                            <td>@item.Department</td>
+                                            <td>@item.CostCentre</td>
+                                            <td>@item.ExpenseCode</td>
+                                            <td>@item.RequestorEmpId</td>
+                                            <td>@item.RequestorName</td>
+                                            <td>@item.RequestorContacts</td>
+                                            <td>@item.BookingReceivedDate</td>
+                                            <td>@item.RequestTripType</td>
+                                            <td>@item.DestinationRequestMethod</td>
+                                            <td>@item.LocationType</td>
+                                            <td>@item.StartRequestDate</td>
+                                            <td>@item.EndRequestDate</td>
+                                            <td>@item.TripType</td>
+                                            <td>@item.ShiftType</td>
+                                            <td>@item.SMSTriggeredLocation</td>
+                                            <td>@item.CreatedDate</td>
+                                            <td>
+                                                <a href="/ETS/CreateRequest?Id=@item.Id">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="/ETS/DeleteEmployeeRequest?Id=@item.Id" onclick="return confirm('Are you sure you want to delete?')">
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        Count++;
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
