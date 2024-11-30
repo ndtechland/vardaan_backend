@@ -11,23 +11,6 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
-
-                        <div class="card-header  card-header--2">
-                            <div>
-                                <h5>Employee Request</h5>
-                            </div>
-                            <div>
-                                <h5>Export to Excel</h5>
-
-                                @using (Html.BeginForm("ImportEmployeeData", "ETS", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                                {
-                                    <div>
-                                        <a href="@Url.Action("ExportToExcel","ETS")"><img src="~/adminassets/images/icon/Export-Image.png" /></a> <input type="file" class="form-control col-1" name="file" /><br />
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Import</button>
-                                }
-                            </div>
-
                         <div class="card-header">
                             <h5>@ViewBag.Heading</h5>
                         </div>
@@ -59,7 +42,7 @@
 
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Select Company</label>
-                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control" ,@required=""})
+                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control", @required = "" })
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.CompanyId)
                                                 </span>
@@ -70,9 +53,6 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">First Name</label>
-
-                                                @*<input id="firstName" name="FirstName" class="form-control" type="text" placeholder="Employee First Name" readonly>*@
-
                                                 @Html.TextBoxFor(a => a.FirstName, new { @class = "form-control", id = "firstName", placeholder = "Employee First Name", @readonly = "true" })
                                             </div>
                                             <div class="col-md-3">
@@ -160,15 +140,6 @@
                                                          data-target-input="nearest">
                                                         <div class="input-group">
 
-                                                            @*<input name="BookingReceivedDate" class="form-control" placeholder="Date of Booking Received"
-                                            type="date">*@
-                                                            @Html.TextBoxFor(a => a.BookingReceivedDate, new { @class = "form-control", type = "date", placeholder = "Date of Booking Received" })
-                                                            @*<div class="input-group-text" data-target="#dt-date"
-                                                 data-toggle="datetimepicker">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>*@
-
-
                                                             @Html.TextBoxFor(a => a.BookingReceivedDate, new { @class = "form-control", type = "date", placeholder = "Date of Booking Received" })
 
                                                         </div>
@@ -230,15 +201,6 @@
                                                      data-target-input="nearest">
                                                     <div class="input-group">
 
-                                                        @*<input name="StartRequestDate" class="form-control" placeholder="Start Request Date"
-                                        type="date">*@
-                                                        @Html.TextBoxFor(a => a.StartRequestDate, new { @class = "form-control", type = "date", placeholder = "Start Request Date" })
-                                                        @*<div class="input-group-text" data-target="#sdt-date"
-                                             data-toggle="datetimepicker">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>*@
-
-
                                                         @Html.TextBoxFor(a => a.StartRequestDate, new
 {
 @class = "form-control",
@@ -246,7 +208,6 @@ type = "date",
 placeholder = "Start Request Date",
 min = DateTime.Now.ToString("yyyy-MM-dd")
 })
-
 
 
                                                     </div>
@@ -257,140 +218,88 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
                                                 <div class="input-group date" id="edt-date"
                                                      data-target-input="nearest">
                                                     <div class="input-group">
-
-                                                        @*<input name="EndRequestDate" class="form-control" placeholder="End Request Date"
-                                        type="date">*@
-                                                        @Html.TextBoxFor(a => a.EndRequestDate, new { @class = "form-control", type = "date", placeholder = "End Request Date" })
-                                                        @*<div class="input-group-text" data-target="#edt-date"
-                                             data-toggle="datetimepicker">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>*@
-
                                                         @Html.TextBoxFor(a => a.EndRequestDate, new { @class = "form-control", type = "date", placeholder = "End Request Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
-
 
                                                     </div>
                                                 </div>
                                             </div>
-                                            
-                                                <div class="col-md-3">
-                                                    <label class="form-label-title">Trip Type</label>
-                                                    @Html.DropDownListFor(a => a.TripType, Model.TripTypes, "--Select Trip Types--", new { @class = "form-control", id = "tripType" })
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label class="form-label-title ">Shift Type</label>
-                                                    @*<select id="shifttype" name="ShiftType" class="form-control" disabled>
 
-                                        <option value="">--Select Shift Type--</option>
-                                        <option value="NORMAL" @(Model.ShiftType == "NORMAL" ? "selected" : "")>NORMAL</option>
-                                    </select>*@
-
-                    <option value="">--Select Shift Type--</option>
-                    <option value="NORMAL" @(Model.ShiftType == "NORMAL" ? "selected" : "")>NORMAL</option>
-                </select>*@
-
-                                                    @Html.DropDownListFor(a => a.ShiftType, Model.ShiftTypes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
-
-                                                </div>
-                                                <div class="col-md-3" id="pickupShiftTimeContainer">
-                                                    <label class="form-label-title">Pickup Shift Time</label>
-
-                                                    @Html.DropDownListFor(a => a.PickupShiftTimeId, Model.PickUpshiftTimes, "--Select Pickup Shift Time--", new { @class = "form-control", id = "pickupshifttime" })
-                                                </div>
-                                                <div class="col-md-3" id="dropShiftTimeContainer">
-                                                    <label class="form-label-title">Drop Shift Time</label>
-                                                    @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "dropshifttime" })
-
-                                                </div>
-                                                <div class="col-md-3" id="pickupshift">
-                                                    <label class="form-label-title ">Shift Time</label>
-                                                    @Html.DropDownListFor(a => a.PickupShiftTimeId, Model.PickUpshiftTimes, "--Select Shift Time--", new { @class = "form-control" })
-                                                </div>
-                                                <div class="col-md-3" id="dropshift">
-                                                    <label class="form-label-title ">Shift Time</label>
-
-                                                    @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Shift Time--", new { @class = "form-control" })
-                                                </div>
-
-                                                @*<div class="col-md-6">
-
-                                    <div id="pickupLocation">
-                                        <label class="form-label-title">Pickup Location</label>
-                                        <div class="input-group">
-                                            <select name="PickupLocation" class="form-control">
-                                                <option value="">--Select Pickup Location--</option>
-                                                <option value="sector1">Sector 1</option>
-                                                <option value="sector2">Sector 2</option>
-                                                <option value="sector3">Sector 3</option>
-                                            </select>
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                                                <i class="fa fa-location-arrow text-primary"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div id="dropLocation">
-                                        <label class="form-label-title">Drop Location</label>
-                                        <div class="input-group">
-                                            <select name="DropLocation" id="dropLocation" class="form-control">
-                                                <option value="">--Select Drop Location--</option>
-                                                <option value="sector1">Sector 1</option>
-                                                <option value="sector2">Sector 2</option>
-                                                <option value="sector3">Sector 3</option>
-                                            </select>
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                                                <i class="fa fa-location-arrow text-primary"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </div>*@
-
-                <div id="pickupLocation">
-                    <label class="form-label-title">Pickup Location</label>
-                    <div class="input-group">
-                        <select name="PickupLocation" class="form-control">
-                            <option value="">--Select Pickup Location--</option>
-                            <option value="sector1">Sector 1</option>
-                            <option value="sector2">Sector 2</option>
-                            <option value="sector3">Sector 3</option>
-                        </select>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                            <i class="fa fa-location-arrow text-primary"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div id="dropLocation">
-                    <label class="form-label-title">Drop Location</label>
-                    <div class="input-group">
-                        <select name="DropLocation" id="dropLocation" class="form-control">
-                            <option value="">--Select Drop Location--</option>
-                            <option value="sector1">Sector 1</option>
-                            <option value="sector2">Sector 2</option>
-                            <option value="sector3">Sector 3</option>
-                        </select>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                            <i class="fa fa-location-arrow text-primary"></i>
-                        </button>
-                    </div>
-                </div>
-
-            </div>*@
-                                            
-                                        </div>
-                                            
+                                            <div class="col-md-3">
+                                                <label class="form-label-title">Trip Type</label>
+                                                @Html.DropDownListFor(a => a.TripType, Model.TripTypes, "--Select Trip Types--", new { @class = "form-control", id = "tripType" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label-title ">Shift Type</label>
+                                                @*<select id="shifttype" name="ShiftType" class="form-control" disabled>
+                                                        <option value="">--Select Shift Type--</option>
+                                                        <option value="NORMAL" @(Model.ShiftType == "NORMAL" ? "selected" : "")>NORMAL</option>
+                                                    </select>*@
+                                                @Html.DropDownListFor(a => a.ShiftType, Model.ShiftTypes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
 
                                             </div>
-                                            
+                                            <div class="col-md-3" id="pickupShiftTimeContainer">
+                                                <label class="form-label-title">Pickup Shift Time</label>
+
+                                                @Html.DropDownListFor(a => a.PickupShiftTimeId, Model.PickUpshiftTimes, "--Select Pickup Shift Time--", new { @class = "form-control", id = "pickupshifttime" })
+                                            </div>
+                                            <div class="col-md-3" id="dropShiftTimeContainer">
+                                                <label class="form-label-title">Drop Shift Time</label>
+                                                @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "dropshifttime" })
+
+                                            </div>
+                                            <div class="col-md-3" id="pickupshift">
+                                                <label class="form-label-title ">Shift Time</label>
+                                                @Html.DropDownListFor(a => a.PickupShiftTimeId, Model.PickUpshiftTimes, "--Select Shift Time--", new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-md-3" id="dropshift">
+                                                <label class="form-label-title ">Shift Time</label>
+
+                                                @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Shift Time--", new { @class = "form-control" })
+                                            </div>
+
+                                            @*<div class="col-md-6">
+                                                    <div id="pickupLocation">
+                                                        <label class="form-label-title">Pickup Location</label>
+                                                        <div class="input-group">
+                                                            <select name="PickupLocation" class="form-control">
+                                                                <option value="">--Select Pickup Location--</option>
+                                                                <option value="sector1">Sector 1</option>
+                                                                <option value="sector2">Sector 2</option>
+                                                                <option value="sector3">Sector 3</option>
+                                                            </select>
+                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
+                                                                <i class="fa fa-location-arrow text-primary"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div id="dropLocation">
+                                                        <label class="form-label-title">Drop Location</label>
+                                                        <div class="input-group">
+                                                            <select name="DropLocation" id="dropLocation" class="form-control">
+                                                                <option value="">--Select Drop Location--</option>
+                                                                <option value="sector1">Sector 1</option>
+                                                                <option value="sector2">Sector 2</option>
+                                                                <option value="sector3">Sector 3</option>
+                                                            </select>
+                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
+                                                                <i class="fa fa-location-arrow text-primary"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>*@
 
                                         </div>
 
                                     </div>
+
+
+                                </div>
+
+                            </div>
                             <div class="card-footer text-end">
                                 <button type="submit" class="btn btn-primary">@ViewBag.BtnTXT</button>
                                 <button type="reset" class="btn btn-outline-primary">Reset</button>
@@ -559,107 +468,107 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
         });
     </script>*@
 @*<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Query Selectors
-        const requestType = document.querySelector('[name="RequestType"]');
-        const pickupLocation = document.querySelector('#pickupLocation');
-        const dropLocation = document.querySelector('#dropLocation');
-        const destinationRequestMethod = document.querySelector('#destinationRequestMethod');
-        const employeeId = document.querySelector('#employeeId');
-        const gender = document.querySelector('#gender');
-        const firstName = document.querySelector('#firstName');
-        const lastName = document.querySelector('#lastName');
-        const email = document.querySelector('#email');
-        const guestContact = document.querySelector('#guestContact');
-        const tripType = document.querySelector('#triptype');
-        const shiftType = document.querySelector('#shifttype');
-        const guestParts = document.querySelectorAll('.guestpart');
-        const smsTriggerLocation = document.querySelector('#smstriggerlocation');
-        const locationType = document.querySelector('[name="LocationType"]');
-        const startRequestDate = document.querySelector('[name="StartRequestDate"]');
-        const endRequestDate = document.querySelector('[name="EndRequestDate"]');
- 
+        document.addEventListener("DOMContentLoaded", function () {
+            // Query Selectors
+            const requestType = document.querySelector('[name="RequestType"]');
+            const pickupLocation = document.querySelector('#pickupLocation');
+            const dropLocation = document.querySelector('#dropLocation');
+            const destinationRequestMethod = document.querySelector('#destinationRequestMethod');
+            const employeeId = document.querySelector('#employeeId');
+            const gender = document.querySelector('#gender');
+            const firstName = document.querySelector('#firstName');
+            const lastName = document.querySelector('#lastName');
+            const email = document.querySelector('#email');
+            const guestContact = document.querySelector('#guestContact');
+            const tripType = document.querySelector('#triptype');
+            const shiftType = document.querySelector('#shifttype');
+            const guestParts = document.querySelectorAll('.guestpart');
+            const smsTriggerLocation = document.querySelector('#smstriggerlocation');
+            const locationType = document.querySelector('[name="LocationType"]');
+            const startRequestDate = document.querySelector('[name="StartRequestDate"]');
+            const endRequestDate = document.querySelector('[name="EndRequestDate"]');
 
-        // Handle Request Type Change
-        function handleRequestTypeChange() {
-            const value = requestType.value;
 
-            if (value === "GUEST") {
-                toggleElementsVisibility(guestParts, true);
-                employeeId.disabled = false;
-            } else if (value === "SELF" || value === "") {
-                employeeId.disabled = true;
-                toggleElementsVisibility(guestParts, false);
-                resetEmployeeDetails();
+            // Handle Request Type Change
+            function handleRequestTypeChange() {
+                const value = requestType.value;
+
+                if (value === "GUEST") {
+                    toggleElementsVisibility(guestParts, true);
+                    employeeId.disabled = false;
+                } else if (value === "SELF" || value === "") {
+                    employeeId.disabled = true;
+                    toggleElementsVisibility(guestParts, false);
+                    resetEmployeeDetails();
+                }
+                else if (value === "EMPLOYEE") {
+                    toggleElementsVisibility(guestParts, false);
+                    employeeId.disabled = false;
+                    employeeId.disabled = false;
+                }
+                else {
+                    toggleElementsVisibility(guestParts, false);
+                    employeeId.disabled = false;
+                    resetEmployeeDetails();
+                }
             }
-            else if (value === "EMPLOYEE") {
-                toggleElementsVisibility(guestParts, false);
-                employeeId.disabled = false;
-                employeeId.disabled = false;
+
+            // Handle Location Type Change
+            function handleLocationTypeChange() {
+                const value = locationType.value;
+                toggleElementVisibility(smsTriggerLocation, value === "Single Location");
             }
-            else {
-                toggleElementsVisibility(guestParts, false);
-                employeeId.disabled = false;
-                resetEmployeeDetails();
+
+            // Handle Start and End Date Change
+            function handleStartEndDateSelectChange() {
+                const startDate = startRequestDate.value.trim();
+                const endDate = endRequestDate.value.trim();
+                const isEnabled = startDate && endDate;
+
+                toggleElementDisabled(tripType, !isEnabled);
+                toggleElementDisabled(shiftType, !isEnabled);
             }
-        }
 
-        // Handle Location Type Change
-        function handleLocationTypeChange() {
-            const value = locationType.value;
-            toggleElementVisibility(smsTriggerLocation, value === "Single Location");
-        }
 
-        // Handle Start and End Date Change
-        function handleStartEndDateSelectChange() {
-            const startDate = startRequestDate.value.trim();
-            const endDate = endRequestDate.value.trim();
-            const isEnabled = startDate && endDate;
+            // Reset Employee Details
+            function resetEmployeeDetails() {
+                employeeId.value = "";
+                firstName.value = "";
+                lastName.value = "";
+                gender.value = "";
+                email.value = "";
+                guestContact.value = "";
+            }
 
-            toggleElementDisabled(tripType, !isEnabled);
-            toggleElementDisabled(shiftType, !isEnabled);
-        }
-       
-          
-        // Reset Employee Details
-        function resetEmployeeDetails() {
-            employeeId.value = "";
-            firstName.value = "";
-            lastName.value = "";
-            gender.value = "";
-            email.value = "";
-            guestContact.value = "";
-        }
-
-        // Helper Function: Toggle Single Element Visibility
-        function toggleElementVisibility(element, show) {
-            element.parentElement.style.display = show ? "block" : "none";
-        }
-
-        // Helper Function: Toggle Single Element Disabled State
-        function toggleElementDisabled(element, disable) {
-            element.disabled = disable;
-        }
-
-        // Helper Function: Toggle Multiple Elements Visibility
-        function toggleElementsVisibility(elements, show) {
-            elements.forEach(element => {
+            // Helper Function: Toggle Single Element Visibility
+            function toggleElementVisibility(element, show) {
                 element.parentElement.style.display = show ? "block" : "none";
-            });
-        }
+            }
 
-        // Event Listeners
-        requestType.addEventListener("change", handleRequestTypeChange);
-        locationType.addEventListener("change", handleLocationTypeChange);
-        startRequestDate.addEventListener("change", handleStartEndDateSelectChange);
-        endRequestDate.addEventListener("change", handleStartEndDateSelectChange);
+            // Helper Function: Toggle Single Element Disabled State
+            function toggleElementDisabled(element, disable) {
+                element.disabled = disable;
+            }
 
-        // Initial Setup
-        handleRequestTypeChange();
-        handleLocationTypeChange();
-        handleStartEndDateSelectChange();
-    });
-</script>*@
+            // Helper Function: Toggle Multiple Elements Visibility
+            function toggleElementsVisibility(elements, show) {
+                elements.forEach(element => {
+                    element.parentElement.style.display = show ? "block" : "none";
+                });
+            }
+
+            // Event Listeners
+            requestType.addEventListener("change", handleRequestTypeChange);
+            locationType.addEventListener("change", handleLocationTypeChange);
+            startRequestDate.addEventListener("change", handleStartEndDateSelectChange);
+            endRequestDate.addEventListener("change", handleStartEndDateSelectChange);
+
+            // Initial Setup
+            handleRequestTypeChange();
+            handleLocationTypeChange();
+            handleStartEndDateSelectChange();
+        });
+    </script>*@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -743,8 +652,8 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
                 toggleElementVisibility(pickupshift, true);
             }
             else if (tripTypeValue === "2" && shiftTypeValue !== "") {
-            toggleElementVisibility(pickupShiftTimeContainer, false);
-            toggleElementVisibility(dropShiftTimeContainer, false);
+                toggleElementVisibility(pickupShiftTimeContainer, false);
+                toggleElementVisibility(dropShiftTimeContainer, false);
                 toggleElementVisibility(dropshift, true);
                 toggleElementVisibility(pickupshift, false);
             } else {
