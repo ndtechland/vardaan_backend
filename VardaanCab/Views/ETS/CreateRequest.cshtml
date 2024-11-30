@@ -11,9 +11,24 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h5>@ViewBag.Heading</h5>
+                       
+                        <div class="card-header  card-header--2">
+                            <div>
+                                <h5>@ViewBag.Heading</h5>
+                            </div>
+                            <div>
+                                <h5>Export to Excel</h5>
+
+                                @using (Html.BeginForm("ImportEmployeeData", "ETS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    <div>
+                                        <a href="@Url.Action("ExportToExcel","ETS")"><img src="~/adminassets/images/icon/Export-Image.png" /></a> <input type="file" class="form-control col-1" name="file" /><br />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Import</button>
+                                }
+                            </div>
                         </div>
+
                         <form class="theme-form mega-form" action="CreateRequest" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
@@ -231,9 +246,9 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Shift Type</label>
                                                 @*<select id="shifttype" name="ShiftType" class="form-control" disabled>
-                                                        <option value="">--Select Shift Type--</option>
-                                                        <option value="NORMAL" @(Model.ShiftType == "NORMAL" ? "selected" : "")>NORMAL</option>
-                                                    </select>*@
+                                    <option value="">--Select Shift Type--</option>
+                                    <option value="NORMAL" @(Model.ShiftType == "NORMAL" ? "selected" : "")>NORMAL</option>
+                                </select>*@
                                                 @Html.DropDownListFor(a => a.ShiftType, Model.ShiftTypes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
 
                                             </div>
@@ -258,39 +273,39 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
                                             </div>
 
                                             @*<div class="col-md-6">
-                                                    <div id="pickupLocation">
-                                                        <label class="form-label-title">Pickup Location</label>
-                                                        <div class="input-group">
-                                                            <select name="PickupLocation" class="form-control">
-                                                                <option value="">--Select Pickup Location--</option>
-                                                                <option value="sector1">Sector 1</option>
-                                                                <option value="sector2">Sector 2</option>
-                                                                <option value="sector3">Sector 3</option>
-                                                            </select>
-                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                                                                <i class="fa fa-location-arrow text-primary"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                <div id="pickupLocation">
+                                    <label class="form-label-title">Pickup Location</label>
+                                    <div class="input-group">
+                                        <select name="PickupLocation" class="form-control">
+                                            <option value="">--Select Pickup Location--</option>
+                                            <option value="sector1">Sector 1</option>
+                                            <option value="sector2">Sector 2</option>
+                                            <option value="sector3">Sector 3</option>
+                                        </select>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
+                                            <i class="fa fa-location-arrow text-primary"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-                                                <div class="col-md-6">
-                                                    <div id="dropLocation">
-                                                        <label class="form-label-title">Drop Location</label>
-                                                        <div class="input-group">
-                                                            <select name="DropLocation" id="dropLocation" class="form-control">
-                                                                <option value="">--Select Drop Location--</option>
-                                                                <option value="sector1">Sector 1</option>
-                                                                <option value="sector2">Sector 2</option>
-                                                                <option value="sector3">Sector 3</option>
-                                                            </select>
-                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                                                                <i class="fa fa-location-arrow text-primary"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                            <div class="col-md-6">
+                                <div id="dropLocation">
+                                    <label class="form-label-title">Drop Location</label>
+                                    <div class="input-group">
+                                        <select name="DropLocation" id="dropLocation" class="form-control">
+                                            <option value="">--Select Drop Location--</option>
+                                            <option value="sector1">Sector 1</option>
+                                            <option value="sector2">Sector 2</option>
+                                            <option value="sector3">Sector 3</option>
+                                        </select>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
+                                            <i class="fa fa-location-arrow text-primary"></i>
+                                        </button>
+                                    </div>
+                                </div>
 
-                                                </div>*@
+                            </div>*@
 
                                         </div>
 
@@ -750,7 +765,9 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
 </script>
 <script async
         defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw&callback=initMap&libraries=places&callback=initAutocomplete"></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw&callback=initMap&libraries=places&callback=initAutocomplete">
+
+</script>
 
 
 

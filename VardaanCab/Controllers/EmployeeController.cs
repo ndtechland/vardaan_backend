@@ -135,10 +135,8 @@ namespace VardaanCab.Controllers
                     dt.Columns.Remove(columnName);
                 }
             }
-
             // Create a new DataTable with only the column names
             DataTable dtWithColumnNames = new DataTable();
-
             // Add columns to the new DataTable
             foreach (DataColumn column in dt.Columns)
             {
@@ -157,6 +155,21 @@ namespace VardaanCab.Controllers
             using (XLWorkbook workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add(dtWithColumnNames, "Employee");
+                var hiddenSheet = workbook.Worksheets.Add("Country");
+                var dd = ent.Customers.Where(x =>x.IsActive == true).ToList();
+                int countryRow = 1;
+                foreach (var ctry in dd.OrderByDescending(x =>x.Id))
+                {
+                    hiddenSheet.Cell(countryRow++, 2).Value = ctry.CompanyName;
+                }
+
+                var countryRange = hiddenSheet.Range($"B1:B{dd.Count}");
+
+                var validation = worksheet.Cell(2, 1).DataValidation; // Apply to cell E2 as an example
+                validation.List(countryRange); // Refer to hidden list
+                validation.IgnoreBlanks = true; // Optional: allows blank entries
+                validation.InCellDropdown = true; // Shows dropdown
+                //countryValidation.List(countryRange);
                 using (MemoryStream stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
