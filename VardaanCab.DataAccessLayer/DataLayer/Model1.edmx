@@ -1101,6 +1101,16 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DayName" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="DepartmentMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="DepartmentName" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+        </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="Id" />
@@ -1161,11 +1171,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="RequestType" Type="nvarchar" MaxLength="100" />
           <Property Name="CompanyId" Type="int" />
           <Property Name="EmployeeId" Type="nvarchar" MaxLength="100" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
-          <Property Name="Gender" Type="nvarchar" MaxLength="10" />
-          <Property Name="Email" Type="nvarchar" MaxLength="255" />
-          <Property Name="GuestContact" Type="nvarchar" MaxLength="50" />
           <Property Name="Unit" Type="nvarchar" MaxLength="250" />
           <Property Name="Department" Type="nvarchar" MaxLength="100" />
           <Property Name="CostCentre" Type="nvarchar" MaxLength="200" />
@@ -1188,6 +1193,27 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="PickupShiftTimeId" Type="int" />
           <Property Name="DropShiftTimeId" Type="int" />
         </EntityType>
+        <EntityType Name="FeedBackEmployee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Employee_Id" Type="int" />
+          <Property Name="Feedback" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="HelpEmployee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Employee_id" Type="int" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="Reason" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="ShiftMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -1195,6 +1221,27 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TripTypeId" Type="int" />
           <Property Name="ShiftTime" Type="nvarchar" MaxLength="100" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="DepartmentId" Type="int" />
+          <Property Name="ShiftBufferTime" Type="nvarchar" MaxLength="100" />
+          <Property Name="CompanyZoneId" Type="int" />
+        </EntityType>
+        <EntityType Name="Support">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Head_Office" Type="nvarchar(max)" />
+          <Property Name="Branch_One" Type="nvarchar(max)" />
+          <Property Name="Branch_Two" Type="nvarchar(max)" />
+          <Property Name="Branch_Three" Type="nvarchar(max)" />
+          <Property Name="Employee_ContactNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="Driver_ContactNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="Email_Id" Type="nvarchar" MaxLength="200" />
+          <Property Name="Website_URL" Type="nvarchar(max)" />
+          <Property Name="Employee_EmergencyNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="Driver_EmergencyNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="TripMaster">
           <Key>
@@ -1617,11 +1664,15 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="CompanyZoneHomeRoute" EntityType="Self.CompanyZoneHomeRoute" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="CompanyZones" EntityType="Self.CompanyZones" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DaysName" EntityType="Self.DaysName" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="DepartmentMaster" EntityType="Self.DepartmentMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeDestinationArea" EntityType="Self.EmployeeDestinationArea" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeRegistrationTypes" EntityType="Self.EmployeeRegistrationTypes" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeRequest" EntityType="Self.EmployeeRequest" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="FeedBackEmployee" EntityType="Self.FeedBackEmployee" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="HelpEmployee" EntityType="Self.HelpEmployee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="ShiftMaster" EntityType="Self.ShiftMaster" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="Support" EntityType="Self.Support" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="TripMaster" EntityType="Self.TripMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="TripType" EntityType="Self.TripType" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="booking_backup11feb" EntityType="Self.booking_backup11feb" store:Type="Tables" store:Schema="newVardaan">
@@ -3223,7 +3274,11 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="TripMasters" EntityType="Vardaan_AdminModel.TripMaster" />
           <EntitySet Name="TripTypes" EntityType="Vardaan_AdminModel.TripType" />
           <EntitySet Name="EmployeeRequests" EntityType="Vardaan_AdminModel.EmployeeRequest" />
-        </EntityContainer>
+          <EntitySet Name="DepartmentMasters" EntityType="Vardaan_AdminModel.DepartmentMaster" />
+          <EntitySet Name="FeedBackEmployees" EntityType="Vardaan_AdminModel.FeedBackEmployee" />
+          <EntitySet Name="HelpEmployees" EntityType="Vardaan_AdminModel.HelpEmployee" />
+          <EntitySet Name="Supports" EntityType="Vardaan_AdminModel.Support" />
+          </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="DateTime" Name="BookingDate" Nullable="false" Precision="23" />
@@ -4323,6 +4378,10 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TripTypeId" Type="Int32" />
           <Property Name="ShiftTime" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="DepartmentId" Type="Int32" />
+          <Property Name="ShiftBufferTime" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyZoneId" Type="Int32" />
         </EntityType>
         <EntityType Name="TripMaster">
           <Key>
@@ -4347,11 +4406,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="RequestType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="EmployeeId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="GuestContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Unit" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Department" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CostCentre" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -4374,7 +4428,55 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="PickupShiftTimeId" Type="Int32" />
           <Property Name="DropShiftTimeId" Type="Int32" />
         </EntityType>
-      </Schema>
+        <EntityType Name="DepartmentMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="DepartmentName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="FeedBackEmployee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Employee_Id" Type="Int32" />
+          <Property Name="Feedback" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="HelpEmployee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Employee_id" Type="Int32" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Support">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Head_Office" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Branch_One" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Branch_Two" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Branch_Three" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_ContactNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Driver_ContactNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Email_Id" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Website_URL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_EmergencyNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Driver_EmergencyNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -6624,6 +6726,10 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="ShiftMasters">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.ShiftMaster">
               <MappingFragment StoreEntitySet="ShiftMaster">
+                <ScalarProperty Name="CompanyZoneId" ColumnName="CompanyZoneId" />
+                <ScalarProperty Name="ShiftBufferTime" ColumnName="ShiftBufferTime" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="ShiftTime" ColumnName="ShiftTime" />
                 <ScalarProperty Name="TripTypeId" ColumnName="TripTypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -6671,11 +6777,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="CostCentre" ColumnName="CostCentre" />
                 <ScalarProperty Name="Department" ColumnName="Department" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
-                <ScalarProperty Name="GuestContact" ColumnName="GuestContact" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="RequestType" ColumnName="RequestType" />
@@ -6683,7 +6784,59 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="DepartmentMasters">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.DepartmentMaster">
+              <MappingFragment StoreEntitySet="DepartmentMaster">
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FeedBackEmployees">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.FeedBackEmployee">
+              <MappingFragment StoreEntitySet="FeedBackEmployee">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Feedback" ColumnName="Feedback" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HelpEmployees">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.HelpEmployee">
+              <MappingFragment StoreEntitySet="HelpEmployee">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Employee_id" ColumnName="Employee_id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Supports">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Support">
+              <MappingFragment StoreEntitySet="Support">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Driver_EmergencyNumber" ColumnName="Driver_EmergencyNumber" />
+                <ScalarProperty Name="Employee_EmergencyNumber" ColumnName="Employee_EmergencyNumber" />
+                <ScalarProperty Name="Website_URL" ColumnName="Website_URL" />
+                <ScalarProperty Name="Email_Id" ColumnName="Email_Id" />
+                <ScalarProperty Name="Driver_ContactNumber" ColumnName="Driver_ContactNumber" />
+                <ScalarProperty Name="Employee_ContactNumber" ColumnName="Employee_ContactNumber" />
+                <ScalarProperty Name="Branch_Three" ColumnName="Branch_Three" />
+                <ScalarProperty Name="Branch_Two" ColumnName="Branch_Two" />
+                <ScalarProperty Name="Branch_One" ColumnName="Branch_One" />
+                <ScalarProperty Name="Head_Office" ColumnName="Head_Office" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

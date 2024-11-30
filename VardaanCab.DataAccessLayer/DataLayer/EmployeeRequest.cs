@@ -18,11 +18,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string RequestType { get; set; }
         public Nullable<int> CompanyId { get; set; }
         public string EmployeeId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Gender { get; set; }
-        public string Email { get; set; }
-        public string GuestContact { get; set; }
         public string Unit { get; set; }
         public string Department { get; set; }
         public string CostCentre { get; set; }

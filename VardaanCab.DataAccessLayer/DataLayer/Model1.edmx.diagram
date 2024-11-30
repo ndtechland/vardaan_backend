@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="83943684d0064b399f3a26a18bff99a2" Name="Diagram1" ZoomLevel="46">
+      <Diagram DiagramId="83943684d0064b399f3a26a18bff99a2" Name="Diagram1" ZoomLevel="27">
         <EntityTypeShape EntityType="Vardaan_AdminModel.Booking" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.Cab" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.CabCategory" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
@@ -67,7 +67,11 @@
         <EntityTypeShape EntityType="Vardaan_AdminModel.TripMaster" Width="1.5" PointX="25.375" PointY="3.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.TripType" Width="1.5" PointX="25.375" PointY="6.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.EmployeeRequest" Width="1.5" PointX="25.375" PointY="9.75" />
-      </Diagram>
+        <EntityTypeShape EntityType="Vardaan_AdminModel.DepartmentMaster" Width="1.5" PointX="25.375" PointY="16.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.FeedBackEmployee" Width="1.5" PointX="25.375" PointY="19.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.HelpEmployee" Width="1.5" PointX="19.375" PointY="25.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.Support" Width="1.5" PointX="25.375" PointY="22.75" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

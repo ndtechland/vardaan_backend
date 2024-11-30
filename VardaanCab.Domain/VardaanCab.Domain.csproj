@@ -86,6 +86,7 @@
     <Compile Include="DTO\CorporatePackageDTO.cs" />
     <Compile Include="DTO\CreateRequestDTO.cs" />
     <Compile Include="DTO\CustomerDTO.cs" />
+    <Compile Include="DTO\DepartmentMasterDTO.cs" />
     <Compile Include="DTO\DiscountTypeModel.cs" />
     <Compile Include="DTO\DriverDTO.cs" />
     <Compile Include="DTO\DriverLeaveDTO.cs" />

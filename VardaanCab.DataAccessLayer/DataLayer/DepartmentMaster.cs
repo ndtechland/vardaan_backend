@@ -12,14 +12,12 @@ namespace VardaanCab.DataAccessLayer.DataLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class ShiftMaster
+    public partial class DepartmentMaster
     {
         public int Id { get; set; }
-        public Nullable<int> TripTypeId { get; set; }
-        public string ShiftTime { get; set; }
         public Nullable<int> CompanyId { get; set; }
-        public Nullable<int> DepartmentId { get; set; }
-        public string ShiftBufferTime { get; set; }
-        public Nullable<int> CompanyZoneId { get; set; }
+        public string DepartmentName { get; set; }
+        public Nullable<bool> IsActive { get; set; }
+        public Nullable<System.DateTime> Created { get; set; }
     }
 }

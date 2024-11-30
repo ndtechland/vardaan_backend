@@ -110,5 +110,52 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+        [HttpPost]
+        [Route("AddEmployeeHelp")]
+        public IHttpActionResult AddEmployeeHelp(HelpEmployee model)
+        {
+            try
+            {
+                var data = new HelpEmployee()
+                {
+                    Employee_id=model.Employee_id,
+                    PhoneNumber=model.PhoneNumber,
+                    Reason=model.Reason,
+                    CreatedDate=DateTime.Now,
+                    IsActive=true
+                };
+                ent.HelpEmployees.Add(data);
+                ent.SaveChanges();
+                return Ok(new {StatusCode=200,Succeed=true,Message="Added successfully."});
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPost]
+        [Route("AddEmployeeFeedback")]
+        public IHttpActionResult AddEmployeeFeedback(FeedBackEmployee model)
+        {
+            try
+            {
+                var data = new FeedBackEmployee()
+                {
+                    Employee_Id = model.Employee_Id,
+                    Feedback = model.Feedback,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true
+                };
+                ent.FeedBackEmployees.Add(data);
+                ent.SaveChanges();
+                return Ok(new { StatusCode = 200, Succeed = true, Message = "Feedback added successfully." });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
