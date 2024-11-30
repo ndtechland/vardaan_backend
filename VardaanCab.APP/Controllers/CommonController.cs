@@ -85,5 +85,31 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+        [HttpGet]
+        [Route("GetSupport")]
+        public IHttpActionResult GetSupport()
+        {
+            try
+            {
+                var response = new Response<Support>();
+                var states = ent.Supports.FirstOrDefault();
+                if (states!=null)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Support retrieved successfully.", data = states });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Support not available.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

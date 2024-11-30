@@ -38,11 +38,6 @@ namespace VardaanCab.Controllers
                 model.RequestType = data.RequestType;
                 model.CompanyId = data.CompanyId;
                 model.EmployeeId = data.EmployeeId;
-                model.FirstName = data.FirstName;
-                model.LastName = data.LastName;
-                model.Gender = data.Gender;
-                model.Email = data.Email;
-                model.GuestContact = data.GuestContact;
                 model.Unit = data.Unit;
                 model.Department = data.Department;
                 model.CostCentre = data.CostCentre;
@@ -55,9 +50,7 @@ namespace VardaanCab.Controllers
                 model.DestinationRequestMethod = data.DestinationRequestMethod;
                 model.LocationType = data.LocationType;
                 model.StartRequestDate = data.StartRequestDate;
-                model.EndRequestDate = data.EndRequestDate;
-                //model.StartRequestDate = Convert.ToDateTime(data.StartRequestDate.Value.ToString("dd-MM-yyyy"));
-                //model.EndRequestDate = Convert.ToDateTime(data.EndRequestDate.Value.ToString("dd-MM-yyyy"));
+                model.EndRequestDate = data.EndRequestDate;               
                 model.TripType = data.TripType;
                 model.ShiftType = data.ShiftType;
                 model.SMSTriggeredLocation = data.SMSTriggeredLocation;
@@ -73,11 +66,6 @@ namespace VardaanCab.Controllers
                 model.CompanyId = 0;
                 model.RequestType = "";
                 model.EmployeeId = "";
-                model.FirstName = "";
-                model.LastName = "";
-                model.Gender = "";
-                model.Email = "";
-                model.GuestContact = "";
                 model.Unit = "";
                 model.Department = "";
                 model.CostCentre = "";
@@ -116,11 +104,6 @@ namespace VardaanCab.Controllers
                         RequestType = model.RequestType,
                         CompanyId = model.CompanyId,
                         EmployeeId = model.EmployeeId,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Gender = model.Gender,
-                        Email = model.Email,
-                        GuestContact = model.GuestContact,
                         Unit = model.Unit,
                         Department = model.Department,
                         CostCentre = model.CostCentre,
@@ -150,11 +133,6 @@ namespace VardaanCab.Controllers
                     data.RequestType = model.RequestType;
                     data.CompanyId = model.CompanyId;
                     data.EmployeeId = model.EmployeeId;
-                    data.FirstName = model.FirstName;
-                    data.LastName = model.LastName;
-                    data.Gender = model.Gender;
-                    data.Email = model.Email;
-                    data.GuestContact = model.GuestContact;
                     data.Unit = model.Unit;
                     data.Department = model.Department;
                     data.CostCentre = model.CostCentre;
@@ -215,6 +193,7 @@ namespace VardaanCab.Controllers
             {
                 var model = new CreateRequestDTO();
                 var data = (from er in ent.EmployeeRequests
+                            join e in ent.Employees on er.EmployeeId equals e.Employee_Id
                             join c in ent.Customers on er.CompanyId equals c.Id
                             join tt in ent.TripTypes on er.TripType equals tt.Id
                             join st in ent.TripMasters on er.ShiftType equals st.Id
@@ -225,11 +204,11 @@ namespace VardaanCab.Controllers
                                 CompanyName = c.CustomerName,
                                 RequestType = er.RequestType,
                                 EmployeeId = er.EmployeeId,
-                                FirstName = er.FirstName,
-                                LastName = er.LastName,
-                                Gender = er.Gender,
-                                Email = er.Email,
-                                GuestContact = er.GuestContact,
+                                FirstName = e.Employee_First_Name,
+                                LastName = e.Employee_Last_Name,
+                                Gender = e.Gender,
+                                Email = e.Email,
+                                GuestContact = e.MobileNumber,
                                 Unit = er.Unit,
                                 Department = er.Department,
                                 CostCentre = er.CostCentre,

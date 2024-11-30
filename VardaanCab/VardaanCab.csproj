@@ -2736,6 +2736,7 @@
     <Compile Include="Controllers\ClientPackageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\CompanyZoneETSController.cs" />
+    <Compile Include="Controllers\DepartmentETSController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ETSController.cs" />
     <Compile Include="Controllers\MonthlyPackageMasterController.cs" />
@@ -2969,6 +2970,7 @@
     <Content Include="Views\Shift\ShiftTime.cshtml" />
     <Content Include="Views\ETS\CreateRequest.cshtml" />
     <Content Include="Views\ETS\EmployeeRequestList.cshtml" />
+    <Content Include="Views\DepartmentETS\Departments.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

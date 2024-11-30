@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.DTO;
 using VardaanCab.Domain.DTOAPI;
 using static System.Net.WebRequestMethods;
 using static VardaanCab.APP.Utilities.EmailOperation;
@@ -131,7 +132,6 @@ namespace VardaanCab.APP.Controllers
                 //return BadRequest($"error.{ex}");
             }
         }
-
-
+        
     }
 }

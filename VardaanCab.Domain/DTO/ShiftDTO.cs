@@ -13,6 +13,11 @@ namespace VardaanCab.Domain.DTO
         public int Id { get; set; }
         public Nullable<int> TripTypeId { get; set; }
         public string ShiftTime { get; set; }
+        public Nullable<int> CompanyId { get; set; }
+        public Nullable<int> DepartmentId { get; set; }
+        public string ShiftBufferTime { get; set; }
+        public Nullable<int> CompanyZoneId { get; set; }
+        public SelectList Companies { get; set; }
         public IEnumerable<GetShift> ShiftList { get; set; }
     }
     public class GetShift
@@ -21,5 +26,9 @@ namespace VardaanCab.Domain.DTO
         public Nullable<int> TripTypeId { get; set; }
         public string ShiftTime { get; set; }
         public string TripType { get; set; }
+        public string CustomerName { get; set; }
+        public string DepartmentName { get; set; }
+        public string CompanyZoneName { get; set; }
+        public string ShiftBufferTime { get; set; }
     }
 }

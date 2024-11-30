@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
     int Count = 1;
 }
-
+ 
 <div class="container-fluid">
     <div class="row">
 
@@ -28,38 +28,81 @@
                                         </div>
                                     </div>
                                 }
-                            <div class="mb-3">
-                                <div class="col-6">
-                                    <label for="hotel-category" class="form-label-title ">
-                                        Trip Type<span class="text-danger">*</span>
-                                    </label>
-                                    <select id="hotel-category" name="TripTypeId" class="form-control js-example-basic-single col-sm-12" required="required">
-                                        <option value="1" @(ViewBag.TripTypeId == 1 ? "selected" : "")>PICKUP</option>
-                                        <option value="2" @(ViewBag.TripTypeId == 2 ? "selected" : "")>DROP</option>
-                                    </select>
+                                <div class="mb-3">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label for="hotel-category" class="form-label-title ">
+                                                    Trip Type<span class="text-danger">*</span>
+                                                </label>
+                                                <select id="hotel-category" name="TripTypeId" class="form-control js-example-basic-single col-sm-12" required="required">
+                                                    <option value="1" @(ViewBag.TripTypeId == 1 ? "selected" : "")>PICKUP</option>
+                                                    <option value="2" @(ViewBag.TripTypeId == 2 ? "selected" : "")>DROP</option>
+                                                </select>
 
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.TripTypeId)
-                                    </span>
-                                </div>
-                                </div>
-                                <div class="row">
-
-                                    <div class="col-6">
-                                        <label class="form-label-title ">Shift Time<span class="text-danger">*</span></label>
-                                        <div class="input-group date" id="CheckIn"
-                                             data-target-input="nearest">
-                                            <input class="form-control datetimepicker-input digits" name="ShiftTime" value="@ViewBag.ShiftTime" type="text" data-target="#CheckIn" required="required">
-                                            <div class="input-group-text" data-target="#CheckIn"
-                                                 data-toggle="datetimepicker">
-                                                <i class="fa fa-clock-o"></i>
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.TripTypeId)
+                                                </span>
                                             </div>
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.ShiftTime)
-                                            </span>
+                                            <div class="col-6">
+                                                <label class="form-label-title ">Shift Time<span class="text-danger">*</span></label>
+                                                <div class="input-group date" id="CheckIn"
+                                                     data-target-input="nearest">
+                                                    <input class="form-control datetimepicker-input" name="ShiftTime" value="@ViewBag.ShiftTime" type="text" data-target="#CheckIn" required="required">
+                                                    <div class="input-group-text" data-target="#CheckIn"
+                                                         data-toggle="datetimepicker">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </div>
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.ShiftTime)
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="hotel-category" class="form-label-title ">
+                                                    Company<span class="text-danger">*</span>
+                                                </label>
+                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "Select Company", new { @class = "form-control", @required = "required" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.CompanyId)
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="hotel-category" class="form-label-title ">
+                                                    Department<span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" id="DepartmentIdhidden" hidden value="@ViewBag.DepartmentId" />
+
+                                                @Html.DropDownListFor(a => a.DepartmentId, Enumerable.Empty<SelectListItem>(), "Select Department", new { @class = "form-control", @required = "required" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.DepartmentId)
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="hotel-category" class="form-label-title ">
+                                                    Shift Buffer Time<span class="text-danger">*</span>
+                                                </label>
+                                                <select id="hotel-category" name="ShiftBufferTime" class="form-control js-example-basic-single col-sm-12" required="required">
+                                                    <option value="5" @(Model.ShiftBufferTime == "5" ? "selected" : "")>5</option>
+                                                    <option value="10" @(Model.ShiftBufferTime == "10" ? "selected" : "")>10</option>
+                                                    <option value="15" @(Model.ShiftBufferTime == "15" ? "selected" : "")>15</option>
+                                                    <option value="20" @(Model.ShiftBufferTime == "20" ? "selected" : "")>20</option>
+                                                    <option value="25" @(Model.ShiftBufferTime == "25" ? "selected" : "")>25</option>
+                                                    <option value="30" @(Model.ShiftBufferTime == "30" ? "selected" : "")>30</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="hotel-category" class="form-label-title ">
+                                                    Company Zone<span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" id="CompanyZoneIdhidden" hidden value="@ViewBag.CompanyZoneId" />
+                                                @Html.DropDownListFor(a => a.CompanyZoneId, Enumerable.Empty<SelectListItem>(), "Select Company Zone", new { @class = "form-control", @required = "required" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.CompanyZoneId)
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-
 
                                 </div>
 
@@ -88,10 +131,10 @@
                         <h5>Shift Time List</h5>
                     </div>
                     @*<form class="d-inline-flex">
-                        <a href="add-new-cars.html" class="btn btn-theme">
-                            <i data-feather="plus-square"></i>Add New
-                        </a>
-                    </form>*@
+                            <a href="add-new-cars.html" class="btn btn-theme">
+                                <i data-feather="plus-square"></i>Add New
+                            </a>
+                        </form>*@
                 </div>
 
                 <div class="card-body">
@@ -105,56 +148,148 @@
                             </div>
                         </div>
                     }
-                <div>
-                    <div class="table-responsive table-desi">
-                        <table class="all-cars-table table table-striped">
-                            <thead>
-                                <tr>
-                                    <th nowrap>Sr No.</th>
-                                    <th>Trip Type</th>
-                                    <th>Shift Type</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model.ShiftList != null)
-                                {
-                                    foreach (var item in Model.ShiftList)
+                    <div>
+                        <div class="table-responsive table-desi">
+                            <table class="all-cars-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th nowrap>Sr No.</th>
+                                        <th nowrap>Trip Type</th>
+                                        <th nowrap>Shift Type</th>
+                                        <th nowrap>Company Name</th>
+                                        <th nowrap>Company Zone Name</th>
+                                        <th nowrap>Department Name</th>
+                                        <th nowrap>Shift Buffer Time</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.ShiftList != null)
                                     {
-                                        <tr>
-                                            <td nowrap>@Count</td>
-                                            <td>@item.TripType</td>
-                                            <td>@item.ShiftTime</td>
-                                            <td>
-                                                <a href="/Shift/ShiftTime?Id=@item.Id">
-                                                    <i class="fa fa-pencil-square-o"
-                                                       aria-hidden="true"></i>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="/Shift/DeleteShiftTime?Id=@item.Id" onclick="return confirm('Are you sure want to delete?')">
-                                                    <i class="fa fa-trash-o"
-                                                       aria-hidden="true"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        Count++;
+                                        foreach (var item in Model.ShiftList)
+                                        {
+                                            <tr>
+                                                <td nowrap>@Count</td>
+                                                <td nowrap>@item.TripType</td>
+                                                <td nowrap>@item.ShiftTime</td>
+                                                <td nowrap>@item.CustomerName</td>
+                                                <td nowrap>@item.CompanyZoneName</td>
+                                                <td nowrap>@item.DepartmentName</td>
+                                                <td nowrap>@item.ShiftBufferTime</td>
+                                                <td>
+                                                    <a href="/Shift/ShiftTime?Id=@item.Id">
+                                                        <i class="fa fa-pencil-square-o"
+                                                           aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="/Shift/DeleteShiftTime?Id=@item.Id" onclick="return confirm('Are you sure want to delete?')">
+                                                        <i class="fa fa-trash-o"
+                                                           aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            Count++;
+                                        }
                                     }
-                                } 
 
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                </div>
 
-                
+
 
             </div>
         </div>
 
     </div>
 </div>
- 
+
+
+<script>
+    //$("#CompanyId").change(function () {
+    //    var id = $(this).val();
+    //    $.get('/Common/GetDepartmentByCompany?companyId=' + id, function (r) {
+    //        var dd = $("#DepartmentId");
+    //        dd.empty();
+    //        dd.append('<option value="">Select Department</option>');
+    //        $.each(r, function (k, v) {
+    //            dd.append('<option value="' + v.Id + '">' + v.DepartmentName + '</option>');
+
+    //        })
+    //    })
+    //});
+
+    //$("#CompanyId").change(function () {
+    //    var id = $(this).val();
+    //    $.get('/Common/GetCompanyZonesByID?Customer_Id=' + id, function (r) {
+    //        var dd = $("#CompanyZoneId");
+    //        dd.empty();
+    //        dd.append('<option value="">Select Company Zone</option>');
+    //        $.each(r, function (k, v) {
+    //            dd.append('<option value="' + v.Id + '">' + v.CompanyZone1 + '</option>');
+
+    //        })
+    //    })
+    //});
+</script>
+
+<script>
+    $("#CompanyId").change(function () {
+        var id = $(this).val();
+        $.get('/Common/GetDepartmentByCompany?companyId=' + id, function (r) {
+            var dd = $("#DepartmentId");
+            dd.empty();
+            dd.append('<option value="">Select Department</option>');
+            $.each(r, function (k, v) {
+                dd.append('<option value="' + v.Id + '">' + v.DepartmentName + '</option>');
+
+            })
+        })
+    });
+
+    $(document).ready(function () {
+        var id = $("#CompanyId").val();
+        $.get('/Common/GetDepartmentByCompany?companyId=' + id, function (r) {
+            var dd = $("#DepartmentId");
+            dd.empty();
+            dd.append('<option value="">Select Department</option>');
+            $.each(r, function (k, v) {
+                dd.append('<option value="' + v.Id + '">' + v.DepartmentName + '</option>');
+
+            })
+            $("#DepartmentId").val($("#DepartmentIdhidden").val());
+        })
+    });
+
+    $("#CompanyId").change(function () {
+        var id = $(this).val();
+        $.get('/Common/GetCompanyZonesByID?Customer_Id=' + id, function (r) {
+            var dd = $("#CompanyZoneId");
+            dd.empty();
+            dd.append('<option value="">Select City</option>');
+            $.each(r, function (k, v) {
+                dd.append('<option value="' + v.Id + '">' + v.CompanyZone1 + '</option>');
+
+            })
+        })
+    });
+
+    $(document).ready(function () {
+        var id = $("#CompanyId").val();
+        $.get('/Common/GetCompanyZonesByID?Customer_Id=' + id, function (r) {
+            var dd = $("#CompanyZoneId");
+            dd.empty();
+            dd.append('<option value="">Select City</option>');
+            $.each(r, function (k, v) {
+                dd.append('<option value="' + v.Id + '">' + v.CompanyZone1 + '</option>');
+
+            })
+            $("#CompanyZoneId").val($("#CompanyZoneIdhidden").val());
+        })
+    });
+</script>
