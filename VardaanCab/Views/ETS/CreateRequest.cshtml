@@ -706,10 +706,37 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
         handleTripTypeShiftTypeChange();
     });
 </script>
+@*<script>
+        $(document).ready(function () {
+            $('#employeeId').on('keyup', function () {
+                var id = $(this).val();
+                if (id) {
+                    $.ajax({
+                        url: '@Url.Action("GetEmployeeDetails", "ETS")',
+                        type: 'GET',
+                        data: { id: id },
+                        success: function (response) {
+                            if (response) {
+                                $('#firstName').val(response.firstName);
+                                $('#lastName').val(response.lastName);
+                                $('#gender').val(response.gender);
+                                $('#email').val(response.email);
+                                $('#guestContact').val(response.guestContactNumber);
+                            } else {
+                                alert('Employee not found');
+                            }
+                        },
+                        error: function () {
+                            console.log('Error fetching employee details');
+                        }
+                    });
+                }
+            });
+        });
+    </script>*@
 <script>
     $(document).ready(function () {
-        $('#employeeId').on('keyup', function () {
-            var id = $(this).val();
+        function fetchEmployeeDetails(id) {
             if (id) {
                 $.ajax({
                     url: '@Url.Action("GetEmployeeDetails", "ETS")',
@@ -731,6 +758,16 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
                     }
                 });
             }
+        }
+
+        var existingEmployeeId = $('#employeeId').val();
+        if (existingEmployeeId) {
+            fetchEmployeeDetails(existingEmployeeId);
+        }
+
+        $('#employeeId').on('keyup', function () {
+            var id = $(this).val();
+            fetchEmployeeDetails(id);
         });
     });
 </script>
