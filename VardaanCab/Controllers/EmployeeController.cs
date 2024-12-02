@@ -124,52 +124,152 @@ namespace VardaanCab.Controllers
 
         public ActionResult ExportToExcel()
         {
-            DataTable dt = GetTableData(); // Get data from the database
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Company_Id");
+            dt.Columns.Add("Company_location");
+            dt.Columns.Add("Employee_Id");
+            dt.Columns.Add("Employee_First_Name");
+            dt.Columns.Add("Employee_Middle_Name");
+            dt.Columns.Add("Employee_Last_Name");
+            dt.Columns.Add("MobileNumber");
+            dt.Columns.Add("Email");
+            dt.Columns.Add("StateId");
+            dt.Columns.Add("CityId");
+            dt.Columns.Add("Pincode");
+            dt.Columns.Add("EmployeeCurrentAddress");
+            dt.Columns.Add("LoginUserName");
+            dt.Columns.Add("WeekOff");
+            dt.Columns.Add("EmployeeGeoCode");
+            dt.Columns.Add("EmployeeBusinessUnit");
+            dt.Columns.Add("EmployeeDepartment");
+            dt.Columns.Add("EmployeeProjectName");
+            dt.Columns.Add("ReportingManager");
+            dt.Columns.Add("PrimaryFacilityZone");
+            dt.Columns.Add("HomeRouteName");
+            dt.Columns.Add("EmployeeDestinationArea");
+            dt.Columns.Add("EmployeeRegistrationType");
+            dt.Columns.Add("Gender");
+            dt.Columns.Add("AlternateNumber");
 
-            var columnsToRemove = new List<string> { "Id", "IsActive", "CreatedDate", "Password", "IsFirst", "OTP" };
-
-            foreach (string columnName in columnsToRemove)
+            Dictionary<string, string> columnMappings = new Dictionary<string, string>()
             {
-                if (dt.Columns.Contains(columnName))
-                {
-                    dt.Columns.Remove(columnName);
-                }
-            }
-            // Create a new DataTable with only the column names
-            DataTable dtWithColumnNames = new DataTable();
-            // Add columns to the new DataTable
-            foreach (DataColumn column in dt.Columns)
-            {
-                dtWithColumnNames.Columns.Add(column.ColumnName);
-            }
-
-            // Add a single row with column names as values
-            DataRow headerRow = dtWithColumnNames.NewRow();
-            for (int i = 0; i < dt.Columns.Count; i++)
-            {
-                headerRow[i] = dt.Columns[i].ColumnName;
-            }
-            dtWithColumnNames.Rows.Add(headerRow);
+            { "Company_Id", "Company Name" },
+            { "Company_location", "Company Location" },
+            { "Employee_Id", "Employee ID" },
+            { "Employee_First_Name", "First Name" },
+            { "Employee_Middle_Name", "Middle Name" },
+            { "Employee_Last_Name", "Last Name" },
+            { "MobileNumber", "Mobile Number" },
+            { "Email", "Email Address" },
+            { "StateId", "State Name" },
+            { "CityId", "City Name" },
+            { "Pincode", "Postal Code" },
+            { "EmployeeCurrentAddress", "Current Address" },
+            { "LoginUserName", "Login Username" },
+            { "WeekOff", "Week Off" },
+            { "EmployeeGeoCode", "Geo Location" },
+            { "EmployeeBusinessUnit", "Business Unit" },
+            { "EmployeeDepartment", "Department" },
+            { "EmployeeProjectName", "Project Name" },
+            { "ReportingManager", "Reporting Manager" },
+            { "PrimaryFacilityZone", "Facility Zone" },
+            { "HomeRouteName", "Home Route Name" },
+            { "EmployeeDestinationArea", "Destination Area" },
+            { "EmployeeRegistrationType", "Registration Type" },
+            { "Gender", "Gender" },
+            { "AlternateNumber", "Alternate Contact" }
+            };
 
             // Export to Excel
             using (XLWorkbook workbook = new XLWorkbook())
             {
-                var worksheet = workbook.Worksheets.Add(dtWithColumnNames, "Employee");
-                var hiddenSheet = workbook.Worksheets.Add("Country");
-                var dd = ent.Customers.Where(x =>x.IsActive == true).ToList();
-                int countryRow = 1;
-                foreach (var ctry in dd.OrderByDescending(x =>x.Id))
+                // Create a worksheet and add the headers
+                var worksheet = workbook.Worksheets.Add("Employee");
+
+                // Add the headers based on the mapping
+                int colIndex = 1;
+                foreach (DataColumn column in dt.Columns)
                 {
-                    hiddenSheet.Cell(countryRow++, 2).Value = ctry.CompanyName;
+                    string oldColumnName = column.ColumnName;
+                    if (columnMappings.ContainsKey(oldColumnName))
+                    {
+                        worksheet.Cell(1, colIndex).Value = columnMappings[oldColumnName];
+                    }
+                    else
+                    {
+                        worksheet.Cell(1, colIndex).Value = oldColumnName;
+                    }
+                    worksheet.Cell(1, colIndex).Style.Fill.BackgroundColor = XLColor.Yellow;
+                    colIndex++;
                 }
 
-                var countryRange = hiddenSheet.Range($"B1:B{dd.Count}");
+                // Create a hidden sheet to store company names for dropdown
+                var hiddenSheet = workbook.Worksheets.Add("CompanyList");
+                var StatehiddenSheet = workbook.Worksheets.Add("StateList");
+                var CityhiddenSheet = workbook.Worksheets.Add("CityList");
+                var GenderList = "\"Male,Female,Other\"";
+                var WeekOffList = "\"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday\"";
 
-                var validation = worksheet.Cell(2, 1).DataValidation; // Apply to cell E2 as an example
-                validation.List(countryRange); // Refer to hidden list
-                validation.IgnoreBlanks = true; // Optional: allows blank entries
-                validation.InCellDropdown = true; // Shows dropdown
-                //countryValidation.List(countryRange);
+                // Retrieve active customers for the dropdown list
+                var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
+                var StateList = ent.StateMasters.ToList();
+                var CityList = ent.CityMasters.ToList();
+
+                // Populate hidden sheet with company names
+                int hiddenRow = 1;
+                foreach (var company in companyList.OrderByDescending(x => x.Id))
+                {
+                    hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
+                }
+                hiddenRow = 1;
+                foreach (var state in StateList.OrderByDescending(x => x.Id))
+                {
+                    StatehiddenSheet.Cell(hiddenRow++, 1).Value = state.StateName;
+
+                }
+                hiddenRow = 1;
+                foreach (var city in CityList.OrderByDescending(x => x.Id))
+                {
+                    CityhiddenSheet.Cell(hiddenRow++, 1).Value = city.CityName;
+                }
+                // Define the dropdown list range
+                var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
+                var StateRange = StatehiddenSheet.Range($"A1:A{StateList.Count}");
+                var CityRange = CityhiddenSheet.Range($"A1:A{CityList.Count}");
+
+
+                //Apply dropdown list validation to cell A2(under "Company ID")
+                var validationOne = worksheet.Cell(2, 1).DataValidation;
+                validationOne.List(companyRange); // Dropdown from hidden sheet
+                validationOne.IgnoreBlanks = true;
+                validationOne.InCellDropdown = true;
+
+                var validationTwo = worksheet.Cell(2, 9).DataValidation;
+                validationTwo.List(StateRange); // Dropdown from hidden sheet
+                validationTwo.IgnoreBlanks = true;
+                validationTwo.InCellDropdown = true;
+
+                var validationThree = worksheet.Cell(2, 10).DataValidation;
+                validationThree.List(CityRange); // Dropdown from hidden sheet
+                validationThree.IgnoreBlanks = true;
+                validationThree.InCellDropdown = true;
+
+                var validationFour = worksheet.Cell(2, 24).DataValidation;
+                validationFour.List(GenderList); // Dropdown from hidden sheet
+                validationFour.IgnoreBlanks = true;
+                validationFour.InCellDropdown = true;
+
+                var validationFive = worksheet.Cell(2, 14).DataValidation;
+                validationFive.List(WeekOffList); // Dropdown from hidden sheet
+                validationFive.IgnoreBlanks = true;
+                validationFive.InCellDropdown = true;
+
+                // Hide the sheet containing company names
+                //hiddenSheet.Hide();
+                //StatehiddenSheet.Hide();
+                //CityhiddenSheet.Hide();
+
+                // Save and return Excel file as download
                 using (MemoryStream stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
@@ -179,47 +279,101 @@ namespace VardaanCab.Controllers
             }
         }
 
-        private DataTable GetTableData()
-        {
-            var entityBuilder = new EntityConnectionStringBuilder(efConnectionString);
-            string sqlConnectionString = entityBuilder.ProviderConnectionString;
-            DataTable dt = new DataTable();
+        #region no use
+        //public ActionResult ExportToExcel()
+        //{
+        //    DataTable dt = GetTableData(); // Get data from the database
 
-            using (SqlConnection con = new SqlConnection(sqlConnectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM Employee", con))
-                {
-                    con.Open();
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    da.Fill(dt);
-                }
-            }
+        //    var columnsToRemove = new List<string> { "Id", "IsActive", "CreatedDate", "Password", "IsFirst", "OTP" };
 
-            return dt;
-        }
+        //    foreach (string columnName in columnsToRemove)
+        //    {
+        //        if (dt.Columns.Contains(columnName))
+        //        {
+        //            dt.Columns.Remove(columnName);
+        //        }
+        //    }
+        //    // Create a new DataTable with only the column names
+        //    DataTable dtWithColumnNames = new DataTable();
+        //    // Add columns to the new DataTable
+        //    foreach (DataColumn column in dt.Columns)
+        //    {
+        //        dtWithColumnNames.Columns.Add(column.ColumnName);
+        //    }
+
+        //    // Add a single row with column names as values
+        //    DataRow headerRow = dtWithColumnNames.NewRow();
+        //    for (int i = 0; i < dt.Columns.Count; i++)
+        //    {
+        //        headerRow[i] = dt.Columns[i].ColumnName;
+        //    }
+        //    dtWithColumnNames.Rows.Add(headerRow);
+
+        //    // Export to Excel
+        //    using (XLWorkbook workbook = new XLWorkbook())
+        //    {
+        //        var worksheet = workbook.Worksheets.Add(dtWithColumnNames, "Employee");
+        //        var hiddenSheet = workbook.Worksheets.Add("Country");
+        //        var dd = ent.Customers.Where(x =>x.IsActive == true).ToList();
+        //        int countryRow = 1;
+        //        foreach (var ctry in dd.OrderByDescending(x =>x.Id))
+        //        {
+        //            hiddenSheet.Cell(countryRow++, 2).Value = ctry.CompanyName;
+        //        }
+
+        //        var countryRange = hiddenSheet.Range($"B1:B{dd.Count}");
+
+        //        var validation = worksheet.Cell(2, 1).DataValidation; // Apply to cell E2 as an example
+        //        validation.List(countryRange); // Refer to hidden list
+        //        validation.IgnoreBlanks = true; // Optional: allows blank entries
+        //        validation.InCellDropdown = true; // Shows dropdown
+        //        //countryValidation.List(countryRange);
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+        //            workbook.SaveAs(stream);
+        //            stream.Position = 0;
+        //            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeData.xlsx");
+        //        }
+        //    }
+        //}
+
+        //private DataTable GetTableData()
+        //{
+        //    var entityBuilder = new EntityConnectionStringBuilder(efConnectionString);
+        //    string sqlConnectionString = entityBuilder.ProviderConnectionString;
+        //    DataTable dt = new DataTable();
+
+        //    using (SqlConnection con = new SqlConnection(sqlConnectionString))
+        //    {
+        //        using (SqlCommand cmd = new SqlCommand("SELECT * FROM Employee", con))
+        //        {
+        //            con.Open();
+        //            SqlDataAdapter da = new SqlDataAdapter(cmd);
+        //            da.Fill(dt);
+        //        }
+        //    }
+
+        //    return dt;
+        //}
+        #endregion
 
         [HttpPost]
         public ActionResult ImportEmployeeData(HttpPostedFileBase file)
         {
             try
             {
-             // Check if a file is uploaded
-            if (file != null && file.ContentLength > 0)
-            {
-                using (var workbook = new XLWorkbook(file.InputStream))
+                // Check if a file is uploaded
+                if (file != null && file.ContentLength > 0)
                 {
-                    // Get the first worksheet (assuming data is in the first worksheet)
-                    var worksheet = workbook.Worksheet(1);
-                    var rows = worksheet.RowsUsed().Skip(1); // Skip the header row
-
-                    // Create a list to store employee data
-                    //Employee employees = new Employee();
-
+                    using (var workbook = new XLWorkbook(file.InputStream))
+                    {
+                      
+                        var worksheet = workbook.Worksheet(1);
+                        var rows = worksheet.RowsUsed().Skip(1);
                         List<Employee> employees = new List<Employee>();
 
                         foreach (var row in rows)
                         {
-                            // Initialize a new Employee object
                             Employee employee = new Employee
                             {
                                 Company_Id = row.Cell(1).GetValue<int>(),
@@ -252,11 +406,9 @@ namespace VardaanCab.Controllers
                                 AlternateNumber = row.Cell(25).GetValue<string>() ?? string.Empty
                             };
 
-                            // Add the Employee object to the list
+                          
                             employees.Add(employee);
                         }
-
-                        // Save all Employee objects to the database in bulk
                         if (employees.Any())
                         {
                             ent.Employees.AddRange(employees);
@@ -265,15 +417,13 @@ namespace VardaanCab.Controllers
 
 
 
-                        // Return success message
+                       
                         ViewBag.Message = "Data imported successfully!";
-                    return RedirectToAction("GetEmployeeList");
+                        return RedirectToAction("GetEmployeeList");
+                    }
                 }
-            }
-
-            // If no file is selected, return an error message
-            ViewBag.Message = "Please select an Excel file to import.";
-            return View();
+                ViewBag.Message = "Please select an Excel file to import.";
+                return View();
             }
             catch (DbEntityValidationException ex)
             {
