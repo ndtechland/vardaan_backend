@@ -193,7 +193,7 @@ namespace VardaanCab.Controllers
             {
                 var model = new CreateRequestDTO();
                 var data = (from er in ent.EmployeeRequests
-                            join e in ent.Employees on er.EmployeeId equals e.Employee_Id
+                            //join e in ent.Employees on er.EmployeeId equals e.Employee_Id
                             join c in ent.Customers on er.CompanyId equals c.Id
                             join tt in ent.TripTypes on er.TripType equals tt.Id
                             join st in ent.TripMasters on er.ShiftType equals st.Id
@@ -204,11 +204,11 @@ namespace VardaanCab.Controllers
                                 CompanyName = c.CustomerName,
                                 RequestType = er.RequestType,
                                 EmployeeId = er.EmployeeId,
-                                FirstName = e.Employee_First_Name,
-                                LastName = e.Employee_Last_Name,
-                                Gender = e.Gender,
-                                Email = e.Email,
-                                GuestContact = e.MobileNumber,
+                                //FirstName = e.Employee_First_Name,
+                                //LastName = e.Employee_Last_Name,
+                                //Gender = e.Gender,
+                                //Email = e.Email,
+                                //GuestContact = e.MobileNumber,
                                 Unit = er.Unit,
                                 Department = er.Department,
                                 CostCentre = er.CostCentre,

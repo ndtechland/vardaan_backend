@@ -155,7 +155,7 @@
                                                          data-target-input="nearest">
                                                         <div class="input-group">
 
-                                                            @Html.TextBoxFor(a => a.BookingReceivedDate, new { @class = "form-control", type = "date", placeholder = "Date of Booking Received" })
+                                                            @Html.TextBoxFor(a => a.BookingReceivedDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Date of Booking Received", type = "Date" })
 
                                                         </div>
                                                     </div>
@@ -215,15 +215,7 @@
                                                 <div class="input-group date" id="sdt-date"
                                                      data-target-input="nearest">
                                                     <div class="input-group">
-
-                                                        @Html.TextBoxFor(a => a.StartRequestDate, new
-{
-@class = "form-control",
-type = "date",
-placeholder = "Start Request Date",
-min = DateTime.Now.ToString("yyyy-MM-dd")
-})
-
+                                                        @Html.TextBoxFor(m => m.StartRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Start Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
 
                                                     </div>
                                                 </div>
@@ -233,8 +225,7 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
                                                 <div class="input-group date" id="edt-date"
                                                      data-target-input="nearest">
                                                     <div class="input-group">
-                                                        @Html.TextBoxFor(a => a.EndRequestDate, new { @class = "form-control", type = "date", placeholder = "End Request Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
-
+                                                        @Html.TextBoxFor(m => m.EndRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "End Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
                                                     </div>
                                                 </div>
                                             </div>
@@ -262,7 +253,7 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
                                                 @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "dropshifttime" })
 
                                             </div>
-                                            <div class="col-md-3" id="pickupshift">
+                                            @*<div class="col-md-3" id="pickupshift">
                                                 <label class="form-label-title ">Shift Time</label>
                                                 @Html.DropDownListFor(a => a.PickupShiftTimeId, Model.PickUpshiftTimes, "--Select Shift Time--", new { @class = "form-control" })
                                             </div>
@@ -270,7 +261,7 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
                                                 <label class="form-label-title ">Shift Time</label>
 
                                                 @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Shift Time--", new { @class = "form-control" })
-                                            </div>
+                                            </div>*@
 
                                             @*<div class="col-md-6">
                                 <div id="pickupLocation">
@@ -661,16 +652,16 @@ min = DateTime.Now.ToString("yyyy-MM-dd")
                 toggleElementVisibility(dropshift, false);
                 toggleElementVisibility(pickupshift, false);
             } else if (tripTypeValue === "1" && shiftTypeValue !== "") {
-                toggleElementVisibility(pickupShiftTimeContainer, false);
+                toggleElementVisibility(pickupShiftTimeContainer, true);
                 toggleElementVisibility(dropShiftTimeContainer, false);
-                toggleElementVisibility(dropshift, false);
-                toggleElementVisibility(pickupshift, true);
+                //toggleElementVisibility(dropshift, false);
+                //toggleElementVisibility(pickupshift, true);
             }
             else if (tripTypeValue === "2" && shiftTypeValue !== "") {
                 toggleElementVisibility(pickupShiftTimeContainer, false);
-                toggleElementVisibility(dropShiftTimeContainer, false);
-                toggleElementVisibility(dropshift, true);
-                toggleElementVisibility(pickupshift, false);
+                toggleElementVisibility(dropShiftTimeContainer, tripType);
+                //toggleElementVisibility(dropshift, true);
+                //toggleElementVisibility(pickupshift, false);
             } else {
                 toggleElementVisibility(pickupShiftTimeContainer, false);
                 toggleElementVisibility(dropShiftTimeContainer, false);

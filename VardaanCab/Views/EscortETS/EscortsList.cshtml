@@ -1,0 +1,99 @@
+﻿@model VardaanCab.Domain.DTO.EscortDTO
+@{
+    ViewBag.Title = "EscortsList";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    int Count = 1;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        <h5>Escort List</h5>
+                    </div>
+                    <form class="d-inline-flex">
+                        <a href="/EscortETS/Escort?menuId=@ViewBag.menuId" class="btn btn-theme">
+                            <i data-feather="plus-square"></i>Add New
+                        </a>
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    @if (TempData["dltmsg"] != null)
+                    {
+                        <div class="row r">
+                            <div class="col-md-12">
+                                <div class="alert alert-success">
+                                    @TempData["dltmsg"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div>
+                        <div class="table-responsive table-desi">
+                            <table class="datatable user-table all-driver-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th nowrap>Sr No.</th>
+                                        <th nowrap>Escort EmployeeId</th>                                        
+                                        <th nowrap>Escort Name</th>                                        
+                                        <th nowrap>Escort Fathe Name</th>                                        
+                                        <th nowrap>Mobile Number</th>                                        
+                                        <th nowrap>Aadhar Number</th>                                        
+                                        <th nowrap>DOB</th>                                        
+                                        <th nowrap>Company Name</th>                                        
+                                        <th nowrap>Vendor Name</th>                                        
+                                        <th nowrap>Pincode</th>                                        
+                                        <th nowrap>Permanent Address</th>                                        
+                                        <th nowrap>Escort Address</th>                                        
+                                        <th nowrap>Created Date</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.EscortList)
+                                    {
+                                        <tr>
+                                            <td nowrap>@Count</td>
+                                            <td>@item.EscortEmployeeId</td>
+                                            <td>@item.EscortName</td>
+                                            <td>@item.EscortFatheName</td>
+                                            <td>@item.EscortMobileNumber</td>
+                                            <td>@item.EscortAadhaarNumber</td>
+                                            <td>@item.DOB</td>
+                                            <td>@item.CompanyName</td>
+                                            <td>@item.VendorName</td>
+                                            <td>@item.Pincode</td>
+                                            <td>@item.PermanentAddress</td>
+                                            <td>@item.EscortAddress</td>
+                                            <td>@item.CreatedDate</td>
+                                            <td>
+                                                <a href="/EscortETS/Escort?Id=@item.Id">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="/EscortETS/DeleteEscort?Id=@item.Id" onclick="return confirm('Are you sure you want to delete?')">
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        Count++;
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
