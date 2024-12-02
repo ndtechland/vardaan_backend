@@ -1193,6 +1193,25 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="PickupShiftTimeId" Type="int" />
           <Property Name="DropShiftTimeId" Type="int" />
         </EntityType>
+        <EntityType Name="Escort">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EscortName" Type="nvarchar" MaxLength="250" />
+          <Property Name="EscortFatheName" Type="nvarchar" MaxLength="250" />
+          <Property Name="EscortMobileNumber" Type="nvarchar" MaxLength="250" />
+          <Property Name="EscortAadhaarNumber" Type="nvarchar" MaxLength="250" />
+          <Property Name="VendorId" Type="int" />
+          <Property Name="DOB" Type="date" />
+          <Property Name="EscortEmployeeId" Type="nvarchar" MaxLength="250" />
+          <Property Name="Pincode" Type="nvarchar" MaxLength="10" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="PermanentAddress" Type="nvarchar(max)" />
+          <Property Name="EscortAddress" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="FeedBackEmployee">
           <Key>
             <PropertyRef Name="Id" />
@@ -1669,6 +1688,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="EmployeeDestinationArea" EntityType="Self.EmployeeDestinationArea" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeRegistrationTypes" EntityType="Self.EmployeeRegistrationTypes" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeRequest" EntityType="Self.EmployeeRequest" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="Escort" EntityType="Self.Escort" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="FeedBackEmployee" EntityType="Self.FeedBackEmployee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="HelpEmployee" EntityType="Self.HelpEmployee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="ShiftMaster" EntityType="Self.ShiftMaster" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -3278,6 +3298,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="FeedBackEmployees" EntityType="Vardaan_AdminModel.FeedBackEmployee" />
           <EntitySet Name="HelpEmployees" EntityType="Vardaan_AdminModel.HelpEmployee" />
           <EntitySet Name="Supports" EntityType="Vardaan_AdminModel.Support" />
+          <EntitySet Name="Escorts" EntityType="Vardaan_AdminModel.Escort" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4474,6 +4495,25 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Website_URL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Employee_EmergencyNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Driver_EmergencyNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Escort">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EscortName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="EscortFatheName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="EscortMobileNumber" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="EscortAadhaarNumber" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="VendorId" Type="Int32" />
+          <Property Name="DOB" Type="DateTime" Precision="0" />
+          <Property Name="EscortEmployeeId" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Pincode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="PermanentAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EscortAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
         </Schema>
@@ -6832,6 +6872,26 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="Branch_Two" ColumnName="Branch_Two" />
                 <ScalarProperty Name="Branch_One" ColumnName="Branch_One" />
                 <ScalarProperty Name="Head_Office" ColumnName="Head_Office" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Escorts">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Escort">
+              <MappingFragment StoreEntitySet="Escort">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="EscortAddress" ColumnName="EscortAddress" />
+                <ScalarProperty Name="PermanentAddress" ColumnName="PermanentAddress" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="EscortEmployeeId" ColumnName="EscortEmployeeId" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="EscortAadhaarNumber" ColumnName="EscortAadhaarNumber" />
+                <ScalarProperty Name="EscortMobileNumber" ColumnName="EscortMobileNumber" />
+                <ScalarProperty Name="EscortFatheName" ColumnName="EscortFatheName" />
+                <ScalarProperty Name="EscortName" ColumnName="EscortName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

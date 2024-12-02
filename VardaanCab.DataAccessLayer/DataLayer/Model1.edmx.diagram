@@ -71,6 +71,7 @@
         <EntityTypeShape EntityType="Vardaan_AdminModel.FeedBackEmployee" Width="1.5" PointX="25.375" PointY="19.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.HelpEmployee" Width="1.5" PointX="19.375" PointY="25.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.Support" Width="1.5" PointX="25.375" PointY="22.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.Escort" Width="1.5" PointX="5.375" PointY="26.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

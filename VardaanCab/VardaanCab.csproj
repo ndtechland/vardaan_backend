@@ -2738,6 +2738,7 @@
     <Compile Include="Controllers\CompanyZoneETSController.cs" />
     <Compile Include="Controllers\DepartmentETSController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\EscortETSController.cs" />
     <Compile Include="Controllers\ETSController.cs" />
     <Compile Include="Controllers\MonthlyPackageMasterController.cs" />
     <Compile Include="Controllers\MonthlyPackageController.cs" />
@@ -2971,6 +2972,8 @@
     <Content Include="Views\ETS\CreateRequest.cshtml" />
     <Content Include="Views\ETS\EmployeeRequestList.cshtml" />
     <Content Include="Views\DepartmentETS\Departments.cshtml" />
+    <Content Include="Views\EscortETS\Escort.cshtml" />
+    <Content Include="Views\EscortETS\EscortsList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
