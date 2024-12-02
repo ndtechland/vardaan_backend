@@ -36,6 +36,7 @@ namespace VardaanCab.Domain.DTO
         public string EscortMobileNumber { get; set; }
         public string EscortAadhaarNumber { get; set; }
         public string VendorName { get; set; }
+        public string Gender { get; set; }
         public string CompanyName { get; set; }
         public string EmployeeFullName { get; set; }
         public Nullable<int> VendorId { get; set; }
