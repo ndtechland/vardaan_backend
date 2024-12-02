@@ -151,14 +151,13 @@ namespace VardaanCab.Controllers
                     data.SMSTriggeredLocation = model.SMSTriggeredLocation;
                     data.PickupShiftTimeId = model.PickupShiftTimeId;
                     data.DropShiftTimeId = model.DropShiftTimeId;
-
                 }
                 ent.SaveChanges();
                 TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["msg"] = "Server error";
             }
