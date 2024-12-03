@@ -13,6 +13,7 @@ namespace VardaanCab.Domain.DTO
         public Nullable<int> CompanyId { get; set; }
         public string CompanyZone { get; set; }
         public string CompanyName { get; set; }
+        public string Zonelatlong { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public int MenuId { get; set; }
         public SelectList Companies { get; set; }
@@ -25,5 +26,10 @@ namespace VardaanCab.Domain.DTO
         public string CompanyZone { get; set; }
         public string CompanyName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+    }
+    public class Coordinate
+    {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
     }
 }
