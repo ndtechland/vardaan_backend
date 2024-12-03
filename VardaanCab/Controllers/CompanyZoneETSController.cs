@@ -41,7 +41,7 @@ namespace VardaanCab.Controllers
         }
         [HttpPost]
         public ActionResult AddCompanyZone(CompanyZoneDTO model)
-        {
+         {
             model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
             try
             {
