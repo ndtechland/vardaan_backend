@@ -26,5 +26,6 @@ namespace VardaanCab.Domain.DTOAPI
         public string EmployeePic { get; set; }
         public string Gender { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> Company_Id { get; set; }
     }
 }

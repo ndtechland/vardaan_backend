@@ -1,0 +1,134 @@
+﻿@model VardaanCab.Domain.DTO.createorg
+@{
+    ViewBag.Title = "CreateOrg";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    int Count = 1;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header  card-header--2">
+                            <div>
+                                <h5>@ViewBag.Heading</h5>
+                            </div>
+                            @*<form class="d-inline-flex">
+                                <a href="/Customer/CreateOrg" class="btn btn-primary">Show all</a>
+
+                            </form>*@
+                        </div>
+                        <form class="theme-form mega-form" action="CreateOrg" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
+                                <input name="Id" type="hidden" value="@Model.Id" />
+                                @if (TempData["msg"] != null)
+                                {
+                                    <div class="mb-3">
+                                        <div class="alert alert-success">
+                                            @TempData["msg"]
+                                        </div>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label class="form-label-title">Select Company</label>
+                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control", required = "required" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.CompanyId)
+                                                </span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label-title">Org Name</label>
+                                                @Html.TextBoxFor(a => a.OrgName, new { @class = "form-control", placeholder = "Org Name", required = "required" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.OrgName)
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <button type="submit" class="btn btn-primary">@ViewBag.BtnTXT</button>
+                                <button type="reset" class="btn btn-outline-primary">Reset</button>
+                            </div>
+                        </form>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        <h5>List</h5>
+                    </div> 
+                </div>
+
+                <div class="card-body">
+                    @if (TempData["dltmsg"] != null)
+                    {
+                        <div class="row r">
+                            <div class="col-md-12">
+                                <div class="alert alert-success">
+                                    @TempData["dltmsg"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div>
+                        <div class="table-responsive table-desi">
+                            <table class="datatable user-table all-driver-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th nowrap>Sr No.</th>
+                                        <th nowrap>Org Name</th>
+                                        <th nowrap>Customer Name</th>
+                                        <th nowrap>Company Name</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrgNameList)
+                                    {
+                                        <tr>
+                                            <td nowrap>@Count</td>
+                                            <td>@item.OrgName</td>
+                                            <td>@item.CustomerName</td>
+                                            <td>@item.CompanyName</td>
+                                            <td>
+                                                <a href="/Customer/CreateOrg?Id=@item.Id">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        Count++;
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

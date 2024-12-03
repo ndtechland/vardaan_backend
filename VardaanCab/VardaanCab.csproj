@@ -2990,6 +2990,7 @@
     <Content Include="Views\DepartmentETS\Departments.cshtml" />
     <Content Include="Views\EscortETS\Escort.cshtml" />
     <Content Include="Views\EscortETS\EscortsList.cshtml" />
+    <Content Include="Views\Customer\CreateOrg.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -53,6 +53,7 @@ namespace VardaanCab.APP.Controllers
                         CreatedDate=empdata.CreatedDate,
                         EmployeeCurrentAddress=empdata.EmployeeCurrentAddress,
                         Gender=empdata.Gender,
+                        Company_Id = empdata.Company_Id,
                     };
                     return Ok(new { Succeeded = true,StatusCode = 200, Message = "Employee profile retrieved successfully.", Role = "Employee", Data=data });
                 }

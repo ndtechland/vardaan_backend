@@ -297,6 +297,7 @@
           <Property Name="UserLogin_Id" Type="int" Nullable="false" />
           <Property Name="City_Id" Type="int" />
           <Property Name="GeoLocation" Type="nvarchar(max)" />
+          <Property Name="OrgName" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="CustomerUserMapping">
           <Key>
@@ -1130,7 +1131,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="EmployeeCurrentAddress" Type="nvarchar" MaxLength="255" />
           <Property Name="LoginUserName" Type="nvarchar" MaxLength="50" />
           <Property Name="WeekOff" Type="nvarchar" MaxLength="50" />
-          <Property Name="EmployeeGeoCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmployeeGeoCode" Type="nvarchar(max)" />
           <Property Name="EmployeeBusinessUnit" Type="nvarchar" MaxLength="100" />
           <Property Name="EmployeeDepartment" Type="nvarchar" MaxLength="100" />
           <Property Name="EmployeeProjectName" Type="nvarchar" MaxLength="100" />
@@ -2138,6 +2139,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="UserLogin_Id" Type="Int32" Nullable="false" />
           <Property Name="City_Id" Type="Int32" />
           <Property Name="GeoLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OrgName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CustomerUserMapping">
           <Key>
@@ -4316,7 +4318,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="EmployeeCurrentAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LoginUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WeekOff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeGeoCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeGeoCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EmployeeBusinessUnit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="EmployeeDepartment" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="EmployeeProjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -4810,6 +4812,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="OrgName" ColumnName="OrgName" />
                 <ScalarProperty Name="GeoLocation" ColumnName="GeoLocation" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />

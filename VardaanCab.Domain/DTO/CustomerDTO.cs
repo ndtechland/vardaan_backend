@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using VardaanCab.DataAccessLayer.DataLayer;
 
 namespace VardaanCab.Domain.DTO
 {
@@ -28,6 +29,7 @@ namespace VardaanCab.Domain.DTO
         //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string AlternateNo { get; set; }
         public int ? ParentCustomer_Id { get; set; }
+        public string OrgName { get; set; }
         public SelectList CustomerList { get; set; }
         public SelectList StateList  { get; set; }
 
@@ -45,6 +47,7 @@ namespace VardaanCab.Domain.DTO
         public int MenuId { get; set; }
         public string City_Name { get; set; }
         public string GeoLocation { get; set; }
+        
 
     }
 
@@ -68,5 +71,16 @@ namespace VardaanCab.Domain.DTO
         public int Id { get; set; }
         public string CustomerName { get; set; }
         public string CustomerNameWithCity { get; set; }
+    }
+
+    public class createorg
+    {
+        public int Id { get; set; }
+        public int CompanyId { get; set; }
+        public int MenuId { get; set; }
+        public string OrgName { get; set; }
+        public SelectList Companies { get; set; }
+        public IEnumerable<Customer> OrgNameList { get; set; }
+
     }
 }
