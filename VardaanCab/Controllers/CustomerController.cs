@@ -302,5 +302,57 @@ join VehicleModel vm on cp.VehicleModel_Id= vm.Id order by vm.ModelName").ToList
                 return Content("Server error");
             }
         }
+
+        public ActionResult CreateOrg(int menuId = 0, int id = 0)
+        {
+            var model = new createorg();
+            model.Companies = new SelectList(ent.Customers.Where(c=>c.IsActive==true).ToList(), "Id", "CustomerName");
+            model.OrgNameList = ent.Customers.Where(c=>c.OrgName!=null).ToList();
+            ViewBag.menuId = menuId;
+            if (id > 0)
+            {
+                var data = ent.Customers.Where(x => x.Id == id).FirstOrDefault();
+                model.CompanyId = data.Id;
+                model.OrgName = data.OrgName;
+                ViewBag.Heading = "Update Org";
+                ViewBag.BtnTXT = "Update";
+                return View(model);
+            }
+            else
+            {
+                model.Id = 0;
+                model.CompanyId = 0;
+                model.OrgName = "";
+                ViewBag.BtnTXT = "Save";
+                ViewBag.Heading = "Create Org";
+                return View(model);
+            }
+        }
+        [HttpPost]
+        public ActionResult CreateOrg(createorg model)
+        {
+            try
+            {
+                var customerinfo = ent.Customers.Where(c => c.IsActive && c.Id == model.CompanyId).FirstOrDefault();
+                 
+                if (customerinfo != null)
+                {
+                    customerinfo.OrgName=model.OrgName;
+                    ent.SaveChanges();
+                    TempData["msg"] = "Org name created successfully.";
+                    return RedirectToAction("CreateOrg" ,new { MenuId = model.MenuId});
+                }
+                else
+                {
+                    TempData["msg"] = "Company not found.";
+                    return RedirectToAction("CreateOrg", new { MenuId = model.MenuId });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

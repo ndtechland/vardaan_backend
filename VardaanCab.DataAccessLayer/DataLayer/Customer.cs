@@ -30,5 +30,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public int UserLogin_Id { get; set; }
         public Nullable<int> City_Id { get; set; }
         public string GeoLocation { get; set; }
+        public string OrgName { get; set; }
     }
 }
