@@ -46,17 +46,16 @@
                                             </div>
                                             <div class="col-6">
                                                 <label class="form-label-title ">Shift Time<span class="text-danger">*</span></label>
-                                                <div class="input-group date" id="CheckIn"
-                                                     data-target-input="nearest">
-                                                    <input class="form-control datetimepicker-input" name="ShiftTime" value="@ViewBag.ShiftTime" type="text" data-target="#CheckIn" required="required">
-                                                    <div class="input-group-text" data-target="#CheckIn"
+                                                
+                                                    <input class="form-control" name="ShiftTime" value="@ViewBag.ShiftTime" type="time" required="required">
+                                                    @*<div class="input-group-text" data-target="#CheckIn"
                                                          data-toggle="datetimepicker">
                                                         <i class="fa fa-clock-o"></i>
-                                                    </div>
+                                                    </div>*@
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.ShiftTime)
                                                     </span>
-                                                </div>
+                                                
                                             </div>
                                             <div class="col-6">
                                                 <label for="hotel-category" class="form-label-title ">

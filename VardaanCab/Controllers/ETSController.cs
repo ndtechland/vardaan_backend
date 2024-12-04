@@ -1,10 +1,12 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Configuration;
 using System.Data;
 using System.Data.Entity.Core.EntityClient;
+using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -255,43 +257,113 @@ namespace VardaanCab.Controllers
                 throw;
             }
         }
-
+     
         public ActionResult ExportToExcel()
         {
-            DataTable dt = GetTableData(); // Get data from the database
+            // Create DataTable and add columns
+            DataTable dt = new DataTable();
+            dt.Columns.Add("EmployeeId");
+            dt.Columns.Add("Company");//customer
+            dt.Columns.Add("RequestStartDate");
+            dt.Columns.Add("RequestEndDate");
+            dt.Columns.Add("TripType");//triptype
+            dt.Columns.Add("ShiftType");//tripmaster
+            dt.Columns.Add("PickUpTime"); //shiftmaster id(1)                      
+            dt.Columns.Add("DropTime");//shiftmaster id(2)  
 
-            var columnsToRemove = new List<string> { "Id", "RequestType", "CompanyId", "FirstName", "LastName", "Gender", "Email", "GuestContact" };
 
-            foreach (string columnName in columnsToRemove)
+
+
+            //dt.Rows.Add("9169442654", 2768, "2024-12-01", "2024-12-03", 1, 1, 3, 0 );
+            //dt.Rows.Add("9169448743", 2768, "2024-12-02", "2024-12-04", 2, 1, 0, 15 );
+            //dt.Rows.Add("6785448743", 2768, "2024-12-02", "2024-12-04", 3, 1, 3, 15 );
+
+            // Create Excel workbook using ClosedXML
+            using (var workbook = new XLWorkbook())
             {
-                if (dt.Columns.Contains(columnName))
+                // Add DataTable as a worksheet
+
+                var worksheet = workbook.Worksheets.Add("Employee Request Data");
+                worksheet.Cell(1, 1).InsertTable(dt);
+                var hiddenSheet = workbook.Worksheets.Add("CompanyList");
+                var hiddenTripTypeListSheet = workbook.Worksheets.Add("TripTypeList");
+                var hiddenShiftTypeSheet = workbook.Worksheets.Add("ShiftTypeList");
+                var hiddenPickuptimeSheet = workbook.Worksheets.Add("PickuptimeList");
+                var hiddenDroptimeSheet = workbook.Worksheets.Add("DroptimeList");
+
+                var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
+                var TriptypeList = ent.TripTypes.Where(x => x.TripMasterId == 1).ToList();
+                var ShiftTypeList = ent.TripMasters.Where(x => x.Id == 1).ToList();
+                var PickupTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList();
+                var DropTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList();
+
+                //for company
+                int hiddenRow = 1;
+                foreach (var company in companyList.OrderByDescending(x => x.Id))
                 {
-                    dt.Columns.Remove(columnName);
+                    hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
                 }
-            }
+                var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
 
-            // Create a new DataTable with only the column names
-            DataTable dtWithColumnNames = new DataTable();
+                //Apply dropdown list validation to cell A2(under "Company ID")
+                var validationOne = worksheet.Cell(2, 2).DataValidation;
+                validationOne.List(companyRange); // Dropdown from hidden sheet
+                validationOne.IgnoreBlanks = true;
+                validationOne.InCellDropdown = true;
 
-            // Add columns to the new DataTable
-            foreach (DataColumn column in dt.Columns)
-            {
-                dtWithColumnNames.Columns.Add(column.ColumnName);
-            }
+                //for TripType
+                hiddenRow = 1;
+                foreach (var triptype in TriptypeList.OrderByDescending(x => x.Id))
+                {
+                    hiddenTripTypeListSheet.Cell(hiddenRow++, 1).Value = triptype.TripTypeName;
+                }
+                var TripTypeRange = hiddenTripTypeListSheet.Range($"A1:A{TriptypeList.Count}");
+                               
+                var validationtriptypeOne = worksheet.Cell(2, 5).DataValidation;
+                validationtriptypeOne.List(TripTypeRange); // Dropdown from hidden sheet
+                validationtriptypeOne.IgnoreBlanks = true;
+                validationtriptypeOne.InCellDropdown = true;
 
-            // Add a single row with column names as values
-            DataRow headerRow = dtWithColumnNames.NewRow();
-            for (int i = 0; i < dt.Columns.Count; i++)
-            {
-                headerRow[i] = dt.Columns[i].ColumnName;
-            }
-            dtWithColumnNames.Rows.Add(headerRow);
+                //for ShiftType
+                hiddenRow = 1;
+                foreach (var shifttype in ShiftTypeList.OrderByDescending(x => x.Id))
+                {
+                    hiddenShiftTypeSheet.Cell(hiddenRow++, 1).Value = shifttype.TripName;
+                }
+                var ShiftTypeRange = hiddenShiftTypeSheet.Range($"A1:A{ShiftTypeList.Count}");
 
-            // Export to Excel
-            using (XLWorkbook workbook = new XLWorkbook())
-            {
-                var worksheet = workbook.Worksheets.Add(dtWithColumnNames, "EmployeeRequest");
-                using (MemoryStream stream = new MemoryStream())
+                var validationShiftTypeOne = worksheet.Cell(2, 6).DataValidation;
+                validationShiftTypeOne.List(ShiftTypeRange);
+                validationShiftTypeOne.IgnoreBlanks = true;
+                validationShiftTypeOne.InCellDropdown = true;
+
+                //for Pickup time
+                hiddenRow = 1;
+                foreach (var pickuptime in PickupTimeList.OrderByDescending(x => x.Id))
+                {
+                    hiddenPickuptimeSheet.Cell(hiddenRow++, 1).Value = pickuptime.ShiftTime;
+                }
+                var PickuptimeRange = hiddenPickuptimeSheet.Range($"A1:A{PickupTimeList.Count}");
+
+                var validationPickuptimeOne = worksheet.Cell(2, 7).DataValidation;
+                validationPickuptimeOne.List(PickuptimeRange);
+                validationPickuptimeOne.IgnoreBlanks = true;
+                validationPickuptimeOne.InCellDropdown = true;
+                //for DRop time
+                hiddenRow = 1;
+                foreach (var droptime in DropTimeList.OrderByDescending(x => x.Id))
+                {
+                    hiddenDroptimeSheet.Cell(hiddenRow++, 1).Value = droptime.ShiftTime;
+                }
+                var DroptimeRange = hiddenDroptimeSheet.Range($"A1:A{DropTimeList.Count}");
+
+                var validationDroptimeOne = worksheet.Cell(2, 8).DataValidation;
+                validationDroptimeOne.List(DroptimeRange);
+                validationDroptimeOne.IgnoreBlanks = true;
+                validationDroptimeOne.InCellDropdown = true;
+
+                // Set response for Excel download
+                using (var stream = new System.IO.MemoryStream())
                 {
                     workbook.SaveAs(stream);
                     stream.Position = 0;
@@ -299,24 +371,137 @@ namespace VardaanCab.Controllers
                 }
             }
         }
-
-        private DataTable GetTableData()
+        [HttpPost]
+        public ActionResult ImportEmployeeRequestData(HttpPostedFileBase file)
         {
-            var entityBuilder = new EntityConnectionStringBuilder(efConnectionString);
-            string sqlConnectionString = entityBuilder.ProviderConnectionString;
-            DataTable dt = new DataTable();
-
-            using (SqlConnection con = new SqlConnection(sqlConnectionString))
+            try
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM EmployeeRequest", con))
+                // Check if a file is uploaded
+                if (file != null && file.ContentLength > 0)
                 {
-                    con.Open();
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    da.Fill(dt);
-                }
-            }
+                    using (var workbook = new XLWorkbook(file.InputStream))
+                    {
 
-            return dt;
+                        var worksheet = workbook.Worksheet(1);
+                        var rows = worksheet.RowsUsed().Skip(1);
+                        List<EmployeeRequest> emprequest = new List<EmployeeRequest>();
+
+                        foreach (var row in rows)
+                        {
+                            string CompanyName = row.Cell(2).GetValue<string>(); 
+                            string TripTypeName = row.Cell(5).GetValue<string>();
+                            string ShiftTypeName = row.Cell(6).GetValue<string>();
+                            string PickupShiftTimeName = row.Cell(7).GetValue<string>();
+                            string DropShiftTimeName = row.Cell(8).GetValue<string>();  
+                           
+                            EmployeeRequest employeereq = new EmployeeRequest
+                            {
+                                EmployeeId = row.Cell(1).GetValue<string>() ?? string.Empty,
+                                CompanyId = string.IsNullOrEmpty(CompanyName) == null ? 0 : ent.Customers.Where(x =>x.CompanyName.ToLower() == CompanyName.ToLower()).FirstOrDefault().Id,
+                                StartRequestDate = row.Cell(3).GetValue<DateTime>(),
+                                EndRequestDate = row.Cell(4).GetValue<DateTime>(),
+                                TripType = string.IsNullOrEmpty(TripTypeName) == null ? 0 : ent.TripTypes.Where(x => x.TripTypeName.ToLower() == TripTypeName.ToLower()).FirstOrDefault().Id,
+                                ShiftType = string.IsNullOrEmpty(ShiftTypeName) == null ? 0 : ent.TripMasters.Where(x => x.TripName.ToLower() == ShiftTypeName.ToLower()).FirstOrDefault().Id,
+                                 
+                                PickupShiftTimeId = row.Cell(7).GetValue<int>(),
+                                //PickupShiftTimeId = string.IsNullOrEmpty(PickupShiftTimeName) == null ? 0 : ent.ShiftMasters.Where(x => x.ShiftTime.ToLower() == PickupShiftTimeName.ToLower() && x.TripTypeId==1).FirstOrDefault().Id,
+                                //DropShiftTimeId = string.IsNullOrEmpty(DropShiftTimeName) == null ? 0 : ent.ShiftMasters.Where(x => x.ShiftTime.ToLower() == DropShiftTimeName.ToLower() && x.TripTypeId ==2).FirstOrDefault().Id,
+                                DropShiftTimeId = row.Cell(8).GetValue<int>(),
+                                RequestType= "EMPLOYEE",
+                                CreatedDate = DateTime.Now
+                            };
+
+
+                            emprequest.Add(employeereq);
+                        }
+                        if (emprequest.Any())
+                        {
+                            ent.EmployeeRequests.AddRange(emprequest);
+                            ent.SaveChanges();
+                        }
+                        TempData["dltmsg"] = "Data imported successfully!";
+                        return RedirectToAction("EmployeeRequestList");
+                    }
+                }
+                ViewBag.Message = "Please select an Excel file to import.";
+                return View();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var validationError in ex.EntityValidationErrors)
+                {
+                    foreach (var error in validationError.ValidationErrors)
+                    {
+                        // Log or output the validation errors
+                        Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
+                    }
+                }
+                ViewBag.Message = "Validation failed for one or more entities. Please check the logs for more details.";
+                return View();
+            }
         }
+
+        //public ActionResult ExportToExcel()
+        //{
+        //    DataTable dt = GetTableData(); // Get data from the database
+
+        //    var columnsToRemove = new List<string> { "Id", "RequestType", "CompanyId", "FirstName", "LastName", "Gender", "Email", "GuestContact" };
+
+        //    foreach (string columnName in columnsToRemove)
+        //    {
+        //        if (dt.Columns.Contains(columnName))
+        //        {
+        //            dt.Columns.Remove(columnName);
+        //        }
+        //    }
+
+        //    // Create a new DataTable with only the column names
+        //    DataTable dtWithColumnNames = new DataTable();
+
+        //    // Add columns to the new DataTable
+        //    foreach (DataColumn column in dt.Columns)
+        //    {
+        //        dtWithColumnNames.Columns.Add(column.ColumnName);
+        //    }
+
+        //    // Add a single row with column names as values
+        //    DataRow headerRow = dtWithColumnNames.NewRow();
+        //    for (int i = 0; i < dt.Columns.Count; i++)
+        //    {
+        //        headerRow[i] = dt.Columns[i].ColumnName;
+        //    }
+        //    dtWithColumnNames.Rows.Add(headerRow);
+
+        //    // Export to Excel
+        //    using (XLWorkbook workbook = new XLWorkbook())
+        //    {
+        //        var worksheet = workbook.Worksheets.Add(dtWithColumnNames, "EmployeeRequest");
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+        //            workbook.SaveAs(stream);
+        //            stream.Position = 0;
+        //            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeRequestData.xlsx");
+        //        }
+        //    }
+        //}
+
+        //private DataTable GetTableData()
+        //{
+        //    var entityBuilder = new EntityConnectionStringBuilder(efConnectionString);
+        //    string sqlConnectionString = entityBuilder.ProviderConnectionString;
+        //    DataTable dt = new DataTable();
+
+        //    using (SqlConnection con = new SqlConnection(sqlConnectionString))
+        //    {
+        //        using (SqlCommand cmd = new SqlCommand("SELECT * FROM EmployeeRequest", con))
+        //        {
+        //            con.Open();
+        //            SqlDataAdapter da = new SqlDataAdapter(cmd);
+        //            da.Fill(dt);
+        //        }
+        //    }
+
+        //    return dt;
+        //}
     }
 }

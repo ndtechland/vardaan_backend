@@ -414,9 +414,6 @@ namespace VardaanCab.Controllers
                             ent.Employees.AddRange(employees);
                             ent.SaveChanges();
                         }
-
-
-
                        
                         ViewBag.Message = "Data imported successfully!";
                         return RedirectToAction("GetEmployeeList");

@@ -1,0 +1,157 @@
+﻿@model VardaanCab.Domain.DTO.EmployeeMobAppSettingDTO
+@{
+    ViewBag.Title = "CabBookingRequestDay";
+    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    int Count = 1;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header  card-header--2">
+                            <div>
+                                <h5>@ViewBag.Heading</h5>
+                            </div>
+                            
+                        </div>
+                        <form class="theme-form mega-form" action="CabBookingRequestDay" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
+                                <input name="Id" type="hidden" value="@Model.Id" />
+                                @if (TempData["msg"] != null)
+                                {
+                                    <div class="mb-3">
+                                        <div class="alert alert-success">
+                                            @TempData["msg"]
+                                        </div>
+                                    </div>
+                                }
+                                @if (TempData["Errormsg"] != null)
+                                {
+                                    <div class="mb-3">
+                                        <div class="alert alert-danger">
+                                            @TempData["Errormsg"]
+                                        </div>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label class="form-label-title">Select Company <span class="text-danger">*</span></label>
+                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control", required = "required" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.CompanyId)
+                                                </span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label-title">Cab Request Day <span class="text-danger">*</span></label>
+                                                @Html.TextBoxFor(a => a.CabRequestDays, new { @class = "form-control", placeholder = "eg.7", required = "required", maxlength = "2", onkeydown = "validateNumericInput(event)" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.CabRequestDays)
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <button type="submit" class="btn btn-primary">@ViewBag.BtnTXT</button>
+                                <button type="reset" class="btn btn-outline-primary">Reset</button>
+                            </div>
+                        </form>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        <h5>List</h5>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    @if (TempData["dltmsg"] != null)
+                    {
+                        <div class="row r">
+                            <div class="col-md-12">
+                                <div class="alert alert-success">
+                                    @TempData["dltmsg"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div>
+                        <div class="table-responsive table-desi">
+                            <table class="datatable user-table all-driver-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th nowrap>Sr No.</th>
+                                        <th nowrap>Cab Request Day</th>
+                                        <th nowrap>Company Name</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.CabReqDayList)
+                                    {
+                                        <tr>
+                                            <td nowrap>@Count</td>
+                                            <td>@item.CabRequestDays Days</td>
+                                            <td><a href="/Customer/Edit?Id=@item.CompanyId">@item.CompanyName</a></td>
+                                            <td>
+                                                <a href="/EmployeeMobAppSettings/CabBookingRequestDay?Id=@item.Id">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="/EmployeeMobAppSettings/DeleteCabRequestDay?Id=@item.Id" onclick="return confirm('Are you sure you want to delete?')">
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        Count++;
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function validateNumericInput(event) {
+        if ([46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+            return;
+        }
+        if ((event.shiftKey || (event.keyCode < 48 || event.keyCode > 57)) && (event.keyCode < 96 || event.keyCode > 105)) {
+            event.preventDefault();
+        }
+    }
+
+</script>

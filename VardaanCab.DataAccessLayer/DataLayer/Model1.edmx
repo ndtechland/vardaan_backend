@@ -1094,6 +1094,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyId" Type="int" />
           <Property Name="CompanyZone" Type="nvarchar" MaxLength="200" />
           <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="Zonelatlong" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="DaysName">
           <Key>
@@ -1155,6 +1156,16 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CompanyZoneHomeRouteId" Type="int" />
           <Property Name="DestinationAreaName" Type="nvarchar" MaxLength="400" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeMobileAppSettings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="CabRequestDays" Type="int" />
+          <Property Name="IsActive" Type="bit" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="EmployeeRegistrationTypes">
@@ -1687,6 +1698,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="DepartmentMaster" EntityType="Self.DepartmentMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeDestinationArea" EntityType="Self.EmployeeDestinationArea" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="EmployeeMobileAppSettings" EntityType="Self.EmployeeMobileAppSettings" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeRegistrationTypes" EntityType="Self.EmployeeRegistrationTypes" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeRequest" EntityType="Self.EmployeeRequest" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Escort" EntityType="Self.Escort" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -3301,6 +3313,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="HelpEmployees" EntityType="Vardaan_AdminModel.HelpEmployee" />
           <EntitySet Name="Supports" EntityType="Vardaan_AdminModel.Support" />
           <EntitySet Name="Escorts" EntityType="Vardaan_AdminModel.Escort" />
+          <EntitySet Name="EmployeeMobileAppSettings" EntityType="Vardaan_AdminModel.EmployeeMobileAppSetting" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4393,6 +4406,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="CompanyZone1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Zonelatlong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ShiftMaster">
           <Key>
@@ -4515,6 +4529,16 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="PermanentAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EscortAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="EmployeeMobileAppSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="CabRequestDays" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
@@ -6759,6 +6783,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="CompanyZones">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.CompanyZone">
               <MappingFragment StoreEntitySet="CompanyZones">
+                <ScalarProperty Name="Zonelatlong" ColumnName="Zonelatlong" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="CompanyZone1" ColumnName="CompanyZone" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -6895,6 +6920,17 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="EscortMobileNumber" ColumnName="EscortMobileNumber" />
                 <ScalarProperty Name="EscortFatheName" ColumnName="EscortFatheName" />
                 <ScalarProperty Name="EscortName" ColumnName="EscortName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeMobileAppSettings">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.EmployeeMobileAppSetting">
+              <MappingFragment StoreEntitySet="EmployeeMobileAppSettings">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CabRequestDays" ColumnName="CabRequestDays" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

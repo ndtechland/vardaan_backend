@@ -12,12 +12,12 @@ namespace VardaanCab.DataAccessLayer.DataLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class CompanyZone
+    public partial class EmployeeMobileAppSetting
     {
         public int Id { get; set; }
         public Nullable<int> CompanyId { get; set; }
-        public string CompanyZone1 { get; set; }
+        public Nullable<int> CabRequestDays { get; set; }
+        public Nullable<bool> IsActive { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public string Zonelatlong { get; set; }
     }
 }
