@@ -93,6 +93,7 @@
     <Compile Include="DTO\EmployeeDestinationAreaDTO.cs" />
     <Compile Include="DTO\EmployeeDTO.cs" />
     <Compile Include="DTO\EmployeeHomeRouteDTO.cs" />
+    <Compile Include="DTO\EmployeeMobAppSettingDTO.cs" />
     <Compile Include="DTO\EscortDTO.cs" />
     <Compile Include="DTO\LoginModel.cs" />
     <Compile Include="DTO\LogsDTO.cs" />

@@ -2754,6 +2754,7 @@
     <Compile Include="Controllers\CompanyZoneETSController.cs" />
     <Compile Include="Controllers\DepartmentETSController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\EmployeeMobAppSettingsController.cs" />
     <Compile Include="Controllers\EscortETSController.cs" />
     <Compile Include="Controllers\ETSController.cs" />
     <Compile Include="Controllers\MonthlyPackageMasterController.cs" />
@@ -2991,6 +2992,7 @@
     <Content Include="Views\EscortETS\Escort.cshtml" />
     <Content Include="Views\EscortETS\EscortsList.cshtml" />
     <Content Include="Views\Customer\CreateOrg.cshtml" />
+    <Content Include="Views\EmployeeMobAppSettings\CabBookingRequestDay.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

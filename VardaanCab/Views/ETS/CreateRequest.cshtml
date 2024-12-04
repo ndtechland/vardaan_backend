@@ -59,11 +59,11 @@
 
                                     <!-- Second Section: File Import and Button -->
                                     <div class="col-md-12">
-                                        @using (Html.BeginForm("ImportEmployeeData", "ETS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        @using (Html.BeginForm("ImportEmployeeRequestData", "ETS", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                         {
                                             <div class="import-form-container">
                                                 <div class="col-md-7">
-                                                    <input type="file" class="form-control" name="file" />
+                                                    <input type="file" class="form-control" name="file" required="" />
                                                 </div>
                                                 <div class="col-md-2">
                                                     <button type="submit" class="btn btn-primary">Import</button>

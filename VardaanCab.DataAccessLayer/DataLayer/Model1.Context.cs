@@ -94,6 +94,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<HelpEmployee> HelpEmployees { get; set; }
         public virtual DbSet<Support> Supports { get; set; }
         public virtual DbSet<Escort> Escorts { get; set; }
+        public virtual DbSet<EmployeeMobileAppSetting> EmployeeMobileAppSettings { get; set; }
     
         public virtual ObjectResult<Nullable<int>> checkOneCompanyBookingSelected(Nullable<bool> isNrg, string term, Nullable<System.DateTime> sDate, Nullable<System.DateTime> eDate, Nullable<int> cityId, Nullable<int> routeNo)
         {

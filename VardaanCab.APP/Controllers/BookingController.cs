@@ -20,26 +20,47 @@ namespace VardaanCab.APP.Controllers
         {
             try
             {
+                DateTime currentDate = DateTime.Now;
+
+                DateTime lastDayOfMonth = new DateTime(
+                    currentDate.Year,
+                    currentDate.Month,
+                    DateTime.DaysInMonth(currentDate.Year, currentDate.Month)
+                );
+
+                int daysDifference = (lastDayOfMonth - currentDate).Days;
                 var response = new Response<EmployeeRequest>();
                 var empinfo = ent.Employees.Where(e => e.Employee_Id == model.EmployeeId).FirstOrDefault();
                 if(empinfo!=null)
                 {
-                    var data = new EmployeeRequest()
+                    var Getcabreqday = ent.EmployeeMobileAppSettings.Where(x => x.CompanyId == empinfo.Company_Id && x.IsActive==true).FirstOrDefault().CabRequestDays;
+                    if(Getcabreqday== daysDifference)
                     {
-                        EmployeeId = model.EmployeeId,
-                        RequestType = "EMPLOYEE",
-                        CompanyId = model.CompanyId,
-                        ShiftType = model.ShiftType,
-                        TripType = model.TripType,
-                        StartRequestDate = model.StartRequestDate,
-                        EndRequestDate = model.EndRequestDate,
-                        PickupShiftTimeId = model.PickupShiftTimeId,
-                        DropShiftTimeId = model.DropShiftTimeId,
-                        CreatedDate = DateTime.Now
-                    };
-                    ent.EmployeeRequests.Add(data);
-                    ent.SaveChanges();
-                    return Ok(new { Succeeded=true, StatusCode = 200, Message = "Request created successfully." });
+                        var data = new EmployeeRequest()
+                        {
+                            EmployeeId = model.EmployeeId,
+                            RequestType = "EMPLOYEE",
+                            CompanyId = model.CompanyId,
+                            ShiftType = model.ShiftType,
+                            TripType = model.TripType,
+                            StartRequestDate = model.StartRequestDate,
+                            EndRequestDate = model.EndRequestDate,
+                            PickupShiftTimeId = model.PickupShiftTimeId,
+                            DropShiftTimeId = model.DropShiftTimeId,
+                            CreatedDate = DateTime.Now
+                        };
+                        ent.EmployeeRequests.Add(data);
+                        ent.SaveChanges();
+                        return Ok(new { Succeeded = true, StatusCode = 200, Message = "Request created successfully." });
+                    }
+                    else
+                    {
+                        response.Succeeded = false;
+                        response.StatusCode = StatusCodes.Status400BadRequest;
+                        response.Message = $"Booking request cannot be processed. The expected booking day is: {Getcabreqday}, but the provided day is: {daysDifference}.";
+                        return Content(HttpStatusCode.BadRequest, response);
+                    }
+                    
                 }
                 else
                 {
