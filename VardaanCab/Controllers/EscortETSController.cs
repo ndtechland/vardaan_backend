@@ -68,7 +68,7 @@ namespace VardaanCab.Controllers
         [HttpPost]
         public ActionResult Escort(EscortDTO model)
         {
-            model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "CompanyName");
             model.Vendors = new SelectList(ent.Vendors.Where(x => x.IsActive == true).ToList(), "Id", "VendorName");
 
             try
@@ -137,7 +137,7 @@ namespace VardaanCab.Controllers
                             select new Escorts
                             {
                                 Id = er.Id,
-                                CompanyName = c.CustomerName,
+                                CompanyName = c.CompanyName,
                                 EscortName = er.EscortName,
                                 EscortMobileNumber = er.EscortMobileNumber,
                                 EscortAadhaarNumber = er.EscortAadhaarNumber,
@@ -184,7 +184,7 @@ namespace VardaanCab.Controllers
         {
             string qry = @"SELECT 
     er.Id,
-    c.CustomerName AS CompanyName,
+    c.CompanyName,
     er.EscortName,
     er.EscortFatheName,
 er.EscortMobileNumber,

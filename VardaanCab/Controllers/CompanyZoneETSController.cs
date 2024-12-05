@@ -17,7 +17,7 @@ namespace VardaanCab.Controllers
         public ActionResult AddCompanyZone(int menuId = 0, int id = 0)
         {
             var model=new CompanyZoneDTO();
-            model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
+            model.Companies = new SelectList(ent.Customers.Where(x=>x.IsActive==true).ToList(), "Id", "CompanyName");
             ViewBag.menuId = menuId;
             if (id > 0)
             {
@@ -42,7 +42,7 @@ namespace VardaanCab.Controllers
         [HttpPost]
         public ActionResult AddCompanyZone(CompanyZoneDTO model)
          {
-            model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "CompanyName");
             try
             {
                 if (!ModelState.IsValid)
@@ -85,7 +85,7 @@ namespace VardaanCab.Controllers
                         {
                             Id = cz.Id,
                             CompanyZone = cz.CompanyZone1,
-                            CompanyName = c.CustomerName,
+                            CompanyName = c.CompanyName,
                             CreatedDate = cz.CreatedDate
                         }
                         ).ToList();

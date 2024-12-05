@@ -24,7 +24,7 @@ namespace VardaanCab.Domain.DTO
         public int Id { get; set; }
         public Nullable<int> CompanyId { get; set; }
         public string DepartmentName { get; set; }
-        public string CustomerName { get; set; }
+        public string CompanyName { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
     }
