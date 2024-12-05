@@ -25,6 +25,7 @@ namespace VardaanCab.Controllers
                 model.Id = existdata.Id;
                 model.CompanyId = existdata.CompanyId;
                 model.CompanyZone = existdata.CompanyZone1;
+                model.Zonelatlong = existdata.Zonelatlong;
                 ViewBag.Heading = "Update Comapny Zone";
                 ViewBag.BtnTXT = "Update";
                 return View(model);
@@ -53,7 +54,8 @@ namespace VardaanCab.Controllers
                     {
                         CompanyId = model.CompanyId,
                         CompanyZone1 = model.CompanyZone,
-                        CreatedDate = DateTime.Now
+                        CreatedDate = DateTime.Now,
+                        Zonelatlong = model.Zonelatlong
                     };
                     ent.CompanyZones.Add(zone);                   
                 }
@@ -62,7 +64,9 @@ namespace VardaanCab.Controllers
                     var data = ent.CompanyZones.Find(model.Id);
                     data.CompanyZone1 = model.CompanyZone;
                     data.CompanyId = model.CompanyId;
-                    
+                    data.Zonelatlong = model.Zonelatlong;
+
+
                 }
                 ent.SaveChanges();
                 TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
