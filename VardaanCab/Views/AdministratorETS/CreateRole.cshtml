@@ -39,7 +39,6 @@
 
     .sub-options {
         display: none;
-        margin-left: 20px;
         margin-top: 5px;
         background-color: #e0e0e0;
         padding: 10px;
@@ -113,27 +112,6 @@
                                         </div>
                                     </div>
                                 }
-                                @*<div class="row">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <label class="form-label-title">Select Company</label>
-                                                    @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control", required = "required" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.CompanyId)
-                                                    </span>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label class="form-label-title">Role Name</label>
-                                                    @Html.TextBoxFor(a => a.OrgName, new { @class = "form-control", placeholder = "Org Name", required = "required" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.OrgName)
-                                                    </span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>*@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
@@ -146,7 +124,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title">Role Name</label>
-                                                @Html.TextBoxFor(a => a.OrgName, new { @class = "form-control", placeholder = "Org Name", required = "required" })
+                                                @Html.TextBoxFor(a => a.OrgName, new { @class = "form-control", placeholder = "Role Name", required = "required" })
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.OrgName)
                                                 </span>
@@ -157,198 +135,90 @@
 
                                 <div class="row mt-3">
                                     <div class="col-md-12">
-                                        @*<table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Module Name</th>
-                    <th>Read</th>
-                    <th>Write</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <tr>
-                    <td>Admin</td>
-                    <td>
-                        <div class="btn-group">
-                            <input type="checkbox" name="DashboardWrite" value="true" />
-                            <label for="fancy-checkbox-primary4" style="padding: 0px 1px;font-size: 13px;margin-top: 2px;" class="[ btn btn-default active ]">
-                                <i class="icon-book" style="color: #245d90;"></i> Read
-                            </label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="btn-group">
-                            <input type="checkbox" name="DashboardWrite" value="true" />
-                            <label for="fancy-checkbox-success3" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-default active ]">
-                                <i class="icon-edit" style="color:#188a18"></i> Write
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Dashboard</td>
-                    <td>
-                        <div class="btn-group">
-                            <input type="checkbox" name="DashboardWrite" value="true" />
-                            <label for="fancy-checkbox-primary4" style="padding: 0px 1px;font-size: 13px;margin-top: 2px;" class="[ btn btn-default active ]">
-                                <i class="icon-book" style="color: #245d90;"></i> Read
-                            </label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="btn-group">
-                            <input type="checkbox" name="DashboardWrite" value="true" />
-                            <label for="fancy-checkbox-success3" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-default active ]">
-                                <i class="icon-edit" style="color:#188a18"></i> Write
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Employee Roster</td>
-                    <td>
-                        <div class="btn-group">
-                            <input type="checkbox" name="DashboardWrite" value="true" />
-                            <label for="fancy-checkbox-primary4" style="padding: 0px 1px;font-size: 13px;margin-top: 2px;" class="[ btn btn-default active ]">
-                                <i class="icon-book" style="color: #245d90;"></i> Read
-                            </label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="btn-group">
-                            <input type="checkbox" name="DashboardWrite" value="true" />
-                            <label for="fancy-checkbox-success3" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-default active ]">
-                                <i class="icon-edit" style="color:#188a18"></i> Write
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>*@
-                                        <!--<div class="module-row">
-        <span>Assign access to all Modules</span>
-        <button class="admin-access">Admin Access</button>
-    </div>
-
-    <div class="module-row">
-        <span>Dashboard</span>
-        <div class="actions">
-            <button class="read-btn">Read</button>
-            <button class="write-btn">Write</button>
-        </div>
-    </div>
-
-    <div class="module-row">
-        <span>Employee Roster</span>
-        <div class="actions">
-            <button class="read-btn">Read</button>
-            <button class="write-btn">Write</button>
-        </div>
-    </div>
-
-    <div class="module-row">
-        <span>Routing Cab Allocation</span>
-        <div class="actions">
-            <button class="read-btn">Read</button>
-            <button class="write-btn">Write</button>
-        </div>
-    </div>
-    <div class="module-row">
-        <span>Live Tracking</span>
-        <div class="actions">
-            <button class="read-btn">Read</button>
-            <button class="write-btn">Write</button>
-        </div>
-    </div>
-
-    <div class="module-row">
-        <span>Reports</span>
-        <div class="actions">
-            <button class="read-btn">Read</button>
-            <button class="write-btn">Write</button>
-        </div>
-    </div>
-
-    <div class="module-row">
-        <span>Import Data</span>
-        <div class="actions">
-            <button class="read-btn">Read</button>
-            <button class="write-btn">Write</button>
-        </div>
-    </div>
-    <div class="header">Access Type: New</div>-->
-                                        <!-- Parent Row -->
-                                        <!--<div class="module-row" onclick="toggleContent(this)">
-        Live Tracking
-    </div>-->
-                                        <!-- Collapsible Content -->
-                                        <!--<div class="module-content">
-        <div class="sub-row">
-            <span>Live Tracking</span>
-            <div class="actions">
-                <button class="read-btn">Read</button>
-                <button class="write-btn">Write</button>
-            </div>
-        </div>
-        <div class="sub-row">
-            <span>Female Employee Tracking Facility</span>
-            <div class="actions">
-                <button class="read-btn">Read</button>
-                <button class="write-btn">Write</button>
-            </div>
-        </div>
-        <div class="sub-row">
-            <span>Female Employee Tracking Shiftwise</span>
-            <div class="actions">
-                <button class="read-btn">Read</button>
-                <button class="write-btn">Write</button>
-            </div>
-        </div>
-        <div class="sub-row">
-            <span>Female Live Tracking</span>
-            <div class="actions">
-                <button class="read-btn">Read</button>
-                <button class="write-btn">Write</button>
-            </div>
-        </div>
-    </div>-->
-                                        
-                                            <div class="module-row" onclick="toggleSection('live-tracking')">
-                                                Live Tracking
-                                                <span>&#x25BC;</span> <!-- Down arrow -->
+                                        <!-- Main Module Section -->
+                                        <div class="module-row" onclick="toggleSection('live-tracking')">
+                                            <span>Live Tracking</span>
+                                            <div class="actions" style="margin-left:430px;">
+                                                <label>
+                                                    <input type="checkbox" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
+                                                    Read
+                                                </label>
+                                                <label>
+                                                    <input type="checkbox" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
+                                                    Write
+                                                </label>
                                             </div>
-                                            <div class="sub-options" id="live-tracking">
-                                                <div class="sub-option-row">
-                                                    <span>Live Tracking</span>
-                                                    <div class="actions">
-                                                        <button class="read-btn">Read</button>
-                                                        <button class="write-btn">Write</button>
+                                            @*<span>&#x25BC;</span>*@ <!-- Down arrow -->
+                                        </div>
+                                        <!-- Sub-options Section -->
+                                        <div class="sub-options" id="live-tracking" style="display: none;">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="sub-option-row">
+                                                            <span>Live Tracking</span>
+                                                            <div class="actions">
+                                                                <label>
+                                                                    <input type="checkbox" class="read-checkbox" />
+                                                                    Read
+                                                                </label>
+                                                                <label>
+                                                                    <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                    Write
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="sub-option-row">
-                                                    <span>Female Employee Tracking Facility</span>
-                                                    <div class="actions">
-                                                        <button class="read-btn">Read</button>
-                                                        <button class="write-btn">Write</button>
+                                                    <div class="col-md-6">
+                                                        <div class="sub-option-row">
+                                                            <span>Female Employee Tracking Facility</span>
+                                                            <div class="actions">
+                                                                <label>
+                                                                    <input type="checkbox" class="read-checkbox" />
+                                                                    Read
+                                                                </label>
+                                                                <label>
+                                                                    <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                    Write
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="sub-option-row">
-                                                    <span>Female Employee Tracking Shiftwise</span>
-                                                    <div class="actions">
-                                                        <button class="read-btn">Read</button>
-                                                        <button class="write-btn">Write</button>
+                                                    <div class="col-md-6">
+                                                        <div class="sub-option-row">
+                                                            <span>Female Employee Tracking Shiftwise</span>
+                                                            <div class="actions">
+                                                                <label>
+                                                                    <input type="checkbox" class="read-checkbox" />
+                                                                    Read
+                                                                </label>
+                                                                <label>
+                                                                    <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                    Write
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="sub-option-row">
-                                                    <span>Female Live Tracking</span>
-                                                    <div class="actions">
-                                                        <button class="read-btn">Read</button>
-                                                        <button class="write-btn">Write</button>
+                                                    <div class="col-md-6">
+                                                        <div class="sub-option-row">
+                                                            <span>Female Live Tracking</span>
+                                                            <div class="actions">
+                                                                <label>
+                                                                    <input type="checkbox" class="read-checkbox" />
+                                                                    Read
+                                                                </label>
+                                                                <label>
+                                                                    <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                    Write
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        
+
+
+                                        </div>
                                     </div>
                                 </div>
 
@@ -369,17 +239,49 @@
     </div>
 </div>
 
-<script>
-    // Toggle sub-options visibility
+@*<script>
+    // Toggle visibility of sub-options
     function toggleSection(sectionId) {
         const section = document.getElementById(sectionId);
-        const arrow = section.previousElementSibling.querySelector("span");
-        if (section.style.display === "none" || section.style.display === "") {
-            section.style.display = "block";
-            arrow.innerHTML = "&#x25B2;"; // Up arrow
-        } else {
-            section.style.display = "none";
-            arrow.innerHTML = "&#x25BC;"; // Down arrow
+        section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Toggle checkboxes for sub-options based on main checkbox
+    function toggleSubOptionCheckboxes(type, mainCheckbox) {
+        const subCheckboxes = document.querySelectorAll(`.${type}-checkbox`);
+        subCheckboxes.forEach(checkbox => {
+            checkbox.checked = mainCheckbox.checked;
+        });
+    }
+</script>*@
+<script>
+    // Toggle visibility of sub-options
+    function toggleSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Toggle checkboxes for sub-options based on main checkbox
+    function toggleSubOptionCheckboxes(type, mainCheckbox) {
+        const subCheckboxes = document.querySelectorAll(`.${type}-checkbox`);
+        subCheckboxes.forEach(checkbox => {
+            checkbox.checked = mainCheckbox.checked;
+        });
+
+        // If "Write" checkbox is checked, check both "Read" and "Write" checkboxes for all sub-options
+        if (type === 'write' && mainCheckbox.checked) {
+            const allSubCheckboxes = document.querySelectorAll('.read-checkbox, .write-checkbox');
+            allSubCheckboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        }
+    }
+
+    // Automatically check the "Read" checkbox when "Write" is checked
+    function syncReadCheckbox(writeCheckbox) {
+        const readCheckbox = writeCheckbox.closest('.sub-option-row').querySelector('.read-checkbox');
+        if (writeCheckbox.checked) {
+            readCheckbox.checked = true;
         }
     }
 </script>
