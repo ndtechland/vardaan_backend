@@ -1,4 +1,4 @@
-﻿@model VardaanCab.Domain.DTO.createorg
+﻿@model VardaanCab.Domain.DTO.UserRoleDTO
 @{
     ViewBag.Title = "CreateRole";
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
@@ -124,9 +124,9 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title">Role Name</label>
-                                                @Html.TextBoxFor(a => a.OrgName, new { @class = "form-control", placeholder = "Role Name", required = "required" })
+                                                @Html.TextBoxFor(a => a.RoleName, new { @class = "form-control", placeholder = "Role Name", required = "required" })
                                                 <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.OrgName)
+                                                    @Html.ValidationMessageFor(a => a.RoleName)
                                                 </span>
                                             </div>
                                         </div>
@@ -135,6 +135,34 @@
 
                                 <div class="row mt-3">
                                     <div class="col-md-12">
+                                        <span style="color: #365977; font-size: 13px; font-weight: 700;">
+                                            <span>Access Type :</span>
+                                            <span style="color: #547171" class="ng-binding">New</span>
+                                        </span>
+                                        <div class="[ form-group-profile ] pull-right ng-scope" ng-if="newCreateButton">
+                                            <input type="checkbox" name="fancy-checkbox-primary" ng-model="module.readAccess" id="fancy-checkbox-primary" autocomplete="off" class="ng-valid ng-dirty" onclick="checkAllReadCheckboxes(this)">
+                                            <div class="[ btn-group ]" ng-click="readAllAssignAccess(module.readAccess)">
+                                                <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-primary btn-xs]">
+                                                    <span class="[ glyphicon glyphicon-ok ]"></span>
+                                                    <span></span>
+                                                </label>
+                                                <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-default active ]">
+                                                    <i class="icon-book" style="color: #245d90;"></i> Read All
+                                                </label>
+                                            </div>
+                                            <input type="checkbox" name="fancy-checkbox-success" ng-model="module.writeAccess" id="fancy-checkbox-success" autocomplete="off" class="ng-pristine ng-valid" onclick="checkAllWriteCheckboxes(this)">
+                                            <div class="[ btn-group ]" ng-click="writeAllAssignAccess(module.writeAccess)">
+                                                <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-success ]">
+                                                    <span class="[ glyphicon glyphicon-ok ]"></span>
+                                                    <span></span>
+                                                </label>
+                                                <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-default active ]">
+                                                    <i class="icon-edit" style="color:#188a18"></i> Write All
+                                                </label>
+                                            </div>
+                                        </div><!-- end ngIf: newCreateButton -->
+                                        <br>
+                                        <hr>
                                         <!-- Main Module Section -->
                                         <div class="module-row" onclick="toggleSection('live-tracking')">
                                             <span>Live Tracking</span>
@@ -148,7 +176,6 @@
                                                     Write
                                                 </label>
                                             </div>
-                                            @*<span>&#x25BC;</span>*@ <!-- Down arrow -->
                                         </div>
                                         <!-- Sub-options Section -->
                                         <div class="sub-options" id="live-tracking" style="display: none;">
@@ -216,8 +243,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -254,8 +279,7 @@
         });
     }
 </script>*@
-<script>
-    // Toggle visibility of sub-options
+<script>// Toggle visibility of sub-options
     function toggleSection(sectionId) {
         const section = document.getElementById(sectionId);
         section.style.display = section.style.display === 'none' ? 'block' : 'none';
@@ -267,14 +291,6 @@
         subCheckboxes.forEach(checkbox => {
             checkbox.checked = mainCheckbox.checked;
         });
-
-        // If "Write" checkbox is checked, check both "Read" and "Write" checkboxes for all sub-options
-        if (type === 'write' && mainCheckbox.checked) {
-            const allSubCheckboxes = document.querySelectorAll('.read-checkbox, .write-checkbox');
-            allSubCheckboxes.forEach(checkbox => {
-                checkbox.checked = true;
-            });
-        }
     }
 
     // Automatically check the "Read" checkbox when "Write" is checked
@@ -284,4 +300,28 @@
             readCheckbox.checked = true;
         }
     }
-</script>
+
+    // When "Read All" is clicked, check all read checkboxes in main and sub-sections
+    function checkAllReadCheckboxes(mainCheckbox) {
+        const allReadCheckboxes = document.querySelectorAll('.read-checkbox, .main-read-checkbox');
+        allReadCheckboxes.forEach(checkbox => {
+            checkbox.checked = mainCheckbox.checked;
+        });
+    }
+
+    // When "Write All" is clicked, check all write checkboxes in main and sub-sections
+    function checkAllWriteCheckboxes(mainCheckbox) {
+        const allWriteCheckboxes = document.querySelectorAll('.write-checkbox, .main-write-checkbox');
+        allWriteCheckboxes.forEach(checkbox => {
+            checkbox.checked = mainCheckbox.checked;
+        });
+
+        // If all write checkboxes are checked, check all the read checkboxes as well
+        const allWriteCheckboxesChecked = Array.from(allWriteCheckboxes).every(checkbox => checkbox.checked);
+        if (allWriteCheckboxesChecked) {
+            const allReadCheckboxes = document.querySelectorAll('.read-checkbox, .main-read-checkbox');
+            allReadCheckboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        }
+    }</script>
