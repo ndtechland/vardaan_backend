@@ -106,11 +106,11 @@
                                 <input name="Id" type="hidden" value="@Model.Id" />
                                 @if (TempData["msg"] != null)
                                 {
-                                <div class="mb-3">
-                                    <div class="alert alert-success">
-                                        @TempData["msg"]
+                                    <div class="mb-3">
+                                        <div class="alert alert-success">
+                                            @TempData["msg"]
+                                        </div>
                                     </div>
-                                </div>
                                 }
                                 <div class="row">
                                     <div class="col-md-12">
@@ -163,112 +163,98 @@
                                         </div><!-- end ngIf: newCreateButton -->
                                         <br>
                                         <hr>
-                                        <!-- Main Module Section -->
-                                        <div class="module-row" onclick="toggleSection('live-tracking')">
-                                            <span>Live Tracking</span>
-                                            <div class="actions" style="margin-left:430px;">
-                                                <label>
-                                                    <input type="checkbox" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
-                                                    Read
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
-                                                    Write
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <!-- Sub-options Section -->
-                                        <div class="sub-options" id="live-tracking" style="display: none;">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="sub-option-row">
-                                                            <span>Live Tracking</span>
-                                                            <div class="actions">
-                                                                <label>
-                                                                    <input type="checkbox" class="read-checkbox" />
-                                                                    Read
-                                                                </label>
-                                                                <label>
-                                                                    <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
-                                                                    Write
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="sub-option-row">
-                                                            <span>Female Employee Tracking Facility</span>
-                                                            <div class="actions">
-                                                                <label>
-                                                                    <input type="checkbox" class="read-checkbox" />
-                                                                    Read
-                                                                </label>
-                                                                <label>
-                                                                    <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
-                                                                    Write
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="sub-option-row">
-                                                            <span>Female Employee Tracking Shiftwise</span>
-                                                            <div class="actions">
-                                                                <label>
-                                                                    <input type="checkbox" class="read-checkbox" />
-                                                                    Read
-                                                                </label>
-                                                                <label>
-                                                                    <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
-                                                                    Write
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="sub-option-row">
-                                                            <span>Female Live Tracking</span>
-                                                            <div class="actions">
-                                                                <label>
-                                                                    <input type="checkbox" class="read-checkbox" />
-                                                                    Read
-                                                                </label>
-                                                                <label>
-                                                                    <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
-                                                                    Write
-                                                                </label>
-                                                            </div>
-                                                        </div>
+
+                                        @if (Model != null && Model.SoftwareLinkDTO.Count() > 0)
+                                        {
+                                            int count = 0;
+                                            foreach (var item in Model.SoftwareLinkDTO)
+                                            {
+                                                count++;
+                                                <div class="module-row" onclick="toggleSection('live-tracking_@count')">
+                                                    <span>@item.Title</span>
+                                                    <div class="actions" style="margin-left:430px;">
+                                                        <label>
+                                                            <input type="checkbox" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
+                                                            Read
+                                                        </label>
+                                                        <label>
+                                                            <input type="checkbox" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
+                                                            Write
+                                                        </label>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
+                                                if (item.ChildMenus != null && item.ChildMenus.Count() > 0)
+                                                {
+                                                    <div class="sub-options" id="live-tracking_@count" style="display: none;">
+                                                        <div class="col-md-12">
+                                                            <div class="row">
+                                                                @foreach (var menu in item.ChildMenus)
+                                                                {
+                                                                    if (menu.Url.Contains("?"))
+                                                                    {
+                                                                        <div class="col-md-6">
+                                                                            <div class="sub-option-row">
+                                                                                <span>@menu.Title</span>
+                                                                                <div class="actions">
+                                                                                    <label>
+                                                                                        <input type="checkbox" class="read-checkbox" />
+                                                                                        Read
+                                                                                    </label>
+                                                                                    <label>
+                                                                                        <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                                        Write
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-6">
+                                                                            <div class="sub-option-row">
+                                                                                <span>@menu.Title</span>
+                                                                                <div class="actions">
+                                                                                    <label>
+                                                                                        <input type="checkbox" class="read-checkbox" />
+                                                                                        Read
+                                                                                    </label>
+                                                                                    <label>
+                                                                                        <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                                        Write
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            }
+                                        }
                                     </div>
                                 </div>
-
                             </div>
                             <div class="card-footer text-end">
                                 <button type="submit" class="btn btn-primary">@ViewBag.BtnTXT</button>
                                 <button type="reset" class="btn btn-outline-primary">Reset</button>
                             </div>
                         </form>
-
-
-
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
 <script>
-// Toggle visibility of sub-options
     function toggleSection(sectionId) {
         const section = document.getElementById(sectionId);
-        section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        if (section) {
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        }
     }
 
     // Toggle checkboxes for sub-options based on main checkbox
