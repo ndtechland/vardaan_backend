@@ -12,8 +12,7 @@ namespace VardaanCab.Controllers
     public class AdministratorETSController : Controller
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
-        // GET: Defaul
-         
+        
         public ActionResult AssignAccess(int menuId = 0, int id = 0)
         {
             var model = new createorg();
@@ -46,7 +45,7 @@ namespace VardaanCab.Controllers
         public ActionResult CreateRole(int menuId = 0, int id = 0)
         {
             var model = new createorg();
-            model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).ToList(), "Id", "CustomerName");
+            model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).ToList(), "Id", "OrgName");
             model.OrgNameList = ent.Customers.Where(c => c.OrgName != null).ToList();
             ViewBag.menuId = menuId;
             if (id > 0)
@@ -54,7 +53,7 @@ namespace VardaanCab.Controllers
                 var data = ent.Customers.Where(x => x.Id == id).FirstOrDefault();
                 model.CompanyId = data.Id;
                 model.OrgName = data.OrgName;
-                ViewBag.Heading = "Update Org";
+                ViewBag.Heading = "Update Role";
                 ViewBag.BtnTXT = "Update";
                 return View(model);
             }
@@ -64,7 +63,7 @@ namespace VardaanCab.Controllers
                 model.CompanyId = 0;
                 model.OrgName = "";
                 ViewBag.BtnTXT = "Save";
-                ViewBag.Heading = "Create Org";
+                ViewBag.Heading = "Create Role";
                 return View(model);
             }
         }
