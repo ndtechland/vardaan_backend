@@ -18,5 +18,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<int> CompanyId { get; set; }
         public string CompanyZone1 { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public string Zonelatlong { get; set; }
     }
 }

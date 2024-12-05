@@ -1094,6 +1094,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyId" Type="int" />
           <Property Name="CompanyZone" Type="nvarchar" MaxLength="200" />
           <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="Zonelatlong" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="DaysName">
           <Key>
@@ -4393,6 +4394,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="CompanyZone1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Zonelatlong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ShiftMaster">
           <Key>
@@ -6759,6 +6761,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="CompanyZones">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.CompanyZone">
               <MappingFragment StoreEntitySet="CompanyZones">
+                <ScalarProperty Name="Zonelatlong" ColumnName="Zonelatlong" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="CompanyZone1" ColumnName="CompanyZone" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
