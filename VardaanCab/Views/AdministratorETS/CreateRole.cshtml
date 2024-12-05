@@ -106,11 +106,11 @@
                                 <input name="Id" type="hidden" value="@Model.Id" />
                                 @if (TempData["msg"] != null)
                                 {
-                                    <div class="mb-3">
-                                        <div class="alert alert-success">
-                                            @TempData["msg"]
-                                        </div>
+                                <div class="mb-3">
+                                    <div class="alert alert-success">
+                                        @TempData["msg"]
                                     </div>
+                                </div>
                                 }
                                 <div class="row">
                                     <div class="col-md-12">
@@ -139,9 +139,9 @@
                                             <span>Access Type :</span>
                                             <span style="color: #547171" class="ng-binding">New</span>
                                         </span>
-                                        <div class="[ form-group-profile ] pull-right ng-scope" ng-if="newCreateButton">
-                                            <input type="checkbox" name="fancy-checkbox-primary" ng-model="module.readAccess" id="fancy-checkbox-primary" autocomplete="off" class="ng-valid ng-dirty" onclick="checkAllReadCheckboxes(this)">
-                                            <div class="[ btn-group ]" ng-click="readAllAssignAccess(module.readAccess)">
+                                        <div class="[ form-group-profile ] pull-right ng-scope">
+                                            <input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary" autocomplete="off" class="ng-valid ng-dirty" onclick="checkAllReadCheckboxes(this)">
+                                            <div class="btn-group">
                                                 <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-primary btn-xs]">
                                                     <span class="[ glyphicon glyphicon-ok ]"></span>
                                                     <span></span>
@@ -150,8 +150,8 @@
                                                     <i class="icon-book" style="color: #245d90;"></i> Read All
                                                 </label>
                                             </div>
-                                            <input type="checkbox" name="fancy-checkbox-success" ng-model="module.writeAccess" id="fancy-checkbox-success" autocomplete="off" class="ng-pristine ng-valid" onclick="checkAllWriteCheckboxes(this)">
-                                            <div class="[ btn-group ]" ng-click="writeAllAssignAccess(module.writeAccess)">
+                                            <input type="checkbox" name="fancy-checkbox-success" id="fancy-checkbox-success" autocomplete="off" class="ng-pristine ng-valid" onclick="checkAllWriteCheckboxes(this)">
+                                            <div class="btn-group">
                                                 <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-success ]">
                                                     <span class="[ glyphicon glyphicon-ok ]"></span>
                                                     <span></span>
@@ -264,22 +264,8 @@
     </div>
 </div>
 
-@*<script>
-    // Toggle visibility of sub-options
-    function toggleSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        section.style.display = section.style.display === 'none' ? 'block' : 'none';
-    }
-
-    // Toggle checkboxes for sub-options based on main checkbox
-    function toggleSubOptionCheckboxes(type, mainCheckbox) {
-        const subCheckboxes = document.querySelectorAll(`.${type}-checkbox`);
-        subCheckboxes.forEach(checkbox => {
-            checkbox.checked = mainCheckbox.checked;
-        });
-    }
-</script>*@
-<script>// Toggle visibility of sub-options
+<script>
+// Toggle visibility of sub-options
     function toggleSection(sectionId) {
         const section = document.getElementById(sectionId);
         section.style.display = section.style.display === 'none' ? 'block' : 'none';
@@ -324,4 +310,5 @@
                 checkbox.checked = true;
             });
         }
-    }</script>
+    }
+</script>
