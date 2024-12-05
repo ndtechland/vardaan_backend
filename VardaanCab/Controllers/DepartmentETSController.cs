@@ -26,14 +26,14 @@ namespace VardaanCab.Controllers
                         {
                             Id = dm.Id,
                             DepartmentName = dm.DepartmentName,
-                            CustomerName = c.CustomerName,  
+                            CompanyName = c.CompanyName,  
                             CreatedDate = dm.Created,  
                         }
                        ).ToList();
             model.DepartmentMasterList = data;
             ViewBag.menuId = menuId;
            
-            model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "CompanyName");
             if (id > 0)
             {
                 var Depdata = ent.DepartmentMasters.Where(x => x.Id == id).FirstOrDefault();
@@ -57,7 +57,7 @@ namespace VardaanCab.Controllers
         [HttpPost]
         public ActionResult Departments(DepartmentMasterDTO model)
         {
-            model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "CompanyName");
             try
             {
                

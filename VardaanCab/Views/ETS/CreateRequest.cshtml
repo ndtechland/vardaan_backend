@@ -194,20 +194,16 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="guestpart">
-                                                    <label class="form-label-title ">Requestor Contact Numbers Comma Separated</label>
+                                                    <label class="form-label-title ">Requestor Contact No. Comma Separated</label>
                                                     @Html.TextBoxFor(a => a.RequestorContacts, new { @class = "form-control", placeholder = "Eg.919811172193,919999999999" })
                                                 </div>
 
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="guestpart">
-                                                    <label class="form-label-title ">Date of Booking Received</label>
-                                                    <div class="input-group date" id="dt-date"
-                                                         data-target-input="nearest">
-                                                        <div class="input-group">
-                                                            @Html.TextBoxFor(a => a.BookingReceivedDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Date of Booking Received", type = "Date" })
-                                                        </div>
-                                                    </div>
+                                                    @*<label class="form-label-title ">Date of Booking Received</label>*@
+                                                    <label class="form-label-title ">Booking Received Date</label>
+                                                    @Html.TextBoxFor(a => a.BookingReceivedDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Date of Booking Received", type = "Date" })
                                                 </div>
 
                                             </div>

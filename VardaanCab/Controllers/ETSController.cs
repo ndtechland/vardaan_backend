@@ -27,7 +27,7 @@ namespace VardaanCab.Controllers
         public ActionResult CreateRequest(int menuId = 0, int id = 0)
         {
             var model = new CreateRequestDTO();
-            model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
+            model.Companies = new SelectList(ent.Customers.Where(c=>c.IsActive==true).ToList(), "Id", "CompanyName");
             model.TripTypes = new SelectList(ent.TripTypes.Where(x=>x.TripMasterId==1).ToList(), "Id", "TripTypeName");
             model.ShiftTypes = new SelectList(ent.TripMasters.Where(x=>x.Id==1).ToList(), "Id", "TripName");
             model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x=>x.TripTypeId==1).ToList(), "Id", "ShiftTime");
