@@ -46,7 +46,30 @@ namespace VardaanCab.Controllers
         {
             var model = new UserRoleDTO();
             model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
-            
+            int userId = int.Parse(User.Identity.Name);
+            if (!ent.UserLogins.Any(x => x.Id == userId && x.Role == "Customer"))
+            {
+                var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
+                model.SoftwareLinkDTO = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
+                foreach (var item in model.SoftwareLinkDTO)
+                {
+                    var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + " and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
+                    var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
+                    item.ChildMenus = l;
+                }
+            }
+            else
+            {
+                var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (" + 1141 + "," + 1142 + ")";
+                model.SoftwareLinkDTO = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
+                foreach (var item in model.SoftwareLinkDTO)
+                {
+                    var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + "";
+                    var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
+                    item.ChildMenus = l;
+                }
+            }
+
             ViewBag.menuId = menuId;
             if (id > 0)
             {

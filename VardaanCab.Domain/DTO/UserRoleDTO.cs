@@ -15,5 +15,6 @@ namespace VardaanCab.Domain.DTO
         public Nullable<bool> IsActive { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public SelectList Companies { get; set; }
+        public IEnumerable<SoftwareLinkDTO> SoftwareLinkDTO { get; set; }
     }
 }
