@@ -1059,6 +1059,21 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Parent_Id" Type="int" />
           <Property Name="Counts" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="AccessType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserRoleId" Type="int" />
+          <Property Name="HeadingId" Type="int" />
+          <Property Name="SubHeadingId" Type="int" />
+          <Property Name="IsHeadingRead" Type="bit" />
+          <Property Name="IsHeadingWrite" Type="bit" />
+          <Property Name="IsSubHeadingRead" Type="bit" />
+          <Property Name="IsSubHeadingWrite" Type="bit" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="AreaMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -1288,6 +1303,16 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TripMasterId" Type="int" />
           <Property Name="TripTypeName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="300" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
         <Function Name="checkOneCompanyBookingSelected" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="isNrg" Type="bit" Mode="In" />
@@ -1690,6 +1715,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="VendorBill" EntityType="Self.VendorBill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VendorPackage" EntityType="Self.VendorPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VendorPersonalPackage" EntityType="Self.VendorPersonalPackage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccessType" EntityType="Self.AccessType" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="AreaMaster" EntityType="Self.AreaMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="BannerMaster" EntityType="Self.BannerMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="CompanyZoneHomeRoute" EntityType="Self.CompanyZoneHomeRoute" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -1708,6 +1734,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="Support" EntityType="Self.Support" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="TripMaster" EntityType="Self.TripMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="TripType" EntityType="Self.TripType" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="booking_backup11feb" EntityType="Self.booking_backup11feb" store:Type="Tables" store:Schema="newVardaan">
             <DefiningQuery>SELECT 
     [booking_backup11feb].[Id] AS [Id], 
@@ -3314,6 +3341,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="Supports" EntityType="Vardaan_AdminModel.Support" />
           <EntitySet Name="Escorts" EntityType="Vardaan_AdminModel.Escort" />
           <EntitySet Name="EmployeeMobileAppSettings" EntityType="Vardaan_AdminModel.EmployeeMobileAppSetting" />
+          <EntitySet Name="AccessTypes" EntityType="Vardaan_AdminModel.AccessType" />
+          <EntitySet Name="UserRoles" EntityType="Vardaan_AdminModel.UserRole" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4539,6 +4568,31 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="CabRequestDays" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="AccessType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserRoleId" Type="Int32" />
+          <Property Name="HeadingId" Type="Int32" />
+          <Property Name="SubHeadingId" Type="Int32" />
+          <Property Name="IsHeadingRead" Type="Boolean" />
+          <Property Name="IsHeadingWrite" Type="Boolean" />
+          <Property Name="IsSubHeadingRead" Type="Boolean" />
+          <Property Name="IsSubHeadingWrite" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="RoleName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
@@ -6930,6 +6984,33 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CabRequestDays" ColumnName="CabRequestDays" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccessTypes">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.AccessType">
+              <MappingFragment StoreEntitySet="AccessType">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsSubHeadingWrite" ColumnName="IsSubHeadingWrite" />
+                <ScalarProperty Name="IsSubHeadingRead" ColumnName="IsSubHeadingRead" />
+                <ScalarProperty Name="IsHeadingWrite" ColumnName="IsHeadingWrite" />
+                <ScalarProperty Name="IsHeadingRead" ColumnName="IsHeadingRead" />
+                <ScalarProperty Name="SubHeadingId" ColumnName="SubHeadingId" />
+                <ScalarProperty Name="HeadingId" ColumnName="HeadingId" />
+                <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
