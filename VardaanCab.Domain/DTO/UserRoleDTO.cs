@@ -10,6 +10,7 @@ namespace VardaanCab.Domain.DTO
     public class UserRoleDTO
     {
         public int Id { get; set; }
+        public int MenuId { get; set; }
         public Nullable<int> CompanyId { get; set; }
         public string RoleName { get; set; }
         public Nullable<bool> IsActive { get; set; }
