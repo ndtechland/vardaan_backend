@@ -90,5 +90,41 @@ namespace VardaanCab.Controllers
                 return View(model);
             }
         }
+        [HttpPost]
+        public ActionResult CreateRole(UserRoleDTO model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View(model);
+                if (model.Id == 0)
+                {
+                    var EmpReq = new UserRole()
+                    {
+                        CompanyId = model.CompanyId,
+                        RoleName = model.RoleName,
+                        IsActive=true,
+                        CreatedDate = DateTime.Now
+
+                    };
+                    ent.UserRoles.Add(EmpReq);
+                }
+                else
+                {
+                    var data = ent.UserRoles.Find(model.Id); 
+                    data.CompanyId = model.CompanyId;
+                    data.RoleName = model.RoleName;
+                }
+                ent.SaveChanges();
+                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
+
+
+            }
+            catch (Exception)
+            {
+                TempData["msg"] = "Server error";
+            }
+            return RedirectToAction("CreateRole", new { menuId = model.MenuId });
+        }
     }
 }
