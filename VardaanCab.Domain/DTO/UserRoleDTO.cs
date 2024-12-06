@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using VardaanCab.DataAccessLayer.DataLayer;
 
 namespace VardaanCab.Domain.DTO
 {
@@ -17,5 +18,6 @@ namespace VardaanCab.Domain.DTO
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public SelectList Companies { get; set; }
         public IEnumerable<SoftwareLinkDTO> SoftwareLinkDTO { get; set; }
+        public List<AccessType> accessTypes { get; set; }
     }
 }

@@ -245,11 +245,11 @@
                                                     <span>@item.Title</span>
                                                     <div class="actions" style="margin-left:430px;">
                                                         <label>
-                                                            <input type="checkbox" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
+                                                            <input type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
                                                             <i class="icon-book" style="color: #245d90;"></i> Read
                                                         </label>
                                                         <label>
-                                                            <input type="checkbox" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
+                                                            <input type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
                                                             <i class="icon-edit" style="color:#188a18"></i> Write
                                                         </label>
                                                     </div>
@@ -266,17 +266,17 @@
                                                                             <span>@menu.Title</span>
                                                                             <div class="actions">
                                                                                 <label>
-                                                                                    <input type="checkbox" class="read-checkbox" />
+                                                                                    <input type="checkbox" value="@menu.Id" class="read-checkbox" />
                                                                                     Read
                                                                                 </label>
                                                                                 <label>
-                                                                                    <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                                    <input type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />
                                                                                     Write
                                                                                 </label>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                }
+                                                                 }
                                                             </div>
                                                         </div>
                                                     </div>
@@ -407,4 +407,7 @@
             });
         }
     }
+
+    //Add the menu Js...
+
 </script>
