@@ -75,6 +75,7 @@
         <EntityTypeShape EntityType="Vardaan_AdminModel.EmployeeMobileAppSetting" Width="1.5" PointX="7.375" PointY="26.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.AccessType" Width="1.5" PointX="9.375" PointY="26.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.UserRole" Width="1.5" PointX="15.375" PointY="26.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.AccessAssign" Width="1.5" PointX="21.375" PointY="26.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

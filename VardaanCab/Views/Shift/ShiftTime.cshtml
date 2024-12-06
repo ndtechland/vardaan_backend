@@ -129,11 +129,7 @@
                     <div>
                         <h5>Shift Time List</h5>
                     </div>
-                    @*<form class="d-inline-flex">
-                            <a href="add-new-cars.html" class="btn btn-theme">
-                                <i data-feather="plus-square"></i>Add New
-                            </a>
-                        </form>*@
+                    
                 </div>
 
                 <div class="card-body">
@@ -192,19 +188,13 @@
                                             Count++;
                                         }
                                     }
-
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
-
     </div>
 </div>
 
@@ -243,7 +233,7 @@
         $.get('/Common/GetCompanyZonesByID?Customer_Id=' + id, function (r) {
             var dd = $("#CompanyZoneId");
             dd.empty();
-            dd.append('<option value="">Select City</option>');
+            dd.append('<option value="">Select Company Zone</option>');
             $.each(r, function (k, v) {
                 dd.append('<option value="' + v.Id + '">' + v.CompanyZone1 + '</option>');
 

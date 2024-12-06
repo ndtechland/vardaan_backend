@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataLayer\AccessAssign.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer\AccessType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
