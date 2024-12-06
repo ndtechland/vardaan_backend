@@ -160,80 +160,10 @@
                                                     <i class="icon-edit" style="color:#188a18"></i> Write All
                                                 </label>
                                             </div>
-                                        </div><!-- end ngIf: newCreateButton -->
+                                        </div>
                                         <br>
                                         <hr>
-
-                                        @*@if (Model != null && Model.SoftwareLinkDTO.Count() > 0)
-                                            {
-                                                int count = 0;
-                                                foreach (var item in Model.SoftwareLinkDTO)
-                                                {
-                                                    count++;
-                                                    <div class="module-row" onclick="toggleSection('live-tracking_@count')">
-                                                        <span>@item.Title</span>
-                                                        <div class="actions" style="margin-left:430px;">
-                                                            <label>
-                                                                <input type="checkbox" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
-                                                                <i class="icon-book" style="color: #245d90;"></i> Read
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
-                                                                <i class="icon-edit" style="color:#188a18"></i> Write
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    if (item.ChildMenus != null && item.ChildMenus.Count() > 0)
-                                                    {
-                                                        <div class="sub-options" id="live-tracking_@count" style="display: none;">
-                                                            <div class="col-md-12">
-                                                                <div class="row">
-                                                                    @foreach (var menu in item.ChildMenus)
-                                                                    {
-                                                                        if (menu.Url.Contains("?"))
-                                                                        {
-                                                                            <div class="col-md-6">
-                                                                                <div class="sub-option-row">
-                                                                                    <span>@menu.Title</span>
-                                                                                    <div class="actions">
-                                                                                        <label>
-                                                                                            <input type="checkbox" class="read-checkbox" />
-                                                                                            Read
-                                                                                        </label>
-                                                                                        <label>
-                                                                                            <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
-                                                                                            Write
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <div class="col-md-6">
-                                                                                <div class="sub-option-row">
-                                                                                    <span>@menu.Title</span>
-                                                                                    <div class="actions">
-                                                                                        <label>
-                                                                                            <input type="checkbox" class="read-checkbox" />
-                                                                                            Read
-                                                                                        </label>
-                                                                                        <label>
-                                                                                            <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
-                                                                                            Write
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        }
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    }
-
-                                                }
-                                            }*@
+                                         
 
                                         @if (Model != null && Model.SoftwareLinkDTO.Count() > 0)
                                         {
@@ -298,56 +228,7 @@
         </div>
     </div>
 </div>
-
-@*<script>
-        function toggleSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.style.display = section.style.display === 'none' ? 'block' : 'none';
-            }
-        }
-
-        // Toggle checkboxes for sub-options based on main checkbox
-        function toggleSubOptionCheckboxes(type, mainCheckbox) {
-            const subCheckboxes = document.querySelectorAll(`.${type}-checkbox`);
-            subCheckboxes.forEach(checkbox => {
-                checkbox.checked = mainCheckbox.checked;
-            });
-        }
-
-        // Automatically check the "Read" checkbox when "Write" is checked
-        function syncReadCheckbox(writeCheckbox) {
-            const readCheckbox = writeCheckbox.closest('.sub-option-row').querySelector('.read-checkbox');
-            if (writeCheckbox.checked) {
-                readCheckbox.checked = true;
-            }
-        }
-
-        // When "Read All" is clicked, check all read checkboxes in main and sub-sections
-        function checkAllReadCheckboxes(mainCheckbox) {
-            const allReadCheckboxes = document.querySelectorAll('.read-checkbox, .main-read-checkbox');
-            allReadCheckboxes.forEach(checkbox => {
-                checkbox.checked = mainCheckbox.checked;
-            });
-        }
-
-        // When "Write All" is clicked, check all write checkboxes in main and sub-sections
-        function checkAllWriteCheckboxes(mainCheckbox) {
-            const allWriteCheckboxes = document.querySelectorAll('.write-checkbox, .main-write-checkbox');
-            allWriteCheckboxes.forEach(checkbox => {
-                checkbox.checked = mainCheckbox.checked;
-            });
-
-            // If all write checkboxes are checked, check all the read checkboxes as well
-            const allWriteCheckboxesChecked = Array.from(allWriteCheckboxes).every(checkbox => checkbox.checked);
-            if (allWriteCheckboxesChecked) {
-                const allReadCheckboxes = document.querySelectorAll('.read-checkbox, .main-read-checkbox');
-                allReadCheckboxes.forEach(checkbox => {
-                    checkbox.checked = true;
-                });
-            }
-        }
-    </script>*@
+ 
 
 <script>
     // Toggle section visibility and ensure only one section is open

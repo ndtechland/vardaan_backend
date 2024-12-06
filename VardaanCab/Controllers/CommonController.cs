@@ -118,5 +118,15 @@ join CityMaster cm on b.City_Id=cm.Id where BookingStatus<>3 and CONVERT(VARCHAR
             var result = ent.Database.SqlQuery<RequiredCab>(query2).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult GetEmployeeIdByCompany(int companyId)
+        {
+            var data = ent.Employees.Where(a => a.Company_Id == companyId && a.IsActive == true).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetUserRoleByCompany(int companyId)
+        {
+            var data = ent.UserRoles.Where(a => a.CompanyId == companyId && a.IsActive == true).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
     }
 }
