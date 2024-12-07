@@ -16,6 +16,7 @@ using VardaanCab.Utilities;
 using DocumentFormat.OpenXml.Spreadsheet;
 using NPOI.SS.UserModel;
 using System.Data.Entity.Validation;
+using NPOI.SS.Formula.Eval;
 
 
 namespace VardaanCab.Controllers
@@ -29,8 +30,54 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                var employee = ent.Employees.ToList();
-                return View(employee);
+                var model = new EmployeeDTO();
+                //var employee = ent.Employees.OrderByDescending(e=>e.Id).ToList();
+                var data = (from e in ent.Employees
+                            join c in ent.Customers on e.Company_Id equals c.Id
+                            join z in ent.CompanyZones on e.PrimaryFacilityZone equals z.Id
+                            join hr in ent.CompanyZoneHomeRoutes on e.HomeRouteName equals hr.Id
+                            join rt in ent.EmployeeRegistrationTypes on e.EmployeeRegistrationType equals rt.Id
+                            join s in ent.StateMasters on e.StateId equals s.Id
+                            join ct in ent.CityMasters on e.CityId equals ct.Id
+                            join da in ent.EmployeeDestinationAreas on e.EmployeeDestinationArea equals da.Id
+                            where e.IsActive==true
+                            orderby e.Id descending
+                            select new  employeedetail
+                            {
+                                Id=e.Id,
+                                Employee_First_Name=e.Employee_First_Name,
+                                Employee_Middle_Name=e.Employee_Middle_Name,
+                                Employee_Last_Name=e.Employee_Last_Name,
+                                MobileNumber=e.MobileNumber,
+                                Email=e.Email,    
+                                Pincode=e.Pincode,    
+                                EmployeeCurrentAddress=e.EmployeeCurrentAddress,    
+                                EmployeeGeoCode=e.EmployeeGeoCode,    
+                                EmployeeBusinessUnit=e.EmployeeBusinessUnit,    
+                                EmployeeDepartment=e.EmployeeDepartment,    
+                                Employee_Id=e.Employee_Id,    
+                                EmployeeProjectName=e.EmployeeProjectName,    
+                                ReportingManager=e.ReportingManager,    
+                                AlternateNumber=e.AlternateNumber,
+                                StateName = s.StateName,
+                                CityName = ct.CityName,    
+                                PrimaryFacilityZone=z.CompanyZone1,
+                                EmployeeDestinationArea = da.DestinationAreaName,    
+                                HomeRouteName=hr.HomeRouteName,    
+                                CompanyName=c.CompanyName,    
+                                EmployeeRegistrationType=rt.TypeName,    
+                                CreatedDate=e.CreatedDate,
+                                //WeekOff = string.Join(", ",
+                                //        ent.DaysNames
+                                //        .Where(w => e.WeekOff.Split(',')
+                                //            .Select(id => int.Parse(id))
+                                //                        .Contains(w.Id))
+                                //                        .Select(w => w.DayName))
+                            }
+
+                          ).ToList();
+                model.employeedetailList = data;
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -57,7 +104,80 @@ namespace VardaanCab.Controllers
                 //model.DestinationArea = new SelectList(ent.EmployeeDestinationAreas.ToList(), "Id", "DestinationAreaName");
                 model.RegistrationTypes = new SelectList(ent.EmployeeRegistrationTypes.ToList(), "Id", "TypeName");
 
-                return View(model);
+                if (id > 0)
+                {
+                    var data = ent.Employees.Where(x => x.Id == id).FirstOrDefault();
+                    model.Id = data.Id;
+                    model.Company_location = data.Company_location;
+                    model.Company_Id = data.Company_Id;
+                    model.Employee_Id = data.Employee_Id;
+                    model.Employee_First_Name = data.Employee_First_Name;
+                    model.Employee_Middle_Name = data.Employee_Middle_Name;
+                    model.Employee_Last_Name = data.Employee_Last_Name;
+                    model.MobileNumber = data.MobileNumber;
+                    model.Email = data.Email;
+                    model.StateId = data.StateId;
+                    model.CityId = data.CityId;
+                    ViewBag.CityId = data.CityId;
+                    model.Pincode = data.Pincode;
+                    model.EmployeeCurrentAddress = data.EmployeeCurrentAddress;
+                    model.LoginUserName = data.LoginUserName;
+                    //model.WeekOff = data.WeekOff;
+                    model.WeekOffs = data.WeekOff.Split(',').ToList();
+
+                    model.EmployeeGeoCode = data.EmployeeGeoCode;
+                    model.EmployeeBusinessUnit = data.EmployeeBusinessUnit;
+                    model.EmployeeDepartment = data.EmployeeDepartment;
+                    model.EmployeeProjectName = data.EmployeeProjectName;
+                    model.ReportingManager = data.ReportingManager;
+                    model.PrimaryFacilityZone = data.PrimaryFacilityZone;
+                    ViewBag.PrimaryFacilityZone = data.PrimaryFacilityZone;
+                    model.HomeRouteName = data.HomeRouteName;
+                    ViewBag.HomeRouteName = data.HomeRouteName;
+                    model.EmployeeDestinationArea = data.EmployeeDestinationArea;
+                    ViewBag.EmployeeDestinationArea = data.EmployeeDestinationArea;
+                    model.EmployeeRegistrationType = data.EmployeeRegistrationType;
+                    model.Gender = data.Gender;
+                    model.AlternateNumber = data.AlternateNumber;
+                    ViewBag.Heading = "Update Employee";
+                    ViewBag.BtnTXT = "Update";
+                    return View(model);
+                }
+                else
+                {
+                    model.Id = 0;
+                    model.Company_location = null;
+                    model.Company_Id = 0;
+                    model.Employee_Id = null;
+                    model.Employee_First_Name = null;
+                    model.Employee_Middle_Name = null;
+                    model.Employee_Last_Name = null;
+                    model.MobileNumber = null;
+                    model.Email = null;
+                    model.StateId = 0;
+                    model.CityId = 0;
+                    model.Pincode = null;
+                    model.EmployeeCurrentAddress = null;
+                    model.LoginUserName = null;
+                    model.WeekOff = null;
+                    model.EmployeeGeoCode = null;
+                    model.EmployeeBusinessUnit = null;
+                    model.EmployeeDepartment = null;
+                    model.EmployeeProjectName = null;
+                    model.ReportingManager = null;
+                    model.PrimaryFacilityZone = 0;
+                    model.HomeRouteName = 0;
+                    model.EmployeeDestinationArea = 0;
+                    model.Gender = null;
+                    model.AlternateNumber = null;
+                    ViewBag.CityId = 0;
+                    ViewBag.PrimaryFacilityZone = 0;
+                    ViewBag.HomeRouteName = 0;
+                    ViewBag.EmployeeDestinationArea = 0;
+                    ViewBag.BtnTXT = "Save";
+                    ViewBag.Heading = "Create New Employee";
+                    return View(model);
+                }
             }
             catch (Exception ex)
             {
@@ -81,8 +201,20 @@ namespace VardaanCab.Controllers
                     {
                         command.CommandText = "Vardaan_AdminEntities.ManageEmployee";
                         command.CommandType = CommandType.StoredProcedure;
+                        string checkaction = null;
+                        if(model.Id==0)
+                        {
+                            checkaction = "INSERT";
 
-                        command.Parameters.Add(new EntityParameter("Action", DbType.String) { Value = "INSERT" });
+                        }
+                        else
+                        {
+                            checkaction = "UPDATE";
+
+                        }
+                        string combinedString = string.Join(",", model.WeekOff);
+                        command.Parameters.Add(new EntityParameter("Action", DbType.String) { Value = checkaction });
+                        command.Parameters.Add(new EntityParameter("Id", DbType.Int32) { Value = model.Id });
                         command.Parameters.Add(new EntityParameter("Company_Id", DbType.Int32) { Value = model.Company_Id });
                         command.Parameters.Add(new EntityParameter("Company_location", DbType.String) { Value = model.Company_location });
                         command.Parameters.Add(new EntityParameter("Employee_Id", DbType.Int32) { Value = model.Employee_Id });
@@ -97,7 +229,7 @@ namespace VardaanCab.Controllers
                         command.Parameters.Add(new EntityParameter("Pincode", DbType.String) { Value = model.Pincode });
                         command.Parameters.Add(new EntityParameter("EmployeeCurrentAddress", DbType.String) { Value = model.EmployeeCurrentAddress });
                         command.Parameters.Add(new EntityParameter("LoginUserName", DbType.String) { Value = model.LoginUserName });
-                        command.Parameters.Add(new EntityParameter("WeekOff", DbType.String) { Value = model.WeekOff ?? (object)DBNull.Value });
+                        command.Parameters.Add(new EntityParameter("WeekOff", DbType.String) { Value = combinedString ?? (object)DBNull.Value });
                         command.Parameters.Add(new EntityParameter("EmployeeGeoCode", DbType.String) { Value = model.EmployeeGeoCode ?? (object)DBNull.Value });
                         command.Parameters.Add(new EntityParameter("EmployeeBusinessUnit", DbType.String) { Value = model.EmployeeBusinessUnit ?? (object)DBNull.Value });
                         command.Parameters.Add(new EntityParameter("EmployeeDepartment", DbType.String) { Value = model.EmployeeDepartment ?? (object)DBNull.Value });
@@ -113,12 +245,29 @@ namespace VardaanCab.Controllers
                         command.ExecuteNonQuery();
                     }
                 }
+                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
                 return RedirectToAction("Add");
             }
             catch (Exception ex)
             {
                 throw new Exception("Server Error: " + ex.Message);
+            }
+        }
+        public ActionResult DeleteEmployee(int id)
+        {
+            try
+            {
+                var data = ent.Employees.Find(id);
+                data.IsActive = false;
+                ent.SaveChanges();
+                TempData["dltmsg"] = "Deleted successfully.";
+                return RedirectToAction("GetEmployeeList");
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

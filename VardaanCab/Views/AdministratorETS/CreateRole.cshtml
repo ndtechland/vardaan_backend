@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "CreateRole";
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    int Count = 1;
 }
 <style>
     body {
@@ -234,7 +235,75 @@
         </div>
     </div>
 </div>
- 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header  card-header--2">
+
+                    <div>
+                        <h5>List</h5>
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+                    @if (TempData["dltmsg"] != null)
+                    {
+                        <div class="row r">
+                            <div class="col-md-12">
+                                <div class="alert alert-success">
+                                    @TempData["dltmsg"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div>
+                        <div class="table-responsive table-desi">
+                            <table class="datatable all-cars-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th nowrap>Sr No.</th>
+                                        <th nowrap>Company Name (Org Name)</th>
+                                        <th nowrap>Role</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.UserRoleLists != null)
+                                    {
+                                        foreach (var item in Model.UserRoleLists)
+                                        {
+                                            <tr>
+                                                <td nowrap>@Count</td>
+                                                <td nowrap>@item.CompanyName (@item.OrgName)</td>
+                                                <td nowrap>@item.RoleName</td>
+                                                <td>
+                                                    <a href="/AdministratorETS/CreateRole?Id=@item.Id">
+                                                        <i class="fa fa-pencil-square-o"
+                                                           aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="/AdministratorETS/DeleteUserRole?Id=@item.Id" onclick="return confirm('Are you sure want to delete?')">
+                                                        <i class="fa fa-trash-o"
+                                                           aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            Count++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     // Toggle section visibility and ensure only one section is open
