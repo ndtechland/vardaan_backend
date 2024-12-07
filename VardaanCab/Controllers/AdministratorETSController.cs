@@ -195,6 +195,7 @@ namespace VardaanCab.Controllers
 
                     };
                     ent.UserRoles.Add(EmpReq);
+                    
                 }
                 else
                 {
