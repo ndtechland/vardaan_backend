@@ -172,14 +172,17 @@
                                             {
                                                 count++;
                                                 <div class="module-row" onclick="toggleSection('live-tracking_@count')">
+                                                    
                                                     <span>@item.Title</span>
                                                     <div class="actions" style="margin-left:430px;">
                                                         <label>
-                                                            <input type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
+                                                            <input name="IsReadChecked[]" type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
+                                                            @*<input type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />*@
                                                             <i class="icon-book" style="color: #245d90;"></i> Read
                                                         </label>
                                                         <label>
-                                                            <input type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
+                                                            <input name="IsWriteChecked[]" type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
+                                                            @*<input type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />*@
                                                             <i class="icon-edit" style="color:#188a18"></i> Write
                                                         </label>
                                                     </div>
@@ -194,13 +197,16 @@
                                                                     <div class="col-md-6">
                                                                         <div class="sub-option-row">
                                                                             <span>@menu.Title</span>
+                                                                            
                                                                             <div class="actions">
                                                                                 <label>
-                                                                                    <input type="checkbox" value="@menu.Id" class="read-checkbox" />
+                                                                                    <input name="IsSubReadChecked[]" type="checkbox" class="read-checkbox" value="@menu.Id" />
+                                                                                    @*<input type="checkbox" value="@menu.Id" class="read-checkbox" />*@
                                                                                     Read
                                                                                 </label>
                                                                                 <label>
-                                                                                    <input type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                                    <input name="IsSubWriteChecked[]" type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                                    @*<input type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />*@
                                                                                     Write
                                                                                 </label>
                                                                             </div>
@@ -233,7 +239,6 @@
 <script>
     // Toggle section visibility and ensure only one section is open
     function toggleSection(sectionId) {
-        // Close all other sections
         const allSections = document.querySelectorAll('.sub-options');
         allSections.forEach(section => {
             if (section.id !== sectionId) {
@@ -241,7 +246,6 @@
             }
         });
 
-        // Toggle the clicked section
         const section = document.getElementById(sectionId);
         if (section) {
             section.style.display = section.style.display === 'none' ? 'block' : 'none';
@@ -264,7 +268,7 @@
         }
     }
 
-    // When "Read All" is clicked, check all read checkboxes in main and sub-sections
+    // Check or uncheck all "Read" checkboxes based on "Read All" checkbox
     function checkAllReadCheckboxes(mainCheckbox) {
         const allReadCheckboxes = document.querySelectorAll('.read-checkbox, .main-read-checkbox');
         allReadCheckboxes.forEach(checkbox => {
@@ -272,23 +276,23 @@
         });
     }
 
-    // When "Write All" is clicked, check all write checkboxes in main and sub-sections
     function checkAllWriteCheckboxes(mainCheckbox) {
+        // Select all write and read checkboxes (main and submenus)
         const allWriteCheckboxes = document.querySelectorAll('.write-checkbox, .main-write-checkbox');
+        const allReadCheckboxes = document.querySelectorAll('.read-checkbox, .main-read-checkbox');
+
+        // Toggle all write checkboxes
         allWriteCheckboxes.forEach(checkbox => {
             checkbox.checked = mainCheckbox.checked;
         });
 
-        // If all write checkboxes are checked, check all the read checkboxes as well
-        const allWriteCheckboxesChecked = Array.from(allWriteCheckboxes).every(checkbox => checkbox.checked);
-        if (allWriteCheckboxesChecked) {
-            const allReadCheckboxes = document.querySelectorAll('.read-checkbox, .main-read-checkbox');
-            allReadCheckboxes.forEach(checkbox => {
-                checkbox.checked = true;
-            });
-        }
+        // Toggle all read checkboxes
+        allReadCheckboxes.forEach(checkbox => {
+            checkbox.checked = mainCheckbox.checked;
+        });
+
+        // Sync the state of the "Read All" checkbox to match "Write All"
+        const readAllCheckbox = document.getElementById('fancy-checkbox-primary');
+        readAllCheckbox.checked = mainCheckbox.checked;
     }
-
-    //Add the menu Js...
-
 </script>
