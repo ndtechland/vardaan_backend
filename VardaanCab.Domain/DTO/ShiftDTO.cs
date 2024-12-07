@@ -26,7 +26,7 @@ namespace VardaanCab.Domain.DTO
         public Nullable<int> TripTypeId { get; set; }
         public string ShiftTime { get; set; }
         public string TripType { get; set; }
-        public string CustomerName { get; set; }
+        public string CompanyName { get; set; }
         public string DepartmentName { get; set; }
         public string CompanyZoneName { get; set; }
         public string ShiftBufferTime { get; set; }

@@ -50,7 +50,7 @@ namespace VardaanCab.Controllers
                 model.UserRoleId = data.EmployeeId;
                 ViewBag.UserRoleId = data.UserRoleId;
                 ViewBag.EmployeeId = data.EmployeeId;
-                ViewBag.Heading = "Update Org";
+                ViewBag.Heading = "Update Assign Access";
                 ViewBag.BtnTXT = "Update";
                 return View(model);
             }
@@ -63,9 +63,47 @@ namespace VardaanCab.Controllers
                 ViewBag.UserRoleId = 0;
                 ViewBag.EmployeeId = 0;
                 ViewBag.BtnTXT = "Save";
-                ViewBag.Heading = "Create Org";
+                ViewBag.Heading = "Create Assign Access";
                 return View(model);
             }
+        }
+        [HttpPost]
+        public ActionResult AssignAccess(AccessAssignDTO model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View(model);
+                if (model.Id == 0)
+                {
+                    var DomainModel = new AccessAssign()
+                    {
+                        CompanyId = model.CompanyId,
+                        UserRoleId = model.UserRoleId,
+                        EmployeeId = model.EmployeeId,
+                        IsActive = true,
+                        CreatedDate = DateTime.Now
+
+                    };
+                    ent.AccessAssigns.Add(DomainModel);
+                }
+                else
+                {
+                    var data = ent.AccessAssigns.Find(model.Id);
+                    data.CompanyId = model.CompanyId;
+                    data.UserRoleId = model.UserRoleId;
+                    data.EmployeeId = model.EmployeeId;
+                }
+                ent.SaveChanges();
+                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
+
+
+            }
+            catch (Exception)
+            {
+                TempData["msg"] = "Server error";
+            }
+            return RedirectToAction("AssignAccess", new { menuId = model.MenuId });
         }
         public ActionResult AssignAccessList()
         {
@@ -74,7 +112,26 @@ namespace VardaanCab.Controllers
         public ActionResult CreateRole(int menuId = 0, int id = 0)
         {
             var model = new UserRoleDTO();
-            model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
+            // model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
+            model.Companies = ent.Customers.Select(d => new SelectListItem
+            {
+                Value = d.Id.ToString(),
+                Text = d.OrgName
+            }).ToList();
+            var Getdata = (from r in ent.UserRoles
+                        join c in ent.Customers on r.CompanyId equals c.Id
+                        where r.IsActive==true
+                        orderby r.Id descending
+                        select new UserRoleList
+                        {
+                            Id = r.Id,
+                            CompanyName = c.CompanyName,
+                            OrgName = c.OrgName,
+                            RoleName = r.RoleName
+                        }
+                       ).ToList();
+            model.UserRoleLists = Getdata;
+
             int userId = int.Parse(User.Identity.Name);
             if (!ent.UserLogins.Any(x => x.Id == userId && x.Role == "Customer"))
             {
@@ -103,7 +160,8 @@ namespace VardaanCab.Controllers
             if (id > 0)
             {
                 var data = ent.UserRoles.Where(x => x.Id == id).FirstOrDefault();
-                model.CompanyId = data.Id;
+                model.Id = data.Id;
+                model.CompanyId = data.CompanyId;
                 model.RoleName = data.RoleName;
                 ViewBag.Heading = "Update Role";
                 ViewBag.BtnTXT = "Update";
@@ -154,6 +212,22 @@ namespace VardaanCab.Controllers
                 TempData["msg"] = "Server error";
             }
             return RedirectToAction("CreateRole", new { menuId = model.MenuId });
+        }
+        public ActionResult DeleteUserRole(int id)
+        {
+            try
+            {
+                var data = ent.UserRoles.Find(id);
+                data.IsActive = false;
+                ent.SaveChanges();
+                TempData["dltmsg"] = "Deleted successfully.";
+                return RedirectToAction("CreateRole");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

@@ -27,7 +27,7 @@ namespace VardaanCab.Controllers
                         {
                             Id = sm.Id,
                             TripType = tt.TripTypeName,
-                            CustomerName = c.CustomerName,
+                            CompanyName = c.CompanyName,
                             CompanyZoneName = cz.CompanyZone1,
                             DepartmentName = dm.DepartmentName,
                             ShiftBufferTime = sm.ShiftBufferTime,

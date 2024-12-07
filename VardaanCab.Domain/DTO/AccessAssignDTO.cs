@@ -11,6 +11,7 @@ namespace VardaanCab.Domain.DTO
     public class AccessAssignDTO
     {
         public int Id { get; set; }
+        public int MenuId { get; set; }
         public Nullable<int> CompanyId { get; set; }
         public Nullable<int> EmployeeId { get; set; }
         public Nullable<int> UserRoleId { get; set; }

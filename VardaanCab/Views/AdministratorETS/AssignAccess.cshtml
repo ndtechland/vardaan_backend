@@ -89,7 +89,54 @@
             opacity: 0.9;
         }
 </style>
+<style>
+    .dropdown-container {
+        position: relative;
+    }
 
+    .dropdown-toggle {
+        display: inline-block;
+        width: 100%;
+        cursor: pointer;
+        text-align: left;
+    }
+
+    .dropdown-search {
+        display: none;
+        margin-bottom: 5px;
+        width: 100%;
+    }
+
+    .dropdown-options {
+        display: none;
+        position: absolute;
+        z-index: 1000;
+        background: #fff;
+        border: 1px solid #ccc;
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown-container.open .dropdown-options {
+        display: block;
+    }
+
+    .dropdown-container.open .dropdown-search {
+        display: block;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 5px 10px;
+    }
+
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+        }
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -101,7 +148,7 @@
                                 <h5>@ViewBag.Heading</h5>
                             </div>
                         </div>
-                        <form class="theme-form mega-form" action="CreateOrg" method="post" enctype="multipart/form-data">
+                        <form class="theme-form mega-form" action="AssignAccess" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
                                 <input name="Id" type="hidden" value="@Model.Id" />
@@ -116,30 +163,75 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
+                                            @*<div class="col-md-6">
+            <label class="form-label-title">Select Company</label>
+            <div class="dropdown-container">
+                <input type="text" class="dropdown-search form-control" placeholder="Search Company..." />
+                <button class="dropdown-toggle form-control" type="button">--Select Company--</button>
+                <div class="dropdown-options">
+                    @foreach (var company in Model.Companies)
+                    {
+                        <label class="dropdown-item">
+                            <input type="checkbox" name="CompanyId" value="@company.Value" class="dropdown-checkbox" />
+                            @company.Text
+                        </label>
+                    }
+                </div>
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(a => a.CompanyId)
+                </span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label-title">Select Employee</label>
+            <input type="text" id="EmployeeIdhidden" hidden value="@ViewBag.EmployeeId" />
+
+            @Html.DropDownListFor(a => a.EmployeeId, Enumerable.Empty<SelectListItem>(), "--Select Employee Id--", new { @class = "form-control", @required = "required" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.EmployeeId)
+            </span>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label-title">User Role</label>
+            <input type="text" id="UserRoleIdhidden" hidden value="@ViewBag.UserRoleId" />
+
+            @Html.DropDownListFor(a => a.UserRoleId, Enumerable.Empty<SelectListItem>(), "--Select Role--", new { @class = "form-control", @required = "required" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.UserRoleId)
+            </span>
+        </div>*@
                                             <div class="col-md-6">
                                                 <label class="form-label-title">Select Company</label>
-                                                @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control", required = "required" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.CompanyId)
-                                                </span>
+                                                <div class="dropdown-container">
+                                                    <input type="text" class="dropdown-search form-control" placeholder="Search Company..." />
+                                                    <button class="dropdown-toggle form-control" type="button">--Select Company--</button>
+                                                    <div class="dropdown-options">
+                                                        @foreach (var company in Model.Companies)
+                                                        {
+                                                            <label class="dropdown-item">
+                                                                <input type="checkbox" name="CompanyId" value="@company.Value" class="dropdown-checkbox" />
+                                                                @company.Text
+                                                            </label>
+                                                        }
+                                                    </div>
+                                                    <span class="text-danger">@Html.ValidationMessageFor(a => a.CompanyId)</span>
+                                                </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <label class="form-label-title">Select Employee</label>
                                                 <input type="text" id="EmployeeIdhidden" hidden value="@ViewBag.EmployeeId" />
-
-                                                @Html.DropDownListFor(a => a.EmployeeId, Enumerable.Empty<SelectListItem>(), "--Select Employee Id--", new { @class = "form-control", @required = "required" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.EmployeeId)
-                                                </span>
+                                                @Html.DropDownListFor(a => a.EmployeeId, Enumerable.Empty<SelectListItem>(), "--Select Employee Id--",
+                                                    new { @class = "form-control", @required = "required" })
+                                                <span class="text-danger">@Html.ValidationMessageFor(a => a.EmployeeId)</span>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <label class="form-label-title">User Role</label>
                                                 <input type="text" id="UserRoleIdhidden" hidden value="@ViewBag.UserRoleId" />
-
-                                                @Html.DropDownListFor(a => a.UserRoleId, Enumerable.Empty<SelectListItem>(), "--Select Role--", new { @class = "form-control", @required = "required" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.UserRoleId)
-                                                </span>
+                                                @Html.DropDownListFor(a => a.UserRoleId, Enumerable.Empty<SelectListItem>(), "--Select Role--",
+                                                    new { @class = "form-control", @required = "required" })
+                                                <span class="text-danger">@Html.ValidationMessageFor(a => a.UserRoleId)</span>
                                             </div>
 
                                             <div class="row mt-3">
@@ -152,7 +244,7 @@
                                                         <input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary" autocomplete="off" class="ng-valid ng-dirty" onclick="checkAllReadCheckboxes(this)">
                                                         <div class="btn-group">
                                                             <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-primary btn-xs]">
-                                                                <span class="glyphicon glyphicon-ok"></span>
+
                                                                 <span></span>
                                                             </label>
                                                             <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-default active ]">
@@ -162,7 +254,7 @@
                                                         <input type="checkbox" name="fancy-checkbox-success" id="fancy-checkbox-success" autocomplete="off" class="ng-pristine ng-valid" onclick="checkAllWriteCheckboxes(this)">
                                                         <div class="btn-group">
                                                             <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-success ]">
-                                                                <span class="glyphicon glyphicon-ok"></span>
+
                                                                 <span></span>
                                                             </label>
                                                             <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-default active ]">
@@ -246,7 +338,7 @@
     </div>
 </div>
 
-<script>
+@*<script>
     $("#CompanyId").change(function () {
         var id = $(this).val();
         $.get('/Common/GetEmployeeIdByCompany?companyId=' + id, function (r) {
@@ -300,7 +392,7 @@
             $("#UserRoleId").val($("#UserRoleIdhidden").val());
         })
     });
-</script>
+</script>*@
 
 
 <script>
@@ -361,4 +453,79 @@
             });
         }
     }
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Handle single selection for checkboxes
+        $(".dropdown-checkbox").change(function () {
+            if (this.checked) {
+                // Uncheck all other checkboxes
+                $(".dropdown-checkbox").not(this).prop("checked", false);
+
+                // Update the dropdown toggle text to the selected company name
+                const selectedText = $(this).parent().text().trim();
+                $(".dropdown-toggle").text(selectedText);
+
+                // Trigger dependent dropdown updates
+                const selectedCompanyId = this.value;
+                updateEmployeeDropdown(selectedCompanyId);
+                updateUserRoleDropdown(selectedCompanyId);
+            } else {
+                // Reset dropdown toggle text if no company is selected
+                $(".dropdown-toggle").text("--Select Company--");
+            }
+        });
+
+        // Fetch and populate EmployeeId dropdown
+        function updateEmployeeDropdown(companyId) {
+            $.get('/Common/GetEmployeeIdByCompany', { companyId: companyId }, function (data) {
+                const employeeDropdown = $("#EmployeeId");
+                employeeDropdown.empty().append('<option value="">--Select Employee Id--</option>');
+                data.forEach(employee => {
+                    employeeDropdown.append(`<option value="${employee.Id}">${employee.Employee_Id}</option>`);
+                });
+                employeeDropdown.val($("#EmployeeIdhidden").val());
+            });
+        }
+
+        // Fetch and populate UserRoleId dropdown
+        function updateUserRoleDropdown(companyId) {
+            $.get('/Common/GetUserRoleByCompany', { companyId: companyId }, function (data) {
+                const roleDropdown = $("#UserRoleId"); 
+               // roleDropdown.empty().append('<option value="">--Select Role--</option>');
+                data.forEach(role => {
+                    roleDropdown.append(`<option value="${role.Id}">${role.RoleName}</option>`);
+                });
+                roleDropdown.val($("#UserRoleIdhidden").val());
+            });
+        }
+
+        // Initialize dropdowns with hidden values
+        const initialCompanyId = $(".dropdown-checkbox:checked").val();
+        if (initialCompanyId) {
+            updateEmployeeDropdown(initialCompanyId);
+            updateUserRoleDropdown(initialCompanyId);
+        }
+
+        // Company dropdown behavior
+        const dropdownContainer = $(".dropdown-container");
+        $(".dropdown-toggle").click(() => dropdownContainer.toggleClass("open"));
+        $(document).click(event => {
+            if (!$(event.target).closest(".dropdown-container").length) {
+                dropdownContainer.removeClass("open");
+            }
+        });
+
+        // Search functionality
+        $(".dropdown-search").on("input", function () {
+            const filter = this.value.toLowerCase();
+            $(".dropdown-item").each(function () {
+                const text = $(this).text().toLowerCase();
+                $(this).toggle(text.includes(filter));
+            });
+        });
+    });
+
+
 </script>
