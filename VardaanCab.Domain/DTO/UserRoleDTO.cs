@@ -19,8 +19,7 @@ namespace VardaanCab.Domain.DTO
 
         //public SelectList Companies { get; set; }
         public IEnumerable<SelectListItem> Companies { get; set; }
-
-        public SelectList Companies { get; set; }
+         
         public int[] IsReadChecked { get; set; }
         public int[] IsWriteChecked { get; set; }
         public int[] IsSubReadChecked { get; set; }
