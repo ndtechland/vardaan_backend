@@ -201,7 +201,7 @@
                                                                             
                                                                             <div class="actions">
                                                                                 <label>
-                                                                                    <input name="IsSubReadChecked[]" type="checkbox" class="read-checkbox" value="@menu.Id" />
+                                                                                    <input name="IsSubReadChecked[]" type="checkbox" class="read-checkbox" value="@menu.Id" onclick="toggleParentReadCheckboxFromChild(this);" />
                                                                                     @*<input type="checkbox" value="@menu.Id" class="read-checkbox" />*@
                                                                                     Read
                                                                                 </label>
@@ -306,6 +306,72 @@
 </div>
 
 <script>
+    function toggleParentReadCheckboxFromChild(childReadCheckbox) {
+        const parentSection = childReadCheckbox.closest('.sub-options'); // Find the parent section of the child checkbox
+        if (parentSection) {
+            const parentId = parentSection.id.replace('live-tracking_', ''); // Extract parent ID from section ID
+            const parentReadCheckbox = document.querySelector(`.main-read-checkbox[value="${parentId}"]`);
+
+            if (parentReadCheckbox) {
+                // Get all child "Read" checkboxes in this section
+                const allChildReadCheckboxes = parentSection.querySelectorAll('.read-checkbox');
+
+                // Check if any child checkbox is checked
+                const anyChecked = Array.from(allChildReadCheckboxes).some(checkbox => checkbox.checked);
+
+                // Check if all child checkboxes are unchecked
+                const allUnchecked = Array.from(allChildReadCheckboxes).every(checkbox => !checkbox.checked);
+
+                // Set parent "Read" checkbox state based on child checkboxes
+                if (anyChecked) {
+                    parentReadCheckbox.checked = true;
+                }
+
+                if (allUnchecked) {
+                    parentReadCheckbox.checked = false;
+                }
+            }
+        }
+    }
+    function syncReadCheckbox(writeCheckbox) {
+        const readCheckbox = writeCheckbox.closest('.sub-option-row').querySelector('.read-checkbox');
+
+        if (readCheckbox) {
+            // Check the "Read" checkbox if "Write" is checked
+            if (writeCheckbox.checked) {
+                readCheckbox.checked = true;
+            }
+        }
+
+        // Check or uncheck the parent "Read" checkbox for the main menu, if applicable
+        const parentSection = writeCheckbox.closest('.sub-options');
+        if (parentSection) {
+            const parentId = parentSection.id.replace('live-tracking_', '');
+            const parentReadCheckbox = document.querySelector(`.main-read-checkbox[value="${parentId}"]`);
+            const parentWriteCheckbox = document.querySelector(`.main-write-checkbox[value="${parentId}"]`);
+
+            if (parentReadCheckbox || parentWriteCheckbox) {
+                const allWriteCheckboxes = parentSection.querySelectorAll('.write-checkbox');
+                const anyWriteChecked = Array.from(allWriteCheckboxes).some(checkbox => checkbox.checked);
+
+                // If any "Write" checkbox is checked, ensure the parent "Write" checkbox is checked
+                if (parentWriteCheckbox) {
+                    parentWriteCheckbox.checked = anyWriteChecked;
+                }
+
+                // If any "Write" checkbox is checked, ensure the parent "Read" checkbox is checked
+                if (parentReadCheckbox && anyWriteChecked) {
+                    parentReadCheckbox.checked = true;
+                }
+
+                // If no "Write" checkboxes are checked, uncheck the parent "Read" checkbox
+                if (parentReadCheckbox && !anyWriteChecked) {
+                    parentReadCheckbox.checked = false;
+                }
+            }
+        }
+    }
+
     // Toggle section visibility and ensure only one section is open
     function toggleSection(sectionId) {
         const allSections = document.querySelectorAll('.sub-options');
@@ -329,13 +395,13 @@
         });
     }
 
-    // Automatically check the "Read" checkbox when "Write" is checked
-    function syncReadCheckbox(writeCheckbox) {
-        const readCheckbox = writeCheckbox.closest('.sub-option-row').querySelector('.read-checkbox');
-        if (writeCheckbox.checked) {
-            readCheckbox.checked = true;
-        }
-    }
+    //// Automatically check the "Read" checkbox when "Write" is checked
+    //function syncReadCheckbox(writeCheckbox) {
+    //    const readCheckbox = writeCheckbox.closest('.sub-option-row').querySelector('.read-checkbox');
+    //    if (writeCheckbox.checked) {
+    //        readCheckbox.checked = true;
+    //    }
+    //}
 
     // Check or uncheck all "Read" checkboxes based on "Read All" checkbox
     function checkAllReadCheckboxes(mainCheckbox) {
