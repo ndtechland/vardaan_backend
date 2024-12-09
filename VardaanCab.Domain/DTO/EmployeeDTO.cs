@@ -63,6 +63,7 @@ namespace VardaanCab.Domain.DTO
         public int? EmployeeDestinationArea { get; set;}
         [Display(Name = "Employee Registration Type")]
         public int? EmployeeRegistrationType { get; set;}
+        [Display(Name = "Alternate Number")]
         public string AlternateNumber { get; set; }
         public SelectList States { get; set; }
         public SelectList Customers { get; set; }

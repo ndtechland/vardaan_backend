@@ -41,5 +41,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string Password { get; set; }
         public Nullable<int> OTP { get; set; }
         public string Email { get; set; }
+        public Nullable<bool> IsOnline { get; set; }
     }
 }

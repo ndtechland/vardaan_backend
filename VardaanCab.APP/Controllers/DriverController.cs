@@ -132,6 +132,37 @@ namespace VardaanCab.APP.Controllers
                 //return BadRequest($"error.{ex}");
             }
         }
-        
+
+        [HttpPut]
+        [Route("UpdateDriverActiveStatus")]
+        public IHttpActionResult UpdateDriverActiveStatus(DriverDTO model)
+        {
+            try
+            {
+                var data = ent.Drivers.Where(d => d.Id == model.Id).FirstOrDefault();
+                if (data != null)
+                {
+                    data.IsOnline = model.IsOnline;
+                    ent.SaveChanges();
+                    if (model.IsOnline == true)
+                    {
+                        return Ok(new { StatusCode = 200, Message = "You are online now." });
+                    }
+                    else
+                    {
+                        return Ok(new { StatusCode = 200, Message = "You are offline now." });
+                    }
+                }
+                else
+                {
+                    return BadRequest("Driver not found.");
+                }
+            }
+            catch (Exception)
+            {
+                return InternalServerError(new Exception("Internal server error."));
+            }
+        }
+
     }
 }
