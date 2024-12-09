@@ -44,6 +44,7 @@ namespace VardaanCab.Domain.DTO
         public string LoginUserName { get; set;}
         [Display(Name = "Select WeekOff")]
         public string[] WeekOff { get; set;}
+        
         [Display(Name = "Employee Geo Code")]
         public string EmployeeGeoCode { get; set;}
         [Display(Name = "Employee Business Unit")]
@@ -89,7 +90,7 @@ namespace VardaanCab.Domain.DTO
         public string CityName { get; set; }
         public int? Pincode { get; set; }
         public string EmployeeCurrentAddress { get; set; }
-        public string WeekOff { get; set; }
+        public string WeekOffName { get; set; }
         public string EmployeeGeoCode { get; set; }
         public string EmployeeBusinessUnit { get; set; }
         public string EmployeeDepartment { get; set; }

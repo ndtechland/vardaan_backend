@@ -3,8 +3,8 @@
 @{
     ViewBag.Title = "GetEmployeeList";
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    int Count = 1;
 }
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
@@ -14,7 +14,9 @@
                         <h5>Employee List</h5>
                     </div>
                     <form class="d-inline-flex">
-                        <a class="btn btn-primary" href="/Employee/Add?menuId=@ViewBag.menuId">+ Add More</a>
+                        <a href="/Employee/Add?menuId=@ViewBag.menuId" class="btn btn-theme">
+                            <i data-feather="plus-square"></i>Add New
+                        </a>
                     </form>
                 </div>
                 <div class="card-body">
@@ -28,74 +30,86 @@
                             </div>
                         </div>
                     }
-                    <div class="table-responsive table-desi scrollable">
-                        <table class="datatable user-table table table-striped">
-                            <tr>
-                                <th nowrap>Employee ID</th>
-                                <th nowrap>Employee Name</th>
-                                <th nowrap>Mobile Number</th>
-                                <th nowrap>Email</th>
-                                <th nowrap>Company Name</th>
-                                <th nowrap>State</th>
-                                <th nowrap>City</th>
-                                <th nowrap>Pincode</th>
-                                <th nowrap>Employee Current Address</th>
-                                <th nowrap>WeekOff</th>
-                                <th nowrap>Employee Geo Code</th>
-                                <th nowrap>Employee Business Unit</th>
-                                <th nowrap>Department</th>
-                                <th nowrap>Project Name</th>
-                                <th nowrap>Reporting Manager</th>
-                                <th nowrap>Primary Facility Zone</th>
-                                <th nowrap>HomeRoute Name</th>
-                                <th nowrap>Destination Area</th>
-                                <th nowrap>Registration Type</th>
-                                <th nowrap>Create Date</th>
-                                <th nowrap>Action</th>
-                            </tr>
+                    <div>
+                        <div class="table-responsive table-desi">
+                            <table class="datatable user-table all-driver-table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th nowrap>Sr No.</th>
+                                        <th nowrap>Employee ID</th>
+                                        <th nowrap>Employee Name</th>
+                                        <th nowrap>Mobile Number</th>
+                                        <th nowrap>Email</th>
+                                        <th nowrap>Company Name</th>
+                                        <th nowrap>State</th>
+                                        <th nowrap>City</th>
+                                        <th nowrap>Pincode</th>
+                                        <th nowrap>Employee Current Address</th>
+                                        <th nowrap>WeekOff</th>
+                                        <th nowrap>Employee Geo Code</th>
+                                        <th nowrap>Employee Business Unit</th>
+                                        <th nowrap>Department</th>
+                                        <th nowrap>Project Name</th>
+                                        <th nowrap>Reporting Manager</th>
+                                        <th nowrap>Primary Facility Zone</th>
+                                        <th nowrap>HomeRoute Name</th>
+                                        <th nowrap>Destination Area</th>
+                                        <th nowrap>Registration Type</th>
+                                        <th nowrap>Create Date</th>
+                                        <th nowrap>Action</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    @foreach (var item in Model.employeedetailList)
+                                    {
+                                        <tr>
+                                            <td>@Count</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Employee_Id)</td>
+                                            <td>@item.Employee_First_Name @item.Employee_Middle_Name @item.Employee_Last_Name</td>
+                                            <td>@Html.DisplayFor(modelItem => item.MobileNumber)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CompanyName)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.StateName)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CityName)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Pincode)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.EmployeeCurrentAddress)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.WeekOffName)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.EmployeeGeoCode)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.EmployeeBusinessUnit)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.EmployeeDepartment)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.EmployeeProjectName)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.ReportingManager)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PrimaryFacilityZone)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.HomeRouteName)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.EmployeeDestinationArea)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.EmployeeRegistrationType)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                                            <td nowrap>
+                                                <a href="/Employee/Add?id=@item.Id&menuId=@ViewBag.menuId">
+                                                    <i class="fa fa-pencil-square-o"
+                                                       aria-hidden="true"></i>
+                                                </a>|
+                                                <a href="/Employee/DeleteEmployee?id=@item.Id" onclick="return confirm('Are you sure want to delete?')">
+                                                    <i class="fa fa-trash-o"
+                                                       aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        Count++;
+                                    }
+                                </tbody>
+                            </table>
 
-                            @foreach (var item in Model.employeedetailList)
-                            {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.Employee_Id)</td>
-                                    <td>@item.Employee_First_Name @item.Employee_Middle_Name @item.Employee_Last_Name</td>
-                                    <td>@Html.DisplayFor(modelItem => item.MobileNumber)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.CompanyName)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.StateName)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.CityName)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Pincode)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.EmployeeCurrentAddress)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.WeekOff)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.EmployeeGeoCode)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.EmployeeBusinessUnit)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.EmployeeDepartment)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.EmployeeProjectName)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.ReportingManager)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.PrimaryFacilityZone)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.HomeRouteName)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.EmployeeDestinationArea)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.EmployeeRegistrationType)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
-                                    <td nowrap>
-                                        <a href="/Employee/Add?id=@item.Id&menuId=@ViewBag.menuId">
-                                            <i class="fa fa-pencil-square-o"
-                                               aria-hidden="true"></i>
-                                        </a>|
-                                        <a href="/Employee/DeleteEmployee?id=@item.Id" onclick="return confirm('Are you sure want to delete?')">
-                                            <i class="fa fa-trash-o"
-                                               aria-hidden="true"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
-
-                        </table>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
+
     </div>
 </div>
+ 
 
 

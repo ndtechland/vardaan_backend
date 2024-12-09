@@ -30,8 +30,11 @@ namespace VardaanCab.Controllers
         {
             try
             {
+
+               string fdsfds =  GetMatchedDayNames(ent.Employees.FirstOrDefault().WeekOff);
                 var model = new EmployeeDTO();
                 //var employee = ent.Employees.OrderByDescending(e=>e.Id).ToList();
+                // Step 1: Fetch data into memory
                 var data = (from e in ent.Employees
                             join c in ent.Customers on e.Company_Id equals c.Id
                             join z in ent.CompanyZones on e.PrimaryFacilityZone equals z.Id
@@ -39,50 +42,99 @@ namespace VardaanCab.Controllers
                             join rt in ent.EmployeeRegistrationTypes on e.EmployeeRegistrationType equals rt.Id
                             join s in ent.StateMasters on e.StateId equals s.Id
                             join ct in ent.CityMasters on e.CityId equals ct.Id
-                            join da in ent.EmployeeDestinationAreas on e.EmployeeDestinationArea equals da.Id
-                            where e.IsActive==true
+                            where e.IsActive == true
                             orderby e.Id descending
-                            select new  employeedetail
+                            select new
                             {
-                                Id=e.Id,
-                                Employee_First_Name=e.Employee_First_Name,
-                                Employee_Middle_Name=e.Employee_Middle_Name,
-                                Employee_Last_Name=e.Employee_Last_Name,
-                                MobileNumber=e.MobileNumber,
-                                Email=e.Email,    
-                                Pincode=e.Pincode,    
-                                EmployeeCurrentAddress=e.EmployeeCurrentAddress,    
-                                EmployeeGeoCode=e.EmployeeGeoCode,    
-                                EmployeeBusinessUnit=e.EmployeeBusinessUnit,    
-                                EmployeeDepartment=e.EmployeeDepartment,    
-                                Employee_Id=e.Employee_Id,    
-                                EmployeeProjectName=e.EmployeeProjectName,    
-                                ReportingManager=e.ReportingManager,    
-                                AlternateNumber=e.AlternateNumber,
+                                e.Id,
+                                e.Employee_First_Name,
+                                e.Employee_Middle_Name,
+                                e.Employee_Last_Name,
+                                e.MobileNumber,
+                                e.Email,
+                                e.Pincode,
+                                e.EmployeeCurrentAddress,
+                                e.EmployeeGeoCode,
+                                e.EmployeeBusinessUnit,
+                                e.EmployeeDepartment,
+                                e.Employee_Id,
+                                e.EmployeeProjectName,
+                                e.ReportingManager,
+                                e.AlternateNumber,
                                 StateName = s.StateName,
-                                CityName = ct.CityName,    
-                                PrimaryFacilityZone=z.CompanyZone1,
-                                EmployeeDestinationArea = da.DestinationAreaName,    
-                                HomeRouteName=hr.HomeRouteName,    
-                                CompanyName=c.CompanyName,    
-                                EmployeeRegistrationType=rt.TypeName,    
-                                CreatedDate=e.CreatedDate,
-                                //WeekOff = string.Join(", ",
-                                //        ent.DaysNames
-                                //        .Where(w => e.WeekOff.Split(',')
-                                //            .Select(id => int.Parse(id))
-                                //                        .Contains(w.Id))
-                                //                        .Select(w => w.DayName))
-                            }
+                                CityName = ct.CityName,
+                                PrimaryFacilityZone = z.CompanyZone1,
+                                HomeRouteName = hr.HomeRouteName,
+                                CompanyName = c.CompanyName,
+                                EmployeeRegistrationType = rt.TypeName,
+                                e.CreatedDate,
+                                e.WeekOff 
+                            }).ToList(); 
 
-                          ).ToList();
-                model.employeedetailList = data;
+                var employeedetailList = data.Select(e => new employeedetail
+                {
+                    Id = e.Id,
+                    Employee_First_Name = e.Employee_First_Name,
+                    Employee_Middle_Name = e.Employee_Middle_Name,
+                    Employee_Last_Name = e.Employee_Last_Name,
+                    MobileNumber = e.MobileNumber,
+                    Email = e.Email,
+                    Pincode = e.Pincode,
+                    EmployeeCurrentAddress = e.EmployeeCurrentAddress,
+                    EmployeeGeoCode = e.EmployeeGeoCode,
+                    EmployeeBusinessUnit = e.EmployeeBusinessUnit,
+                    EmployeeDepartment = e.EmployeeDepartment,
+                    Employee_Id = e.Employee_Id,
+                    EmployeeProjectName = e.EmployeeProjectName,
+                    ReportingManager = e.ReportingManager,
+                    AlternateNumber = e.AlternateNumber,
+                    StateName = e.StateName,
+                    CityName = e.CityName,
+                    PrimaryFacilityZone = e.PrimaryFacilityZone,
+                    HomeRouteName = e.HomeRouteName,
+                    CompanyName = e.CompanyName,
+                    EmployeeRegistrationType = e.EmployeeRegistrationType,
+                    CreatedDate = e.CreatedDate,
+                    WeekOffName = GetMatchedDayNames(e.WeekOff) 
+                }).ToList();
+
+                model.employeedetailList = employeedetailList;
                 return View(model);
             }
             catch (Exception ex)
             {
 
                 throw new Exception("Server Error : " + ex.Message);
+            }
+        }
+
+        public string GetMatchedDayNames(string weekOffIds)
+        {
+            if (string.IsNullOrWhiteSpace(weekOffIds))
+            {
+                return weekOffIds;
+            }
+
+            try
+            {
+                // Convert the comma-separated IDs to a list of integers
+                var ids = weekOffIds
+                    .Split(',')
+                    .Select(id => int.Parse(id.Trim()))
+                    .ToList();
+
+                // Query the DaysNames table to get matching day names
+                var matchedDays = ent.DaysNames
+                    .Where(d => ids.Contains(d.Id))
+                    .Select(d => d.DayName)
+                    .ToList();
+
+                return string.Join(",", matchedDays);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return ex.Message;
             }
         }
         [HttpGet]
@@ -196,7 +248,6 @@ namespace VardaanCab.Controllers
                 using (var entityConnection = new EntityConnection(entityConnectionString))
                 {
                     entityConnection.Open();
-
                     using (var command = entityConnection.CreateCommand())
                     {
                         command.CommandText = "Vardaan_AdminEntities.ManageEmployee";
@@ -205,12 +256,10 @@ namespace VardaanCab.Controllers
                         if(model.Id==0)
                         {
                             checkaction = "INSERT";
-
                         }
                         else
                         {
                             checkaction = "UPDATE";
-
                         }
                         string combinedString = string.Join(",", model.WeekOff);
                         command.Parameters.Add(new EntityParameter("Action", DbType.String) { Value = checkaction });
@@ -358,11 +407,19 @@ namespace VardaanCab.Controllers
                 var CityhiddenSheet = workbook.Worksheets.Add("CityList");
                 var GenderList = "\"Male,Female,Other\"";
                 var WeekOffList = "\"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday\"";
+                var ZonehiddenSheet = workbook.Worksheets.Add("CompanyZone");
+                var HomeRoutehiddenSheet = workbook.Worksheets.Add("HomeRoute");
+                var DestinationAreahiddenSheet = workbook.Worksheets.Add("DestinationArea");
+                var RegistrationTypehiddenSheet = workbook.Worksheets.Add("RegistrationType");
 
                 // Retrieve active customers for the dropdown list
                 var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
                 var StateList = ent.StateMasters.ToList();
                 var CityList = ent.CityMasters.ToList();
+                var ZoneList = ent.CompanyZones.ToList();
+                var HomeRouteList = ent.CompanyZoneHomeRoutes.ToList();
+                var DestinationAreaList = ent.EmployeeDestinationAreas.ToList();
+                var RegistrationTypeList = ent.EmployeeRegistrationTypes.ToList();
 
                 // Populate hidden sheet with company names
                 int hiddenRow = 1;
@@ -381,10 +438,38 @@ namespace VardaanCab.Controllers
                 {
                     CityhiddenSheet.Cell(hiddenRow++, 1).Value = city.CityName;
                 }
+                //zone
+                hiddenRow = 1;
+                foreach (var zones in ZoneList.OrderByDescending(x => x.Id))
+                {
+                    ZonehiddenSheet.Cell(hiddenRow++, 1).Value = zones.CompanyZone1;
+                }
+                //home route
+                hiddenRow = 1;
+                foreach (var routes in HomeRouteList.OrderByDescending(x => x.Id))
+                {
+                    HomeRoutehiddenSheet.Cell(hiddenRow++, 1).Value = routes.HomeRouteName;
+                }
+                //Destination Area
+                hiddenRow = 1;
+                foreach (var areas in DestinationAreaList.OrderByDescending(x => x.Id))
+                {
+                    DestinationAreahiddenSheet.Cell(hiddenRow++, 1).Value = areas.DestinationAreaName;
+                }
+                //Registration Type
+                hiddenRow = 1;
+                foreach (var Regtypes in RegistrationTypeList.OrderByDescending(x => x.Id))
+                {
+                    RegistrationTypehiddenSheet.Cell(hiddenRow++, 1).Value = Regtypes.TypeName;
+                }
                 // Define the dropdown list range
                 var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
                 var StateRange = StatehiddenSheet.Range($"A1:A{StateList.Count}");
                 var CityRange = CityhiddenSheet.Range($"A1:A{CityList.Count}");
+                var ZoneRange = ZonehiddenSheet.Range($"A1:A{ZoneList.Count}");
+                var HomeRouteRange = HomeRoutehiddenSheet.Range($"A1:A{ZoneList.Count}");
+                var DestinationAreaRange = DestinationAreahiddenSheet.Range($"A1:A{DestinationAreaList.Count}");
+                var RegistrationTypeRange = RegistrationTypehiddenSheet.Range($"A1:A{RegistrationTypeList.Count}");
 
 
                 //Apply dropdown list validation to cell A2(under "Company ID")
@@ -412,6 +497,27 @@ namespace VardaanCab.Controllers
                 validationFive.List(WeekOffList); // Dropdown from hidden sheet
                 validationFive.IgnoreBlanks = true;
                 validationFive.InCellDropdown = true;
+
+                //zone
+                var validationZone = worksheet.Cell(2, 20).DataValidation;
+                validationZone.List(ZoneRange); // Dropdown from hidden sheet
+                validationZone.IgnoreBlanks = true;
+                validationZone.InCellDropdown = true;
+                //Route
+                var validationRoute = worksheet.Cell(2, 21).DataValidation;
+                validationRoute.List(HomeRouteRange); // Dropdown from hidden sheet
+                validationRoute.IgnoreBlanks = true;
+                validationRoute.InCellDropdown = true;
+                //Destination Area
+                var validationArea = worksheet.Cell(2, 22).DataValidation;
+                validationArea.List(DestinationAreaRange); // Dropdown from hidden sheet
+                validationArea.IgnoreBlanks = true;
+                validationArea.InCellDropdown = true;
+                //Destination Area
+                var validationRegistrationType = worksheet.Cell(2, 23).DataValidation;
+                validationRegistrationType.List(RegistrationTypeRange); // Dropdown from hidden sheet
+                validationRegistrationType.IgnoreBlanks = true;
+                validationRegistrationType.InCellDropdown = true;
 
                 // Hide the sheet containing company names
                 //hiddenSheet.Hide();
@@ -511,21 +617,34 @@ namespace VardaanCab.Controllers
         {
             try
             {
+                string RandomPassword = _random.GenerateRandomPassword();
+
                 // Check if a file is uploaded
                 if (file != null && file.ContentLength > 0)
                 {
                     using (var workbook = new XLWorkbook(file.InputStream))
                     {
-                      
                         var worksheet = workbook.Worksheet(1);
                         var rows = worksheet.RowsUsed().Skip(1);
                         List<Employee> employees = new List<Employee>();
 
                         foreach (var row in rows)
                         {
+                            string CompanyName = row.Cell(1).GetValue<string>();
+                            string StateName = row.Cell(9).GetValue<string>();
+                            string CityName = row.Cell(10).GetValue<string>();
+                            string CompanyZoneName = row.Cell(20).GetValue<string>();
+                            string HomeRouteName = row.Cell(21).GetValue<string>();
+                            string DestinationAreaName = row.Cell(22).GetValue<string>();
+                            string RegistrationTypeName = row.Cell(23).GetValue<string>();
+                            string DaysName = row.Cell(14).GetValue<string>();
+
                             Employee employee = new Employee
                             {
-                                Company_Id = row.Cell(1).GetValue<int>(),
+                                Company_Id = string.IsNullOrEmpty(CompanyName) ? 0 :
+                                    ent.Customers.Where(x => x.CompanyName.ToLower() == CompanyName.ToLower())
+                                        .FirstOrDefault()?.Id ?? 0,
+
                                 Company_location = row.Cell(2).GetValue<int>().ToString(),
                                 Employee_Id = row.Cell(3).GetValue<string>() ?? string.Empty,
                                 Employee_First_Name = row.Cell(4).GetValue<string>() ?? string.Empty,
@@ -533,41 +652,65 @@ namespace VardaanCab.Controllers
                                 Employee_Last_Name = row.Cell(6).GetValue<string>() ?? string.Empty,
                                 MobileNumber = row.Cell(7).GetValue<string>() ?? string.Empty,
                                 Email = row.Cell(8).GetValue<string>() ?? string.Empty,
-                                StateId = row.Cell(9).GetValue<int>(),
-                                CityId = row.Cell(10).GetValue<int>(),
+
+                                StateId = string.IsNullOrEmpty(StateName) ? 0 :
+                                    ent.StateMasters.Where(x => x.StateName.ToLower() == StateName.ToLower())
+                                        .FirstOrDefault()?.Id ?? 0,
+
+                                CityId = string.IsNullOrEmpty(CityName) ? 0 :
+                                    ent.CityMasters.Where(x => x.CityName.ToLower() == CityName.ToLower())
+                                        .FirstOrDefault()?.Id ?? 0,
+
                                 Pincode = row.Cell(11).GetValue<int>(),
                                 EmployeeCurrentAddress = row.Cell(12).GetValue<string>() ?? string.Empty,
                                 LoginUserName = row.Cell(13).GetValue<string>() ?? string.Empty,
-                                WeekOff = row.Cell(14).GetValue<string>() ?? "Sunday",  // Default to "Sunday" if null
+                                WeekOff = string.IsNullOrEmpty(DaysName) ? "" :
+    ent.DaysNames.Where(x => x.DayName.ToLower() == DaysName.ToLower())
+        .FirstOrDefault()?.Id.ToString() ?? "",
+
                                 EmployeeGeoCode = row.Cell(15).GetValue<string>() ?? string.Empty,
                                 EmployeeBusinessUnit = row.Cell(16).GetValue<string>() ?? string.Empty,
                                 EmployeeDepartment = row.Cell(17).GetValue<string>() ?? string.Empty,
                                 EmployeeProjectName = row.Cell(18).GetValue<string>() ?? string.Empty,
                                 ReportingManager = row.Cell(19).GetValue<string>() ?? string.Empty,
-                                PrimaryFacilityZone = row.Cell(20).GetValue<int>(),
-                                HomeRouteName = row.Cell(21).GetValue<int>(),
-                                EmployeeDestinationArea = row.Cell(22).GetValue<int>(),
-                                EmployeeRegistrationType = row.Cell(23).GetValue<int>(),
+
+                                PrimaryFacilityZone = string.IsNullOrEmpty(CompanyZoneName) ? 0 :
+                                    ent.CompanyZones.Where(x => x.CompanyZone1.ToLower() == CompanyZoneName.ToLower())
+                                        .FirstOrDefault()?.Id ?? 0,
+
+                                HomeRouteName = string.IsNullOrEmpty(HomeRouteName) ? 0 :
+                                    ent.CompanyZoneHomeRoutes.Where(x => x.HomeRouteName.ToLower() == HomeRouteName.ToLower())
+                                        .FirstOrDefault()?.Id ?? 0,
+
+                                EmployeeDestinationArea = string.IsNullOrEmpty(DestinationAreaName) ? 0 :
+                                    ent.EmployeeDestinationAreas.Where(x => x.DestinationAreaName.ToLower() == DestinationAreaName.ToLower())
+                                        .FirstOrDefault()?.Id ?? 0,
+
+                                EmployeeRegistrationType = string.IsNullOrEmpty(RegistrationTypeName) ? 0 :
+                                    ent.EmployeeRegistrationTypes.Where(x => x.TypeName.ToLower() == RegistrationTypeName.ToLower())
+                                        .FirstOrDefault()?.Id ?? 0,
+
                                 IsActive = true,
                                 CreatedDate = DateTime.Now,
                                 IsFirst = true,
+                                Password = RandomPassword,
                                 Gender = row.Cell(24).GetValue<string>(),
                                 AlternateNumber = row.Cell(25).GetValue<string>() ?? string.Empty
                             };
 
-                          
                             employees.Add(employee);
                         }
+
                         if (employees.Any())
                         {
                             ent.Employees.AddRange(employees);
                             ent.SaveChanges();
                         }
-                       
-                        ViewBag.Message = "Data imported successfully!";
+                        TempData["dltmsg"] = "Data imported successfully!";
                         return RedirectToAction("GetEmployeeList");
                     }
                 }
+
                 ViewBag.Message = "Please select an Excel file to import.";
                 return View();
             }
@@ -584,7 +727,99 @@ namespace VardaanCab.Controllers
                 ViewBag.Message = "Validation failed for one or more entities. Please check the logs for more details.";
                 return View();
             }
+            catch (Exception ex)
+            {
+                // Log the exception or handle other errors
+                ViewBag.Message = $"An error occurred: {ex.Message}";
+                return View();
+            }
         }
+
+        //public ActionResult ImportEmployeeData(HttpPostedFileBase file)
+        //{
+        //    try
+        //    {
+        //        // Check if a file is uploaded
+        //        if (file != null && file.ContentLength > 0)
+        //        {
+        //            using (var workbook = new XLWorkbook(file.InputStream))
+        //            {
+
+        //                var worksheet = workbook.Worksheet(1);
+        //                var rows = worksheet.RowsUsed().Skip(1);
+        //                List<Employee> employees = new List<Employee>();
+
+        //                foreach (var row in rows)
+        //                {
+        //                    string CompanyName = row.Cell(1).GetValue<string>();
+        //                    string StateName = row.Cell(9).GetValue<string>();
+        //                    string CityName = row.Cell(10).GetValue<string>();
+        //                    string CompanyZoneName = row.Cell(20).GetValue<string>();
+        //                    string HomeRouteName = row.Cell(21).GetValue<string>();
+        //                    string DestinationAreaName = row.Cell(22).GetValue<string>();
+        //                    string RegistrationTypeName = row.Cell(23).GetValue<string>();
+        //                    Employee employee = new Employee
+        //                    {
+        //                        Company_Id = string.IsNullOrEmpty(CompanyName) == null ? 0 : ent.Customers.Where(x => x.CompanyName.ToLower() == CompanyName.ToLower()).FirstOrDefault().Id,
+        //                        Company_location = row.Cell(2).GetValue<int>().ToString(),
+        //                        Employee_Id = row.Cell(3).GetValue<string>() ?? string.Empty,
+        //                        Employee_First_Name = row.Cell(4).GetValue<string>() ?? string.Empty,
+        //                        Employee_Middle_Name = row.Cell(5).GetValue<string>() ?? string.Empty,
+        //                        Employee_Last_Name = row.Cell(6).GetValue<string>() ?? string.Empty,
+        //                        MobileNumber = row.Cell(7).GetValue<string>() ?? string.Empty,
+        //                        Email = row.Cell(8).GetValue<string>() ?? string.Empty,
+        //                        StateId = string.IsNullOrEmpty(StateName) == null ? 0 : ent.StateMasters.Where(x => x.StateName.ToLower() == StateName.ToLower()).FirstOrDefault().Id,
+        //                        CityId = string.IsNullOrEmpty(CityName) == null ? 0 : ent.CityMasters.Where(x => x.CityName.ToLower() == CityName.ToLower()).FirstOrDefault().Id,
+        //                        Pincode = row.Cell(11).GetValue<int>(),
+        //                        EmployeeCurrentAddress = row.Cell(12).GetValue<string>() ?? string.Empty,
+        //                        LoginUserName = row.Cell(13).GetValue<string>() ?? string.Empty,
+        //                        WeekOff = row.Cell(14).GetValue<string>() ?? "Sunday",  // Default to "Sunday" if null
+        //                        EmployeeGeoCode = row.Cell(15).GetValue<string>() ?? string.Empty,
+        //                        EmployeeBusinessUnit = row.Cell(16).GetValue<string>() ?? string.Empty,
+        //                        EmployeeDepartment = row.Cell(17).GetValue<string>() ?? string.Empty,
+        //                        EmployeeProjectName = row.Cell(18).GetValue<string>() ?? string.Empty,
+        //                        ReportingManager = row.Cell(19).GetValue<string>() ?? string.Empty,
+        //                        PrimaryFacilityZone = string.IsNullOrEmpty(CompanyZoneName) == null ? 0 : ent.CompanyZones.Where(x => x.CompanyZone1.ToLower() == CompanyZoneName.ToLower()).FirstOrDefault().Id,
+        //                        HomeRouteName = string.IsNullOrEmpty(HomeRouteName) == null ? 0 : ent.CompanyZoneHomeRoutes.Where(x => x.HomeRouteName.ToLower() == HomeRouteName.ToLower()).FirstOrDefault().Id,
+        //                        EmployeeDestinationArea = string.IsNullOrEmpty(DestinationAreaName) == null ? 0 : ent.EmployeeDestinationAreas.Where(x => x.DestinationAreaName.ToLower() == HomeRouteName.ToLower()).FirstOrDefault().Id,
+        //                        EmployeeRegistrationType = string.IsNullOrEmpty(RegistrationTypeName) == null ? 0 : ent.EmployeeRegistrationTypes.Where(x => x.TypeName.ToLower() == RegistrationTypeName.ToLower()).FirstOrDefault().Id,
+        //                        IsActive = true,
+        //                        CreatedDate = DateTime.Now,
+        //                        IsFirst = true,
+        //                        Gender = row.Cell(24).GetValue<string>(),
+        //                        AlternateNumber = row.Cell(25).GetValue<string>() ?? string.Empty
+        //                    };
+
+
+        //                    employees.Add(employee);
+        //                }
+        //                if (employees.Any())
+        //                {
+        //                    ent.Employees.AddRange(employees);
+        //                    ent.SaveChanges();
+        //                }
+
+        //                ViewBag.Message = "Data imported successfully!";
+        //                return RedirectToAction("GetEmployeeList");
+        //            }
+        //        }
+        //        ViewBag.Message = "Please select an Excel file to import.";
+        //        return View();
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        foreach (var validationError in ex.EntityValidationErrors)
+        //        {
+        //            foreach (var error in validationError.ValidationErrors)
+        //            {
+        //                // Log or output the validation errors
+        //                Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
+        //            }
+        //        }
+        //        ViewBag.Message = "Validation failed for one or more entities. Please check the logs for more details.";
+        //        return View();
+        //    }
+        //}
 
     }
 }
