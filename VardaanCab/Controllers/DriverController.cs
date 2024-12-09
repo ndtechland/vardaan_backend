@@ -187,6 +187,7 @@ namespace VardaanCab.Controllers
                 driver.Email = model.Email;
                 driver.Password = rendompass;
                 driver.IsAvailable = true;
+                driver.IsOnline = false;
                 driver.IsFirst = true;
                 ent.Drivers.Add(driver);
                 ent.SaveChanges();

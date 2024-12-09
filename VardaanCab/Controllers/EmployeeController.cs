@@ -272,6 +272,7 @@ namespace VardaanCab.Controllers
                         command.Parameters.Add(new EntityParameter("Employee_Last_Name", DbType.String) { Value = model.Employee_Last_Name });
                         command.Parameters.Add(new EntityParameter("Gender", DbType.String) { Value = model.Gender });
                         command.Parameters.Add(new EntityParameter("MobileNumber", DbType.String) { Value = model.MobileNumber });
+                        command.Parameters.Add(new EntityParameter("AlternateNumber", DbType.String) { Value = model.AlternateNumber });
                         command.Parameters.Add(new EntityParameter("Email", DbType.String) { Value = model.Email });
                         command.Parameters.Add(new EntityParameter("StateId", DbType.Int32) { Value = model.StateId });
                         command.Parameters.Add(new EntityParameter("CityId", DbType.Int32) { Value = model.CityId });

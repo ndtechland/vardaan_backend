@@ -51,5 +51,6 @@ namespace VardaanCab.Domain.DTO
         public HttpPostedFileBase PanFile { get; set; }
         public string PanNumber { get; set; }
         public int MenuId { get; set; }
+        public Nullable<bool> IsOnline { get; set; }
     }
 }
