@@ -19,5 +19,9 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string RoleName { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public string IsReadChecked { get; set; }
+        public string IsWriteChecked { get; set; }
+        public string IsSubReadChecked { get; set; }
+        public string IsSubWriteChecked { get; set; }
     }
 }

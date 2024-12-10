@@ -1325,6 +1325,10 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="RoleName" Type="nvarchar" MaxLength="300" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="IsReadChecked" Type="nvarchar(max)" />
+          <Property Name="IsWriteChecked" Type="nvarchar(max)" />
+          <Property Name="IsSubReadChecked" Type="nvarchar(max)" />
+          <Property Name="IsSubWriteChecked" Type="nvarchar(max)" />
         </EntityType>
         <Function Name="checkOneCompanyBookingSelected" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="isNrg" Type="bit" Mode="In" />
@@ -4612,6 +4616,10 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="RoleName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsReadChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsWriteChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsSubReadChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsSubWriteChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AccessAssign">
           <Key>
@@ -7037,6 +7045,10 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="UserRoles">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.UserRole">
               <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="IsSubWriteChecked" ColumnName="IsSubWriteChecked" />
+                <ScalarProperty Name="IsSubReadChecked" ColumnName="IsSubReadChecked" />
+                <ScalarProperty Name="IsWriteChecked" ColumnName="IsWriteChecked" />
+                <ScalarProperty Name="IsReadChecked" ColumnName="IsReadChecked" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="RoleName" ColumnName="RoleName" />

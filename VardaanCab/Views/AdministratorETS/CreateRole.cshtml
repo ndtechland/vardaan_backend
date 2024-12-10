@@ -1,4 +1,5 @@
 ﻿@model VardaanCab.Domain.DTO.UserRoleDTO
+@using System.Web.Script.Serialization
 @{
     ViewBag.Title = "CreateRole";
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
@@ -164,7 +165,7 @@
                                         </div>
                                         <br>
                                         <hr>
-                                         
+
 
                                         @if (Model != null && Model.SoftwareLinkDTO.Count() > 0)
                                         {
@@ -173,7 +174,7 @@
                                             {
                                                 count++;
                                                 <div class="module-row" onclick="toggleSection('live-tracking_@count')">
-                                                    
+
                                                     <span>@item.Title</span>
                                                     <div class="actions" style="margin-left:430px;">
                                                         <label>
@@ -198,7 +199,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="sub-option-row">
                                                                             <span>@menu.Title</span>
-                                                                            
+
                                                                             <div class="actions">
                                                                                 <label>
                                                                                     <input name="IsSubReadChecked[]" type="checkbox" class="read-checkbox" value="@menu.Id" onclick="toggleParentReadCheckboxFromChild(this);" />
@@ -213,7 +214,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                 }
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
@@ -306,44 +307,33 @@
 </div>
 
 <script>
+    // Toggle the parent "Read" checkbox based on child "Read" checkboxes
     function toggleParentReadCheckboxFromChild(childReadCheckbox) {
-        const parentSection = childReadCheckbox.closest('.sub-options'); // Find the parent section of the child checkbox
+        const parentSection = childReadCheckbox.closest('.sub-options');
         if (parentSection) {
-            const parentId = parentSection.id.replace('live-tracking_', ''); // Extract parent ID from section ID
+            const parentId = parentSection.id.replace('live-tracking_', '');
             const parentReadCheckbox = document.querySelector(`.main-read-checkbox[value="${parentId}"]`);
 
             if (parentReadCheckbox) {
-                // Get all child "Read" checkboxes in this section
                 const allChildReadCheckboxes = parentSection.querySelectorAll('.read-checkbox');
+                const anyChecked = [...allChildReadCheckboxes].some(checkbox => checkbox.checked);
+                const allUnchecked = [...allChildReadCheckboxes].every(checkbox => !checkbox.checked);
 
-                // Check if any child checkbox is checked
-                const anyChecked = Array.from(allChildReadCheckboxes).some(checkbox => checkbox.checked);
-
-                // Check if all child checkboxes are unchecked
-                const allUnchecked = Array.from(allChildReadCheckboxes).every(checkbox => !checkbox.checked);
-
-                // Set parent "Read" checkbox state based on child checkboxes
-                if (anyChecked) {
-                    parentReadCheckbox.checked = true;
-                }
-
-                if (allUnchecked) {
-                    parentReadCheckbox.checked = false;
-                }
+                parentReadCheckbox.checked = anyChecked; // Check parent if any child is checked
+                parentReadCheckbox.indeterminate = anyChecked && !allUnchecked; // Indeterminate if mixed states
             }
         }
     }
-    function syncReadCheckbox(writeCheckbox) {
-        const readCheckbox = writeCheckbox.closest('.sub-option-row').querySelector('.read-checkbox');
 
-        if (readCheckbox) {
-            // Check the "Read" checkbox if "Write" is checked
-            if (writeCheckbox.checked) {
-                readCheckbox.checked = true;
-            }
+    // Synchronize the "Read" checkbox state with the "Write" checkbox
+    function syncReadCheckbox(writeCheckbox) {
+        const readCheckbox = writeCheckbox.closest('.sub-option-row')?.querySelector('.read-checkbox');
+
+        if (readCheckbox && writeCheckbox.checked) {
+            readCheckbox.checked = true; // Automatically check "Read" if "Write" is checked
         }
 
-        // Check or uncheck the parent "Read" checkbox for the main menu, if applicable
+        // Update parent "Read" and "Write" checkboxes based on child states
         const parentSection = writeCheckbox.closest('.sub-options');
         if (parentSection) {
             const parentId = parentSection.id.replace('live-tracking_', '');
@@ -352,58 +342,43 @@
 
             if (parentReadCheckbox || parentWriteCheckbox) {
                 const allWriteCheckboxes = parentSection.querySelectorAll('.write-checkbox');
-                const anyWriteChecked = Array.from(allWriteCheckboxes).some(checkbox => checkbox.checked);
+                const anyWriteChecked = [...allWriteCheckboxes].some(checkbox => checkbox.checked);
 
-                // If any "Write" checkbox is checked, ensure the parent "Write" checkbox is checked
-                if (parentWriteCheckbox) {
-                    parentWriteCheckbox.checked = anyWriteChecked;
-                }
-
-                // If any "Write" checkbox is checked, ensure the parent "Read" checkbox is checked
-                if (parentReadCheckbox && anyWriteChecked) {
-                    parentReadCheckbox.checked = true;
-                }
-
-                // If no "Write" checkboxes are checked, uncheck the parent "Read" checkbox
-                if (parentReadCheckbox && !anyWriteChecked) {
-                    parentReadCheckbox.checked = false;
-                }
+                if (parentWriteCheckbox) parentWriteCheckbox.checked = anyWriteChecked;
+                if (parentReadCheckbox) parentReadCheckbox.checked = anyWriteChecked;
             }
         }
     }
 
-    // Toggle section visibility and ensure only one section is open
+    // Toggle all child checkboxes when the main checkbox is toggled
+    function toggleSubOptionCheckboxes(type, mainCheckbox) {
+        const subCheckboxes = mainCheckbox
+            .closest('.module-row')
+            ?.nextElementSibling.querySelectorAll(`.${type}-checkbox`);
+        subCheckboxes?.forEach(checkbox => {
+            checkbox.checked = mainCheckbox.checked;
+
+            // If it's a "write" checkbox, sync "Read" checkbox too
+            if (type === 'write') {
+                const readCheckbox = checkbox.closest('.sub-option-row')?.querySelector('.read-checkbox');
+                if (readCheckbox) {
+                    readCheckbox.checked = mainCheckbox.checked; // Sync "Read" with "Write"
+                }
+            }
+        });
+    }
+
+    // Toggle visibility of sections, ensuring only one section is visible at a time
     function toggleSection(sectionId) {
         const allSections = document.querySelectorAll('.sub-options');
         allSections.forEach(section => {
-            if (section.id !== sectionId) {
-                section.style.display = 'none';
-            }
-        });
-
-        const section = document.getElementById(sectionId);
-        if (section) {
-            section.style.display = section.style.display === 'none' ? 'block' : 'none';
-        }
-    }
-
-    // Toggle checkboxes for sub-options based on main checkbox
-    function toggleSubOptionCheckboxes(type, mainCheckbox) {
-        const subCheckboxes = document.querySelectorAll(`.${type}-checkbox`);
-        subCheckboxes.forEach(checkbox => {
-            checkbox.checked = mainCheckbox.checked;
+            section.style.display = section.id === sectionId ?
+                (section.style.display === 'none' ? 'block' : 'none') :
+                'none';
         });
     }
 
-    //// Automatically check the "Read" checkbox when "Write" is checked
-    //function syncReadCheckbox(writeCheckbox) {
-    //    const readCheckbox = writeCheckbox.closest('.sub-option-row').querySelector('.read-checkbox');
-    //    if (writeCheckbox.checked) {
-    //        readCheckbox.checked = true;
-    //    }
-    //}
-
-    // Check or uncheck all "Read" checkboxes based on "Read All" checkbox
+    // Check or uncheck all "Read" checkboxes when "Read All" is toggled
     function checkAllReadCheckboxes(mainCheckbox) {
         const allReadCheckboxes = document.querySelectorAll('.read-checkbox, .main-read-checkbox');
         allReadCheckboxes.forEach(checkbox => {
@@ -411,23 +386,53 @@
         });
     }
 
+    // Check or uncheck all "Write" checkboxes and sync with "Read" checkboxes
     function checkAllWriteCheckboxes(mainCheckbox) {
-        // Select all write and read checkboxes (main and submenus)
         const allWriteCheckboxes = document.querySelectorAll('.write-checkbox, .main-write-checkbox');
         const allReadCheckboxes = document.querySelectorAll('.read-checkbox, .main-read-checkbox');
 
-        // Toggle all write checkboxes
         allWriteCheckboxes.forEach(checkbox => {
             checkbox.checked = mainCheckbox.checked;
         });
 
-        // Toggle all read checkboxes
         allReadCheckboxes.forEach(checkbox => {
-            checkbox.checked = mainCheckbox.checked;
+            checkbox.checked = mainCheckbox.checked; // Sync "Read" with "Write All"
         });
 
-        // Sync the state of the "Read All" checkbox to match "Write All"
+        // Sync the state of the "Read All" checkbox
         const readAllCheckbox = document.getElementById('fancy-checkbox-primary');
-        readAllCheckbox.checked = mainCheckbox.checked;
+        if (readAllCheckbox) {
+            readAllCheckbox.checked = mainCheckbox.checked;
+        }
     }
+
+</script>
+
+<script>
+    // Pass arrays from Razor model to JavaScript
+    const isReadChecked = @Html.Raw(new JavaScriptSerializer().Serialize(Model.IsReadChecked ?? new int[0]));
+    const isWriteChecked = @Html.Raw(new JavaScriptSerializer().Serialize(Model.IsWriteChecked ?? new int[0]));
+    const isSubReadChecked = @Html.Raw(new JavaScriptSerializer().Serialize(Model.IsSubReadChecked ?? new int[0]));
+    const isSubWriteChecked = @Html.Raw(new JavaScriptSerializer().Serialize(Model.IsSubWriteChecked ?? new int[0]));
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Function to check checkboxes by class name and array of values
+        function checkCheckboxes(array, className) {
+            array.forEach(function (value) {
+                // Find checkbox with the specific class and value
+                const checkbox = document.querySelector(`input.${className}[value="${value}"]`);
+                if (checkbox) {
+                    checkbox.checked = true; // Check the checkbox if it exists
+                }
+            });
+        }
+
+        // Check parent-level read and write checkboxes
+        checkCheckboxes(isReadChecked, "main-read-checkbox");
+        checkCheckboxes(isWriteChecked, "main-write-checkbox");
+
+        // Check sub-level read and write checkboxes
+        checkCheckboxes(isSubReadChecked, "read-checkbox");
+        checkCheckboxes(isSubWriteChecked, "write-checkbox");
+    });
 </script>
