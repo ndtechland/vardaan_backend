@@ -1329,6 +1329,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsWriteChecked" Type="nvarchar(max)" />
           <Property Name="IsSubReadChecked" Type="nvarchar(max)" />
           <Property Name="IsSubWriteChecked" Type="nvarchar(max)" />
+          <Property Name="IsAllRead" Type="bit" />
+          <Property Name="IsAllWrite" Type="bit" />
         </EntityType>
         <Function Name="checkOneCompanyBookingSelected" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="isNrg" Type="bit" Mode="In" />
@@ -1685,6 +1687,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="IsActive" Type="bit" Mode="In" />
           <Parameter Name="Password" Type="nvarchar" Mode="In" />
           <Parameter Name="IsFirst" Type="bit" Mode="In" />
+          <Parameter Name="ResponseMessage" Type="nvarchar" Mode="InOut" />
         </Function>
         <EntityContainer Name="Vardaan_AdminModelStoreContainer">
           <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
@@ -3344,6 +3347,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="IsActive" Mode="In" Type="Boolean" />
             <Parameter Name="Password" Mode="In" Type="String" />
             <Parameter Name="IsFirst" Mode="In" Type="Boolean" />
+            <Parameter Name="ResponseMessage" Mode="InOut" Type="String" />
           </FunctionImport>
           <EntitySet Name="DaysNames" EntityType="Vardaan_AdminModel.DaysName" />
           <EntitySet Name="BannerMasters" EntityType="Vardaan_AdminModel.BannerMaster" />
@@ -4620,6 +4624,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsWriteChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsSubReadChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsSubWriteChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsAllRead" Type="Boolean" />
+          <Property Name="IsAllWrite" Type="Boolean" />
         </EntityType>
         <EntityType Name="AccessAssign">
           <Key>
@@ -7045,6 +7051,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="UserRoles">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.UserRole">
               <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="IsAllWrite" ColumnName="IsAllWrite" />
+                <ScalarProperty Name="IsAllRead" ColumnName="IsAllRead" />
                 <ScalarProperty Name="IsSubWriteChecked" ColumnName="IsSubWriteChecked" />
                 <ScalarProperty Name="IsSubReadChecked" ColumnName="IsSubReadChecked" />
                 <ScalarProperty Name="IsWriteChecked" ColumnName="IsWriteChecked" />

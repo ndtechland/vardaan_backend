@@ -23,5 +23,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string IsWriteChecked { get; set; }
         public string IsSubReadChecked { get; set; }
         public string IsSubWriteChecked { get; set; }
+        public Nullable<bool> IsAllRead { get; set; }
+        public Nullable<bool> IsAllWrite { get; set; }
     }
 }

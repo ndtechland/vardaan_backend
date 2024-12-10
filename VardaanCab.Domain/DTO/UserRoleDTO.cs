@@ -19,14 +19,15 @@ namespace VardaanCab.Domain.DTO
 
         //public SelectList Companies { get; set; }
         public IEnumerable<SelectListItem> Companies { get; set; }
-         
-        public int[] IsReadChecked { get; set; }
-        public int[] IsWriteChecked { get; set; }
-        public int[] IsSubReadChecked { get; set; }
-        public int[] IsSubWriteChecked { get; set; }
+
+        public int[] IsReadChecked { get; set; } = new int[0];
+        public int[] IsWriteChecked { get; set; } = new int[0];
+        public int[] IsSubReadChecked { get; set; } = new int[0];
+        public int[] IsSubWriteChecked { get; set; } =new int[0];
         public string ReadPermissions { get; set; }
         public string WritePermissions { get; set; }
-
+        public bool IsAllRead { get; set; }
+        public bool IsAllWrite { get; set; }
         public IEnumerable<SoftwareLinkDTO> SoftwareLinkDTO { get; set; }
         public IEnumerable<UserRoleList> UserRoleLists { get; set; }
     }
@@ -39,10 +40,5 @@ namespace VardaanCab.Domain.DTO
 
     }
 
-    public class JsonFormat
-    {
-        public Object MenuName { get; set; }
-        public Object SubMenuName { get; set; }
-    }
            
 }
