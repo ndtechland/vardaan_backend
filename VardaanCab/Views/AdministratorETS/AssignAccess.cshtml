@@ -1,4 +1,5 @@
 ﻿@model VardaanCab.Domain.DTO.AccessAssignDTO
+@using System.Web.Script.Serialization
 @{
     ViewBag.Title = "AssignAccess";
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
@@ -136,6 +137,9 @@
         .dropdown-item:hover {
             background-color: #f0f0f0;
         }
+        .pointer-curser {
+            pointer-events:none;
+        }
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -163,43 +167,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
-                                            @*<div class="col-md-6">
-            <label class="form-label-title">Select Company</label>
-            <div class="dropdown-container">
-                <input type="text" class="dropdown-search form-control" placeholder="Search Company..." />
-                <button class="dropdown-toggle form-control" type="button">--Select Company--</button>
-                <div class="dropdown-options">
-                    @foreach (var company in Model.Companies)
-                    {
-                        <label class="dropdown-item">
-                            <input type="checkbox" name="CompanyId" value="@company.Value" class="dropdown-checkbox" />
-                            @company.Text
-                        </label>
-                    }
-                </div>
-                <span class="text-danger">
-                    @Html.ValidationMessageFor(a => a.CompanyId)
-                </span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <label class="form-label-title">Select Employee</label>
-            <input type="text" id="EmployeeIdhidden" hidden value="@ViewBag.EmployeeId" />
 
-            @Html.DropDownListFor(a => a.EmployeeId, Enumerable.Empty<SelectListItem>(), "--Select Employee Id--", new { @class = "form-control", @required = "required" })
-            <span class="text-danger">
-                @Html.ValidationMessageFor(a => a.EmployeeId)
-            </span>
-        </div>
-        <div class="col-md-6">
-            <label class="form-label-title">User Role</label>
-            <input type="text" id="UserRoleIdhidden" hidden value="@ViewBag.UserRoleId" />
-
-            @Html.DropDownListFor(a => a.UserRoleId, Enumerable.Empty<SelectListItem>(), "--Select Role--", new { @class = "form-control", @required = "required" })
-            <span class="text-danger">
-                @Html.ValidationMessageFor(a => a.UserRoleId)
-            </span>
-        </div>*@
                                             <div class="col-md-6">
                                                 <label class="form-label-title">Select Company</label>
                                                 <div class="dropdown-container">
@@ -233,32 +201,30 @@
                                                     new { @class = "form-control", @required = "required" })
                                                 <span class="text-danger">@Html.ValidationMessageFor(a => a.UserRoleId)</span>
                                             </div>
-
                                             <div class="row mt-3">
                                                 <div class="col-md-12">
                                                     <span style="color: #365977; font-size: 13px; font-weight: 700;">
                                                         <span>Access Type :</span>
-                                                        <span style="color: #547171" class="ng-binding">New</span>
+                                                        <span style="color: #547171" class="ng-binding" id="AccessTypeLabel">New</span>
                                                     </span>
-                                                    <div class="form-group-profile pull-right">
-                                                        <input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary" autocomplete="off" class="ng-valid ng-dirty" onclick="checkAllReadCheckboxes(this)">
-                                                        <div class="btn-group">
-                                                            <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-primary btn-xs]">
+                                                    <div class="form-group-profile pull-right pointer-curser">
 
-                                                                <span></span>
+                                                        <input type="checkbox" name="IsAllRead" value="true" id="fancy-checkbox-primary" autocomplete="off" class="ng-valid ng-dirty Activechecked" onclick="checkAllReadCheckboxes(this)">
+                                                        <div class="btn-group">
+                                                            <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="btn btn-primary btn-xs">
+
                                                             </label>
-                                                            <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-default active ]">
-                                                                <i class="icon-book" style="color: #245d90;"></i> Read All
+                                                            <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="btn btn-default active">
+                                                                <i class="icon-book"></i> <b>Read All</b>
                                                             </label>
                                                         </div>
-                                                        <input type="checkbox" name="fancy-checkbox-success" id="fancy-checkbox-success" autocomplete="off" class="ng-pristine ng-valid" onclick="checkAllWriteCheckboxes(this)">
+                                                        <input type="checkbox" name="IsAllWrite" value="true" id="fancy-checkbox-success" autocomplete="off" class="ng-pristine ng-valid Activechecked" onclick="checkAllWriteCheckboxes(this)">
                                                         <div class="btn-group">
-                                                            <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-success ]">
+                                                            <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="btn btn-success">
 
-                                                                <span></span>
                                                             </label>
-                                                            <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="[ btn btn-default active ]">
-                                                                <i class="icon-edit" style="color:#188a18"></i> Write All
+                                                            <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="btn btn-default active">
+                                                                <i class="icon-edit"></i> <b>Write All</b>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -273,15 +239,18 @@
                                                         {
                                                             count++;
                                                             <div class="module-row" onclick="toggleSection('live-tracking_@count')">
+
                                                                 <span>@item.Title</span>
                                                                 <div class="actions" style="margin-left:430px;">
-                                                                    <label>
-                                                                        <input type="checkbox" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
-                                                                        <i class="icon-book" style="color: #245d90;"></i> Read
+                                                                    <label class="pointer-curser">
+                                                                        <input name="IsReadChecked[]" type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
+                                                                        @*<input type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />*@
+                                                                        <i class="icon-book" style="color: #245d90;"></i> <b>Read</b>
                                                                     </label>
-                                                                    <label>
-                                                                        <input type="checkbox" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
-                                                                        <i class="icon-edit" style="color:#188a18"></i> Write
+                                                                    <label class="pointer-curser">
+                                                                        <input name="IsWriteChecked[]" type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
+                                                                        @*<input type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />*@
+                                                                        <i class="icon-edit" style="color:#188a18"></i> <b>Write</b>
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -294,15 +263,18 @@
                                                                             {
                                                                                 <div class="col-md-6">
                                                                                     <div class="sub-option-row">
-                                                                                        <span>@menu.Title</span>
+                                                                                        <span><b>@menu.Title</b></span>
+
                                                                                         <div class="actions">
-                                                                                            <label>
-                                                                                                <input type="checkbox" class="read-checkbox" />
-                                                                                                Read
+                                                                                            <label class="pointer-curser">
+                                                                                                <input name="IsSubReadChecked[]" type="checkbox" class="read-checkbox" value="@menu.Id" onclick="toggleParentReadCheckboxFromChild(this);" />
+                                                                                                @*<input type="checkbox" value="@menu.Id" class="read-checkbox" />*@
+                                                                                            <i class="icon-book" style="color: #245d90;"></i>Read
                                                                                             </label>
-                                                                                            <label>
-                                                                                                <input type="checkbox" class="write-checkbox" onclick="syncReadCheckbox(this);" />
-                                                                                                Write
+                                                                                            <label class="pointer-curser">
+                                                                                                <input name="IsSubWriteChecked[]" type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                                                @*<input type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />*@
+                                                                                            <i class="icon-edit" style="color:#188a18"></i>Write
                                                                                             </label>
                                                                                         </div>
                                                                                     </div>
@@ -317,7 +289,6 @@
 
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -337,63 +308,6 @@
         </div>
     </div>
 </div>
-
-@*<script>
-    $("#CompanyId").change(function () {
-        var id = $(this).val();
-        $.get('/Common/GetEmployeeIdByCompany?companyId=' + id, function (r) {
-            var dd = $("#EmployeeId");
-            dd.empty();
-            dd.append('<option value="">--Select Employee Id--</option>');
-            $.each(r, function (k, v) {
-                dd.append('<option value="' + v.Id + '">' + v.Employee_Id + '</option>');
-
-            })
-        })
-    });
-
-    $(document).ready(function () {
-        var id = $("#CompanyId").val();
-        $.get('/Common/GetEmployeeIdByCompany?companyId=' + id, function (r) {
-            var dd = $("#EmployeeId");
-            dd.empty();
-            dd.append('<option value="">--Select Employee Id--</option>');
-            $.each(r, function (k, v) {
-                dd.append('<option value="' + v.Id + '">' + v.Employee_Id + '</option>');
-
-            })
-            $("#EmployeeId").val($("#EmployeeIdhidden").val());
-        })
-    });
-
-    $("#CompanyId").change(function () {
-        var id = $(this).val();
-        $.get('/Common/GetUserRoleByCompany?companyId=' + id, function (r) {
-            var dd = $("#UserRoleId");
-            dd.empty();
-            dd.append('<option value="">--Select Role--</option>');
-            $.each(r, function (k, v) {
-                dd.append('<option value="' + v.Id + '">' + v.RoleName + '</option>');
-
-            })
-        })
-    });
-
-    $(document).ready(function () {
-        var id = $("#CompanyId").val();
-        $.get('/Common/GetUserRoleByCompany?companyId=' + id, function (r) {
-            var dd = $("#UserRoleId");
-            dd.empty();
-            dd.append('<option value="">--Select Role--</option>');
-            $.each(r, function (k, v) {
-                dd.append('<option value="' + v.Id + '">' + v.RoleName + '</option>');
-
-            })
-            $("#UserRoleId").val($("#UserRoleIdhidden").val());
-        })
-    });
-</script>*@
-
 
 <script>
     // Toggle section visibility and ensure only one section is open
@@ -492,8 +406,9 @@
         // Fetch and populate UserRoleId dropdown
         function updateUserRoleDropdown(companyId) {
             $.get('/Common/GetUserRoleByCompany', { companyId: companyId }, function (data) {
-                const roleDropdown = $("#UserRoleId"); 
-               // roleDropdown.empty().append('<option value="">--Select Role--</option>');
+                const roleDropdown = $("#UserRoleId");
+                roleDropdown.empty();
+                // roleDropdown.empty().append('<option value="">--Select Role--</option>');
                 data.forEach(role => {
                     roleDropdown.append(`<option value="${role.Id}">${role.RoleName}</option>`);
                 });
@@ -527,5 +442,64 @@
         });
     });
 
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#UserRoleId').change(function () {
+            var roleId = $(this).val();
+            var namerole = $("#UserRoleId").val(roleId).text();
+            $("#AccessTypeLabel").empty();
+            $("#AccessTypeLabel").text(namerole);
+            if (roleId) {
+                $.ajax({
+                    url: '/AdministratorETS/GetDataByRoleId',
+                    type: 'GET',
+                    data: { roleId: roleId },
+                    success: function (data) {
+                        const isReadChecked = data.IsReadChecked || [];
+                        const isWriteChecked = data.IsWriteChecked || [];
+                        const isSubReadChecked = data.IsSubReadChecked || [];
+                        const isSubWriteChecked = data.IsSubWriteChecked || [];
+
+                        CheckAllRead(data.IsAllRead);
+                        CheckAllWrite(data.IsAllWrite);
+
+                        // Check parent-level read and write checkboxes
+                        checkCheckboxes(isReadChecked, "main-read-checkbox");
+                        checkCheckboxes(isWriteChecked, "main-write-checkbox");
+
+                        // Check sub-level read and write checkboxes
+                        checkCheckboxes(isSubReadChecked, "read-checkbox");
+                        checkCheckboxes(isSubWriteChecked, "write-checkbox");
+                    },
+                    error: function () {
+                        alert('Error fetching data.');
+                    }
+                });
+            }
+        });
+
+        // Function to check checkboxes by class name and array of values
+        function checkCheckboxes(array, className) {
+            array.forEach(function (value) {
+                const checkbox = $(`input.${className}[value="${value}"]`);
+                if (checkbox.length) {
+                    checkbox.prop('checked', true);
+                }
+            });
+        }
+
+        // Function to check/uncheck all read checkboxes
+        function CheckAllRead(isAllRead) {
+            $('.Activechecked').prop('checked', isAllRead);
+        }
+
+        // Function to check/uncheck all write checkboxes
+        function CheckAllWrite(isAllWrite) {
+            $('.Activechecked').prop('checked', isAllWrite);
+        }
+    });
 
 </script>
