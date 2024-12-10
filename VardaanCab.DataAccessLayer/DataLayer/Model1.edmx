@@ -338,6 +338,7 @@
           <Property Name="Password" Type="nvarchar" MaxLength="500" />
           <Property Name="OTP" Type="int" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsOnline" Type="bit" />
         </EntityType>
         <EntityType Name="DriverLeave">
           <Key>
@@ -1324,6 +1325,10 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="RoleName" Type="nvarchar" MaxLength="300" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="IsReadChecked" Type="nvarchar(max)" />
+          <Property Name="IsWriteChecked" Type="nvarchar(max)" />
+          <Property Name="IsSubReadChecked" Type="nvarchar(max)" />
+          <Property Name="IsSubWriteChecked" Type="nvarchar(max)" />
         </EntityType>
         <Function Name="checkOneCompanyBookingSelected" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="isNrg" Type="bit" Mode="In" />
@@ -1660,6 +1665,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="Employee_Last_Name" Type="nvarchar" Mode="In" />
           <Parameter Name="Gender" Type="nvarchar" Mode="In" />
           <Parameter Name="MobileNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="AlternateNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="Email" Type="nvarchar" Mode="In" />
           <Parameter Name="StateId" Type="int" Mode="In" />
           <Parameter Name="CityId" Type="int" Mode="In" />
@@ -2231,6 +2237,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="OTP" Type="Int32" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsOnline" Type="Boolean" />
         </EntityType>
         <EntityType Name="DriverLeave">
           <Key>
@@ -3317,6 +3324,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="Employee_Last_Name" Mode="In" Type="String" />
             <Parameter Name="Gender" Mode="In" Type="String" />
             <Parameter Name="MobileNumber" Mode="In" Type="String" />
+            <Parameter Name="AlternateNumber" Mode="In" Type="String" />
             <Parameter Name="Email" Mode="In" Type="String" />
             <Parameter Name="StateId" Mode="In" Type="Int32" />
             <Parameter Name="CityId" Mode="In" Type="Int32" />
@@ -4608,6 +4616,10 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="RoleName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsReadChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsWriteChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsSubReadChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsSubWriteChecked" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AccessAssign">
           <Key>
@@ -4946,6 +4958,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Drivers">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Driver">
               <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="OTP" ColumnName="OTP" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
@@ -7032,6 +7045,10 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="UserRoles">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.UserRole">
               <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="IsSubWriteChecked" ColumnName="IsSubWriteChecked" />
+                <ScalarProperty Name="IsSubReadChecked" ColumnName="IsSubReadChecked" />
+                <ScalarProperty Name="IsWriteChecked" ColumnName="IsWriteChecked" />
+                <ScalarProperty Name="IsReadChecked" ColumnName="IsReadChecked" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="RoleName" ColumnName="RoleName" />

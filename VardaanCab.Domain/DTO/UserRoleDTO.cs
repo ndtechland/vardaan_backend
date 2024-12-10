@@ -38,4 +38,11 @@ namespace VardaanCab.Domain.DTO
         public string OrgName { get; set; }
 
     }
+
+    public class JsonFormat
+    {
+        public Object MenuName { get; set; }
+        public Object SubMenuName { get; set; }
+    }
+           
 }

@@ -13,11 +13,11 @@ namespace VardaanCab.Controllers
     public class AdministratorETSController : Controller
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
-        
+
         public ActionResult AssignAccess(int menuId = 0, int id = 0)
         {
             var model = new AccessAssignDTO();
-            model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
+            model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).OrderByDescending(c => c.Id).ToList(), "Id", "OrgName");
             int userId = int.Parse(User.Identity.Name);
             if (!ent.UserLogins.Any(x => x.Id == userId && x.Role == "Customer"))
             {
@@ -109,6 +109,17 @@ namespace VardaanCab.Controllers
         {
             return View();
         }
+        private static int[] StringToIntArray(string myNumbers)
+        {
+            List<int> myIntegers = new List<int>();
+            Array.ForEach(myNumbers.Split(",".ToCharArray()), s =>
+            {
+                int currentInt;
+                if (Int32.TryParse(s, out currentInt))
+                    myIntegers.Add(currentInt);
+            });
+            return myIntegers.ToArray();
+        }
         public ActionResult CreateRole(int menuId = 0, int id = 0)
         {
             var model = new UserRoleDTO();
@@ -119,16 +130,16 @@ namespace VardaanCab.Controllers
                 Text = d.OrgName
             }).ToList();
             var Getdata = (from r in ent.UserRoles
-                        join c in ent.Customers on r.CompanyId equals c.Id
-                        where r.IsActive==true
-                        orderby r.Id descending
-                        select new UserRoleList
-                        {
-                            Id = r.Id,
-                            CompanyName = c.CompanyName,
-                            OrgName = c.OrgName,
-                            RoleName = r.RoleName
-                        }
+                           join c in ent.Customers on r.CompanyId equals c.Id
+                           where r.IsActive == true
+                           orderby r.Id descending
+                           select new UserRoleList
+                           {
+                               Id = r.Id,
+                               CompanyName = c.CompanyName,
+                               OrgName = c.OrgName,
+                               RoleName = r.RoleName
+                           }
                        ).ToList();
             model.UserRoleLists = Getdata;
 
@@ -163,6 +174,10 @@ namespace VardaanCab.Controllers
                 model.Id = data.Id;
                 model.CompanyId = data.CompanyId;
                 model.RoleName = data.RoleName;
+                model.IsReadChecked = StringToIntArray(data.IsReadChecked); //.Split(',').Select(item => int.TryParse(item, out int number) ? number : 0).ToArray();
+                model.IsWriteChecked = StringToIntArray(data.IsWriteChecked); //.Split(',').Select(item => int.TryParse(item, out int number) ? number : 0).ToArray();
+                model.IsSubReadChecked = StringToIntArray(data.IsSubReadChecked); //.Split(',').Select(item => int.TryParse(item, out int number) ? number : 0).ToArray();
+                model.IsSubWriteChecked = StringToIntArray(data.IsSubWriteChecked); //.Split(',').Select(item => int.TryParse(item, out int number) ? number : 0).ToArray();
                 ViewBag.Heading = "Update Role";
                 ViewBag.BtnTXT = "Update";
                 return View(model);
@@ -172,6 +187,10 @@ namespace VardaanCab.Controllers
                 model.Id = 0;
                 model.CompanyId = 0;
                 model.RoleName = "";
+                model.IsReadChecked = null;
+                model.IsWriteChecked = null;
+                model.IsSubReadChecked = null;
+                model.IsSubWriteChecked = null;
                 ViewBag.BtnTXT = "Save";
                 ViewBag.Heading = "Create Role";
                 return View(model);
@@ -190,20 +209,29 @@ namespace VardaanCab.Controllers
                     {
                         CompanyId = model.CompanyId,
                         RoleName = model.RoleName,
-                        IsActive=true,
-                        CreatedDate = DateTime.Now
-
+                        IsActive = true,
+                        CreatedDate = DateTime.Now,
+                        IsReadChecked = string.Join(",", model.IsReadChecked),
+                        IsWriteChecked = string.Join(",", model.IsWriteChecked),
+                        IsSubReadChecked = string.Join(",", model.IsSubReadChecked),
+                        IsSubWriteChecked = string.Join(",", model.IsSubWriteChecked)
                     };
                     ent.UserRoles.Add(EmpReq);
-                    
+                    ent.SaveChanges();
                 }
                 else
                 {
-                    var data = ent.UserRoles.Find(model.Id); 
+                    var data = ent.UserRoles.Find(model.Id);
                     data.CompanyId = model.CompanyId;
                     data.RoleName = model.RoleName;
+                    data.IsReadChecked = string.Join(",", model.IsReadChecked);
+                    data.IsWriteChecked = string.Join(",", model.IsWriteChecked);
+                    data.IsSubReadChecked = string.Join(",", model.IsSubReadChecked);
+                    data.IsSubWriteChecked = string.Join(",", model.IsSubWriteChecked);
                 }
                 ent.SaveChanges();
+
+
                 TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
 
