@@ -97,7 +97,6 @@ namespace VardaanCab.Controllers
                 ent.SaveChanges();
                 TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
-
             }
             catch (Exception)
             {

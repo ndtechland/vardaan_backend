@@ -17,6 +17,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using NPOI.SS.UserModel;
 using System.Data.Entity.Validation;
 using NPOI.SS.Formula.Eval;
+using DocumentFormat.OpenXml.EMMA;
 
 
 namespace VardaanCab.Controllers
@@ -252,50 +253,32 @@ namespace VardaanCab.Controllers
                     {
                         command.CommandText = "Vardaan_AdminEntities.ManageEmployee";
                         command.CommandType = CommandType.StoredProcedure;
-                        string checkaction = null;
-                        if(model.Id==0)
-                        {
-                            checkaction = "INSERT";
-                        }
-                        else
-                        {
-                            checkaction = "UPDATE";
-                        }
+
+                        string checkaction = model.Id == 0 ? "INSERT" : "UPDATE";
                         string combinedString = string.Join(",", model.WeekOff);
+
                         command.Parameters.Add(new EntityParameter("Action", DbType.String) { Value = checkaction });
                         command.Parameters.Add(new EntityParameter("Id", DbType.Int32) { Value = model.Id });
                         command.Parameters.Add(new EntityParameter("Company_Id", DbType.Int32) { Value = model.Company_Id });
                         command.Parameters.Add(new EntityParameter("Company_location", DbType.String) { Value = model.Company_location });
-                        command.Parameters.Add(new EntityParameter("Employee_Id", DbType.Int32) { Value = model.Employee_Id });
-                        command.Parameters.Add(new EntityParameter("Employee_First_Name", DbType.String) { Value = model.Employee_First_Name });
-                        command.Parameters.Add(new EntityParameter("Employee_Middle_Name", DbType.String) { Value = model.Employee_Middle_Name ?? (object)DBNull.Value });
-                        command.Parameters.Add(new EntityParameter("Employee_Last_Name", DbType.String) { Value = model.Employee_Last_Name });
-                        command.Parameters.Add(new EntityParameter("Gender", DbType.String) { Value = model.Gender });
-                        command.Parameters.Add(new EntityParameter("MobileNumber", DbType.String) { Value = model.MobileNumber });
-                        command.Parameters.Add(new EntityParameter("AlternateNumber", DbType.String) { Value = model.AlternateNumber });
-                        command.Parameters.Add(new EntityParameter("Email", DbType.String) { Value = model.Email });
-                        command.Parameters.Add(new EntityParameter("StateId", DbType.Int32) { Value = model.StateId });
-                        command.Parameters.Add(new EntityParameter("CityId", DbType.Int32) { Value = model.CityId });
-                        command.Parameters.Add(new EntityParameter("Pincode", DbType.String) { Value = model.Pincode });
-                        command.Parameters.Add(new EntityParameter("EmployeeCurrentAddress", DbType.String) { Value = model.EmployeeCurrentAddress });
+                        command.Parameters.Add(new EntityParameter("Employee_Id", DbType.String) { Value = model.Employee_Id });
                         command.Parameters.Add(new EntityParameter("LoginUserName", DbType.String) { Value = model.LoginUserName });
+                        command.Parameters.Add(new EntityParameter("Password", DbType.String) { Value = RandomPassword });
                         command.Parameters.Add(new EntityParameter("WeekOff", DbType.String) { Value = combinedString ?? (object)DBNull.Value });
-                        command.Parameters.Add(new EntityParameter("EmployeeGeoCode", DbType.String) { Value = model.EmployeeGeoCode ?? (object)DBNull.Value });
-                        command.Parameters.Add(new EntityParameter("EmployeeBusinessUnit", DbType.String) { Value = model.EmployeeBusinessUnit ?? (object)DBNull.Value });
-                        command.Parameters.Add(new EntityParameter("EmployeeDepartment", DbType.String) { Value = model.EmployeeDepartment ?? (object)DBNull.Value });
-                        command.Parameters.Add(new EntityParameter("EmployeeProjectName", DbType.String) { Value = model.EmployeeProjectName ?? (object)DBNull.Value });
-                        command.Parameters.Add(new EntityParameter("ReportingManager", DbType.String) { Value = model.ReportingManager ?? (object)DBNull.Value });
-                        command.Parameters.Add(new EntityParameter("PrimaryFacilityZone", DbType.String) { Value = model.PrimaryFacilityZone });
-                        command.Parameters.Add(new EntityParameter("HomeRouteName", DbType.String) { Value = model.HomeRouteName });
-                        command.Parameters.Add(new EntityParameter("EmployeeDestinationArea", DbType.String) { Value = model.EmployeeDestinationArea });
-                        command.Parameters.Add(new EntityParameter("EmployeeRegistrationType", DbType.String) { Value = model.EmployeeRegistrationType });
                         command.Parameters.Add(new EntityParameter("IsActive", DbType.Boolean) { Value = true });
-                        command.Parameters.Add(new EntityParameter("Password", DbType.String) { Value = null });
+
+                        // Output parameter for the response message
+                        var responseMessageParam = new EntityParameter("ResponseMessage", DbType.String) { Direction = ParameterDirection.Output, Size = 255 };
+                        command.Parameters.Add(responseMessageParam);
 
                         command.ExecuteNonQuery();
+
+                        // Get the response message
+                        string responseMessage = responseMessageParam.Value.ToString();
+
+                        TempData["msg"] = responseMessage;
                     }
                 }
-                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
                 return RedirectToAction("Add");
             }
@@ -304,14 +287,35 @@ namespace VardaanCab.Controllers
                 throw new Exception("Server Error: " + ex.Message);
             }
         }
+
         public ActionResult DeleteEmployee(int id)
         {
             try
             {
-                var data = ent.Employees.Find(id);
-                data.IsActive = false;
-                ent.SaveChanges();
-                TempData["dltmsg"] = "Deleted successfully.";
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+
+                using (var entityConnection = new EntityConnection(entityConnectionString))
+                {
+                    entityConnection.Open();
+                    using (var command = entityConnection.CreateCommand())
+                    {
+                        command.CommandText = "Vardaan_AdminEntities.ManageEmployee";
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        string checkaction = "DELETE";
+
+                        command.Parameters.Add(new EntityParameter("Action", DbType.String) { Value = checkaction });
+                        command.Parameters.Add(new EntityParameter("Id", DbType.Int32) { Value = id });
+                         
+                        var responseMessageParam = new EntityParameter("ResponseMessage", DbType.String) { Direction = ParameterDirection.Output, Size = 255 };
+                        command.Parameters.Add(responseMessageParam);
+
+                        command.ExecuteNonQuery(); 
+                        string responseMessage = responseMessageParam.Value.ToString();
+
+                        TempData["dltmsg"] = responseMessage;
+                    }
+                }
                 return RedirectToAction("GetEmployeeList");
             }
             catch (Exception)
@@ -535,84 +539,6 @@ namespace VardaanCab.Controllers
             }
         }
 
-        #region no use
-        //public ActionResult ExportToExcel()
-        //{
-        //    DataTable dt = GetTableData(); // Get data from the database
-
-        //    var columnsToRemove = new List<string> { "Id", "IsActive", "CreatedDate", "Password", "IsFirst", "OTP" };
-
-        //    foreach (string columnName in columnsToRemove)
-        //    {
-        //        if (dt.Columns.Contains(columnName))
-        //        {
-        //            dt.Columns.Remove(columnName);
-        //        }
-        //    }
-        //    // Create a new DataTable with only the column names
-        //    DataTable dtWithColumnNames = new DataTable();
-        //    // Add columns to the new DataTable
-        //    foreach (DataColumn column in dt.Columns)
-        //    {
-        //        dtWithColumnNames.Columns.Add(column.ColumnName);
-        //    }
-
-        //    // Add a single row with column names as values
-        //    DataRow headerRow = dtWithColumnNames.NewRow();
-        //    for (int i = 0; i < dt.Columns.Count; i++)
-        //    {
-        //        headerRow[i] = dt.Columns[i].ColumnName;
-        //    }
-        //    dtWithColumnNames.Rows.Add(headerRow);
-
-        //    // Export to Excel
-        //    using (XLWorkbook workbook = new XLWorkbook())
-        //    {
-        //        var worksheet = workbook.Worksheets.Add(dtWithColumnNames, "Employee");
-        //        var hiddenSheet = workbook.Worksheets.Add("Country");
-        //        var dd = ent.Customers.Where(x =>x.IsActive == true).ToList();
-        //        int countryRow = 1;
-        //        foreach (var ctry in dd.OrderByDescending(x =>x.Id))
-        //        {
-        //            hiddenSheet.Cell(countryRow++, 2).Value = ctry.CompanyName;
-        //        }
-
-        //        var countryRange = hiddenSheet.Range($"B1:B{dd.Count}");
-
-        //        var validation = worksheet.Cell(2, 1).DataValidation; // Apply to cell E2 as an example
-        //        validation.List(countryRange); // Refer to hidden list
-        //        validation.IgnoreBlanks = true; // Optional: allows blank entries
-        //        validation.InCellDropdown = true; // Shows dropdown
-        //        //countryValidation.List(countryRange);
-        //        using (MemoryStream stream = new MemoryStream())
-        //        {
-        //            workbook.SaveAs(stream);
-        //            stream.Position = 0;
-        //            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeData.xlsx");
-        //        }
-        //    }
-        //}
-
-        //private DataTable GetTableData()
-        //{
-        //    var entityBuilder = new EntityConnectionStringBuilder(efConnectionString);
-        //    string sqlConnectionString = entityBuilder.ProviderConnectionString;
-        //    DataTable dt = new DataTable();
-
-        //    using (SqlConnection con = new SqlConnection(sqlConnectionString))
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand("SELECT * FROM Employee", con))
-        //        {
-        //            con.Open();
-        //            SqlDataAdapter da = new SqlDataAdapter(cmd);
-        //            da.Fill(dt);
-        //        }
-        //    }
-
-        //    return dt;
-        //}
-        #endregion
-
         [HttpPost]
         public ActionResult ImportEmployeeData(HttpPostedFileBase file)
         {
@@ -734,93 +660,7 @@ namespace VardaanCab.Controllers
                 ViewBag.Message = $"An error occurred: {ex.Message}";
                 return View();
             }
-        }
-
-        //public ActionResult ImportEmployeeData(HttpPostedFileBase file)
-        //{
-        //    try
-        //    {
-        //        // Check if a file is uploaded
-        //        if (file != null && file.ContentLength > 0)
-        //        {
-        //            using (var workbook = new XLWorkbook(file.InputStream))
-        //            {
-
-        //                var worksheet = workbook.Worksheet(1);
-        //                var rows = worksheet.RowsUsed().Skip(1);
-        //                List<Employee> employees = new List<Employee>();
-
-        //                foreach (var row in rows)
-        //                {
-        //                    string CompanyName = row.Cell(1).GetValue<string>();
-        //                    string StateName = row.Cell(9).GetValue<string>();
-        //                    string CityName = row.Cell(10).GetValue<string>();
-        //                    string CompanyZoneName = row.Cell(20).GetValue<string>();
-        //                    string HomeRouteName = row.Cell(21).GetValue<string>();
-        //                    string DestinationAreaName = row.Cell(22).GetValue<string>();
-        //                    string RegistrationTypeName = row.Cell(23).GetValue<string>();
-        //                    Employee employee = new Employee
-        //                    {
-        //                        Company_Id = string.IsNullOrEmpty(CompanyName) == null ? 0 : ent.Customers.Where(x => x.CompanyName.ToLower() == CompanyName.ToLower()).FirstOrDefault().Id,
-        //                        Company_location = row.Cell(2).GetValue<int>().ToString(),
-        //                        Employee_Id = row.Cell(3).GetValue<string>() ?? string.Empty,
-        //                        Employee_First_Name = row.Cell(4).GetValue<string>() ?? string.Empty,
-        //                        Employee_Middle_Name = row.Cell(5).GetValue<string>() ?? string.Empty,
-        //                        Employee_Last_Name = row.Cell(6).GetValue<string>() ?? string.Empty,
-        //                        MobileNumber = row.Cell(7).GetValue<string>() ?? string.Empty,
-        //                        Email = row.Cell(8).GetValue<string>() ?? string.Empty,
-        //                        StateId = string.IsNullOrEmpty(StateName) == null ? 0 : ent.StateMasters.Where(x => x.StateName.ToLower() == StateName.ToLower()).FirstOrDefault().Id,
-        //                        CityId = string.IsNullOrEmpty(CityName) == null ? 0 : ent.CityMasters.Where(x => x.CityName.ToLower() == CityName.ToLower()).FirstOrDefault().Id,
-        //                        Pincode = row.Cell(11).GetValue<int>(),
-        //                        EmployeeCurrentAddress = row.Cell(12).GetValue<string>() ?? string.Empty,
-        //                        LoginUserName = row.Cell(13).GetValue<string>() ?? string.Empty,
-        //                        WeekOff = row.Cell(14).GetValue<string>() ?? "Sunday",  // Default to "Sunday" if null
-        //                        EmployeeGeoCode = row.Cell(15).GetValue<string>() ?? string.Empty,
-        //                        EmployeeBusinessUnit = row.Cell(16).GetValue<string>() ?? string.Empty,
-        //                        EmployeeDepartment = row.Cell(17).GetValue<string>() ?? string.Empty,
-        //                        EmployeeProjectName = row.Cell(18).GetValue<string>() ?? string.Empty,
-        //                        ReportingManager = row.Cell(19).GetValue<string>() ?? string.Empty,
-        //                        PrimaryFacilityZone = string.IsNullOrEmpty(CompanyZoneName) == null ? 0 : ent.CompanyZones.Where(x => x.CompanyZone1.ToLower() == CompanyZoneName.ToLower()).FirstOrDefault().Id,
-        //                        HomeRouteName = string.IsNullOrEmpty(HomeRouteName) == null ? 0 : ent.CompanyZoneHomeRoutes.Where(x => x.HomeRouteName.ToLower() == HomeRouteName.ToLower()).FirstOrDefault().Id,
-        //                        EmployeeDestinationArea = string.IsNullOrEmpty(DestinationAreaName) == null ? 0 : ent.EmployeeDestinationAreas.Where(x => x.DestinationAreaName.ToLower() == HomeRouteName.ToLower()).FirstOrDefault().Id,
-        //                        EmployeeRegistrationType = string.IsNullOrEmpty(RegistrationTypeName) == null ? 0 : ent.EmployeeRegistrationTypes.Where(x => x.TypeName.ToLower() == RegistrationTypeName.ToLower()).FirstOrDefault().Id,
-        //                        IsActive = true,
-        //                        CreatedDate = DateTime.Now,
-        //                        IsFirst = true,
-        //                        Gender = row.Cell(24).GetValue<string>(),
-        //                        AlternateNumber = row.Cell(25).GetValue<string>() ?? string.Empty
-        //                    };
-
-
-        //                    employees.Add(employee);
-        //                }
-        //                if (employees.Any())
-        //                {
-        //                    ent.Employees.AddRange(employees);
-        //                    ent.SaveChanges();
-        //                }
-
-        //                ViewBag.Message = "Data imported successfully!";
-        //                return RedirectToAction("GetEmployeeList");
-        //            }
-        //        }
-        //        ViewBag.Message = "Please select an Excel file to import.";
-        //        return View();
-        //    }
-        //    catch (DbEntityValidationException ex)
-        //    {
-        //        foreach (var validationError in ex.EntityValidationErrors)
-        //        {
-        //            foreach (var error in validationError.ValidationErrors)
-        //            {
-        //                // Log or output the validation errors
-        //                Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
-        //            }
-        //        }
-        //        ViewBag.Message = "Validation failed for one or more entities. Please check the logs for more details.";
-        //        return View();
-        //    }
-        //}
+        }       
 
     }
 }
