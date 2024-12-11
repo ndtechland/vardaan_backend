@@ -2996,6 +2996,7 @@
     <Content Include="Views\EmployeeMobAppSettings\CabBookingRequestDay.cshtml" />
     <Content Include="Views\AdministratorETS\AssignAccess.cshtml" />
     <Content Include="Views\AdministratorETS\CreateRole.cshtml" />
+    <Content Include="Views\AdministratorETS\AccessAssignList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -49,7 +49,8 @@ namespace VardaanCab.Controllers
             {
                 var data = ent.AccessAssigns.Where(x => x.Id == id).FirstOrDefault();
                 var roleinfo = ent.UserRoles.Where(r => r.Id == data.UserRoleId).FirstOrDefault();
-                model.CompanyId = data.Id;
+                model.Id = data.Id;
+                model.CompanyId = data.CompanyId;
                 model.EmployeeId = data.EmployeeId;
                 model.UserRoleId = data.EmployeeId;
                 ViewBag.UserRoleId = data.UserRoleId;
@@ -116,6 +117,38 @@ namespace VardaanCab.Controllers
                 TempData["msg"] = "Server error";
             }
             return RedirectToAction("AssignAccess", new { menuId = model.MenuId });
+        }
+        public ActionResult AccessAssignList()
+        {
+            try
+            {
+                var model = new AccessAssignDTO();
+                var data = (from aa in ent.AccessAssigns
+                            join e in ent.Employees on aa.EmployeeId equals e.Id
+                            join c in ent.Customers on aa.CompanyId equals c.Id
+                            join r in ent.UserRoles on aa.UserRoleId equals r.Id
+                            where aa.IsActive == true
+                            orderby aa.Id descending
+                            select new ListAccessAssign
+                            {
+                                Id = aa.Id,
+                                CompanyName = c.CompanyName,
+                                RoleName = r.RoleName,
+                                EmployeeName = e.Employee_First_Name+" "+e.Employee_Middle_Name+" "+ e.Employee_Last_Name,
+                                Mobile = e.MobileNumber,
+                                EmployeeId = e.Employee_Id,
+                                Email = e.Email,
+                                UserName = e.LoginUserName,
+                            }
+                          ).ToList();
+                model.AccessAssignList = data;
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception ( "Server error" +ex);
+            }
         }
         public ActionResult AssignAccessList()
         {
@@ -265,11 +298,7 @@ namespace VardaanCab.Controllers
                     data.IsAllWrite = model.IsAllWrite;
                     ent.SaveChanges();
                 }
-                
-
-
                 TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
-
 
             }
             catch (Exception)

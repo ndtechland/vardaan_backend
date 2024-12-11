@@ -28,5 +28,18 @@ namespace VardaanCab.Domain.DTO
         public bool IsAllWrite { get; set; }
         public SelectList Companies { get; set; }
         public IEnumerable<SoftwareLinkDTO> SoftwareLinkDTO { get; set; }
+        public IEnumerable<ListAccessAssign> AccessAssignList { get; set; }
+    }
+    public class ListAccessAssign
+    {
+        public int Id { get; set; }
+        public string RoleName { get; set; }
+        public string EmployeeName { get; set; }
+        public string EmployeeId { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public string UserType { get; set; }
+        public string Mobile { get; set; }
+        public string CompanyName { get; set; }
     }
 }

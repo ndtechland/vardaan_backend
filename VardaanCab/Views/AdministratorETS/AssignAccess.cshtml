@@ -137,9 +137,10 @@
         .dropdown-item:hover {
             background-color: #f0f0f0;
         }
-        .pointer-curser {
-            pointer-events:none;
-        }
+
+    .pointer-curser {
+        pointer-events: none;
+    }
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -171,14 +172,17 @@
                                             <div class="col-md-6">
                                                 <label class="form-label-title">Select Company</label>
                                                 <div class="dropdown-container">
+                                                    <input type="hidden" id="CompanyIdHidden" value="@Model.CompanyId" />
                                                     <input type="text" class="dropdown-search form-control" placeholder="Search Company..." />
                                                     <button class="dropdown-toggle form-control" type="button">--Select Company--</button>
                                                     <div class="dropdown-options">
                                                         @foreach (var company in Model.Companies)
                                                         {
                                                             <label class="dropdown-item">
-                                                                <input type="checkbox" name="CompanyId" value="@company.Value" class="dropdown-checkbox" />
-                                                                @company.Text
+                                                              <label class="dropdown-item">
+                                                                  <input type="checkbox" name="CompanyId" value="@company.Value" class="dropdown-checkbox" />
+                                                                  @company.Text
+                                                              </label>
                                                             </label>
                                                         }
                                                     </div>
@@ -269,12 +273,12 @@
                                                                                             <label class="pointer-curser">
                                                                                                 <input name="IsSubReadChecked[]" type="checkbox" class="read-checkbox" value="@menu.Id" onclick="toggleParentReadCheckboxFromChild(this);" />
                                                                                                 @*<input type="checkbox" value="@menu.Id" class="read-checkbox" />*@
-                                                                                            <i class="icon-book" style="color: #245d90;"></i>Read
+                                                                                                <i class="icon-book" style="color: #245d90;"></i>Read
                                                                                             </label>
                                                                                             <label class="pointer-curser">
                                                                                                 <input name="IsSubWriteChecked[]" type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />
                                                                                                 @*<input type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />*@
-                                                                                            <i class="icon-edit" style="color:#188a18"></i>Write
+                                                                                                <i class="icon-edit" style="color:#188a18"></i>Write
                                                                                             </label>
                                                                                         </div>
                                                                                     </div>
@@ -308,6 +312,21 @@
         </div>
     </div>
 </div>
+<script>
+    // Get the Model.CompanyId value from Razor
+    var selectedCompanyId = '@Model.CompanyId';
+
+    // If multiple selections are possible, parse it as an array
+    // For example, if it's a comma-separated string like "1,2,3"
+    var selectedCompanyIds = selectedCompanyId.split(',');
+
+    // Loop through each checkbox and check it if its value is in the selectedCompanyIds array
+    document.querySelectorAll('.dropdown-checkbox').forEach(function (checkbox) {
+        if (selectedCompanyIds.includes(checkbox.value)) {
+            checkbox.checked = true;
+        }
+    });
+</script>
 
 <script>
     // Toggle section visibility and ensure only one section is open
