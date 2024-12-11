@@ -136,7 +136,7 @@ namespace VardaanCab.Controllers
         {
             var model = new UserRoleDTO();
             // model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
-            model.Companies = ent.Customers.Select(d => new SelectListItem
+            model.Companies = ent.Customers.OrderByDescending(c => c.Id).Select(d => new SelectListItem
             {
                 Value = d.Id.ToString(),
                 Text = d.OrgName

@@ -449,7 +449,8 @@
     $(document).ready(function () {
         $('#UserRoleId').change(function () {
             var roleId = $(this).val();
-            var namerole = $("#UserRoleId").val(roleId).text();
+            var namerole = $("#UserRoleId option:selected").text();
+            //var getrolevalue = document.getElementById('UserRoleId').selectedOptions[0].value;
             $("#AccessTypeLabel").empty();
             $("#AccessTypeLabel").text(namerole);
             if (roleId) {
