@@ -309,8 +309,20 @@ namespace VardaanCab.Controllers
             model.IsWriteChecked = !string.IsNullOrEmpty(roleinfo.IsWriteChecked) ? StringToIntArray(roleinfo.IsWriteChecked) : null;
             model.IsSubReadChecked = !string.IsNullOrEmpty(roleinfo.IsSubReadChecked) ? StringToIntArray(roleinfo.IsSubReadChecked) : null;
             model.IsSubWriteChecked = !string.IsNullOrEmpty(roleinfo.IsSubWriteChecked) ? StringToIntArray(roleinfo.IsSubWriteChecked) : null; //.Spl
-            
+
             return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Routing()
+        {
+            try
+            {
+                return View();  
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
         }
     }
 }
