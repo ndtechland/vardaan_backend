@@ -65,7 +65,7 @@
         }
 
     .actions {
-        flex: 1;
+        /*flex: 1;*/
         display: flex;
         justify-content: space-evenly;
     }
@@ -149,7 +149,7 @@
 
                                                 </label>
                                                 <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="btn btn-default active">
-                                                    <i class="icon-book"></i> Read All
+                                                    <i class="icon-book"></i> <b>Read All</b>
                                                 </label>
                                             </div>
                                             <input type="checkbox" name="IsAllWrite" value="true" id="fancy-checkbox-success" autocomplete="off" class="ng-pristine ng-valid Activechecked" onclick="checkAllWriteCheckboxes(this)">
@@ -158,7 +158,7 @@
 
                                                 </label>
                                                 <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;">
-                                                    <i class="icon-edit"></i> Write All
+                                                    <i class="icon-edit"></i> <b>Write All</b>
                                                 </label>
                                             </div>
                                         </div>
@@ -175,16 +175,19 @@
                                                 <div class="module-row" onclick="toggleSection('live-tracking_@count')">
 
                                                     <span>@item.Title</span>
-                                                    <div class="actions" style="margin-left:430px;">
+                                                    <div class="actions">
                                                         <label>
                                                             <input name="IsReadChecked[]" type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
                                                             @*<input type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />*@
-                                                            <i class="icon-book" style="color: #245d90;"></i> Read
+                                                            <i class="icon-book" style="color: #245d90;"></i> <b>Read</b>
                                                         </label>
+                                                        &nbsp;
+                                                        &nbsp;
+                                                        &nbsp;
                                                         <label>
                                                             <input name="IsWriteChecked[]" type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
                                                             @*<input type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />*@
-                                                            <i class="icon-edit" style="color:#188a18"></i> Write
+                                                            <i class="icon-edit" style="color:#188a18"></i> <b>Write</b>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -197,18 +200,21 @@
                                                                 {
                                                                     <div class="col-md-6">
                                                                         <div class="sub-option-row">
-                                                                            <span>@menu.Title</span>
+                                                                            <span><b>@menu.Title</b></span>
 
                                                                             <div class="actions">
                                                                                 <label>
                                                                                     <input name="IsSubReadChecked[]" type="checkbox" class="read-checkbox" value="@menu.Id" onclick="toggleParentReadCheckboxFromChild(this);" />
                                                                                     @*<input type="checkbox" value="@menu.Id" class="read-checkbox" />*@
-                                                                                    Read
+                                                                                    <i class="icon-book" style="color: #245d90;"></i> Read
                                                                                 </label>
+                                                                                &nbsp;
+                                                                                &nbsp;
+                                                                                &nbsp;
                                                                                 <label>
                                                                                     <input name="IsSubWriteChecked[]" type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />
                                                                                     @*<input type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />*@
-                                                                                    Write
+                                                                                    <i class="icon-edit" style="color:#188a18"></i>Write
                                                                                 </label>
                                                                             </div>
                                                                         </div>

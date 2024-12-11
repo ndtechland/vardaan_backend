@@ -150,10 +150,7 @@ namespace VardaanCab.Controllers
                 throw new Exception ( "Server error" +ex);
             }
         }
-        public ActionResult AssignAccessList()
-        {
-            return View();
-        }
+        
         private static int[] StringToIntArray(string myNumbers)
         {
             List<int> myIntegers = new List<int>();
