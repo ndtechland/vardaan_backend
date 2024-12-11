@@ -64,7 +64,7 @@
         }
 
     .actions {
-        flex: 1;
+        /*flex: 1;*/
         display: flex;
         justify-content: space-evenly;
     }
@@ -245,12 +245,15 @@
                                                             <div class="module-row" onclick="toggleSection('live-tracking_@count')">
 
                                                                 <span>@item.Title</span>
-                                                                <div class="actions" style="margin-left:430px;">
+                                                                <div class="actions">
                                                                     <label class="pointer-curser">
                                                                         <input name="IsReadChecked[]" type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
                                                                         @*<input type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />*@
                                                                         <i class="icon-book" style="color: #245d90;"></i> <b>Read</b>
                                                                     </label>
+                                                                    &nbsp;
+                                                                    &nbsp;
+                                                                    &nbsp;
                                                                     <label class="pointer-curser">
                                                                         <input name="IsWriteChecked[]" type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
                                                                         @*<input type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />*@
@@ -275,6 +278,9 @@
                                                                                                 @*<input type="checkbox" value="@menu.Id" class="read-checkbox" />*@
                                                                                                 <i class="icon-book" style="color: #245d90;"></i>Read
                                                                                             </label>
+                                                                                            &nbsp;
+                                                                                            &nbsp;
+                                                                                            &nbsp;
                                                                                             <label class="pointer-curser">
                                                                                                 <input name="IsSubWriteChecked[]" type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />
                                                                                                 @*<input type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />*@

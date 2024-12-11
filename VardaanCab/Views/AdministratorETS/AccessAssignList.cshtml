@@ -41,7 +41,7 @@
                                     <th nowrap>Email Id</th>
                                     <th nowrap>User Type</th>
                                     <th nowrap>Company</th>
-                                    <th>Assign Access</th>
+                                    <th nowrap>Assign Access</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -56,10 +56,10 @@
                                             <td nowrap>@item.UserName</td>
                                             <td nowrap>@item.Mobile</td>
                                             <td nowrap>@item.Email</td>
-                                            <td nowrap>@item.UserType</td>
+                                            <td nowrap>@item.RoleName</td>
                                             <td nowrap>@item.CompanyName</td>
-                                            <td>
-                                                <a href="/AdministratorETS/AssignAccess?Id=@item.Id">
+                                            <td nowrap>
+                                                <a href="/AdministratorETS/AssignAccess?Id=@item.Id" class="btn btn-outline-success">
                                                     Assign Access
                                                 </a>
                                             </td>

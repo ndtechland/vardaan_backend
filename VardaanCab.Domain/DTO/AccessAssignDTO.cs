@@ -38,7 +38,6 @@ namespace VardaanCab.Domain.DTO
         public string EmployeeId { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
-        public string UserType { get; set; }
         public string Mobile { get; set; }
         public string CompanyName { get; set; }
     }
