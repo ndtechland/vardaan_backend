@@ -215,5 +215,70 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+
+        [HttpPut]
+        [Route("UpdateEmployeeAndDriverDeviceId")]
+        public IHttpActionResult UpdateEmployeeAndDriverDeviceId(UpdateDeviceDTO model)
+        {
+            try
+            {
+                var response = new Response<UpdateDeviceDTO>();
+                if (model.RoleName != "" && model.Id>0)
+                {
+                    if(model.RoleName== "Employee")
+                    {
+                        var data = ent.Employees.Find(model.Id);
+                        if (data != null)
+                        {
+                            data.DeviceId = model.DeviceId;
+                            ent.SaveChanges();
+                            response.Succeeded = true;
+                            response.StatusCode = StatusCodes.Status200OK;
+                            response.Message = "Employee device id updated successfully.";
+                            return Content(HttpStatusCode.OK, response);
+                        }
+                        else 
+                        {
+                            response.Succeeded = false;
+                            response.StatusCode = StatusCodes.Status404NotFound;
+                            response.Message = "Employee not found.";
+                            return Content(HttpStatusCode.NotFound, response);
+                        }
+                    }
+                    else
+                    {
+                        var data = ent.Drivers.Find(model.Id);
+                        if (data != null)
+                        {
+                            data.DeviceId = model.DeviceId;
+                            ent.SaveChanges();
+                            response.Succeeded = true;
+                            response.StatusCode = StatusCodes.Status200OK;
+                            response.Message = "Driver device id updated successfully.";
+                            return Content(HttpStatusCode.OK, response);
+                        }
+                        else
+                        {
+                            response.Succeeded = false;
+                            response.StatusCode = StatusCodes.Status404NotFound;
+                            response.Message = "Driver not found.";
+                            return Content(HttpStatusCode.NotFound, response);
+                        }
+                    }
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Your request is incomplete. Please provide the necessary details.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

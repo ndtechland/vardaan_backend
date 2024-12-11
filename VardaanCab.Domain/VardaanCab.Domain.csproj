@@ -69,6 +69,7 @@
     <Compile Include="DTOAPI\EmployeeProfileDTO.cs" />
     <Compile Include="DTOAPI\ForgetPasswordDTO.cs" />
     <Compile Include="DTOAPI\MasterLoginDTO.cs" />
+    <Compile Include="DTOAPI\UpdateDeviceDTO.cs" />
     <Compile Include="DTO\AccessAssignDTO.cs" />
     <Compile Include="DTO\AreaMasterDTO.cs" />
     <Compile Include="DTO\AssignCabModel.cs" />
