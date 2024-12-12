@@ -76,10 +76,104 @@
         </div>
     </div>
 </div>
-
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw&callback=initMap&libraries=places&callback=initAutocomplete&libraries=drawing"></script>
-
 <script>
+    let currentOverlay = null;  // Track the current drawing
+
+    function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 28.7041, lng: 77.1025 }, // Default center (e.g., Delhi)
+            zoom: 10,
+        });
+
+        const drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.POLYGON,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: google.maps.ControlPosition.TOP_CENTER,
+                drawingModes: ["polygon"],
+            },
+            polygonOptions: {
+                fillColor: "#FF0000",
+                fillOpacity: 0.5,
+                strokeWeight: 2,
+                clickable: true,
+                editable: true,
+                draggable: true,
+            }
+        });
+
+        drawingManager.setMap(map);
+
+        // Event Listener for Polygon Completion
+        google.maps.event.addListener(drawingManager, "polygoncomplete", (polygon) => {
+            clearCurrentOverlay();  // Clear any existing drawing
+            currentOverlay = polygon;  // Store the new overlay
+
+            const coordinates = polygon.getPath().getArray().map((latLng) => ({
+                lat: latLng.lat(),
+                lng: latLng.lng(),
+            }));
+            $("#Zonelatlong").val(JSON.stringify(coordinates));
+
+            google.maps.event.addListener(polygon, "click", () => {
+                polygon.setMap(null);
+                currentOverlay = null;
+                $("#Zonelatlong").val(""); // Clear the hidden input field
+            });
+        });
+
+        // Function to clear the current overlay
+        function clearCurrentOverlay() {
+            if (currentOverlay) {
+                currentOverlay.setMap(null);  // Remove the overlay from the map
+                currentOverlay = null;  // Reset the reference
+                $("#Zonelatlong").val("");
+            }
+        }
+
+        // Function to bind JSON coordinates to a polygon
+        function bindCoordinatesToPolygon(coordinates) {
+            clearCurrentOverlay(); // Clear any existing overlay
+
+            const polygon = new google.maps.Polygon({
+                paths: coordinates,
+                fillColor: "#FF0000",
+                fillOpacity: 0.5,
+                strokeWeight: 2,
+                clickable: true,
+                editable: true,
+                draggable: true,
+            });
+
+            polygon.setMap(map); // Add the polygon to the map
+            currentOverlay = polygon; // Store the reference
+
+            $("#Zonelatlong").val(JSON.stringify(coordinates)); // Update the hidden input field
+
+            google.maps.event.addListener(polygon, "click", () => {
+                polygon.setMap(null);
+                currentOverlay = null;
+                $("#Zonelatlong").val(""); // Clear the hidden input field
+            });
+        }
+
+        // Example JSON coordinates
+        const jsonCoordinates = $("#Zonelatlong").val();
+
+        // Check if jsonCoordinates is not null or undefined before binding
+        if (jsonCoordinates && jsonCoordinates.trim().length > 0) {
+            const parsedCoordinates = JSON.parse(jsonCoordinates);
+            if (Array.isArray(
+            ) && parsedCoordinates.length > 0) {
+                bindCoordinatesToPolygon(parsedCoordinates);
+            }
+        }
+    }
+
+    window.onload = initMap;
+</script>
+@*<script>
     let currentOverlay = null;  // Track the current drawing
 
     function initMap() {
@@ -139,4 +233,4 @@
 
     window.onload = initMap;
 
-</script>
+</script>*@
