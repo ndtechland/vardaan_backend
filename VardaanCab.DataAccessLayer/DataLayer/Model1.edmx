@@ -1177,6 +1177,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Gender" Type="nvarchar" MaxLength="200" />
           <Property Name="AlternateNumber" Type="nvarchar" MaxLength="100" />
           <Property Name="DeviceId" Type="nvarchar(max)" />
+          <Property Name="Latitude" Type="float" />
+          <Property Name="Longitude" Type="float" />
         </EntityType>
         <EntityType Name="EmployeeDestinationArea">
           <Key>
@@ -1677,7 +1679,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="EmployeeCurrentAddress" Type="nvarchar" Mode="In" />
           <Parameter Name="LoginUserName" Type="nvarchar" Mode="In" />
           <Parameter Name="WeekOff" Type="nvarchar" Mode="In" />
-          <Parameter Name="EmployeeGeoCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="EmployeeGeoCode" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="EmployeeBusinessUnit" Type="nvarchar" Mode="In" />
           <Parameter Name="EmployeeDepartment" Type="nvarchar" Mode="In" />
           <Parameter Name="EmployeeProjectName" Type="nvarchar" Mode="In" />
@@ -1689,6 +1691,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="IsActive" Type="bit" Mode="In" />
           <Parameter Name="Password" Type="nvarchar" Mode="In" />
           <Parameter Name="IsFirst" Type="bit" Mode="In" />
+          <Parameter Name="Latitude" Type="float" Mode="In" />
+          <Parameter Name="Longitude" Type="float" Mode="In" />
           <Parameter Name="ResponseMessage" Type="nvarchar" Mode="InOut" />
         </Function>
         <EntityContainer Name="Vardaan_AdminModelStoreContainer">
@@ -3317,7 +3321,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="pageSize" Mode="In" Type="Int32" />
             <Parameter Name="TInvID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="Employees" EntityType="Vardaan_AdminModel.Employee" />
           <EntitySet Name="AreaMasters" EntityType="Vardaan_AdminModel.AreaMaster" />
           <FunctionImport Name="ManageEmployee">
             <Parameter Name="Action" Mode="In" Type="String" />
@@ -3350,6 +3353,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="IsActive" Mode="In" Type="Boolean" />
             <Parameter Name="Password" Mode="In" Type="String" />
             <Parameter Name="IsFirst" Mode="In" Type="Boolean" />
+            <Parameter Name="Latitude" Mode="In" Type="Double" />
+            <Parameter Name="Longitude" Mode="In" Type="Double" />
             <Parameter Name="ResponseMessage" Mode="InOut" Type="String" />
           </FunctionImport>
           <EntitySet Name="DaysNames" EntityType="Vardaan_AdminModel.DaysName" />
@@ -3371,6 +3376,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="AccessTypes" EntityType="Vardaan_AdminModel.AccessType" />
           <EntitySet Name="UserRoles" EntityType="Vardaan_AdminModel.UserRole" />
           <EntitySet Name="AccessAssigns" EntityType="Vardaan_AdminModel.AccessAssign" />
+          <EntitySet Name="Employees" EntityType="Vardaan_AdminModel.Employee" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4369,43 +4375,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Type="Int32" Name="CorporateInvoiceFile_Id" Nullable="true" />
           <Property Type="Boolean" Name="IsInvCreated" Nullable="true" />
         </ComplexType>
-        <EntityType Name="Employee">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Company_Id" Type="Int32" />
-          <Property Name="Company_location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Employee_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Employee_First_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Employee_Middle_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Employee_Last_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="StateId" Type="Int32" />
-          <Property Name="CityId" Type="Int32" />
-          <Property Name="Pincode" Type="Int32" />
-          <Property Name="EmployeeCurrentAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LoginUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WeekOff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeGeoCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeBusinessUnit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeDepartment" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeProjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ReportingManager" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PrimaryFacilityZone" Type="Int32" />
-          <Property Name="HomeRouteName" Type="Int32" />
-          <Property Name="EmployeeDestinationArea" Type="Int32" />
-          <Property Name="EmployeeRegistrationType" Type="Int32" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="Password" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="IsFirst" Type="Boolean" />
-          <Property Name="OTP" Type="Int32" />
-          <Property Name="Gender" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="AlternateNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DeviceId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="AreaMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -4641,6 +4610,45 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="UserRoleId" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Company_Id" Type="Int32" />
+          <Property Name="Company_location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_First_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_Middle_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_Last_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StateId" Type="Int32" />
+          <Property Name="CityId" Type="Int32" />
+          <Property Name="Pincode" Type="Int32" />
+          <Property Name="EmployeeCurrentAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LoginUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WeekOff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeGeoCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeBusinessUnit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeDepartment" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeProjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ReportingManager" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PrimaryFacilityZone" Type="Int32" />
+          <Property Name="HomeRouteName" Type="Int32" />
+          <Property Name="EmployeeDestinationArea" Type="Int32" />
+          <Property Name="EmployeeRegistrationType" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Password" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsFirst" Type="Boolean" />
+          <Property Name="OTP" Type="Int32" />
+          <Property Name="Gender" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AlternateNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DeviceId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="Double" />
+          <Property Name="Longitude" Type="Double" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6788,44 +6796,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="Employees">
-            <EntityTypeMapping TypeName="Vardaan_AdminModel.Employee">
-              <MappingFragment StoreEntitySet="Employee">
-                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
-                <ScalarProperty Name="AlternateNumber" ColumnName="AlternateNumber" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="OTP" ColumnName="OTP" />
-                <ScalarProperty Name="IsFirst" ColumnName="IsFirst" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="EmployeeRegistrationType" ColumnName="EmployeeRegistrationType" />
-                <ScalarProperty Name="EmployeeDestinationArea" ColumnName="EmployeeDestinationArea" />
-                <ScalarProperty Name="HomeRouteName" ColumnName="HomeRouteName" />
-                <ScalarProperty Name="PrimaryFacilityZone" ColumnName="PrimaryFacilityZone" />
-                <ScalarProperty Name="ReportingManager" ColumnName="ReportingManager" />
-                <ScalarProperty Name="EmployeeProjectName" ColumnName="EmployeeProjectName" />
-                <ScalarProperty Name="EmployeeDepartment" ColumnName="EmployeeDepartment" />
-                <ScalarProperty Name="EmployeeBusinessUnit" ColumnName="EmployeeBusinessUnit" />
-                <ScalarProperty Name="EmployeeGeoCode" ColumnName="EmployeeGeoCode" />
-                <ScalarProperty Name="WeekOff" ColumnName="WeekOff" />
-                <ScalarProperty Name="LoginUserName" ColumnName="LoginUserName" />
-                <ScalarProperty Name="EmployeeCurrentAddress" ColumnName="EmployeeCurrentAddress" />
-                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="StateId" ColumnName="StateId" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
-                <ScalarProperty Name="Employee_Last_Name" ColumnName="Employee_Last_Name" />
-                <ScalarProperty Name="Employee_Middle_Name" ColumnName="Employee_Middle_Name" />
-                <ScalarProperty Name="Employee_First_Name" ColumnName="Employee_First_Name" />
-                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
-                <ScalarProperty Name="Company_location" ColumnName="Company_location" />
-                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AreaMasters">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.AreaMaster">
               <MappingFragment StoreEntitySet="AreaMaster">
@@ -7079,6 +7049,46 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="AlternateNumber" ColumnName="AlternateNumber" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="IsFirst" ColumnName="IsFirst" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="EmployeeRegistrationType" ColumnName="EmployeeRegistrationType" />
+                <ScalarProperty Name="EmployeeDestinationArea" ColumnName="EmployeeDestinationArea" />
+                <ScalarProperty Name="HomeRouteName" ColumnName="HomeRouteName" />
+                <ScalarProperty Name="PrimaryFacilityZone" ColumnName="PrimaryFacilityZone" />
+                <ScalarProperty Name="ReportingManager" ColumnName="ReportingManager" />
+                <ScalarProperty Name="EmployeeProjectName" ColumnName="EmployeeProjectName" />
+                <ScalarProperty Name="EmployeeDepartment" ColumnName="EmployeeDepartment" />
+                <ScalarProperty Name="EmployeeBusinessUnit" ColumnName="EmployeeBusinessUnit" />
+                <ScalarProperty Name="EmployeeGeoCode" ColumnName="EmployeeGeoCode" />
+                <ScalarProperty Name="WeekOff" ColumnName="WeekOff" />
+                <ScalarProperty Name="LoginUserName" ColumnName="LoginUserName" />
+                <ScalarProperty Name="EmployeeCurrentAddress" ColumnName="EmployeeCurrentAddress" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="Employee_Last_Name" ColumnName="Employee_Last_Name" />
+                <ScalarProperty Name="Employee_Middle_Name" ColumnName="Employee_Middle_Name" />
+                <ScalarProperty Name="Employee_First_Name" ColumnName="Employee_First_Name" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="Company_location" ColumnName="Company_location" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

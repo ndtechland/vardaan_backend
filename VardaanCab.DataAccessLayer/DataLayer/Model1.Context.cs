@@ -77,7 +77,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<cab1475> cab1475 { get; set; }
         public virtual DbSet<log_2022> log_2022 { get; set; }
         public virtual DbSet<SoftwareLink_15052023> SoftwareLink_15052023 { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<AreaMaster> AreaMasters { get; set; }
         public virtual DbSet<DaysName> DaysNames { get; set; }
         public virtual DbSet<BannerMaster> BannerMasters { get; set; }
@@ -98,6 +97,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<AccessType> AccessTypes { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<AccessAssign> AccessAssigns { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
     
         public virtual ObjectResult<Nullable<int>> checkOneCompanyBookingSelected(Nullable<bool> isNrg, string term, Nullable<System.DateTime> sDate, Nullable<System.DateTime> eDate, Nullable<int> cityId, Nullable<int> routeNo)
         {
@@ -1239,7 +1239,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCorporateDsEdit1_Result>("GetCorporateDsEdit1", isNrgParameter, termParameter, sDateParameter, eDateParameter, pageParameter, pageSizeParameter, tInvIDParameter);
         }
     
-        public virtual int ManageEmployee(string action, Nullable<int> id, Nullable<int> company_Id, string company_location, string employee_Id, string employee_First_Name, string employee_Middle_Name, string employee_Last_Name, string gender, string mobileNumber, string alternateNumber, string email, Nullable<int> stateId, Nullable<int> cityId, Nullable<int> pincode, string employeeCurrentAddress, string loginUserName, string weekOff, string employeeGeoCode, string employeeBusinessUnit, string employeeDepartment, string employeeProjectName, string reportingManager, Nullable<int> primaryFacilityZone, Nullable<int> homeRouteName, Nullable<int> employeeDestinationArea, Nullable<int> employeeRegistrationType, Nullable<bool> isActive, string password, Nullable<bool> isFirst, ObjectParameter responseMessage)
+        public virtual int ManageEmployee(string action, Nullable<int> id, Nullable<int> company_Id, string company_location, string employee_Id, string employee_First_Name, string employee_Middle_Name, string employee_Last_Name, string gender, string mobileNumber, string alternateNumber, string email, Nullable<int> stateId, Nullable<int> cityId, Nullable<int> pincode, string employeeCurrentAddress, string loginUserName, string weekOff, string employeeGeoCode, string employeeBusinessUnit, string employeeDepartment, string employeeProjectName, string reportingManager, Nullable<int> primaryFacilityZone, Nullable<int> homeRouteName, Nullable<int> employeeDestinationArea, Nullable<int> employeeRegistrationType, Nullable<bool> isActive, string password, Nullable<bool> isFirst, Nullable<double> latitude, Nullable<double> longitude, ObjectParameter responseMessage)
         {
             var actionParameter = action != null ?
                 new ObjectParameter("Action", action) :
@@ -1361,7 +1361,15 @@ namespace VardaanCab.DataAccessLayer.DataLayer
                 new ObjectParameter("IsFirst", isFirst) :
                 new ObjectParameter("IsFirst", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ManageEmployee", actionParameter, idParameter, company_IdParameter, company_locationParameter, employee_IdParameter, employee_First_NameParameter, employee_Middle_NameParameter, employee_Last_NameParameter, genderParameter, mobileNumberParameter, alternateNumberParameter, emailParameter, stateIdParameter, cityIdParameter, pincodeParameter, employeeCurrentAddressParameter, loginUserNameParameter, weekOffParameter, employeeGeoCodeParameter, employeeBusinessUnitParameter, employeeDepartmentParameter, employeeProjectNameParameter, reportingManagerParameter, primaryFacilityZoneParameter, homeRouteNameParameter, employeeDestinationAreaParameter, employeeRegistrationTypeParameter, isActiveParameter, passwordParameter, isFirstParameter, responseMessage);
+            var latitudeParameter = latitude.HasValue ?
+                new ObjectParameter("Latitude", latitude) :
+                new ObjectParameter("Latitude", typeof(double));
+    
+            var longitudeParameter = longitude.HasValue ?
+                new ObjectParameter("Longitude", longitude) :
+                new ObjectParameter("Longitude", typeof(double));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ManageEmployee", actionParameter, idParameter, company_IdParameter, company_locationParameter, employee_IdParameter, employee_First_NameParameter, employee_Middle_NameParameter, employee_Last_NameParameter, genderParameter, mobileNumberParameter, alternateNumberParameter, emailParameter, stateIdParameter, cityIdParameter, pincodeParameter, employeeCurrentAddressParameter, loginUserNameParameter, weekOffParameter, employeeGeoCodeParameter, employeeBusinessUnitParameter, employeeDepartmentParameter, employeeProjectNameParameter, reportingManagerParameter, primaryFacilityZoneParameter, homeRouteNameParameter, employeeDestinationAreaParameter, employeeRegistrationTypeParameter, isActiveParameter, passwordParameter, isFirstParameter, latitudeParameter, longitudeParameter, responseMessage);
         }
     }
 }
