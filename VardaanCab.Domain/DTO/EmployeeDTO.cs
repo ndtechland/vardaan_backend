@@ -104,4 +104,9 @@ namespace VardaanCab.Domain.DTO
         public string AlternateNumber { get; set; }
         public DateTime? CreatedDate { get; set; }
     }
+    public class getlatlang
+    {
+        public double Latitude { get; set;}
+        public double Longitude { get; set;}
+    }
 }
