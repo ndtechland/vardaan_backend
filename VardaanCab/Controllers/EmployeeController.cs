@@ -291,13 +291,12 @@ namespace VardaanCab.Controllers
                         command.Parameters.Add(new EntityParameter("Password", DbType.String) { Value = RandomPassword });
                         command.Parameters.Add(new EntityParameter("Latitude", DbType.Double) { Value = latitude });
                         command.Parameters.Add(new EntityParameter("Longitude", DbType.Double) { Value = longitude });
-                        // Output parameter for the response message
+
                         var responseMessageParam = new EntityParameter("ResponseMessage", DbType.String) { Direction = ParameterDirection.Output, Size = 255 };
                         command.Parameters.Add(responseMessageParam);
 
                         command.ExecuteNonQuery();
 
-                        // Get the response message
                         string responseMessage = responseMessageParam.Value.ToString();
 
                         TempData["msg"] = responseMessage;
@@ -409,10 +408,9 @@ namespace VardaanCab.Controllers
             // Export to Excel
             using (XLWorkbook workbook = new XLWorkbook())
             {
-                // Create a worksheet and add the headers
                 var worksheet = workbook.Worksheets.Add("Employee");
 
-                // Add the headers based on the mapping
+
                 int colIndex = 1;
                 foreach (DataColumn column in dt.Columns)
                 {

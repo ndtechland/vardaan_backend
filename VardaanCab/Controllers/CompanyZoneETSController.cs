@@ -17,7 +17,7 @@ namespace VardaanCab.Controllers
         public ActionResult AddCompanyZone(int menuId = 0, int id = 0)
         {
             var model=new CompanyZoneDTO();
-            model.Companies = new SelectList(ent.Customers.Where(x=>x.IsActive==true).ToList(), "Id", "CompanyName");
+            model.Companies = new SelectList(ent.Customers.Where(x=>x.IsActive==true).OrderByDescending(x=>x.Id).ToList(), "Id", "OrgName");
             ViewBag.menuId = menuId;
             if (id > 0)
             {

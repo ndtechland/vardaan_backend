@@ -15,7 +15,7 @@ namespace VardaanCab.Controllers
         public ActionResult CabBookingRequestDay(int menuId = 0, int id = 0)
         {
             var model = new EmployeeMobAppSettingDTO();
-            model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).ToList(), "Id", "CompanyName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x => x.Id).ToList(), "Id", "OrgName");
             var datalist = (from es in ent.EmployeeMobileAppSettings
                         join c in ent.Customers on es.CompanyId equals c.Id
                         where es.IsActive==true
