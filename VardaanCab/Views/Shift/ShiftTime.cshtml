@@ -246,7 +246,7 @@
         $.get('/Common/GetCompanyZonesByID?Customer_Id=' + id, function (r) {
             var dd = $("#CompanyZoneId");
             dd.empty();
-            dd.append('<option value="">Select City</option>');
+            dd.append('<option value="">Select Company Zone</option>');
             $.each(r, function (k, v) {
                 dd.append('<option value="' + v.Id + '">' + v.CompanyZone1 + '</option>');
 

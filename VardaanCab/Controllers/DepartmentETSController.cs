@@ -33,7 +33,7 @@ namespace VardaanCab.Controllers
             model.DepartmentMasterList = data;
             ViewBag.menuId = menuId;
            
-            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "CompanyName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x=>x.Id).ToList(), "Id", "OrgName");
             if (id > 0)
             {
                 var Depdata = ent.DepartmentMasters.Where(x => x.Id == id).FirstOrDefault();
@@ -57,10 +57,9 @@ namespace VardaanCab.Controllers
         [HttpPost]
         public ActionResult Departments(DepartmentMasterDTO model)
         {
-            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "CompanyName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x => x.Id).ToList(), "Id", "OrgName");
             try
-            {
-               
+            {               
                 if (model.Id == 0)
                 {
                     var department = new DepartmentMaster()
@@ -82,8 +81,6 @@ namespace VardaanCab.Controllers
                 }
                 ent.SaveChanges();
                 TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
-
-
             }
             catch (Exception ex)
             {

@@ -23,7 +23,7 @@ namespace VardaanCab.Controllers
         public ActionResult Escort(int menuId = 0, int id = 0)
         {
             var model = new EscortDTO();
-            model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "OrgName");
             model.Vendors = new SelectList(ent.Vendors.Where(x => x.IsActive == true).ToList(), "Id", "VendorName");
             
             ViewBag.menuId = menuId;
@@ -68,7 +68,7 @@ namespace VardaanCab.Controllers
         [HttpPost]
         public ActionResult Escort(EscortDTO model)
         {
-            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "CompanyName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "OrgName");
             model.Vendors = new SelectList(ent.Vendors.Where(x => x.IsActive == true).ToList(), "Id", "VendorName");
 
             try
