@@ -16,7 +16,7 @@ namespace VardaanCab.Controllers
         public ActionResult ShiftTime(int menuId = 0, int id = 0)
         {
              var model = new ShiftDTO();
-            model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x => x.Id).ToList(), "Id", "OrgName");
             var data = (from sm in ent.ShiftMasters
                         join tt in ent.TripTypes on sm.TripTypeId equals tt.Id
                         join c in ent.Customers on sm.CompanyId equals c.Id
