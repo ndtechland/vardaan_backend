@@ -47,6 +47,7 @@ namespace VardaanCab.Controllers
                             join z in ent.CompanyZones on e.PrimaryFacilityZone equals z.Id
                             join hr in ent.CompanyZoneHomeRoutes on e.HomeRouteName equals hr.Id
                             join rt in ent.EmployeeRegistrationTypes on e.EmployeeRegistrationType equals rt.Id
+                            join da in ent.EmployeeDestinationAreas on e.EmployeeDestinationArea equals da.Id
                             join s in ent.StateMasters on e.StateId equals s.Id
                             join ct in ent.CityMasters on e.CityId equals ct.Id
                             where e.IsActive == true
@@ -74,6 +75,7 @@ namespace VardaanCab.Controllers
                                 HomeRouteName = hr.HomeRouteName,
                                 CompanyName = c.CompanyName,
                                 EmployeeRegistrationType = rt.TypeName,
+                                da.DestinationAreaName,
                                 e.CreatedDate,
                                 e.WeekOff 
                             }).ToList(); 
@@ -99,6 +101,7 @@ namespace VardaanCab.Controllers
                     CityName = e.CityName,
                     PrimaryFacilityZone = e.PrimaryFacilityZone,
                     HomeRouteName = e.HomeRouteName,
+                    EmployeeDestinationArea = e.DestinationAreaName,
                     CompanyName = e.CompanyName,
                     EmployeeRegistrationType = e.EmployeeRegistrationType,
                     CreatedDate = e.CreatedDate,
@@ -248,29 +251,9 @@ namespace VardaanCab.Controllers
             {
                 string RandomPassword = _random.GenerateRandomPassword();
                 var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
-
-                string address = model.EmployeeGeoCode;
-                var url = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={GoogleMapsApiKey}";
-                double lat = 0;
-                double lng = 0;
-                // Initialize HttpClient
-                using (var client = new HttpClient())
-                {
-                    // Send the request synchronously
-                    var response = client.GetStringAsync(url).Result;
-
-                    // Parse the response
-                    var json = JObject.Parse(response);
-
-                    // Extract latitude and longitude
-                    var status = json["status"].ToString();
-                    if (status == "OK")
-                    {
-                        lat = (double)json["results"][0]["geometry"]["location"]["lat"];
-                        lng = (double)json["results"][0]["geometry"]["location"]["lng"];
-                        //return Json(new { success = true, latitude = lat, longitude = lng, message = "Success" });
-                    }
-                }
+                var latlong = LatLog(model.EmployeeGeoCode);
+                double latitude = latlong.Count > 0 && latlong[0].ContainsKey("latitude") ? latlong[0]["latitude"] : 0.0;
+                double longitude = latlong.Count > 0 && latlong[0].ContainsKey("longitude") ? latlong[0]["longitude"] : 0.0;
                 using (var entityConnection = new EntityConnection(entityConnectionString))
                 {
                     entityConnection.Open();
@@ -278,20 +261,9 @@ namespace VardaanCab.Controllers
                     {
                         command.CommandText = "Vardaan_AdminEntities.ManageEmployee";
                         command.CommandType = CommandType.StoredProcedure;
-
                         string checkaction = model.Id == 0 ? "INSERT" : "UPDATE";
                         string combinedString = string.Join(",", model.WeekOff);
-
-                        //command.Parameters.Add(new EntityParameter("Action", DbType.String) { Value = checkaction });
-                        //command.Parameters.Add(new EntityParameter("Id", DbType.Int32) { Value = model.Id });
-                        //command.Parameters.Add(new EntityParameter("Company_Id", DbType.Int32) { Value = model.Company_Id });
-                        //command.Parameters.Add(new EntityParameter("Company_location", DbType.String) { Value = model.Company_location });
-                        //command.Parameters.Add(new EntityParameter("Employee_Id", DbType.String) { Value = model.Employee_Id });
-                        //command.Parameters.Add(new EntityParameter("LoginUserName", DbType.String) { Value = model.LoginUserName });
-                        //command.Parameters.Add(new EntityParameter("Password", DbType.String) { Value = RandomPassword });
-                        //command.Parameters.Add(new EntityParameter("WeekOff", DbType.String) { Value = combinedString ?? (object)DBNull.Value });
-                        //command.Parameters.Add(new EntityParameter("IsActive", DbType.Boolean) { Value = true });
-                        command.Parameters.Add(new EntityParameter("Action", DbType.String) { Value = "INSERT" });
+                        command.Parameters.Add(new EntityParameter("Action", DbType.String) { Value = checkaction });
                         command.Parameters.Add(new EntityParameter("Id", DbType.Int32) { Value = model.Id });
                         command.Parameters.Add(new EntityParameter("Company_Id", DbType.Int32) { Value = model.Company_Id });
                         command.Parameters.Add(new EntityParameter("Company_location", DbType.String) { Value = model.Company_location });
@@ -319,8 +291,8 @@ namespace VardaanCab.Controllers
                         command.Parameters.Add(new EntityParameter("EmployeeRegistrationType", DbType.String) { Value = model.EmployeeRegistrationType });
                         command.Parameters.Add(new EntityParameter("IsActive", DbType.Boolean) { Value = true });
                         command.Parameters.Add(new EntityParameter("Password", DbType.String) { Value = RandomPassword });
-                        command.Parameters.Add(new EntityParameter("Latitude", DbType.Double) { Value = lat });
-                        command.Parameters.Add(new EntityParameter("Longitude", DbType.Double) { Value = lng });
+                        command.Parameters.Add(new EntityParameter("Latitude", DbType.Double) { Value = latitude });
+                        command.Parameters.Add(new EntityParameter("Longitude", DbType.Double) { Value = longitude });
                         // Output parameter for the response message
                         var responseMessageParam = new EntityParameter("ResponseMessage", DbType.String) { Direction = ParameterDirection.Output, Size = 255 };
                         command.Parameters.Add(responseMessageParam);
@@ -341,7 +313,6 @@ namespace VardaanCab.Controllers
                 throw new Exception("Server Error: " + ex.Message);
             }
         }
-
         public ActionResult DeleteEmployee(int id)
         {
             try
@@ -715,47 +686,40 @@ namespace VardaanCab.Controllers
                 return View();
             }
         }
-        public ActionResult GetLatLong(string address)
+        public List<Dictionary<string, double>> LatLog(string address)
         {
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                return Json(new { success = false, latitude = 0, longitude = 0, message = "Address is required" });
-            }
-
-            // Build the request URL
             var url = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={GoogleMapsApiKey}";
+            var resultList = new List<Dictionary<string, double>>();
 
-            // Initialize HttpClient
             using (var client = new HttpClient())
             {
-                try
+                // Send the request synchronously
+                var response = client.GetStringAsync(url).Result;
+
+                // Parse the response
+                var json = JObject.Parse(response);
+
+                // Check the response status
+                var status = json["status"].ToString();
+                if (status == "OK")
                 {
-                    // Send the request synchronously
-                    var response = client.GetStringAsync(url).Result;
-
-                    // Parse the response
-                    var json = JObject.Parse(response);
-
                     // Extract latitude and longitude
-                    var status = json["status"].ToString();
-                    if (status == "OK")
-                    {
-                        var lat = (double)json["results"][0]["geometry"]["location"]["lat"];
-                        var lng = (double)json["results"][0]["geometry"]["location"]["lng"];
-                        return Json(new { success = true, latitude = lat, longitude = lng, message = "Success" });
-                    }
-                    else
-                    {
-                        return Json(new { success = false, latitude = 0, longitude = 0, message = "Unable to get location data" });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return Json(new { success = false, latitude = 0, longitude = 0, message = $"Error: {ex.Message}" });
+                    double lat = (double)json["results"][0]["geometry"]["location"]["lat"];
+                    double lng = (double)json["results"][0]["geometry"]["location"]["lng"];
+
+                    // Add latitude and longitude to the dictionary
+                    var locationData = new Dictionary<string, double>
+            {
+                { "latitude", lat },
+                { "longitude", lng }
+            };
+
+                    // Add the dictionary to the list
+                    resultList.Add(locationData);
                 }
             }
+
+            return resultList;
         }
-
-
     }
 }
