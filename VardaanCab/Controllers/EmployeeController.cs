@@ -32,7 +32,7 @@ namespace VardaanCab.Controllers
         private readonly CommonOperations _random = new CommonOperations();
         private readonly string efConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
 
-        private const string GoogleMapsApiKey = "AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw"; // Replace with your API key
+        private const string GoogleMapsApiKey = "AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw";
         public ActionResult GetEmployeeList(string term = "", int page = 1, bool export = false, int menuId = 0)
         {
             try
@@ -40,8 +40,6 @@ namespace VardaanCab.Controllers
 
                string fdsfds =  GetMatchedDayNames(ent.Employees.FirstOrDefault().WeekOff);
                 var model = new EmployeeDTO();
-                //var employee = ent.Employees.OrderByDescending(e=>e.Id).ToList();
-                // Step 1: Fetch data into memory
                 var data = (from e in ent.Employees
                             join c in ent.Customers on e.Company_Id equals c.Id
                             join z in ent.CompanyZones on e.PrimaryFacilityZone equals z.Id
