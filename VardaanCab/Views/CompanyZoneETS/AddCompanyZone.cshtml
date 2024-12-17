@@ -78,7 +78,8 @@
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw&callback=initMap&libraries=places&callback=initAutocomplete&libraries=drawing"></script>
 <script>
-    let currentOverlay = null;  // Track the current drawing
+    // JavaScript for Google Maps Polygon Drawing and Binding Coordinates
+    let currentOverlay = null; // Track the current drawing
 
     function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
@@ -107,28 +108,30 @@
 
         // Event Listener for Polygon Completion
         google.maps.event.addListener(drawingManager, "polygoncomplete", (polygon) => {
-            clearCurrentOverlay();  // Clear any existing drawing
-            currentOverlay = polygon;  // Store the new overlay
+            clearCurrentOverlay(); // Clear any existing drawing
+            currentOverlay = polygon; // Store the new overlay
 
+            // Extract coordinates and update the hidden input field
             const coordinates = polygon.getPath().getArray().map((latLng) => ({
                 lat: latLng.lat(),
                 lng: latLng.lng(),
             }));
-            $("#Zonelatlong").val(JSON.stringify(coordinates));
+            document.getElementById("Zonelatlong").value = JSON.stringify(coordinates);
 
+            // Add click listener to remove polygon
             google.maps.event.addListener(polygon, "click", () => {
                 polygon.setMap(null);
                 currentOverlay = null;
-                $("#Zonelatlong").val(""); // Clear the hidden input field
+                document.getElementById("Zonelatlong").value = ""; // Clear the hidden input field
             });
         });
 
         // Function to clear the current overlay
         function clearCurrentOverlay() {
             if (currentOverlay) {
-                currentOverlay.setMap(null);  // Remove the overlay from the map
-                currentOverlay = null;  // Reset the reference
-                $("#Zonelatlong").val("");
+                currentOverlay.setMap(null); // Remove the overlay from the map
+                currentOverlay = null; // Reset the reference
+                document.getElementById("Zonelatlong").value = "";
             }
         }
 
@@ -149,28 +152,36 @@
             polygon.setMap(map); // Add the polygon to the map
             currentOverlay = polygon; // Store the reference
 
-            $("#Zonelatlong").val(JSON.stringify(coordinates)); // Update the hidden input field
+            document.getElementById("Zonelatlong").value = JSON.stringify(coordinates); // Update the hidden input field
 
             google.maps.event.addListener(polygon, "click", () => {
                 polygon.setMap(null);
                 currentOverlay = null;
-                $("#Zonelatlong").val(""); // Clear the hidden input field
+                document.getElementById("Zonelatlong").value = ""; // Clear the hidden input field
             });
         }
 
-        // Example JSON coordinates
-        const jsonCoordinates = $("#Zonelatlong").val();
+        // Load saved coordinates from the hidden input field
+        const jsonCoordinates = document.getElementById("Zonelatlong").value;
 
-        // Check if jsonCoordinates is not null or undefined before binding
         if (jsonCoordinates && jsonCoordinates.trim().length > 0) {
-            const parsedCoordinates = JSON.parse(jsonCoordinates);
-            if (Array.isArray(
-            ) && parsedCoordinates.length > 0) {
+            let parsedCoordinates;
+            try {
+                parsedCoordinates = JSON.parse(jsonCoordinates);
+            } catch (error) {
+                console.error("Error parsing JSON coordinates:", error);
+                return;
+            }
+
+            if (Array.isArray(parsedCoordinates) && parsedCoordinates.length > 0) {
                 bindCoordinatesToPolygon(parsedCoordinates);
+            } else {
+                console.error("Invalid coordinate array format:", parsedCoordinates);
             }
         }
     }
 
+    // Initialize the map on window load
     window.onload = initMap;
 </script>
 @*<script>

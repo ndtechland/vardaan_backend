@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VardaanCab.Domain", "Vardaa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VardaanCab.DataAccessLayer", "VardaanCab.DataAccessLayer\VardaanCab.DataAccessLayer.csproj", "{1362423C-679A-488C-AA3A-A4DA4EEFF8D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vardaan.Services", "Vardaan.Services\Vardaan.Services.csproj", "{07165892-8EA9-41BD-8493-2BCD46AA57AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1362423C-679A-488C-AA3A-A4DA4EEFF8D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1362423C-679A-488C-AA3A-A4DA4EEFF8D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1362423C-679A-488C-AA3A-A4DA4EEFF8D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07165892-8EA9-41BD-8493-2BCD46AA57AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07165892-8EA9-41BD-8493-2BCD46AA57AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07165892-8EA9-41BD-8493-2BCD46AA57AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07165892-8EA9-41BD-8493-2BCD46AA57AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
