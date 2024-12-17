@@ -5,7 +5,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using System.Web.Http;
+using Vardaan.Services.IContract;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTOAPI;
@@ -15,22 +17,36 @@ namespace VardaanCab.APP.Controllers
     [RoutePrefix("api/Common")]
     public class CommonController : ApiController
     {
+        
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
-        [HttpGet]
-        [Route("GetBanner")]
-        public IHttpActionResult GetBanner(string role)
+        private readonly ICommon _common;
+        public CommonController(ICommon common)
         {
-            var response = new Response<BannerMaster>();
-            var banner = ent.BannerMasters.Where(b=>b.Role== role).ToList();
-            if(banner!=null)
+            _common = common;
+        }
+        [HttpGet]
+        [Route("GetBanner/{role}")]
+        public async Task<IHttpActionResult> GetBanner(string role)
+        {
+            var response = new Response<List<BannerMaster>>();
+            List<BannerMaster> banner = await _common.GetBanner(role);
+            if (banner.Count() > 0)
             {
-                return Ok(new { StatusCode = 200, Message = "Banner retrieved successfully", data = banner });
+
+                response.Succeeded = true;
+                response.StatusCode = StatusCodes.Status200OK;
+                response.Status = "Success";
+                response.Message = "Banner retrieved successfully...!";
+                response.Data = banner;
+                return Ok(response);
             }
             else
             {
                 response.Succeeded = false;
                 response.StatusCode = StatusCodes.Status404NotFound;
-                response.Message = "Banner list not available.";
+                response.Error = "Failed";
+                response.Message = "Banner list not available...!";
+                response.Data = banner;
                 return Content(HttpStatusCode.NotFound, response);
             }
         }

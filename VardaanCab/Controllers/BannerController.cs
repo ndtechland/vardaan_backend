@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 using VardaanCab.Utilities;
@@ -15,10 +17,15 @@ namespace VardaanCab.Controllers
     public class BannerController : Controller
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
-        // GET: Banner
-        public ActionResult All()
+        private readonly IBanner _banner;
+        public BannerController(IBanner banner)
         {
-            var data = ent.BannerMasters.ToList();
+             _banner = banner;
+        }
+        // GET: Banner
+        public async Task<ActionResult> All()
+        {
+            var data = await _banner.BannerList();//ent.BannerMasters.ToList();
             return View(data);
         }
         public ActionResult Add(int id=0)
