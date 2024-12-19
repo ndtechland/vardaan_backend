@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using DocumentFormat.OpenXml.EMMA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 using VardaanCab.Domain.ViewModels;
@@ -13,39 +16,44 @@ namespace VardaanCab.Controllers
     public class AreaController : Controller
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
+        private readonly IArea _area;
+        public AreaController(IArea area)
+        {
+            _area = area;
+        }
         // GET: Area
-        public ActionResult All(string term = "", int page = 1, int menuId = 0)
+        public async Task<ActionResult> All(string term = "", int page = 1, int menuId = 0)
         {
             var model = new AreaMasterVM();
-            var data = (from a in ent.AreaMasters
-                        join c in ent.CityMasters on a.CityMaster_Id equals c.Id
-                        join s in ent.StateMasters on a.StateMaster_Id equals s.Id
-                        orderby a.Id descending
-                        select new AreaMasterDTO
-                        {
-                            Id = a.Id,
-                            AreaName = a.AreaName,
-                            StateName = s.StateName,
-                            CityName = c.CityName
-                        }
-                        ).ToList();
-            if (!string.IsNullOrEmpty(term))
-            {
-                term = term.ToLower();
-                data = data.Where(a => a.AreaName.ToLower().Contains(term)).ToList();
-                page = 1;
-            }
-            // pagination
-            int total = data.Count;
-            int pageSize = 50;
-            double totalPages = Math.Ceiling(total / (double)pageSize);
-            int skip = pageSize * (page - 1);
-            data = data.Skip(skip).Take(pageSize).ToList();
-            model.Areas = data;
-            model.Term = term;
-            model.Page = page;
-            model.NumberOfPages = (int)totalPages;
-            model.SrNo = skip;
+            //var data = (from a in ent.AreaMasters
+            //            join c in ent.CityMasters on a.CityMaster_Id equals c.Id
+            //            join s in ent.StateMasters on a.StateMaster_Id equals s.Id
+            //            orderby a.Id descending
+            //            select new AreaMasterDTO
+            //            {
+            //                Id = a.Id,
+            //                AreaName = a.AreaName,
+            //                StateName = s.StateName,
+            //                CityName = c.CityName
+            //            }
+            //            ).ToList();
+            //if (!string.IsNullOrEmpty(term))
+            //{
+            //    term = term.ToLower();
+            //    data = data.Where(a => a.AreaName.ToLower().Contains(term)).ToList();
+            //    page = 1;
+            //}
+            //// pagination
+            //int total = data.Count;
+            //int pageSize = 50;
+            //double totalPages = Math.Ceiling(total / (double)pageSize);
+            //int skip = pageSize * (page - 1);
+            //data = data.Skip(skip).Take(pageSize).ToList();
+            model.Areas = await _area.GetAreas();
+           // model.Term = term;
+            //model.Page = page;
+            //model.NumberOfPages = (int)totalPages;
+           // model.SrNo = skip;
             ViewBag.menuId = menuId;
             return View(model);
         }
@@ -79,51 +87,37 @@ namespace VardaanCab.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(AreaMasterDTO model)
+        public async Task<ActionResult> Add(AreaMasterDTO model)
         {
-            model.States = new SelectList(ent.StateMasters.ToList(), "Id", "StateName");
             try
             {
                 if (!ModelState.IsValid)
                     return View(model);
-                if(model.Id==0)
+                bool isCreated = await _area.AddUpdateArea(model);
+                if (isCreated)
                 {
-                    var area = new AreaMaster()
-                    {
-                        StateMaster_Id = model.StateMaster_Id,
-                        CityMaster_Id = model.CityMaster_Id,
-                        AreaName = model.AreaName
-                    };
-                    ent.AreaMasters.Add(area);
-                    ent.SaveChanges();
-                    TempData["msg"] = "Record has saved successfully.";
+                    TempData["msg"] = model.Id > 0
+                        ? "Record has been updated successfully."
+                        : "Record has been added successfully.";
                 }
                 else
                 {
-                    var data = ent.AreaMasters.Find(model.Id);
-                    data.AreaName=model.AreaName;
-                    data.StateMaster_Id=model.StateMaster_Id;
-                    data.CityMaster_Id=model.CityMaster_Id;
-                    ent.SaveChanges();
-                    TempData["msg"] = "Record has updated successfully.";
-                }
-                
+                    TempData["msg"] = "Failed.";
+                }  
             }
             catch (Exception ex)
             {
-                TempData["msg"] = "Server error";
+                TempData["msg"] = "Server error:"+ex;
             }
             return RedirectToAction("Add", new { menuId = model.MenuId });
         }
 
-        public ActionResult DeleteArea(int id)
+        public async Task<ActionResult> DeleteArea(int id)
         {
             try
             {
-                var data = ent.AreaMasters.Find(id);
-                ent.AreaMasters.Remove(data);
-                ent.SaveChanges();
-                TempData["dltmsg"] = "Record has updated successfully.";
+                bool isDeleted = await _area.DeleteArea(id);
+                TempData["dltmsg"] = "Record deleted successfully.";
                 return RedirectToAction("All");
             }
             catch (Exception)

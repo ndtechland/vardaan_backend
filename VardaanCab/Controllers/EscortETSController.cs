@@ -1,14 +1,18 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.EMMA;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Entity.Core.EntityClient;
+using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
@@ -18,7 +22,11 @@ namespace VardaanCab.Controllers
     {
         Vardaan_AdminEntities ent=new Vardaan_AdminEntities();
         private readonly string efConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
-
+        private readonly IEscort _escort;
+        public EscortETSController(IEscort escort)
+        {
+            _escort = escort;
+        }
         // GET: EscortETS
         public ActionResult Escort(int menuId = 0, int id = 0)
         {
@@ -66,111 +74,66 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Escort(EscortDTO model)
+        public async Task<ActionResult> Escort(EscortDTO model)
         {
-            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "OrgName");
-            model.Vendors = new SelectList(ent.Vendors.Where(x => x.IsActive == true).ToList(), "Id", "VendorName");
-
             try
             {
                 if (!ModelState.IsValid)
                     return View(model);
-                if (model.Id == 0)
-                {
-                    var domainmodel = new Escort()
-                    {
-                        EscortFatheName = model.EscortFatheName,
-                        CompanyId = model.CompanyId,
-                        EscortName = model.EscortName,
-                        EscortMobileNumber = model.EscortMobileNumber,
-                        EscortAadhaarNumber = model.EscortAadhaarNumber,
-                        VendorId = model.VendorId,
-                        DOB = model.DOB,
-                        EscortEmployeeId = model.EscortEmployeeId,
-                        Pincode = model.Pincode,
-                        PermanentAddress = model.PermanentAddress,
-                        EscortAddress = model.EscortAddress,
-                        IsActive = true,
-                        CreatedDate = DateTime.Now
 
-                    };
-                    ent.Escorts.Add(domainmodel);
+                bool isCreated = await _escort.AddUpdateEscort(model);
+
+                if (isCreated)
+                {
+                    TempData["msg"] = model.Id > 0
+                        ? "Record has been updated successfully."
+                        : "Record has been added successfully.";
                 }
                 else
                 {
-                    var data = ent.Escorts.Find(model.Id);
-                    data.EscortFatheName = model.EscortFatheName;
-                    data.CompanyId = model.CompanyId;
-                    data.EscortName = model.EscortName;
-                    data.EscortMobileNumber = model.EscortMobileNumber;
-                    data.EscortAadhaarNumber = model.EscortAadhaarNumber;
-                    data.VendorId = model.VendorId;
-                    data.DOB = model.DOB;
-                    data.EscortEmployeeId = model.EscortEmployeeId;
-                    data.Pincode = model.Pincode;
-                    data.PermanentAddress = model.PermanentAddress;
-                    data.EscortAddress = model.EscortAddress;
-
+                    TempData["Errormsg"] = "Failed.";
                 }
-                ent.SaveChanges();
-                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
-
+                return RedirectToAction("Escort", new { menuId = model.MenuId });
             }
             catch (Exception ex)
             {
-                TempData["msg"] = "Server error"+ ex;
+                TempData["Errormsg"] = "Server error: " + ex.Message;
+                return View(model);
             }
-            return RedirectToAction("Escort", new { menuId = model.MenuId });
         }
-        public ActionResult EscortsList(int menuId = 0)
+
+        public async Task<ActionResult> EscortsList()
         {
             try
             {
                 var model = new EscortDTO();
-                var data = (from er in ent.Escorts
-                            join e in ent.Employees on er.EscortEmployeeId equals e.Employee_Id
-                            join c in ent.Customers on er.CompanyId equals c.Id
-                            join v in ent.Vendors on er.VendorId equals v.Id
-                            where er.IsActive == true
-                            orderby er.Id descending
-                            select new Escorts
-                            {
-                                Id = er.Id,
-                                CompanyName = c.CompanyName,
-                                EscortName = er.EscortName,
-                                EscortMobileNumber = er.EscortMobileNumber,
-                                EscortAadhaarNumber = er.EscortAadhaarNumber,
-                                EscortFatheName = er.EscortFatheName,
-                                EmployeeFullName = e.Employee_First_Name + " " + e.Employee_Middle_Name + " " + e.Employee_Last_Name,                                
-                                VendorName = v.VendorName,
-                                DOB = er.DOB,
-                                EscortEmployeeId = er.EscortEmployeeId,
-                                Pincode = er.Pincode,
-                                PermanentAddress = er.PermanentAddress,
-                                EscortAddress = er.EscortAddress,
-                                CreatedDate = er.CreatedDate
-                            }
-                            ).ToList();
 
-                ViewBag.menuId = menuId;
-                model.EscortList = data;
+                model.EscortList = await _escort.GetEscorts();
+
                 return View(model);
             }
             catch (Exception)
             {
-
-                throw;
+                TempData["Errormsg"] = "An unexpected error occurred. Please try again later.";
+                return View(new EscortDTO());
             }
         }
-        public ActionResult DeleteEscort(int id)
+
+        public async Task<ActionResult> DeleteEscort(int id)
         {
             try
             {
-                var data = ent.Escorts.Find(id);
-                data.IsActive = false;
-                ent.SaveChanges();
-                TempData["dltmsg"] = "Deleted successfully.";
+               bool isDeleted=await _escort.DeleteEscort(id);
+                if (isDeleted)
+                {
+                    TempData["dltmsg"] = "Deleted successfully.";
+                }
+                else
+                {
+                    TempData["dltmsg"] = "Data not fount";
+                }
+                
                 return RedirectToAction("EscortsList");
             }
             catch (Exception)
@@ -246,6 +209,184 @@ ORDER BY er.Id DESC;";
                     workbook.SaveAs(stream);
                     return stream.ToArray();
                 }
+            }
+        }
+
+        public ActionResult ExportToExcelForImport()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("CompanyId");
+            dt.Columns.Add("EscortName");
+            dt.Columns.Add("EscortFatheName");
+            dt.Columns.Add("EscortMobileNumber");
+            dt.Columns.Add("EscortAadhaarNumber");
+            dt.Columns.Add("VendorId");
+            dt.Columns.Add("DOB");
+            dt.Columns.Add("EscortEmployeeId");
+            dt.Columns.Add("Pincode");            
+            dt.Columns.Add("PermanentAddress");
+            dt.Columns.Add("EscortAddress");
+
+            Dictionary<string, string> columnMappings = new Dictionary<string, string>()
+            {
+            { "CompanyId", "Company" },
+            { "EscortName", "Escort Name" },
+            { "EscortFatheName", "Escort Father Name" },
+            { "EscortMobileNumber", "Escort Mobile Number" },
+            { "EscortAadhaarNumber", "Escort Aadhaar Number" },
+            { "VendorId", "Vendor" },
+            { "DOB", "DOB" },
+            { "EscortEmployeeId", "Escort EmployeeId" },
+            { "Pincode", "Pincode" },            
+            { "PermanentAddress", "Permanent Address" },
+            { "EscortAddress", "Escort Address" }
+            };
+
+            // Export to Excel
+            using (XLWorkbook workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Escort");
+
+
+                int colIndex = 1;
+                foreach (DataColumn column in dt.Columns)
+                {
+                    string oldColumnName = column.ColumnName;
+                    if (columnMappings.ContainsKey(oldColumnName))
+                    {
+                        worksheet.Cell(1, colIndex).Value = columnMappings[oldColumnName];
+                    }
+                    else
+                    {
+                        worksheet.Cell(1, colIndex).Value = oldColumnName;
+                    }
+                    worksheet.Cell(1, colIndex).Style.Fill.BackgroundColor = XLColor.Yellow;
+                    colIndex++;
+                }
+
+                // Create a hidden sheet to store company names for dropdown
+                var hiddenSheet = workbook.Worksheets.Add("CompanyList");
+                var hiddenVendorSheet = workbook.Worksheets.Add("VendorList");
+
+
+                // Retrieve active customers for the dropdown list
+                var companyList = ent.Customers.Where(x=>x.IsActive).ToList();
+                var vendorList = ent.Vendors.Where(x => x.IsActive).ToList();
+
+                // Populate hidden sheet with company names
+                int hiddenRow = 1;
+                foreach (var company in companyList.OrderByDescending(x => x.Id))
+                {
+                    hiddenSheet.Cell(hiddenRow++, 1).Value = company.OrgName;
+                }
+                hiddenRow = 1;
+                foreach (var ven in vendorList.OrderByDescending(x => x.Id))
+                {
+                    hiddenVendorSheet.Cell(hiddenRow++, 1).Value = ven.VendorName;
+                }
+                // Define the dropdown list range
+                var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
+                var VendorRange = hiddenVendorSheet.Range($"A1:A{vendorList.Count}");
+
+
+                //Apply dropdown list validation to cell A2(under "Company ID")
+                var validationOne = worksheet.Cell(2, 1).DataValidation;
+                validationOne.List(companyRange); // Dropdown from hidden sheet
+                validationOne.IgnoreBlanks = true;
+                validationOne.InCellDropdown = true;
+
+                //Vendor
+                var validationVendorOne = worksheet.Cell(2, 6).DataValidation;
+                validationVendorOne.List(VendorRange); // Dropdown from hidden sheet
+                validationVendorOne.IgnoreBlanks = true;
+                validationVendorOne.InCellDropdown = true;
+
+                // Save and return Excel file as download
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    stream.Position = 0;
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EscortData.xlsx");
+                }
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ImportEscortData(HttpPostedFileBase file)
+        {
+            try
+            {
+
+                // Check if a file is uploaded
+                if (file != null && file.ContentLength > 0)
+                {
+                    using (var workbook = new XLWorkbook(file.InputStream))
+                    {
+                        var worksheet = workbook.Worksheet(1);
+                        var rows = worksheet.RowsUsed().Skip(1);
+                        List<Escort> escorts = new List<Escort>();
+
+                        foreach (var row in rows)
+                        {
+                            string comapny = row.Cell(1).GetValue<string>();
+                            string Vendors = row.Cell(6).GetValue<string>();
+
+                            Escort es = new Escort
+                            {
+                                CompanyId = string.IsNullOrEmpty(comapny) ? 0 :
+                                    ent.Customers.Where(x => x.OrgName.ToLower() == comapny.ToLower())
+                                        .FirstOrDefault()?.Id ?? 0,
+
+                                EscortName = row.Cell(2).GetValue<string>() ?? string.Empty,
+                                EscortFatheName = row.Cell(3).GetValue<string>() ?? string.Empty,
+                                EscortMobileNumber = row.Cell(4).GetValue<string>() ?? string.Empty,
+                                EscortAadhaarNumber = row.Cell(5).GetValue<string>() ?? string.Empty,
+                                VendorId = string.IsNullOrEmpty(Vendors) ? 0 :
+                                    ent.Vendors.Where(x => x.VendorName.ToLower() == Vendors.ToLower())
+                                        .FirstOrDefault()?.Id ?? 0,
+                                DOB = row.Cell(7).GetValue<DateTime>(),
+                                EscortEmployeeId = row.Cell(8).GetValue<string>() ?? string.Empty,
+                                Pincode = row.Cell(9).GetValue<string>() ?? string.Empty,
+                                PermanentAddress = row.Cell(10).GetValue<string>() ?? string.Empty,
+                                EscortAddress = row.Cell(11).GetValue<string>() ?? string.Empty,                             
+                                IsActive = true,
+                                CreatedDate = DateTime.Now,
+                            };
+
+                            escorts.Add(es);
+                        }
+
+                        if (escorts.Any())
+                        {
+                            ent.Escorts.AddRange(escorts);
+                            ent.SaveChanges();
+                        }
+                        TempData["dltmsg"] = "Data imported successfully!";
+                        return RedirectToAction("EscortsList");
+                    }
+                }
+
+                TempData["msg"] = "Please select an Excel file to import.";
+                return RedirectToAction("Escort");
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var validationError in ex.EntityValidationErrors)
+                {
+                    foreach (var error in validationError.ValidationErrors)
+                    {
+                        // Log or output the validation errors
+                        Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
+                    }
+                }
+                ViewBag.Message = "Validation failed for one or more entities. Please check the logs for more details.";
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle other errors
+                ViewBag.Message = $"An error occurred: {ex.Message}";
+                return View();
             }
         }
     }

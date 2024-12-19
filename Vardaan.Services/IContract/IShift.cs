@@ -8,9 +8,10 @@ using VardaanCab.Domain.DTO;
 
 namespace Vardaan.Services.IContract
 {
-    public interface IBanner
+    public interface IShift
     {
-        Task<List<BannerMaster>> BannerList();
-        Task<bool> Addbanners(BannerDTO model);
+        Task<List<GetShift>> GetShifts();
+        Task<bool> AddUpdateShift(ShiftMaster model);
+        Task<bool> DeleteShift(int id);
     }
 }

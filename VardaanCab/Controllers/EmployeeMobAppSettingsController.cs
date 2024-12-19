@@ -1,8 +1,11 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.EMMA;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
@@ -11,25 +14,18 @@ namespace VardaanCab.Controllers
     public class EmployeeMobAppSettingsController : Controller
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
+        private readonly IEmployeeMobAppSettings _employeeMobAppSettings;
+        public EmployeeMobAppSettingsController(IEmployeeMobAppSettings employeeMobAppSettings)
+        {
+            _employeeMobAppSettings = employeeMobAppSettings;
+        }
         // GET: EmployeeMobAppSettings
-        public ActionResult CabBookingRequestDay(int menuId = 0, int id = 0)
+        public async Task<ActionResult> CabBookingRequestDay(int menuId = 0, int id = 0)
         {
             var model = new EmployeeMobAppSettingDTO();
             model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x => x.Id).ToList(), "Id", "OrgName");
-            var datalist = (from es in ent.EmployeeMobileAppSettings
-                        join c in ent.Customers on es.CompanyId equals c.Id
-                        where es.IsActive==true
-                        orderby es.Id descending
-                        select new CabReqDays
-                        {
-                            Id = es.Id,
-                            CompanyName = c.CompanyName,
-                            CompanyId = es.CompanyId,
-                            CreatedDate = es.CreatedDate,
-                            CabRequestDays = es.CabRequestDays
-                        }
-                      ).ToList();
-            model.CabReqDayList = datalist;
+           
+            model.CabReqDayList = await _employeeMobAppSettings.GetCabRequestDayList();
 
 
             ViewBag.menuId = menuId;
@@ -54,55 +50,43 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpPost]
-        public ActionResult CabBookingRequestDay(EmployeeMobAppSettingDTO model)
+        public async Task<ActionResult> CabBookingRequestDay(EmployeeMobAppSettingDTO model)
         {
             try
             {
-
                 if (!ModelState.IsValid)
-                    return View(model);
-                if (model.Id == 0)
                 {
-                    var checkinfo = ent.EmployeeMobileAppSettings.Where(x => x.CompanyId == model.CompanyId).FirstOrDefault();
-                    if (checkinfo != null)
-                    {
-                        TempData["Errormsg"] = "Already exist.";
-                        return RedirectToAction("CabBookingRequestDay", new { menuId = model.MenuId });
-                    }
-                    var EmpcabReqday = new EmployeeMobileAppSetting()
-                    {
-                        CompanyId = model.CompanyId,
-                        CabRequestDays = model.CabRequestDays,
-                        IsActive=true,
-                        CreatedDate = DateTime.Now
+                    return View(model);
+                }
 
-                    };
-                    ent.EmployeeMobileAppSettings.Add(EmpcabReqday);
+                bool isCreated = await _employeeMobAppSettings.AddCabRequestDays(model);
+
+                if (isCreated)
+                {
+                    TempData["msg"] = model.Id > 0
+                        ? "Record has been updated successfully."
+                        : "Record has been added successfully.";
                 }
                 else
                 {
-                    var data = ent.EmployeeMobileAppSettings.Find(model.Id);
-                    data.CompanyId = model.CompanyId;
-                    data.CabRequestDays = model.CabRequestDays;
+                    TempData["Errormsg"] = "Record already exists.";
                 }
-                ent.SaveChanges();
-                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
+                return RedirectToAction("CabBookingRequestDay", new { menuId = model.MenuId });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                TempData["Errormsg"] = "Server Error: " + ex.Message;
+                return RedirectToAction("CabBookingRequestDay", new { menuId = model.MenuId });
             }
-            return RedirectToAction("CabBookingRequestDay", new { menuId = model.MenuId });
         }
-        public ActionResult DeleteCabRequestDay(int id)
+
+        public async Task<ActionResult> DeleteCabRequestDay(int id)
         {
             try
             {
-                var data = ent.EmployeeMobileAppSettings.Find(id);
-                data.IsActive = false;
-                ent.SaveChanges();
+                bool isDeleted = await _employeeMobAppSettings.DeletedRequestDay(id);
+
                 TempData["dltmsg"] = "Deleted successfully.";
                 return RedirectToAction("CabBookingRequestDay");
             }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
@@ -12,8 +14,13 @@ namespace VardaanCab.Controllers
     public class ShiftController : Controller
     {
         Vardaan_AdminEntities ent=new Vardaan_AdminEntities();
+        private readonly IShift _shift;
+        public ShiftController(IShift shift)
+        {
+            _shift = shift;
+        }
         // GET: Shift
-        public ActionResult ShiftTime(int menuId = 0, int id = 0)
+        public async Task<ActionResult> ShiftTime(int menuId = 0, int id = 0)
         {
              var model = new ShiftDTO();
             model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x => x.Id).ToList(), "Id", "OrgName");
@@ -34,7 +41,7 @@ namespace VardaanCab.Controllers
                             ShiftTime = sm.ShiftTime
                         }
                        ).ToList();
-            model.ShiftList = data;
+            model.ShiftList = await _shift.GetShifts();
              ViewBag.menuId = menuId;
             if (id > 0)
             {
@@ -67,54 +74,44 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ShiftTime(ShiftMaster model)
+        public async Task<ActionResult> ShiftTime(ShiftMaster model)
         {
             try
             {
                 if (!ModelState.IsValid)
-                    return View(model);
-                if (model.Id == 0)
                 {
-                    var shift = new ShiftMaster()
-                    {
-                        TripTypeId = model.TripTypeId,
-                        ShiftTime = model.ShiftTime,
-                        CompanyId = model.CompanyId,
-                        DepartmentId = model.DepartmentId,
-                        ShiftBufferTime = model.ShiftBufferTime,
-                        CompanyZoneId = model.CompanyZoneId
-                    };
-                    ent.ShiftMasters.Add(shift);
+                    return View(model);
+                }
+
+                bool isCreated = await _shift.AddUpdateShift(model);
+
+                if (isCreated)
+                {
+                    TempData["msg"] = model.Id > 0
+                        ? "Record has been updated successfully."
+                        : "Record has been added successfully.";
                 }
                 else
                 {
-                    var data = ent.ShiftMasters.Find(model.Id);
-                    data.TripTypeId = model.TripTypeId;
-                    data.ShiftTime = model.ShiftTime;
-                    data.CompanyId = model.CompanyId;
-                    data.DepartmentId = model.DepartmentId;
-                    data.ShiftBufferTime = model.ShiftBufferTime;
-                    data.CompanyZoneId = model.CompanyZoneId;
-
+                    TempData["msg"] = "Operation failed. Please try again.";
                 }
-                ent.SaveChanges();
-                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
-
+                return RedirectToAction("ShiftTime");
             }
             catch (Exception ex)
             {
-                TempData["msg"] = "Server error";
+               
+                TempData["msg"] = "A server error occurred:"+ ex;
+
+                return RedirectToAction("ShiftTime");
             }
-            return RedirectToAction("ShiftTime");
         }
-        public ActionResult DeleteShiftTime(int id)
+
+        public async Task<ActionResult> DeleteShiftTime(int id)
         {
             try
             {
-                var data = ent.ShiftMasters.Find(id);
-                ent.ShiftMasters.Remove(data);
-                ent.SaveChanges();
+                bool isCreated = await _shift.DeleteShift(id);
                 TempData["dltmsg"] = "Deleted successfully.";
                 return RedirectToAction("ShiftTime");
             }

@@ -40,10 +40,14 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
@@ -92,9 +96,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IContractApi\ICommon.cs" />
+    <Compile Include="IContract\IArea.cs" />
     <Compile Include="IContract\IBanner.cs" />
+    <Compile Include="IContract\ICompanyZone.cs" />
+    <Compile Include="IContract\IDepartment.cs" />
+    <Compile Include="IContract\IEmployee.cs" />
+    <Compile Include="IContract\IEmployeeMobAppSettings.cs" />
+    <Compile Include="IContract\IEscort.cs" />
+    <Compile Include="IContract\IETS.cs" />
+    <Compile Include="IContract\IShift.cs" />
     <Compile Include="ImplementationApi\CommonImplementation.cs" />
+    <Compile Include="Implementation\AreaImplementation.cs" />
     <Compile Include="Implementation\BannerImplementation.cs" />
+    <Compile Include="Implementation\CompanyZoneImplementation.cs" />
+    <Compile Include="Implementation\DepartmentImplementation.cs" />
+    <Compile Include="Implementation\EmployeeImplementation.cs" />
+    <Compile Include="Implementation\EmployeeMobAppSettingsImplementation.cs" />
+    <Compile Include="Implementation\EscortImplementation.cs" />
+    <Compile Include="Implementation\ETSImplementation.cs" />
+    <Compile Include="Implementation\ShiftImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

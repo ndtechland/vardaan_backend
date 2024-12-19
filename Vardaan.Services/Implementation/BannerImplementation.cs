@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.DTO;
 
 namespace Vardaan.Services.Implementation
 {
@@ -26,6 +27,38 @@ namespace Vardaan.Services.Implementation
 
 				throw new Exception("Server Error : " + ex.Message);
 			}
+        }
+        public async Task <bool> Addbanners(BannerDTO model)
+        {
+            try
+            {
+                if (model.Id == 0)
+                {
+                    var domainModel = new BannerMaster
+                    {
+                        Role = model.Role,
+                        BannerImage = model.BannerImage,
+                        CreatedDate = DateTime.Now
+                    };
+                    ent.BannerMasters.Add(domainModel);
+                }
+                else
+                {
+                    var data = ent.BannerMasters.Find(model.Id);
+                    data.Role = model.Role;
+                    if (model.BannerImage != null)
+                    {
+                        data.BannerImage = model.BannerImage;
+                    }
+                }
+                ent.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
