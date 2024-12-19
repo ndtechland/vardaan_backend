@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -25,7 +26,7 @@ namespace VardaanCab.Controllers
         // GET: Banner
         public async Task<ActionResult> All()
         {
-            var data = await _banner.BannerList();//ent.BannerMasters.ToList();
+            var data = await _banner.BannerList();
             return View(data);
         }
         public ActionResult Add(int id=0)
@@ -52,7 +53,7 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Add(BannerDTO model)
+        public async Task<ActionResult> Add(BannerDTO model)
         {
             try
             {
@@ -60,12 +61,6 @@ namespace VardaanCab.Controllers
                 {
                     return View(model);
                 }
-
-                //if (model.ImageFile == null)
-                //{
-                //    TempData["errormsg"] = "Image file is required. Only .jpg, .jpeg, .png, and .gif files are allowed.";
-                //    return View(model);
-                //}
                 if(model.ImageFile != null)
                 {
                     if (model.ImageFile.ContentLength > 2 * 1024 * 1024)
@@ -82,30 +77,12 @@ namespace VardaanCab.Controllers
 
                     model.BannerImage = uploadResult;
                 }
-                
-               
-                if (model.Id == 0)
+                bool isCreated = await _banner.Addbanners(model);
+                if (isCreated)
                 {
-                    var domainModel = new BannerMaster
-                    {
-                        Role = model.Role,
-                        BannerImage = model.BannerImage,
-                        CreatedDate = DateTime.Now
-                    };
-                    ent.BannerMasters.Add(domainModel);
+                    TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
                 }
-                else
-                {
-                    var data = ent.BannerMasters.Find(model.Id);
-                    data.Role = model.Role;
-                    if (model.BannerImage != null)
-                    {
-                        data.BannerImage = model.BannerImage;
-                    }
-                }
-                ent.SaveChanges();
 
-                TempData["msg"] = model.Id>0 ? "Record has been updated successfully." : "Record has been added successfully.";
                 return RedirectToAction("Add");
             }
             catch (Exception ex)

@@ -3,14 +3,74 @@
     ViewBag.Title = "Escort";
     Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
 }
+<style>
+   
+    .import-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 100%;
+    }
 
+        .import-row .col-md-12 {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+
+    .import-form-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: 100%;
+    }
+
+
+        .import-form-container .col-md-7,
+        .import-form-container .col-md-2 {
+            margin-left: 10px;
+        }
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-header  card-header--2">
+                        <div class="card-header card-header--2">
+                            <div>
+                                <h5>@ViewBag.Heading</h5>
+                            </div>
+                            <div>
+                                <div class="import-row">
+                                    <!-- First Section: Excel Export -->
+                                    <div class="col-md-12">
+                                        <h5>
+                                            Import to Excel Format :
+                                            <a href="@Url.Action("ExportToExcelForImport", "EscortETS")">
+                                                <img src="~/adminassets/images/icon/Export-Image.png" alt="Export" class="img-fluid" />
+                                            </a>
+                                        </h5>
+                                    </div>
+
+                                    <!-- Second Section: File Import and Button -->
+                                    <div class="col-md-12">
+                                        @using (Html.BeginForm("ImportEscortData", "EscortETS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="import-form-container">
+                                                <div class="col-md-7">
+                                                    <input type="file" class="form-control" name="file" required />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="submit" class="btn btn-primary">Import</button>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="card-header  card-header--2">
                             <div>
                                 <h5>@ViewBag.Heading</h5>
                             </div>
@@ -18,7 +78,7 @@
                                 <a href="/EscortETS/EscortsList" class="btn btn-primary">Show all</a>
 
                             </form>
-                        </div>
+                        </div>*@
                         <form class="theme-form mega-form" action="Escort" method="post" enctype="multipart/form-data" id="escortForm">
                             <div class="card-body">
                                 <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
@@ -37,30 +97,30 @@
                                             <div class="col-md-4">
                                                 <label class="form-label-title">Escort's Name</label>
                                                 @Html.TextBoxFor(a => a.EscortName, new { @class = "form-control", id = "escortName", placeholder = "Escort's Name", required = "required" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.EscortName)
-                                            </span>
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.EscortName)
+                                                </span>
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label-title">Escort's Father Name</label>
                                                 @Html.TextBoxFor(a => a.EscortFatheName, new { @class = "form-control", placeholder = "Escort's Father Name", required = "required" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.EscortFatheName)
-                                            </span>
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.EscortFatheName)
+                                                </span>
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label-title">Escort's Mobile Number</label>
                                                 @Html.TextBoxFor(a => a.EscortMobileNumber, new { @class = "form-control", placeholder = "Escort's Mobile Number", maxlength = "10", onkeydown = "validateNumericInput(event)", required = "required" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.EscortMobileNumber)
-                                            </span>
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.EscortMobileNumber)
+                                                </span>
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label-title">Escort's Aadhaar Number</label>
                                                 @Html.TextBoxFor(a => a.EscortAadhaarNumber, new { @class = "form-control", placeholder = "Escort's Aadhaar Number", maxlength = "12", onkeydown = "validateNumericInput(event)", required = "required" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.EscortAadhaarNumber)
-                                            </span>
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.EscortAadhaarNumber)
+                                                </span>
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label-title">Select Vendor</label>
@@ -79,16 +139,16 @@
                                             <div class="col-md-4">
                                                 <label class="form-label-title">Escort's Employee Id</label>
                                                 @Html.TextBoxFor(a => a.EscortEmployeeId, new { @class = "form-control", placeholder = "Escort's Employee Id", required = "required" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.EscortEmployeeId)
-                                            </span>
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.EscortEmployeeId)
+                                                </span>
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label-title">PIN Code</label>
                                                 @Html.TextBoxFor(a => a.Pincode, new { @class = "form-control", placeholder = "PIN Code", maxlength = "6", onkeydown = "validateNumericInput(event)", required = "required" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.Pincode)
-                                            </span>
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.Pincode)
+                                                </span>
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label-title">Select Company</label>
@@ -100,16 +160,16 @@
                                             <div class="col-md-4">
                                                 <label class="form-label-title">Permanent Address</label>
                                                 @Html.TextAreaFor(a => a.PermanentAddress, new { @class = "form-control", placeholder = "Permanent Address", required = "required" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.PermanentAddress)
-                                            </span>
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.PermanentAddress)
+                                                </span>
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label-title">Escort's Address</label>
                                                 @Html.TextAreaFor(a => a.EscortAddress, new { @class = "form-control", placeholder = "Escort's Address", required = "required" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.EscortAddress)
-                                            </span>
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.EscortAddress)
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

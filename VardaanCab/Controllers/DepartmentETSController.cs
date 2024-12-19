@@ -1,11 +1,14 @@
 ﻿using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using NPOI.OpenXmlFormats.Wordprocessing;
 using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
@@ -14,23 +17,16 @@ namespace VardaanCab.Controllers
     public class DepartmentETSController : Controller
     {
         Vardaan_AdminEntities ent=new Vardaan_AdminEntities();
+        private readonly IDepartment _department;
+        public DepartmentETSController(IDepartment department)
+        {
+            _department = department;
+        }
         // GET: DepartmentETS
-        public ActionResult Departments(int menuId = 0, int id = 0)
+        public async Task<ActionResult> Departments(int menuId = 0, int id = 0)
         {
             var model = new DepartmentMasterDTO();
-            var data = (from dm in ent.DepartmentMasters
-                        join c in ent.Customers on dm.CompanyId equals c.Id
-                        orderby dm.Id descending
-                        where dm.IsActive == true
-                        select new DepartmentList
-                        {
-                            Id = dm.Id,
-                            DepartmentName = dm.DepartmentName,
-                            CompanyName = c.CompanyName,  
-                            CreatedDate = dm.Created,  
-                        }
-                       ).ToList();
-            model.DepartmentMasterList = data;
+            model.DepartmentMasterList = await _department.DepartmentList();
             ViewBag.menuId = menuId;
            
             model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x=>x.Id).ToList(), "Id", "OrgName");
@@ -55,32 +51,16 @@ namespace VardaanCab.Controllers
             } 
         }
         [HttpPost]
-        public ActionResult Departments(DepartmentMasterDTO model)
+        public async Task<ActionResult> Departments(DepartmentMasterDTO model)
         {
-            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x => x.Id).ToList(), "Id", "OrgName");
+            //model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x => x.Id).ToList(), "Id", "OrgName");
             try
-            {               
-                if (model.Id == 0)
+            {
+                bool isCreated = await _department.AddDepartments(model);
+                if (isCreated)
                 {
-                    var department = new DepartmentMaster()
-                    {
-                        CompanyId = model.CompanyId,
-                        DepartmentName = model.DepartmentName,
-                        IsActive = true,
-                        Created = DateTime.Now
-
-                    };
-                    ent.DepartmentMasters.Add(department);
+                    TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
                 }
-                else
-                {
-                    var data = ent.DepartmentMasters.Find(model.Id);
-                    data.Id = model.Id;
-                    data.CompanyId = model.CompanyId;
-                    data.DepartmentName = model.DepartmentName;
-                }
-                ent.SaveChanges();
-                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
             }
             catch (Exception ex)
             {
@@ -88,14 +68,19 @@ namespace VardaanCab.Controllers
             }
             return RedirectToAction("Departments", new { menuId = model.MenuId });
         }
-        public ActionResult DeleteDepartment(int id)
+        public async Task<ActionResult> DeleteDepartment(int id)
         {
             try
             {
-                var data = ent.DepartmentMasters.Find(id);
-                data.IsActive = false;
-                ent.SaveChanges();
-                TempData["dltmsg"] = "Deleted successfully.";
+                bool isCreated= await _department.DeleteDepartment(id);
+                if (isCreated)
+                {
+                    TempData["dltmsg"] = "Deleted successfully.";
+                }
+                else
+                {
+                    TempData["dltmsg"] = "Data not found.";
+                }                
                 return RedirectToAction("Departments");
             }
             catch (Exception)

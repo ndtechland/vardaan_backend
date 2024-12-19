@@ -141,7 +141,6 @@ namespace VardaanCab.Controllers
         [HttpPost]
         public ActionResult HomeRoute(EmployeeHomeRouteDTO model)
         {
-            model.CompanyZones = new SelectList(ent.CompanyZones.ToList(), "Id", "CompanyZone1");
             try
             {
                 if (!ModelState.IsValid)
@@ -238,7 +237,6 @@ namespace VardaanCab.Controllers
         [HttpPost]
         public ActionResult EmployeeDestinationArea(EmployeeDestinationAreaDTO model)
         {
-            model.HomeRoutes = new SelectList(ent.CompanyZoneHomeRoutes.ToList(), "Id", "HomeRouteName");
             try
             {
                 if (!ModelState.IsValid)

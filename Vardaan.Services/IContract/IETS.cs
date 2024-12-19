@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
 namespace Vardaan.Services.IContract
 {
-    public interface IBanner
+    public interface IETS
     {
-        Task<List<BannerMaster>> BannerList();
-        Task<bool> Addbanners(BannerDTO model);
+        Task<bool> AddUpdateRequest(CreateRequestDTO model);
+        Task<List<EmployeeRequests>> GetEmployeerequests();
+        Task<bool> DeleteRequest(int id);
     }
 }

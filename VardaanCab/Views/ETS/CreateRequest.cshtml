@@ -251,22 +251,13 @@
 
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">Start Request Date</label>
-                                                <div class="input-group date" id="sdt-date"
-                                                     data-target-input="nearest">
-                                                    <div class="input-group">
-                                                        @Html.TextBoxFor(m => m.StartRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Start Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
+                                                @Html.TextBoxFor(m => m.StartRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Start Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
 
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-title ">End Request Date</label>
-                                                <div class="input-group date" id="edt-date"
-                                                     data-target-input="nearest">
-                                                    <div class="input-group">
-                                                        @Html.TextBoxFor(m => m.EndRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "End Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
-                                                    </div>
-                                                </div>
+                                                @Html.TextBoxFor(m => m.EndRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "End Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
+
                                             </div>
 
                                             <div class="col-md-3">

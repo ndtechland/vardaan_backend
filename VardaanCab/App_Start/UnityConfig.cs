@@ -46,7 +46,14 @@ namespace VardaanCab
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IController, Controller>();
             container.RegisterType<IBanner, BannerImplementation>();
-           
+            container.RegisterType<IDepartment, DepartmentImplementation>();
+            container.RegisterType<IEmployee, EmployeeImplementation>();
+            container.RegisterType<IEmployeeMobAppSettings, EmployeeMobAppSettingsImplementation>();
+            container.RegisterType<IEscort, EscortImplementation>();
+            container.RegisterType<IETS, ETSImplementation>();
+            container.RegisterType<IShift, ShiftImplementation>();
+            container.RegisterType<IArea, AreaImplementation>();           
+            container.RegisterType<ICompanyZone, CompanyZoneImplementation>();           
         }
     }
 }
