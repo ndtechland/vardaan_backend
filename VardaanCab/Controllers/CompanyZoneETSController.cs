@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 using VardaanCab.Domain.ViewModels;
@@ -13,6 +17,11 @@ namespace VardaanCab.Controllers
     public class CompanyZoneETSController : Controller
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
+        private readonly ICompanyZone _companyZone;
+        public CompanyZoneETSController(ICompanyZone companyZone)
+        {
+            _companyZone = companyZone;
+        }
         // GET: CompanyZoneETS
         public ActionResult AddCompanyZone(int menuId = 0, int id = 0)
         {
@@ -41,68 +50,49 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpPost]
-        public ActionResult AddCompanyZone(CompanyZoneDTO model)
+        public async Task<ActionResult> AddCompanyZone(CompanyZoneDTO model)
         {
-            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "CompanyName");
+          
             try
             {
                 if (!ModelState.IsValid)
-                    return View(model);
-                if (model.Id == 0)
                 {
-                    var zone = new CompanyZone()
-                    {
-                        CompanyId = model.CompanyId,
-                        CompanyZone1 = model.CompanyZone,
-                        CreatedDate = DateTime.Now,
-                        Zonelatlong = model.Zonelatlong
-                    };
-                    ent.CompanyZones.Add(zone);                   
+                    return View(model);
+                }
+
+                bool isCreated = await _companyZone.AddUpdateZone(model);
+                if (isCreated)
+                {
+                    TempData["msg"] = model.Id > 0
+                        ? "Record has been updated successfully."
+                        : "Record has been added successfully.";
                 }
                 else
                 {
-                    var data = ent.CompanyZones.Find(model.Id);
-                    data.CompanyZone1 = model.CompanyZone;
-                    data.CompanyId = model.CompanyId;
-                    data.Zonelatlong = model.Zonelatlong;
+                    TempData["msg"] = "Failed to save the record. Please try again.";
                 }
-                ent.SaveChanges();
-                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
-
+                return RedirectToAction("AddCompanyZone", new { menuId = model.MenuId });
             }
             catch (Exception ex)
             {
-                TempData["msg"] = "Server error";
+                TempData["msg"] = "Server error. Please try again later.";
+                return RedirectToAction("AddCompanyZone", new { menuId = model.MenuId });
             }
-            return RedirectToAction("AddCompanyZone", new { menuId = model.MenuId });
         }
-        public ActionResult AllCompanyZones(string term = "", int page = 1, int menuId = 0)
+
+        public async Task<ActionResult> AllCompanyZones(string term = "", int page = 1, int menuId = 0)
         {
-            var model = new CompanyZoneDTO();
-            var data = (from cz in ent.CompanyZones
-                        join c in ent.Customers on cz.CompanyId equals c.Id
-                        orderby cz.Id descending
-                        select new CompanyZoneList
-                        {
-                            Id = cz.Id,
-                            CompanyZone = cz.CompanyZone1,
-                            CompanyName = c.CompanyName,
-                            CreatedDate = cz.CreatedDate
-                        }
-                        ).ToList();
-            
+            var model = new CompanyZoneDTO();    
             ViewBag.menuId = menuId;
-            model.CompanyZoneLists = data;
+            model.CompanyZoneLists = await _companyZone.GetZones();
             return View(model);
         }
-        public ActionResult DeleteCompanyZone(int id)
+        public async Task<ActionResult> DeleteCompanyZone(int id)
         {
             try
             {
-                var data = ent.CompanyZones.Find(id);
-                ent.CompanyZones.Remove(data);
-                ent.SaveChanges();
+                bool isDeleted= await _companyZone.DeleteZone(id);               
                 TempData["dltmsg"] ="Deleted successfully.";
                 return RedirectToAction("AllCompanyZones");
 
@@ -139,31 +129,23 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpPost]
-        public ActionResult HomeRoute(EmployeeHomeRouteDTO model)
+        public async Task<ActionResult> HomeRoute(EmployeeHomeRouteDTO model)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return View(model);
-                if (model.Id == 0)
+                bool isCreated = await _companyZone.AddUpdateHomeRoute(model);
+                if (isCreated)
                 {
-                    var zone = new CompanyZoneHomeRoute()
-                    {
-                        CompanyZoneId = model.CompanyZoneId,
-                        HomeRouteName = model.HomeRouteName,
-                        CreatedDate = DateTime.Now
-                    };
-                    ent.CompanyZoneHomeRoutes.Add(zone);
+                    TempData["msg"] = model.Id > 0
+                        ? "Record has been updated successfully."
+                        : "Record has been added successfully.";
                 }
                 else
                 {
-                    var data = ent.CompanyZoneHomeRoutes.Find(model.Id);
-                    data.CompanyZoneId = model.CompanyZoneId;
-                    data.HomeRouteName = model.HomeRouteName;
-
+                    TempData["msg"] = "Failed to save the record. Please try again.";
                 }
-                ent.SaveChanges();
-                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
 
             }
@@ -173,35 +155,21 @@ namespace VardaanCab.Controllers
             }
             return RedirectToAction("HomeRoute", new { menuId = model.MenuId });
         }
-        public ActionResult AllHomeRoute(string term = "", int page = 1, int menuId = 0)
+        public async Task<ActionResult> AllHomeRoute(string term = "", int page = 1, int menuId = 0)
         {
             var model = new EmployeeHomeRouteDTO();
-            var data = (from hr in ent.CompanyZoneHomeRoutes
-                        join cz in ent.CompanyZones on hr.CompanyZoneId equals cz.Id
-                        orderby cz.Id descending
-                        select new HomeRouteList
-                        {
-                            Id = hr.Id,
-                            CompanyZone = cz.CompanyZone1,
-                            HomeRouteName = hr.HomeRouteName,
-                            CreatedDate = hr.CreatedDate
-                        }
-                        ).ToList();
-
+           
             ViewBag.menuId = menuId;
-            model.HomeRouteLists = data;
+            model.HomeRouteLists = await _companyZone.GetHomeRoutes();
             return View(model);
         }
-        public ActionResult DeleteHomeRoute(int id)
+        public async Task<ActionResult> DeleteHomeRoute(int id)
         {
             try
             {
-                var data = ent.CompanyZoneHomeRoutes.Find(id);
-                ent.CompanyZoneHomeRoutes.Remove(data);
-                ent.SaveChanges();
+                bool isDeleted = await _companyZone.DeleteZone(id);
                 TempData["dltmsg"] = "Deleted successfully.";
                 return RedirectToAction("AllHomeRoute");
-
             }
             catch (Exception)
             {
@@ -235,33 +203,23 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpPost]
-        public ActionResult EmployeeDestinationArea(EmployeeDestinationAreaDTO model)
+        public async Task<ActionResult> EmployeeDestinationArea(EmployeeDestinationAreaDTO model)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return View(model);
-                if (model.Id == 0)
+                bool isCreated = await _companyZone.AddUpdateDestinationArea(model);
+                if (isCreated)
                 {
-                    var zone = new EmployeeDestinationArea()
-                    {
-                        CompanyZoneHomeRouteId = model.HomeRouteId,
-                        DestinationAreaName = model.DestinationAreaName,
-                        CreatedDate = DateTime.Now
-                    };
-                    ent.EmployeeDestinationAreas.Add(zone);
+                    TempData["msg"] = model.Id > 0
+                        ? "Record has been updated successfully."
+                        : "Record has been added successfully.";
                 }
                 else
                 {
-                    var data = ent.EmployeeDestinationAreas.Find(model.Id);
-                    data.CompanyZoneHomeRouteId = model.HomeRouteId;
-                    data.DestinationAreaName = model.DestinationAreaName;
-
+                    TempData["msg"] = "Failed to save the record. Please try again.";
                 }
-                ent.SaveChanges();
-                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
-
-
             }
             catch (Exception ex)
             {
@@ -269,32 +227,19 @@ namespace VardaanCab.Controllers
             }
             return RedirectToAction("EmployeeDestinationArea", new { menuId = model.MenuId });
         }
-        public ActionResult AllEmployeeDestinationArea(string term = "", int page = 1, int menuId = 0)
+        public async Task<ActionResult> AllEmployeeDestinationArea(string term = "", int page = 1, int menuId = 0)
         {
             var model = new EmployeeDestinationAreaDTO();
-            var data = (from da in ent.EmployeeDestinationAreas
-                        join c in ent.CompanyZoneHomeRoutes on da.CompanyZoneHomeRouteId equals c.Id
-                        orderby da.Id descending
-                        select new DestinationAreaList
-                        {
-                            Id = da.Id,
-                            DestinationAreaName = da.DestinationAreaName,
-                            HomeRouteName = c.HomeRouteName,
-                            CreatedDate = da.CreatedDate
-                        }
-                        ).ToList();
 
             ViewBag.menuId = menuId;
-            model.DestinationAreaLists = data;
+            model.DestinationAreaLists = await _companyZone.GetDestinationAreas();
             return View(model);
         }
-        public ActionResult DeleteEmployeeDestinationArea(int id)
+        public async Task<ActionResult>DeleteEmployeeDestinationArea(int id)
         {
             try
             {
-                var data = ent.EmployeeDestinationAreas.Find(id);
-                ent.EmployeeDestinationAreas.Remove(data);
-                ent.SaveChanges();
+                bool isDeleted = await _companyZone.DeleteDestinationArea(id);
                 TempData["dltmsg"] = "Deleted successfully.";
                 return RedirectToAction("AllEmployeeDestinationArea");
 

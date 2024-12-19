@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 using VardaanCab.Domain.ViewModels;
@@ -20,6 +22,11 @@ namespace VardaanCab.Controllers
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository commonRepo = new CommonRepository();
         private readonly CommonOperations _random = new CommonOperations();
+        private readonly ICustomer _customer;
+        public CustomerController(ICustomer customer)
+        {
+            _customer = customer;
+        }
 
         public ActionResult ChangeStatus(int id,int menuId=0)
         {
@@ -35,9 +42,6 @@ namespace VardaanCab.Controllers
             }
             return RedirectToAction("All",new { menuId=menuId});
         }
-
-
-
         private IEnumerable<CustomerDTO> GetCustomerList(string term = "")
         {
             var data = (from c in ent.Customers
@@ -329,24 +333,22 @@ join VehicleModel vm on cp.VehicleModel_Id= vm.Id order by vm.ModelName").ToList
             }
         }
         [HttpPost]
-        public ActionResult CreateOrg(createorg model)
+        public async Task<ActionResult> CreateOrg(createorg model)
         {
             try
             {
-                var customerinfo = ent.Customers.Where(c => c.IsActive && c.Id == model.CompanyId).FirstOrDefault();
-                 
-                if (customerinfo != null)
+                bool isCreated = await _customer.CreateOrgName(model);
+                if (isCreated)
                 {
-                    customerinfo.OrgName=model.OrgName;
-                    ent.SaveChanges();
                     TempData["msg"] = "Org name created successfully.";
-                    return RedirectToAction("CreateOrg" ,new { MenuId = model.MenuId});
+                    return RedirectToAction("CreateOrg", new { MenuId = model.MenuId });
                 }
                 else
                 {
                     TempData["msg"] = "Company not found.";
                     return RedirectToAction("CreateOrg", new { MenuId = model.MenuId });
                 }
+                
             }
             catch (Exception)
             {

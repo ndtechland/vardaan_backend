@@ -6,8 +6,10 @@ using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
@@ -16,7 +18,11 @@ namespace VardaanCab.Controllers
     public class AdministratorETSController : Controller
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
-
+        private readonly IAdministrator _administrator;
+        public AdministratorETSController(IAdministrator administrator)
+        {
+            _administrator = administrator;
+        }
         public ActionResult AssignAccess(int menuId = 0, int id = 0)
         {
             var model = new AccessAssignDTO();
@@ -82,66 +88,36 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpPost]
-        public ActionResult AssignAccess(AccessAssignDTO model)
+        public async Task<ActionResult> AssignAccess(AccessAssignDTO model)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return View(model);
-                if (model.Id == 0)
+                bool isCreated=await _administrator.AddUpdateAssignAccess(model);
+                if (isCreated)
                 {
-                    var DomainModel = new AccessAssign()
-                    {
-                        CompanyId = model.CompanyId,
-                        UserRoleId = model.UserRoleId,
-                        EmployeeId = model.EmployeeId,
-                        IsActive = true,
-                        CreatedDate = DateTime.Now
-
-                    };
-                    ent.AccessAssigns.Add(DomainModel);
+                    TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
                 }
                 else
                 {
-                    var data = ent.AccessAssigns.Find(model.Id);
-                    data.CompanyId = model.CompanyId;
-                    data.UserRoleId = model.UserRoleId;
-                    data.EmployeeId = model.EmployeeId;
+                    TempData["errormsg"] = "Failed.";
                 }
-                ent.SaveChanges();
-                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
             }
             catch (Exception)
             {
-                TempData["msg"] = "Server error";
+                TempData["errormsg"] = "Server error";
             }
             return RedirectToAction("AssignAccess", new { menuId = model.MenuId });
         }
-        public ActionResult AccessAssignList()
+        public async Task<ActionResult> AccessAssignList()
         {
             try
             {
                 var model = new AccessAssignDTO();
-                var data = (from aa in ent.AccessAssigns
-                            join e in ent.Employees on aa.EmployeeId equals e.Id
-                            join c in ent.Customers on aa.CompanyId equals c.Id
-                            join r in ent.UserRoles on aa.UserRoleId equals r.Id
-                            where aa.IsActive == true
-                            orderby aa.Id descending
-                            select new ListAccessAssign
-                            {
-                                Id = aa.Id,
-                                CompanyName = c.CompanyName,
-                                RoleName = r.RoleName,
-                                EmployeeName = e.Employee_First_Name+" "+e.Employee_Middle_Name+" "+ e.Employee_Last_Name,
-                                Mobile = e.MobileNumber,
-                                EmployeeId = e.Employee_Id,
-                                Email = e.Email,
-                                UserName = e.LoginUserName,
-                            }
-                          ).ToList();
-                model.AccessAssignList = data;
+                
+                model.AccessAssignList = await _administrator.GetAccessAssigns();
                 return View(model);
             }
             catch (Exception ex)
@@ -162,7 +138,7 @@ namespace VardaanCab.Controllers
             });
             return myIntegers.ToArray();
         }
-        public ActionResult CreateRole(int menuId = 0, int id = 0)
+        public async Task<ActionResult> CreateRole(int menuId = 0, int id = 0)
         {
             var model = new UserRoleDTO();
             // model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
@@ -171,19 +147,8 @@ namespace VardaanCab.Controllers
                 Value = d.Id.ToString(),
                 Text = d.OrgName
             }).ToList();
-            var Getdata = (from r in ent.UserRoles
-                           join c in ent.Customers on r.CompanyId equals c.Id
-                           where r.IsActive == true
-                           orderby r.Id descending
-                           select new UserRoleList
-                           {
-                               Id = r.Id,
-                               CompanyName = c.CompanyName,
-                               OrgName = c.OrgName,
-                               RoleName = r.RoleName
-                           }
-                       ).ToList();
-            model.UserRoleLists = Getdata;
+           
+            model.UserRoleLists = await _administrator.GetRoles();
 
             int userId = int.Parse(User.Identity.Name);
             if (!ent.UserLogins.Any(x => x.Id == userId && x.Role == "Customer"))
@@ -247,55 +212,25 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpPost]
-        public ActionResult CreateRole(UserRoleDTO model)
+        public async Task<ActionResult> CreateRole(UserRoleDTO model)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return View(model);
-                if (model.Id == 0)
+                bool isCreated= await _administrator.AddupdateRole(model);
+                if (isCreated)
                 {
-                    var check = ent.UserRoles.Where(u => u.RoleName.ToLower() == model.RoleName.ToLower()).FirstOrDefault();
-                        if (check != null) {
-                        TempData["msg"] = "Already exist.";
-                        return RedirectToAction("CreateRole", new { menuId = model.MenuId });
-                    }
-                    var EmpReq = new UserRole()
-                    {
-                        CompanyId = model.CompanyId,
-                        RoleName = model.RoleName,
-                        IsActive = true,
-                        CreatedDate = DateTime.Now,
-                        IsReadChecked = string.Join(",", model.IsReadChecked),
-                        IsWriteChecked = string.Join(",", model.IsWriteChecked),
-                        IsSubReadChecked = string.Join(",", model.IsSubReadChecked),
-                        IsSubWriteChecked = string.Join(",", model.IsSubWriteChecked),
-                        IsAllRead=model.IsAllRead,
-                        IsAllWrite=model.IsAllWrite
-                    };
-                    ent.UserRoles.Add(EmpReq);
-                    ent.SaveChanges();
+                    TempData["msg"] = model.Id > 0 ? "Record has been updated successfully."
+                        : "Record has been added successfully.";
+                    return RedirectToAction("CreateRole", new { menuId = model.MenuId });
+
                 }
                 else
                 {
-                    var check = ent.UserRoles.Where(u => u.RoleName.ToLower() == model.RoleName.ToLower() && u.Id != model.Id).FirstOrDefault();
-                        if (check != null)
-                    {
-                        TempData["msg"] = "Already exist.";
-                        return RedirectToAction("CreateRole", new { menuId = model.MenuId });
-                    }
-                    var data = ent.UserRoles.Find(model.Id);
-                    data.CompanyId = model.CompanyId;
-                    data.RoleName = model.RoleName;
-                    data.IsReadChecked = string.Join(",", model.IsReadChecked);
-                    data.IsWriteChecked = string.Join(",", model.IsWriteChecked);
-                    data.IsSubReadChecked = string.Join(",", model.IsSubReadChecked);
-                    data.IsSubWriteChecked = string.Join(",", model.IsSubWriteChecked);
-                    data.IsAllRead = model.IsAllRead;
-                    data.IsAllWrite = model.IsAllWrite;
-                    ent.SaveChanges();
+                    TempData["msg"] = "Already exist.";
+                    return RedirectToAction("CreateRole", new { menuId = model.MenuId });
                 }
-                TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
 
             }
             catch (Exception)
@@ -304,13 +239,11 @@ namespace VardaanCab.Controllers
             }
             return RedirectToAction("CreateRole", new { menuId = model.MenuId });
         }
-        public ActionResult DeleteUserRole(int id)
+        public async Task<ActionResult> DeleteUserRole(int id)
         {
             try
             {
-                var data = ent.UserRoles.Find(id);
-                data.IsActive = false;
-                ent.SaveChanges();
+                bool isDeleted= await _administrator.DeleteRole(id);
                 TempData["dltmsg"] = "Deleted successfully.";
                 return RedirectToAction("CreateRole");
             }
