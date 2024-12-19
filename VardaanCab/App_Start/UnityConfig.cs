@@ -54,6 +54,8 @@ namespace VardaanCab
             container.RegisterType<IShift, ShiftImplementation>();
             container.RegisterType<IArea, AreaImplementation>();           
             container.RegisterType<ICompanyZone, CompanyZoneImplementation>();           
+            container.RegisterType<ICustomer, CustomerImplementation>();           
+            container.RegisterType<IAdministrator, AdministratorImplementation>();           
         }
     }
 }

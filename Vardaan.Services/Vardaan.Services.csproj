@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=3.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4, Version=3.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -96,9 +102,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IContractApi\ICommon.cs" />
+    <Compile Include="IContract\IAdministrator.cs" />
     <Compile Include="IContract\IArea.cs" />
     <Compile Include="IContract\IBanner.cs" />
     <Compile Include="IContract\ICompanyZone.cs" />
+    <Compile Include="IContract\ICustomer.cs" />
     <Compile Include="IContract\IDepartment.cs" />
     <Compile Include="IContract\IEmployee.cs" />
     <Compile Include="IContract\IEmployeeMobAppSettings.cs" />
@@ -106,9 +114,11 @@
     <Compile Include="IContract\IETS.cs" />
     <Compile Include="IContract\IShift.cs" />
     <Compile Include="ImplementationApi\CommonImplementation.cs" />
+    <Compile Include="Implementation\AdministratorImplementation.cs" />
     <Compile Include="Implementation\AreaImplementation.cs" />
     <Compile Include="Implementation\BannerImplementation.cs" />
     <Compile Include="Implementation\CompanyZoneImplementation.cs" />
+    <Compile Include="Implementation\CustomerImplementation.cs" />
     <Compile Include="Implementation\DepartmentImplementation.cs" />
     <Compile Include="Implementation\EmployeeImplementation.cs" />
     <Compile Include="Implementation\EmployeeMobAppSettingsImplementation.cs" />
@@ -131,6 +141,11 @@
       <Name>VardaanCab.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.Net4.dll">
+      <Link>AutoMapper.Net4.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
