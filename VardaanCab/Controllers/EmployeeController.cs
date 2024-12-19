@@ -613,8 +613,8 @@ namespace VardaanCab.Controllers
                                 EmployeeCurrentAddress = row.Cell(12).GetValue<string>() ?? string.Empty,
                                 LoginUserName = row.Cell(13).GetValue<string>() ?? string.Empty,
                                 WeekOff = string.IsNullOrEmpty(DaysName) ? "" :
-    ent.DaysNames.Where(x => x.DayName.ToLower() == DaysName.ToLower())
-        .FirstOrDefault()?.Id.ToString() ?? "",
+                                ent.DaysNames.Where(x => x.DayName.ToLower() == DaysName.ToLower())
+                                .FirstOrDefault()?.Id.ToString() ?? "",
 
                                 EmployeeGeoCode = row.Cell(15).GetValue<string>() ?? string.Empty,
                                 EmployeeBusinessUnit = row.Cell(16).GetValue<string>() ?? string.Empty,
