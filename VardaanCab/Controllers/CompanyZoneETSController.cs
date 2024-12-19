@@ -42,7 +42,7 @@ namespace VardaanCab.Controllers
         }
         [HttpPost]
         public ActionResult AddCompanyZone(CompanyZoneDTO model)
-         {
+        {
             model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "CompanyName");
             try
             {
@@ -65,8 +65,6 @@ namespace VardaanCab.Controllers
                     data.CompanyZone1 = model.CompanyZone;
                     data.CompanyId = model.CompanyId;
                     data.Zonelatlong = model.Zonelatlong;
-
-
                 }
                 ent.SaveChanges();
                 TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
