@@ -1,8 +1,8 @@
 using System.Web.Http;
 using Unity;
 using Unity.WebApi;
-using Vardaan.Services.IContract;
-using Vardaan.Services.Implementation;
+using Vardaan.Services.IContractApi;
+using Vardaan.Services.ImplementationApi;
 
 namespace VardaanCab.APP
 {
@@ -16,6 +16,8 @@ namespace VardaanCab.APP
             // it is NOT necessary to register your controllers
             
              container.RegisterType<ICommon, CommonImplementation>();
+             container.RegisterType<IDriver, DriverImplementation>();
+             container.RegisterType<IEmployee, EmployeeImplementation>();
             
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

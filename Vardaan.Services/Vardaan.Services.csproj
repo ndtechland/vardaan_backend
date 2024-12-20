@@ -102,6 +102,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IContractApi\ICommon.cs" />
+    <Compile Include="IContractApi\IDriver.cs" />
+    <Compile Include="IContractApi\IEmployee.cs" />
     <Compile Include="IContract\IAdministrator.cs" />
     <Compile Include="IContract\IArea.cs" />
     <Compile Include="IContract\IBanner.cs" />
@@ -114,6 +116,8 @@
     <Compile Include="IContract\IETS.cs" />
     <Compile Include="IContract\IShift.cs" />
     <Compile Include="ImplementationApi\CommonImplementation.cs" />
+    <Compile Include="ImplementationApi\DriverImplementation.cs" />
+    <Compile Include="ImplementationApi\EmployeeImplementation.cs" />
     <Compile Include="Implementation\AdministratorImplementation.cs" />
     <Compile Include="Implementation\AreaImplementation.cs" />
     <Compile Include="Implementation\BannerImplementation.cs" />

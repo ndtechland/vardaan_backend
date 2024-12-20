@@ -65,6 +65,7 @@ namespace VardaanCab.Controllers
             if (id > 0)
             {
                 var existdata = ent.AreaMasters.Where(x => x.Id == id).FirstOrDefault();
+                model.Id = existdata.Id;
                 model.StateMaster_Id = existdata.StateMaster_Id;
                 model.CityMaster_Id = existdata.CityMaster_Id;
                 ViewBag.Cityid = existdata.CityMaster_Id;

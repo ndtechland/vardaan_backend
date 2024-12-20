@@ -6,8 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Windows.Forms;
+using Vardaan.Services.IContractApi;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTOAPI;
@@ -19,42 +21,23 @@ namespace VardaanCab.APP.Controllers
     public class EmployeeController : ApiController
     {
         Vardaan_AdminEntities ent=new Vardaan_AdminEntities();
+        private readonly IEmployee _employee;
+        public EmployeeController(IEmployee employee)
+        {
+            _employee = employee;
+        }
 
         [HttpGet]
         [Route("GetEmployeeProfile")]
-        public IHttpActionResult GetEmployeeProfile(int id)
+        public async Task<IHttpActionResult> GetEmployeeProfile(int id)
         {
             try
             {
                 var response = new Response<EmployeeProfileDTO>();
-                var empdata=ent.Employees.SingleOrDefault(x => x.Id == id && x.IsActive==true);
+                var data= await _employee.GetProfileDetail(id);
                 
-                if (empdata != null)
+                if (data != null)
                 {
-                    var getstate = ent.StateMasters.Where(s => s.Id == empdata.StateId).FirstOrDefault();
-                    var getcity = ent.CityMasters.Where(s => s.Id == empdata.CityId).FirstOrDefault();
-
-                    var data = new EmployeeProfileDTO()
-                    {
-                        Id=empdata.Id,
-                        Employee_First_Name=empdata.Employee_First_Name,
-                        Employee_Middle_Name=empdata.Employee_Middle_Name,
-                        Employee_Last_Name=empdata.Employee_Last_Name,
-                        Email=empdata.Email,
-                        MobileNumber=empdata.MobileNumber,
-                        EmergencyContactNumber=empdata.AlternateNumber,
-                        Employee_Id=empdata.Employee_Id,
-                        EmployeeDepartment=empdata.EmployeeDepartment,
-                        StateId=empdata.StateId,
-                        CityId=empdata.CityId,
-                        StateName= getstate.StateName,
-                        CityName= getcity.CityName,
-                        Pincode=empdata.Pincode,
-                        CreatedDate=empdata.CreatedDate,
-                        EmployeeCurrentAddress=empdata.EmployeeCurrentAddress,
-                        Gender=empdata.Gender,
-                        Company_Id = empdata.Company_Id,
-                    };
                     return Ok(new { Succeeded = true,StatusCode = 200, Message = "Employee profile retrieved successfully.", Role = "Employee", Data=data });
                 }
                 else
@@ -113,21 +96,19 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpPost]
         [Route("AddEmployeeHelp")]
-        public IHttpActionResult AddEmployeeHelp(HelpEmployee model)
+        public async Task<IHttpActionResult> AddEmployeeHelp(HelpEmployee model)
         {
             try
             {
-                var data = new HelpEmployee()
+                bool isCreated= await _employee.Addhelp(model);
+                if (isCreated)
                 {
-                    Employee_id=model.Employee_id,
-                    PhoneNumber=model.PhoneNumber,
-                    Reason=model.Reason,
-                    CreatedDate=DateTime.Now,
-                    IsActive=true
-                };
-                ent.HelpEmployees.Add(data);
-                ent.SaveChanges();
-                return Ok(new {StatusCode=200,Succeed=true,Message="Added successfully."});
+                    return Ok(new { StatusCode = 200, Succeed = true, Message = "Added successfully." });
+                }
+                else
+                {
+                    return BadRequest("Failed.");
+                }                
             }
             catch (Exception)
             {
