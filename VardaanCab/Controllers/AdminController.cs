@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.EMMA;
+using NPOI.POIFS.Crypt.Dsig;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -38,13 +39,14 @@ namespace VardaanCab.Controllers
             try
             {
                 var data = ent.UserLogins.FirstOrDefault(a => (a.Email == model.Username || a.MobileNumber == model.Username) && a.Password == model.Password && a.IsActive == true);
-
-                if (data == null)
+                bool checkAuth = CheckAuth(model);
+                if (data == null && checkAuth == false)
                 {
                     TempData["msg"] = "Invalid username or password";
                     return View(model);
                 }
-
+                if(!checkAuth)
+                { 
                 FormsAuthentication.SetAuthCookie(data.Id.ToString(), true);
                 string hostName = Dns.GetHostName();
                 string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
@@ -57,7 +59,7 @@ namespace VardaanCab.Controllers
                 };
                 ent.LoginHistories.Add(lh);
                 ent.SaveChanges();
-
+                }
                 if (!string.IsNullOrEmpty(model.ReturnUrl))
                     return Redirect(model.ReturnUrl);
                 return RedirectToAction("Dashboard");
@@ -69,6 +71,38 @@ namespace VardaanCab.Controllers
                 TempData["msg"] = "Server Error" + "StackTrace-" + ex.Message + ex.StackTrace + "innerExpes-" + ex.InnerException;
             }
             return View(model);
+        }
+
+        public bool CheckAuth(LoginModel model)
+        {
+            try
+            {
+                var result = ent.Employees.Where(x => (x.Employee_Id == model.Username 
+                || x.MobileNumber == model.Username || x.Email == model.Username) && x.Password == model.Password).FirstOrDefault();
+                if (result != null)
+                {
+                    FormsAuthentication.SetAuthCookie(result.Id.ToString(), true);
+                    string hostName = Dns.GetHostName();
+                    string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
+                    Session["uEmail"] = result.Email;
+                    var lh = new LoginHistory
+                    {
+                        UserLogin_Id = result.Id,
+                        Ip_Address = ip,
+                        UpdateDate = DateTime.Now
+                    };
+                    ent.LoginHistories.Add(lh);
+                    ent.SaveChanges();
+                    return true;
+                }
+                return false;
+               
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
         }
 
         public ActionResult Logout()
@@ -99,7 +133,6 @@ namespace VardaanCab.Controllers
                     bool result = ent.Employees.Any(x =>x.Employee_Id == Username || x.MobileNumber == Username || x.Email == Username);
                     if(result)
                     {
-
                         return View();
                     }
                     else
