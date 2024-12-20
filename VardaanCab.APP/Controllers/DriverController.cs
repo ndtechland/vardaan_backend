@@ -6,8 +6,10 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Vardaan.Services.IContractApi;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
@@ -22,40 +24,32 @@ namespace VardaanCab.APP.Controllers
     public class DriverController : ApiController
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
+        private readonly IDriver _driver;
+        public DriverController(IDriver driver)
+        {
+            _driver = driver;
+        }
 
         [HttpGet]
         [Route("GetDriverProfile")]
-        public IHttpActionResult GetDriverProfile(int id)
+        public async Task<IHttpActionResult> GetDriverProfile(int id)
         {
             var response = new Response<DriverProfileDTO>();
             try
             {
-                var driver = ent.Drivers.SingleOrDefault(d => d.Id == id && d.IsActive);
-
-                if (driver == null)
+                var data = await _driver.GetProfile(id);
+                if (data != null)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Driver profile retrieved successfully.", Role = "Driver", Data = data });
+                }
+                else
                 {
                     response.Succeeded = false;
                     response.StatusCode = StatusCodes.Status404NotFound;
-                    response.Message = "Driver not found.";
+                    response.Message = "Profile detail not found.";
                     return Content(HttpStatusCode.NotFound, response);
                 }
 
-                var model = new DriverProfileDTO
-                {
-                    Id = driver.Id,
-                    DriverName = driver.DriverName,
-                    Address = driver.DriverAddress,
-                    Email = driver.Email,
-                    MobileNumber = driver.MobileNumber,
-                    DlImage = driver.DlImage,
-                    DriverImage = driver.DriverImage,
-                    DlNumber = driver.DlNumber,
-                    CreateDate = driver.CreateDate,
-                    AlternateNo1 = driver.AlternateNo1,
-                };
-
-               
-                return Ok(new { Succeeded = true, StatusCode = 200, Message = "Driver profile retrieved successfully.", Role = "Driver", Data = model });
             }
             catch (Exception ex)
             {
@@ -69,24 +63,20 @@ namespace VardaanCab.APP.Controllers
 
         [HttpPut]
         [Route("UpdateDriverProfile")]
-        public IHttpActionResult UpdateDriverProfile(DriverProfileDTO model)
+        public async Task<IHttpActionResult> UpdateDriverProfile(DriverProfileDTO model)
         {
             try
             {
-                var checkdriver = ent.Drivers.Find(model.Id);
-                if(checkdriver != null)
+                bool isUpdated = await _driver.UpdateProfile(model);
+                if(isUpdated)
                 {
-                    checkdriver.DriverName = model.DriverName;
-                    checkdriver.Email = model.Email;
-                    checkdriver.DriverAddress = model.Address;
-                    checkdriver.AlternateNo1 = model.AlternateNo1;
-                    ent.SaveChanges();
                     return Ok(new { Status = 200, Message = "Profile updated successfully." });
                 }
                 else
                 {
                     return BadRequest("Driver profile not found.");
                 }
+                
             }
             catch (Exception)
             {
@@ -135,15 +125,13 @@ namespace VardaanCab.APP.Controllers
 
         [HttpPut]
         [Route("UpdateDriverActiveStatus")]
-        public IHttpActionResult UpdateDriverActiveStatus(DriverDTO model)
+        public async Task<IHttpActionResult> UpdateDriverActiveStatus(DriverDTO model)
         {
             try
             {
-                var data = ent.Drivers.Where(d => d.Id == model.Id).FirstOrDefault();
-                if (data != null)
+                bool isUpdated= await _driver.UpdateActiveStatus(model);
+                if (isUpdated)
                 {
-                    data.IsOnline = model.IsOnline;
-                    ent.SaveChanges();
                     if (model.IsOnline == true)
                     {
                         return Ok(new { StatusCode = 200, Message = "You are online now." });
@@ -157,6 +145,7 @@ namespace VardaanCab.APP.Controllers
                 {
                     return BadRequest("Driver not found.");
                 }
+                             
             }
             catch (Exception)
             {

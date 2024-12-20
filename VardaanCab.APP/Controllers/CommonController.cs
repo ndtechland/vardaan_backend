@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Vardaan.Services.IContract;
+using Vardaan.Services.IContractApi;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTOAPI;
@@ -52,13 +53,13 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpGet]
         [Route("GetStates")]
-        public IHttpActionResult GetStates()
+        public async Task<IHttpActionResult> GetStates()
         {
             try
             {
                 var response = new Response<StateMaster>();
-                var states = ent.StateMasters.ToList();
-                if (states.Count > 0) {
+                List<StateMaster> states = await _common.GetStates();
+                if (states.Count() > 0) {
                     return Ok(new { Succeeded = true, StatusCode = 200, Message = "States retrieved successfully.", data = states });
                 }
                 else
@@ -77,12 +78,12 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpGet]
         [Route("GetCityByStateId")]
-        public IHttpActionResult GetCityByStateId(int StateId)
+        public async Task<IHttpActionResult> GetCityByStateId(int StateId)
         {
             try
             {
                 var response = new Response<CityMaster>();
-                var city = ent.CityMasters.Where(x=>x.StateMaster_Id==StateId).ToList();
+                var city = await _common.GetCity(StateId);
                 if (city.Count > 0)
                 {
                     return Ok(new { Succeeded = true, StatusCode = 200, Message = "Cities retrieved successfully.", data = city });
@@ -103,12 +104,12 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpGet]
         [Route("GetSupport")]
-        public IHttpActionResult GetSupport()
+        public async Task<IHttpActionResult> GetSupport()
         {
             try
             {
                 var response = new Response<Support>();
-                var states = ent.Supports.FirstOrDefault();
+                var states = await _common.GetSupport();
                 if (states!=null)
                 {
                     return Ok(new { Succeeded = true, StatusCode = 200, Message = "Support retrieved successfully.", data = states });
@@ -129,12 +130,12 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpGet]
         [Route("GetTripTypes")]
-        public IHttpActionResult GetTripTypes()
+        public async Task<IHttpActionResult> GetTripTypes()
         {
             try
             {
                 var response = new Response<TripType>();
-                var triptypes = ent.TripTypes.Where(x=>x.TripMasterId==1).ToList();
+                var triptypes = await _common.GetTriptype();
                 if (triptypes.Count > 0)
                 {
                     return Ok(new { Succeeded = true, StatusCode = 200, Message = "Trip types retrieved successfully.", data = triptypes });
@@ -155,12 +156,12 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpGet]
         [Route("GetPickupShiftTime")]
-        public IHttpActionResult GetPickupShiftTime()
+        public async Task<IHttpActionResult> GetPickupShiftTime()
         {
             try
             {
                 var response = new Response<ShiftMaster>();
-                var shifttime = ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList();
+                var shifttime = await _common.GetPickupShifttimes();
                 if (shifttime.Count > 0)
                 {
                     return Ok(new { Succeeded = true, StatusCode = 200, Message = "Pickup shift time retrieved successfully.", data = shifttime });
@@ -181,12 +182,12 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpGet]
         [Route("GetDropShiftTime")]
-        public IHttpActionResult GetDropShiftTime()
+        public async Task< IHttpActionResult> GetDropShiftTime()
         {
             try
             {
                 var response = new Response<ShiftMaster>();
-                var shifttime = ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList();
+                var shifttime = await _common.GetDropShifttimes();
                 if (shifttime.Count > 0)
                 {
                     return Ok(new { Succeeded = true, StatusCode = 200, Message = "Drop shift time retrieved successfully.", data = shifttime });
@@ -207,12 +208,12 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpGet]
         [Route("GetShiftType")]
-        public IHttpActionResult GetShiftType()
+        public async Task<IHttpActionResult> GetShiftType()
         {
             try
             {
                 var response = new Response<TripMaster>();
-                var Shifttypes = ent.TripMasters.Where(x => x.Id == 1).ToList();
+                var Shifttypes = await _common.GetShiftTypes();
                 if (Shifttypes.Count > 0)
                 {
                     return Ok(new { Succeeded = true, StatusCode = 200, Message = "Shift types retrieved successfully.", data = Shifttypes });
@@ -234,52 +235,27 @@ namespace VardaanCab.APP.Controllers
 
         [HttpPut]
         [Route("UpdateEmployeeAndDriverDeviceId")]
-        public IHttpActionResult UpdateEmployeeAndDriverDeviceId(UpdateDeviceDTO model)
+        public async Task<IHttpActionResult> UpdateEmployeeAndDriverDeviceId(UpdateDeviceDTO model)
         {
             try
             {
                 var response = new Response<UpdateDeviceDTO>();
                 if (model.RoleName != "" && model.Id>0)
                 {
-                    if(model.RoleName== "Employee")
+                    bool isUpdated = await _common.GetUpdateEmployeeAndDriverDeviceId(model);
+                    if (isUpdated)
                     {
-                        var data = ent.Employees.Find(model.Id);
-                        if (data != null)
-                        {
-                            data.DeviceId = model.DeviceId;
-                            ent.SaveChanges();
-                            response.Succeeded = true;
-                            response.StatusCode = StatusCodes.Status200OK;
-                            response.Message = "Employee device id updated successfully.";
-                            return Content(HttpStatusCode.OK, response);
-                        }
-                        else 
-                        {
-                            response.Succeeded = false;
-                            response.StatusCode = StatusCodes.Status404NotFound;
-                            response.Message = "Employee not found.";
-                            return Content(HttpStatusCode.NotFound, response);
-                        }
+                        response.Succeeded = true;
+                        response.StatusCode = StatusCodes.Status200OK;
+                        response.Message = $"{model.RoleName} device id updated successfully.";
+                        return Content(HttpStatusCode.OK, response);
                     }
                     else
                     {
-                        var data = ent.Drivers.Find(model.Id);
-                        if (data != null)
-                        {
-                            data.DeviceId = model.DeviceId;
-                            ent.SaveChanges();
-                            response.Succeeded = true;
-                            response.StatusCode = StatusCodes.Status200OK;
-                            response.Message = "Driver device id updated successfully.";
-                            return Content(HttpStatusCode.OK, response);
-                        }
-                        else
-                        {
-                            response.Succeeded = false;
-                            response.StatusCode = StatusCodes.Status404NotFound;
-                            response.Message = "Driver not found.";
-                            return Content(HttpStatusCode.NotFound, response);
-                        }
+                        response.Succeeded = false;
+                        response.StatusCode = StatusCodes.Status404NotFound;
+                        response.Message = $"{model.RoleName} not found.";
+                        return Content(HttpStatusCode.OK, response);
                     }
                 }
                 else
