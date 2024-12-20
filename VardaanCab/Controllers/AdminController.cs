@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.EMMA;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -73,6 +75,51 @@ namespace VardaanCab.Controllers
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
+        }
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
+        }
+        [HttpPost, AllowAnonymous]
+        public ActionResult ForgotPassword(string Username)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Username))
+                {
+                    bool result = ent.Employees.Any(x =>x.Employee_Id == Username || x.MobileNumber == Username || x.Email == Username);
+                    if(result)
+                    {
+
+                        return View();
+                    }
+                    else
+                    {
+                        TempData["msg"] = "Your Username is not Valied...!";
+                        return RedirectToAction("Login");
+                    }
+                    
+                }
+                else
+                {
+                    TempData["msg"] = "Please Enter the Username..!";
+                    return RedirectToAction("Login");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
         }
 
         public ActionResult ShowMenus()
