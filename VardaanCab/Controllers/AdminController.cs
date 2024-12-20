@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.EMMA;
 using NPOI.POIFS.Crypt.Dsig;
 using System;
@@ -9,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 using System.Web.Security;
 using VardaanCab.DataAccessLayer.DataLayer;
@@ -24,6 +26,7 @@ namespace VardaanCab.Controllers
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         CommonRepository cr = new CommonRepository();
+        private readonly CommonOperations _random = new CommonOperations();
 
         [AllowAnonymous]
         public ActionResult Login(string ReturnUrl)
@@ -110,7 +113,7 @@ namespace VardaanCab.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
-        [AllowAnonymous]
+        [HttpGet,AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             try
@@ -124,37 +127,109 @@ namespace VardaanCab.Controllers
             }
         }
         [HttpPost, AllowAnonymous]
-        public ActionResult ForgotPassword(string Username)
+        public ActionResult ForgotPassword(ForgotDTO model)
         {
             try
             {
-                if (!string.IsNullOrEmpty(Username))
+                if (!string.IsNullOrEmpty(model.Username))
                 {
-                    bool result = ent.Employees.Any(x =>x.Employee_Id == Username || x.MobileNumber == Username || x.Email == Username);
-                    if(result)
+                    var result = ent.Employees.FirstOrDefault(x => x.Employee_Id == model.Username || x.MobileNumber == model.Username || x.Email == model.Username);
+                    if (result!=null)
                     {
-                        return View();
+                        bool isFirst = (bool)result.IsFirst;
+                        if(!isFirst)
+                        {
+                            int OTPNumber = _random.GenerateRandomOTP();
+                            string msg = "Hi " + result.Employee_First_Name + result.Employee_Middle_Name + result.Employee_Last_Name + ",\n Welcome to the Vardaan Employee Login. \n OTP :" + OTPNumber + "";
+                            SmsOperation.SendSms(result.MobileNumber, msg);
+                            result.OTP = OTPNumber;
+                            ent.SaveChanges();
+                        }
+                        TempData["Username"] = model.Username;
+                        TempData["isFirst"] = isFirst;
+                        return RedirectToAction("CreatePassword");
                     }
                     else
                     {
-                        TempData["msg"] = "Your Username is not Valied...!";
-                        return RedirectToAction("Login");
+                        TempData["msg"] = "Your Username is not Valid...!";
+                        return RedirectToAction("ForgotPassword");
                     }
-                    
                 }
                 else
                 {
                     TempData["msg"] = "Please Enter the Username..!";
-                    return RedirectToAction("Login");
+                    return RedirectToAction("ForgotPassword");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
-                throw new Exception("Server Error : " + ex.Message);
+                TempData["msg"] = "An error occurred while processing your request. Please try again later.";
+                return RedirectToAction("ForgotPassword");
             }
         }
+        [HttpGet, AllowAnonymous]
+        public ActionResult CreatePassword()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
+        [HttpPost, AllowAnonymous]
+        public ActionResult CreatePassword(ForgotDTO model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = ent.Employees.FirstOrDefault(x => x.Employee_Id == model.Username || x.MobileNumber == model.Username || x.Email == model.Username);
+
+                    if (user != null)
+                    {
+                        if(model.OTP!=user.OTP && model.OTP>0)
+                        {
+                            TempData["Username"] = model.Username;
+                            TempData["isFirst"] = user.IsFirst;
+                            TempData["msg"] = "Invalid OTP.";
+                            return RedirectToAction("CreatePassword");
+
+                        }
+                        else
+                        {
+                            user.Password = model.Password;
+                            user.IsFirst = true;
+                            ent.SaveChanges();
+
+                            TempData["Username"] = model.Username;
+                            TempData["isFirst"] = user.IsFirst;
+                            TempData["msg"] = "Password has been set successfully. Please log in with your new password.";
+                            return RedirectToAction("Login");
+                        }
+                       
+                    }
+                    else
+                    {
+                        TempData["msg"] = "User not found. Please try again.";
+                        return RedirectToAction("CreatePassword");
+                    }
+                }
+                else
+                {
+                    TempData["msg"] = "Please fill in all required fields.";
+                    return View(model);
+                }
+            }
+            catch (Exception)
+            {
+                TempData["msg"] = "An error occurred while setting your password. Please try again later.";
+                return RedirectToAction("ForgotPassword");
+            }
+        }
         public ActionResult ShowMenus()
         {
             int userId = int.Parse(User.Identity.Name);
