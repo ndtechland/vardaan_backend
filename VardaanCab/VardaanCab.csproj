@@ -3011,6 +3011,7 @@
     <Content Include="Views\AdministratorETS\AssignAccess.cshtml" />
     <Content Include="Views\AdministratorETS\CreateRole.cshtml" />
     <Content Include="Views\AdministratorETS\AccessAssignList.cshtml" />
+    <Content Include="Views\Admin\ForgotPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
