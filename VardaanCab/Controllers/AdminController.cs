@@ -81,13 +81,14 @@ namespace VardaanCab.Controllers
             try
             {
                 var result = ent.Employees.Where(x => (x.Employee_Id == model.Username 
-                || x.MobileNumber == model.Username || x.Email == model.Username) && x.Password == model.Password).FirstOrDefault();
+                || x.MobileNumber == model.Username || x.Email == model.Username) && x.Password == model.Password && x.IsActive == true).FirstOrDefault();
                 if (result != null)
                 {
                     FormsAuthentication.SetAuthCookie(result.Id.ToString(), true);
                     string hostName = Dns.GetHostName();
                     string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
                     Session["uEmail"] = result.Email;
+                    Session["IsAuth"] = true;
                     var lh = new LoginHistory
                     {
                         UserLogin_Id = result.Id,
@@ -133,7 +134,7 @@ namespace VardaanCab.Controllers
             {
                 if (!string.IsNullOrEmpty(model.Username))
                 {
-                    var result = ent.Employees.FirstOrDefault(x => x.Employee_Id == model.Username || x.MobileNumber == model.Username || x.Email == model.Username);
+                    var result = ent.Employees.FirstOrDefault(x => (x.Employee_Id == model.Username || x.MobileNumber == model.Username || x.Email == model.Username) && x.IsActive == true);
                     if (result!=null)
                     {
                         bool isFirst = (bool)result.IsFirst;
@@ -542,30 +543,90 @@ namespace VardaanCab.Controllers
         public ActionResult ShowSidebarMenus()
         {
             int userId = int.Parse(User.Identity.Name);
-            if (!ent.UserLogins.Any(x => x.Id == userId && x.Role == "Customer"))
+            if (Convert.ToBoolean(Session["IsAuth"]) == false)
             {
-                var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
-                var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
-                foreach (var item in softwareLinks)
+
+
+                if (!ent.UserLogins.Any(x => x.Id == userId && x.Role == "Customer"))
                 {
-                    var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + " and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
-                    var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
-                    item.ChildMenus = l;
+                    var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
+                    var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
+                    foreach (var item in softwareLinks)
+                    {
+                        var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + " and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
+                        var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
+                        item.ChildMenus = l;
+                    }
+                    return PartialView(softwareLinks);
                 }
-                return PartialView(softwareLinks);
+                else
+                {
+                    #region
+                    var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (" + 1141 + "," + 1142 + ")";
+                    var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
+                    foreach (var item in softwareLinks)
+                    {
+                        var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + "";
+                        var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
+                        item.ChildMenus = l;
+                    }
+                    return PartialView(softwareLinks);
+                    #endregion
+                }
             }
             else
             {
-                var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (" + 1141 + "," + 1142 + ")";
-                var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
-                foreach (var item in softwareLinks)
+                var Empdata = ent.Employees.Where(x => x.Id == userId && x.IsActive == true).FirstOrDefault();
+                if (Empdata != null)
                 {
-                    var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + "";
-                    var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
-                    item.ChildMenus = l;
+                    var EmpAccessAssign = ent.AccessAssigns.Where(x => x.CompanyId == Empdata.Company_Id && x.EmployeeId == Empdata.Id && x.IsActive == true).FirstOrDefault();
+                    if (EmpAccessAssign != null)
+                    {
+                        var EmpUserRole = ent.UserRoles.Where(x => x.Id == EmpAccessAssign.Id && x.IsActive == true).FirstOrDefault();
+                        if (EmpUserRole != null)
+                        {
+                            if(EmpUserRole.IsAllRead == true && EmpUserRole.IsAllWrite == true)
+                            {
+                                var query = @"select * from SoftwareLink where  IsHeading=1";
+                                var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
+                                foreach (var item in softwareLinks)
+                                {
+                                    var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + "";
+                                    var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
+                                    item.ChildMenus = l;
+                                }
+                                return PartialView(softwareLinks);
+                            }
+                            else
+                            {
+                                var Headlist1 = EmpUserRole.IsReadChecked.Split(',').Select(x => x.Trim()).ToList();
+                                var Headlist2 = EmpUserRole.IsWriteChecked.Split(',').Select(x => x.Trim()).ToList();
+                                var HeadMatched = Headlist1.Intersect(Headlist2).ToList();
+                                var HeadUnmatched = Headlist1.Except(Headlist2).Concat(Headlist2.Except(Headlist1)).ToList();
+                                string matchedHead = string.Join(",", HeadMatched) + "," + string.Join(",", HeadUnmatched);
+                                var query = @"select * from SoftwareLink where IsHeading=1 and Id in(" + matchedHead.Replace("\"", "") + ")";
+                                var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
+
+                                var SubHeadlist1 = EmpUserRole.IsSubReadChecked.Split(',').Select(x => x.Trim()).ToList();
+                                var SubHeadlist2 = EmpUserRole.IsSubWriteChecked.Split(',').Select(x => x.Trim()).ToList();
+                                var SubHeadMatched = SubHeadlist1.Intersect(SubHeadlist2).ToList();
+                                var SubHeadUnmatched = SubHeadlist1.Except(SubHeadlist2).Concat(SubHeadlist2.Except(SubHeadlist1)).ToList();
+                                string matchedSubHead = string.Join(",", SubHeadMatched) + "," + string.Join(",", SubHeadUnmatched);
+
+                                foreach (var item in softwareLinks)
+                                {
+                                    var q = @"select * from SoftwareLink where  Parent_Id=" + item.Id + "";
+                                    var l = ent.Database.SqlQuery<SoftwareLink>(q).ToList();
+                                    item.ChildMenus = l;
+                                }
+                                return PartialView(softwareLinks);
+                            }
+                        }
+                    }
+
                 }
-                return PartialView(softwareLinks);
             }
+            return View();
         }
     }
 }
