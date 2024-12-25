@@ -54,6 +54,7 @@ namespace VardaanCab.Controllers
                 string hostName = Dns.GetHostName();
                 string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
                 Session["uEmail"] = data.Email;
+                Session["IsAuth"] = false;
                 var lh = new LoginHistory
                 {
                     UserLogin_Id = data.Id,
@@ -84,10 +85,11 @@ namespace VardaanCab.Controllers
                 || x.MobileNumber == model.Username || x.Email == model.Username) && x.Password == model.Password && x.IsActive == true).FirstOrDefault();
                 if (result != null)
                 {
+                    var CompanyName = ent.Customers.Where(x => x.Id == result.Company_Id).First().OrgName;
                     FormsAuthentication.SetAuthCookie(result.Id.ToString(), true);
                     string hostName = Dns.GetHostName();
                     string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
-                    Session["uEmail"] = result.Email;
+                    Session["uEmail"] = CompanyName;
                     Session["IsAuth"] = true;
                     var lh = new LoginHistory
                     {
@@ -525,7 +527,7 @@ namespace VardaanCab.Controllers
         {
             var logs = (from log in ent.Logs
                         join ul in ent.UserLogins
-   on log.UserLogin_Id equals ul.Id
+                        on log.UserLogin_Id equals ul.Id
                         orderby log.Id descending
                         select new LogsDTO
                         {
@@ -545,8 +547,6 @@ namespace VardaanCab.Controllers
             int userId = int.Parse(User.Identity.Name);
             if (Convert.ToBoolean(Session["IsAuth"]) == false)
             {
-
-
                 if (!ent.UserLogins.Any(x => x.Id == userId && x.Role == "Customer"))
                 {
                     var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";

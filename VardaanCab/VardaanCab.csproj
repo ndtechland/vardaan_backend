@@ -3013,6 +3013,7 @@
     <Content Include="Views\AdministratorETS\AccessAssignList.cshtml" />
     <Content Include="Views\Admin\ForgotPassword.cshtml" />
     <Content Include="Views\Admin\CreatePassword.cshtml" />
+    <Content Include="Views\ETS\Routing.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

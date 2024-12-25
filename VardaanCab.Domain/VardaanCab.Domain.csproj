@@ -113,6 +113,7 @@
     <Compile Include="DTO\RentalTypeDTO.cs" />
     <Compile Include="DTO\RequiredCab.cs" />
     <Compile Include="DTO\RoleManageModel.cs" />
+    <Compile Include="DTO\RoutingDTO.cs" />
     <Compile Include="DTO\ShiftDTO.cs" />
     <Compile Include="DTO\SoftwareLinkDTO.cs" />
     <Compile Include="DTO\StateMasterDTO.cs" />
