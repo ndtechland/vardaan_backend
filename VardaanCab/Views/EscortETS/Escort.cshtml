@@ -70,15 +70,23 @@
                                 </div>
                             </div>
                         </div>
-                        @*<div class="card-header  card-header--2">
-                            <div>
-                                <h5>@ViewBag.Heading</h5>
-                            </div>
-                            <form class="d-inline-flex">
-                                <a href="/EscortETS/EscortsList" class="btn btn-primary">Show all</a>
+                        <div class="row">
+                            <div class="text-end">
+                                <a href="/EscortETS/EscortsList?menuId=@ViewBag.menuId" class="btn btn-primary">Show all</a>
 
-                            </form>
-                        </div>*@
+                            </div>
+                        </div>
+                        
+
+                        @*<div class="card-header  card-header--2">
+            <div>
+                <h5>@ViewBag.Heading</h5>
+            </div>
+            <form class="d-inline-flex">
+                <a href="/EscortETS/EscortsList" class="btn btn-primary">Show all</a>
+
+            </form>
+        </div>*@
                         <form class="theme-form mega-form" action="Escort" method="post" enctype="multipart/form-data" id="escortForm">
                             <div class="card-body">
                                 <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
