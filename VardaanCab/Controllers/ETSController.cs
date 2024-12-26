@@ -401,7 +401,17 @@ namespace VardaanCab.Controllers
         {
             try
             {
+                model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).OrderByDescending(a => a.Id).ToList(), "Id", "OrgName");
+                model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
+                model.ShiftTypes = new SelectList(ent.TripMasters.Where(x => x.Id == 1).ToList(), "Id", "TripName");
+                model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
+                model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
+                model.Zones = new SelectList(ent.CompanyZones.ToList(), "Id", "CompanyZone1");
                 
+                if(model.StartDate != null && model.EndDate != null)
+                {
+                    var EmployeeReqList = ent.EmployeeRequests.Where(x => x.StartRequestDate <= model.StartDate && x.EndRequestDate <= model.EndDate).ToList();   
+                }
                 return View();
             }
             catch (Exception ex)
