@@ -385,6 +385,7 @@ namespace VardaanCab.Controllers
                 model.ShiftTypes = new SelectList(ent.TripMasters.Where(x => x.Id == 1).ToList(), "Id", "TripName");
                 model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
                 model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
+                model.Zones = new SelectList(ent.CompanyZones.ToList(), "Id", "CompanyZone1");
                 ViewBag.BtnTXT = "Create Routing";
                 ViewBag.Heading = "Add Shift Time";
                 return View(model);

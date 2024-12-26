@@ -7,11 +7,9 @@
 
 <div class="container-fluid">
     <div class="row">
-
         <div class="col-12">
             <div class="row">
                 <div class="col-sm-12">
-                    <!--Hotel detail start-->
                     <div class="card">
                         <div class="card-header">
                             <h5>Routing</h5>
@@ -33,13 +31,13 @@
                                         <div class="row">
                                             <div class="col-6">
                                                 <label class="form-label-title">Start Date</label>
-                                                @Html.EditorFor(model => model.PickupAndDropDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
-                                                @Html.ValidationMessageFor(model => model.PickupAndDropDate, "", new { @class = "text-danger" })
+                                                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col-6">
                                                 <label class="form-label-title">End Date</label>
-                                                @Html.EditorFor(model => model.PickupAndDropDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
-                                                @Html.ValidationMessageFor(model => model.PickupAndDropDate, "", new { @class = "text-danger" })
+                                                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col-6">
                                                 <label class="form-label-title">Select Facility For Routing</label>
@@ -91,24 +89,28 @@
 
                                             <div class="col-6">
                                                 <label class="form-label-title">Trip Type</label>
-                                                @Html.DropDownListFor(a => a.Trip_Type, Model.TripTypes, "--Select Trip Types--", new { @class = "form-control" })
+                                                @Html.DropDownListFor(a => a.Trip_Type, Model.TripTypes, "--Select Trip Types--", new { @class = "form-control", id = "ddltripType" })
 
                                                 @Html.ValidationMessageFor(model => model.Trip_Type, "", new { @class = "text-danger" })
 
                                             </div>
 
                                             <div class="col-6">
-                                                <label class="form-label-title">Select Shift Time</label>
+                                                <label class="form-label-title">
+                                                    <input class="form-check-input" type="radio" name="ShiftOption" id="selectShiftTime" value="shift" checked />
+                                                    Select Shift Time
+                                                </label>
                                                 @Html.DropDownListFor(a => a.Shift_Time, Model.PickUpshiftTimes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
                                                 @Html.ValidationMessageFor(model => model.Shift_Time, "", new { @class = "text-danger" })
-
                                             </div>
 
                                             <div class="col-6">
-                                                <label class="form-label-title">Select Adhoc Shift Time</label>
-                                                @Html.EditorFor(model => model.Adhoc_Shift_Time, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+                                                <label class="form-label-title">
+                                                    <input class="form-check-input" type="radio" name="ShiftOption" id="selectAdhocShiftTime" value="adhoc" />
+                                                    Select Adhoc Shift Time
+                                                </label>
+                                                @Html.EditorFor(model => model.Adhoc_Shift_Time, new { htmlAttributes = new { @class = "form-control", @type = "time", id = "adhocshifttime", disabled = "disabled" } })
                                                 @Html.ValidationMessageFor(model => model.Adhoc_Shift_Time, "", new { @class = "text-danger" })
-
                                             </div>
 
                                             <div class="col-6" style="display:none;">
@@ -148,29 +150,86 @@
                                                 @Html.ValidationMessageFor(model => model.Shift_Time, "", new { @class = "text-danger" })
 
                                             </div>
-
-                                            <div class="col-6">
-                                                <div class="form-check">
-                                                    @Html.CheckBoxFor(model => model.Generate_Routing, new { @class = "form-check-input" })
-                                                    <label class="form-label-title">Generate Routing</label>
+                                            <div class="row" style="outline:auto;margin-top: 18px;padding-bottom: 17px;padding-top: 19px;">
+                                                <div class="col-6">
+                                                    <input class="form-check-input" type="radio" id="generateRouting" checked name="routingOption" value="generate" />                                                <label class="form-label-title">Generate Routing</label>
                                                     @Html.ValidationMessageFor(model => model.Generate_Routing, "", new { @class = "text-danger" })
+
                                                 </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-check">
-                                                    @Html.CheckBoxFor(model => model.Remember_Routing, new { @class = "form-check-input" })
+                                                <div class="col-6">
+                                                    <input class="form-check-input" type="radio" id="rememberRouting" name="routingOption" value="remember" />
                                                     <label class="form-label-title">Remember Routing</label>
                                                     @Html.ValidationMessageFor(model => model.Remember_Routing, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-check">
-                                                    @Html.CheckBoxFor(model => model.Assign_Cab_by_Route, new { @class = "form-check-input" })
-                                                    <label class="form-label-title">Assign a Cab by Route</label>
-                                                    @Html.ValidationMessageFor(model => model.Assign_Cab_by_Route, "", new { @class = "text-danger" })
+
                                                 </div>
                                             </div>
 
+                                            <div class="col-4 conditionalFields">
+                                                <label class="form-label-title">Actual vehicle Required</label>
+                                                <select class="form-control">
+                                                    <option value="no">NO</option>
+                                                    <option value="yes">YES</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-4 conditionalFields">
+                                                <label class="form-label-title">Escort Required</label>
+                                                <select class="form-control">
+                                                    <option value="no">NO</option>
+                                                    <option value="yes">YES</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-4 conditionalFields">
+                                                <label class="form-label-title">Is Vendor Allocation Required</label>
+                                                <select class="form-control">
+                                                    <option value="no">NO</option>
+                                                    <option value="yes">YES</option>
+                                                </select>
+
+                                            </div>
+                                            <div class="col-md-4 conditionalFields">
+                                                <label class="form-label-title">Trip Type</label>
+                                                @Html.DropDownListFor(a => a.Trip_Type, Model.TripTypes, "--Select Trip Types--", new { @class = "form-control", id = "tripType" })
+
+
+                                            </div>
+
+                                            <div class="col-md-4" id="pickupShiftTimeContainer" style="display: none;">
+                                                <label class="form-label-title">Pickup Shift Time</label>
+                                                @Html.DropDownListFor(a => a.Zone_Id, Model.PickUpshiftTimes, "--Select Pickup Shift Time--", new { @class = "form-control", id = "pickupshifttime" })
+                                            </div>
+
+                                            <div class="col-md-4" id="dropShiftTimeContainer" style="display: none;">
+                                                <label class="form-label-title">Drop Shift Time</label>
+                                                @Html.DropDownListFor(a => a.Zone_Id, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "dropshifttime" })
+                                            </div>
+
+                                            <div class="col-4 conditionalFields">
+                                                <label class="form-label-title">Shift Date</label>
+                                                @Html.EditorFor(model => model.ShiftDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                                @Html.ValidationMessageFor(model => model.ShiftDate, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="text-end" style="margin-top:10px;">
+                                                    <button class="btn btn-primary me-3">View Previous Routes</button>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-check">
+                                                        @Html.CheckBoxFor(model => model.Assign_Cab_by_Route, new { @class = "form-check-input", id = "assignByCabRoute" })
+                                                        <label class="form-label-title">Assign a Cab by Route</label>
+                                                        @Html.ValidationMessageFor(model => model.Assign_Cab_by_Route, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12" id="zoneContainer" style="display: none;">
+                                                <label class="form-label-title">
+                                                    Route Name
+                                                </label>
+                                                @Html.DropDownListFor(a => a.Zone_Id, Model.Zones, "--Select Zone--", new { @class = "form-control" })
+                                            </div>
                                         </div>
                                         </div>
                                 </div>
@@ -181,14 +240,77 @@
                             </div>
                         </form>
                     </div>
-                    <!--Hotel detail end-->
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const shiftTimeDropdown = document.getElementById('shifttype');
+        const adhocShiftTimeInput = document.getElementById('adhocshifttime');
+        const selectShiftTimeRadio = document.getElementById('selectShiftTime');
+        const selectAdhocShiftTimeRadio = document.getElementById('selectAdhocShiftTime');
+        const rememberRouting = document.getElementById('rememberRouting');
+        const generateRouting = document.getElementById('generateRouting');
+        const conditionalFields = document.querySelectorAll('.conditionalFields');
+
+        const tripType = document.getElementById("tripType");
+        const pickupContainer = document.getElementById("pickupShiftTimeContainer");
+        const dropContainer = document.getElementById("dropShiftTimeContainer");
+
+        const checkbox = document.getElementById("assignByCabRoute");
+        const zoneContainer = document.getElementById("zoneContainer");
+        
+
+         
+        function toggleFields() {
+            if (selectShiftTimeRadio.checked) {
+                shiftTimeDropdown.disabled = false;
+                adhocShiftTimeInput.disabled = true;
+            } else if (selectAdhocShiftTimeRadio.checked) {
+                shiftTimeDropdown.disabled = true;
+                adhocShiftTimeInput.disabled = false;
+            }
+
+            conditionalFields.forEach(field => {
+                if (rememberRouting.checked) {
+                    field.style.display = 'block';
+                } else if (generateRouting.checked) {
+                    field.style.display = 'none';
+                }
+            });
+
+            const selectedType = tripType.value;
+
+            if (selectedType === "3") {
+                pickupContainer.style.display = "block";
+                dropContainer.style.display = "block";
+            } else if (selectedType === "1") {
+                pickupContainer.style.display = "block";
+                dropContainer.style.display = "none";
+            } else if (selectedType === "2") {
+                pickupContainer.style.display = "none";
+                dropContainer.style.display = "block";
+            }
+
+            zoneContainer.style.display = checkbox.checked ? "block" : "none";
+
+        }
+
+        selectShiftTimeRadio.addEventListener('change', toggleFields);
+        selectAdhocShiftTimeRadio.addEventListener('change', toggleFields);
+
+        rememberRouting.addEventListener('change', toggleFields);
+        generateRouting.addEventListener('change', toggleFields);
+
+        tripType.addEventListener("change", toggleFields);
+
+        checkbox.addEventListener("change", toggleFields);
+
+        toggleFields();
+    });
+
 
 </script>

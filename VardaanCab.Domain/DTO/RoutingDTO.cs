@@ -10,7 +10,9 @@ namespace VardaanCab.Domain.DTO
 {
     public class RoutingDTO
     {
-        public DateTime PickupAndDropDate { get; set; } 
+        public DateTime StartDate { get; set; } 
+        public DateTime EndDate { get; set; } 
+        public DateTime ShiftDate { get; set; } 
         public int Company_Id { get; set; } 
         public int Vehicle_Type { get; set; } 
         public string Routing_Type { get; set; } 
@@ -31,5 +33,6 @@ namespace VardaanCab.Domain.DTO
         public SelectList PickUpshiftTimes { get; set; }
         public SelectList DropshiftTimes { get; set; }
         public SelectList ShiftTypes { get; set; }
+        public SelectList Zones { get; set; }
     }
 }
