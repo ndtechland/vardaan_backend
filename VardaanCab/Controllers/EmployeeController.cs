@@ -433,7 +433,7 @@ namespace VardaanCab.Controllers
                                     ent.Customers.Where(x => x.CompanyName.ToLower() == CompanyName.ToLower())
                                         .FirstOrDefault()?.Id ?? 0,
 
-                                Company_location = row.Cell(2).GetValue<int>().ToString(),
+                                Company_location = row.Cell(2).GetValue<string>() ?? string.Empty,
                                 Employee_Id = row.Cell(3).GetValue<string>() ?? string.Empty,
                                 Employee_First_Name = row.Cell(4).GetValue<string>() ?? string.Empty,
                                 Employee_Middle_Name = row.Cell(5).GetValue<string>() ?? string.Empty,
@@ -485,7 +485,6 @@ namespace VardaanCab.Controllers
                                 Gender = row.Cell(24).GetValue<string>(),
                                 AlternateNumber = row.Cell(25).GetValue<string>() ?? string.Empty
                             };
-
                             employees.Add(employee);
                         }
 

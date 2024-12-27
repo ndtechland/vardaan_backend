@@ -78,23 +78,34 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return View(model);
-
-                bool isCreated = await _escort.AddUpdateEscort(model);
-
-                if (isCreated)
+                var empinfo = ent.Employees.Where(e => e.IsActive == true && e.Employee_Id == model.EscortEmployeeId).FirstOrDefault();
+                if(empinfo==null)
                 {
-                    TempData["msg"] = model.Id > 0
-                        ? "Record has been updated successfully."
-                        : "Record has been added successfully.";
+                    TempData["errormsg"] = $"Failed. Please register as an employee first with employee id {model.EscortEmployeeId}.";
+                    return RedirectToAction("Escort", new { menuId = model.MenuId });
+
                 }
                 else
                 {
-                    TempData["Errormsg"] = "Failed.";
+                    bool isCreated = await _escort.AddUpdateEscort(model);
+
+                    if (isCreated)
+                    {
+                        TempData["msg"] = model.Id > 0
+                            ? "Record has been updated successfully."
+                            : "Record has been added successfully.";
+                        return RedirectToAction("Escort", new { menuId = model.MenuId });
+
+                    }
+                    else
+                    {
+                        TempData["errormsg"] = "Failed.";
+                        return RedirectToAction("Escort", new { menuId = model.MenuId });
+
+                    }
+
                 }
 
-                return RedirectToAction("Escort", new { menuId = model.MenuId });
             }
             catch (Exception ex)
             {

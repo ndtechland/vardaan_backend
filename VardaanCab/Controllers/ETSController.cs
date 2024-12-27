@@ -35,7 +35,7 @@ namespace VardaanCab.Controllers
         public ActionResult CreateRequest(int menuId = 0, int id = 0)
         {
             var model = new CreateRequestDTO();
-            model.Companies = new SelectList(ent.Customers.Where(c=>c.IsActive==true).ToList(), "Id", "CompanyName");
+            model.Companies = new SelectList(ent.Customers.Where(c=>c.IsActive==true).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
             model.TripTypes = new SelectList(ent.TripTypes.Where(x=>x.TripMasterId==1).ToList(), "Id", "TripTypeName");
             model.ShiftTypes = new SelectList(ent.TripMasters.Where(x=>x.Id==1).ToList(), "Id", "TripName");
             model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x=>x.TripTypeId==1).ToList(), "Id", "ShiftTime");
@@ -102,23 +102,32 @@ namespace VardaanCab.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateRequest(CreateRequestDTO model)
         {
-            model.Companies = new SelectList(ent.Customers.ToList(), "Id", "CustomerName");
             try
             {
-                if (!ModelState.IsValid)
-                    return View(model);
-                bool isCreated = await _ets.AddUpdateRequest(model);
-                if (isCreated)
+                var empinfo = ent.Employees.Where(e => e.IsActive == true && e.Employee_Id == model.EmployeeId).FirstOrDefault();
+                if(empinfo!=null)
                 {
-                    TempData["msg"] = model.Id > 0
-                        ? "Record has been updated successfully."
-                        : "Record has been added successfully.";
+                    bool isCreated = await _ets.AddUpdateRequest(model);
+                    if (isCreated)
+                    {
+                        TempData["msg"] = model.Id > 0
+                            ? "Record has been updated successfully."
+                            : "Record has been added successfully.";
+                        return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
+
+                    }
+                    else
+                    {
+                        TempData["errormsg"] = "Failed.";
+                        return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
+
+                    }
                 }
                 else
                 {
-                    TempData["msg"] = "Failed.";
+                    TempData["errormsg"] = $"Employee with ID {model.EmployeeId} does not exist or is not active.";
+                    return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
                 }
-                return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
 
             }
             catch (Exception)
@@ -392,7 +401,6 @@ namespace VardaanCab.Controllers
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Server Error + " + ex.Message);
             }
         }

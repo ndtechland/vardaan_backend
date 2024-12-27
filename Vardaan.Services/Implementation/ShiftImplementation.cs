@@ -20,14 +20,14 @@ namespace Vardaan.Services.Implementation
                             join tt in ent.TripTypes on sm.TripTypeId equals tt.Id
                             join c in ent.Customers on sm.CompanyId equals c.Id
                             join dm in ent.DepartmentMasters on sm.DepartmentId equals dm.Id
-                            join cz in ent.CompanyZones on sm.CompanyZoneId equals cz.Id
+                            //join cz in ent.CompanyZones on sm.CompanyZoneId equals cz.Id
                             orderby sm.Id descending
                             select new GetShift
                             {
                                 Id = sm.Id,
                                 TripType = tt.TripTypeName,
                                 CompanyName = c.CompanyName,
-                                CompanyZoneName = cz.CompanyZone1,
+                                //CompanyZoneName = cz.CompanyZone1,
                                 DepartmentName = dm.DepartmentName,
                                 ShiftBufferTime = sm.ShiftBufferTime,
                                 ShiftTime = sm.ShiftTime
