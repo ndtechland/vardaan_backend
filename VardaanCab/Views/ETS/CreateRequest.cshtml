@@ -86,6 +86,14 @@
                                         </div>
                                     </div>
                                 }
+                                @if (TempData["errormsg"] != null)
+                                {
+                                    <div class="mb-3">
+                                        <div class="alert alert-danger">
+                                            @TempData["errormsg"]
+                                        </div>
+                                    </div>
+                                }
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
@@ -266,10 +274,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Shift Type</label>
-                                                @*<select id="shifttype" name="ShiftType" class="form-control" disabled>
-                                    <option value="">--Select Shift Type--</option>
-                                    <option value="NORMAL" @(Model.ShiftType == "NORMAL" ? "selected" : "")>NORMAL</option>
-                                </select>*@
+                                              
                                                 @Html.DropDownListFor(a => a.ShiftType, Model.ShiftTypes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
 
                                             </div>
@@ -283,50 +288,7 @@
                                                 @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "dropshifttime" })
 
                                             </div>
-                                            @*<div class="col-md-3" id="pickupshift">
-                                                <label class="form-label-title ">Shift Time</label>
-                                                @Html.DropDownListFor(a => a.PickupShiftTimeId, Model.PickUpshiftTimes, "--Select Shift Time--", new { @class = "form-control" })
-                                            </div>
-                                            <div class="col-md-3" id="dropshift">
-                                                <label class="form-label-title ">Shift Time</label>
-
-                                                @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Shift Time--", new { @class = "form-control" })
-                                            </div>*@
-
-                                            @*<div class="col-md-6">
-                                <div id="pickupLocation">
-                                    <label class="form-label-title">Pickup Location</label>
-                                    <div class="input-group">
-                                        <select name="PickupLocation" class="form-control">
-                                            <option value="">--Select Pickup Location--</option>
-                                            <option value="sector1">Sector 1</option>
-                                            <option value="sector2">Sector 2</option>
-                                            <option value="sector3">Sector 3</option>
-                                        </select>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                                            <i class="fa fa-location-arrow text-primary"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div id="dropLocation">
-                                    <label class="form-label-title">Drop Location</label>
-                                    <div class="input-group">
-                                        <select name="DropLocation" id="dropLocation" class="form-control">
-                                            <option value="">--Select Drop Location--</option>
-                                            <option value="sector1">Sector 1</option>
-                                            <option value="sector2">Sector 2</option>
-                                            <option value="sector3">Sector 3</option>
-                                        </select>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#geoLocationModal">
-                                            <i class="fa fa-location-arrow text-primary"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                            </div>*@
+                                          
 
                                         </div>
 
@@ -406,205 +368,6 @@
     </div>
 </div>
 
-@*<script>
-        document.addEventListener("DOMContentLoaded", function () {
-
-            const RequestType = document.querySelector('[name="RequestType"]');
-            const pickupLocation = document.querySelector('#pickupLocation');
-            const dropLocation = document.querySelector('#dropLocation');
-            const destinationRequestMethod = document.querySelector('#destinationRequestMethod');
-            const employeeId = document.querySelector('#employeeId');
-            const gender = document.querySelector('#gender');
-            const firstName = document.querySelector('#firstName');
-            const lastName = document.querySelector('#lastName');
-            const email = document.querySelector('#email');
-            const guestContact = document.querySelector('#guestContact');
-            const triptype = document.querySelector('#triptype');
-            const ShiftType = document.querySelector('#shifttype');
-            const guestparts = document.querySelectorAll('.guestpart');
-            const smstriggerlocation = document.querySelector('#smstriggerlocation');
-            const LocationType = document.querySelector('[name="LocationType"]');
-            const StartRequestDate = document.querySelector('[name="StartRequestDate"]');
-            const EndRequestDate = document.querySelector('[name="EndRequestDate"]');
-
-
-            function handleRequestTypeChange() {
-                const value = RequestType.value;
-
-                if (value === "GUEST") {
-                    guestparts.forEach(part => {
-                        part.parentElement.style.display = "block";
-                    });
-                    employeeId.disabled = false
-                }
-                else if (value === "SELF" || value === "") {
-                    employeeId.disabled = true;
-                    guestparts.forEach(part => {
-                        part.parentElement.style.display = "none";
-                    });
-                    resetEmployeeDetails();
-                }
-                else {
-                    guestparts.forEach(part => {
-                        part.parentElement.style.display = "none";
-                    });
-
-                    employeeId.disabled = false;
-                    resetEmployeeDetails();
-                }
-            }
-
-            function handleLocationTypeChange() {
-                const value = LocationType.value;
-
-                if (value === "Single Location") {
-                    smstriggerlocation.parentElement.style.display = "block";
-
-                }
-                else {
-                    smstriggerlocation.parentElement.style.display = "none";
-
-                }
-            }
-
-            function handleStartEndDateSelectChange() {
-                const StartRequestDateselect = StartRequestDate.value;
-                const EndRequestDateselect = EndRequestDate.value;
-
-                if (StartRequestDateselect != null && EndRequestDateselect!=null) {
-                    triptype.parentElement.style.display = "block";
-                    shifttype.parentElement.style.display = "block";
-
-                }
-                else {
-                    triptype.parentElement.style.display = "none";
-                    shifttype.parentElement.style.display = "none";
-
-                }
-            }
-            function resetEmployeeDetails() {
-                employeeId.value = "";
-                firstName.value = "";
-                lastName.value = "";
-                gender.value = "";
-                email.value = "";
-                guestContact.value = "";
-                //$("#gender").css("pointer-events", "auto");
-                //$("#gender").css("background-color", "");
-            }
-
-
-
-            RequestType.addEventListener("change", handleRequestTypeChange);
-            LocationType.addEventListener("change", handleLocationTypeChange);
-
-            handleRequestTypeChange();
-            handleLocationTypeChange();
-            handleStartEndDateSelectChange();
-        });
-    </script>*@
-@*<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Query Selectors
-            const requestType = document.querySelector('[name="RequestType"]');
-            const pickupLocation = document.querySelector('#pickupLocation');
-            const dropLocation = document.querySelector('#dropLocation');
-            const destinationRequestMethod = document.querySelector('#destinationRequestMethod');
-            const employeeId = document.querySelector('#employeeId');
-            const gender = document.querySelector('#gender');
-            const firstName = document.querySelector('#firstName');
-            const lastName = document.querySelector('#lastName');
-            const email = document.querySelector('#email');
-            const guestContact = document.querySelector('#guestContact');
-            const tripType = document.querySelector('#triptype');
-            const shiftType = document.querySelector('#shifttype');
-            const guestParts = document.querySelectorAll('.guestpart');
-            const smsTriggerLocation = document.querySelector('#smstriggerlocation');
-            const locationType = document.querySelector('[name="LocationType"]');
-            const startRequestDate = document.querySelector('[name="StartRequestDate"]');
-            const endRequestDate = document.querySelector('[name="EndRequestDate"]');
-
-
-            // Handle Request Type Change
-            function handleRequestTypeChange() {
-                const value = requestType.value;
-
-                if (value === "GUEST") {
-                    toggleElementsVisibility(guestParts, true);
-                    employeeId.disabled = false;
-                } else if (value === "SELF" || value === "") {
-                    employeeId.disabled = true;
-                    toggleElementsVisibility(guestParts, false);
-                    resetEmployeeDetails();
-                }
-                else if (value === "EMPLOYEE") {
-                    toggleElementsVisibility(guestParts, false);
-                    employeeId.disabled = false;
-                    employeeId.disabled = false;
-                }
-                else {
-                    toggleElementsVisibility(guestParts, false);
-                    employeeId.disabled = false;
-                    resetEmployeeDetails();
-                }
-            }
-
-            // Handle Location Type Change
-            function handleLocationTypeChange() {
-                const value = locationType.value;
-                toggleElementVisibility(smsTriggerLocation, value === "Single Location");
-            }
-
-            // Handle Start and End Date Change
-            function handleStartEndDateSelectChange() {
-                const startDate = startRequestDate.value.trim();
-                const endDate = endRequestDate.value.trim();
-                const isEnabled = startDate && endDate;
-
-                toggleElementDisabled(tripType, !isEnabled);
-                toggleElementDisabled(shiftType, !isEnabled);
-            }
-
-
-            // Reset Employee Details
-            function resetEmployeeDetails() {
-                employeeId.value = "";
-                firstName.value = "";
-                lastName.value = "";
-                gender.value = "";
-                email.value = "";
-                guestContact.value = "";
-            }
-
-            // Helper Function: Toggle Single Element Visibility
-            function toggleElementVisibility(element, show) {
-                element.parentElement.style.display = show ? "block" : "none";
-            }
-
-            // Helper Function: Toggle Single Element Disabled State
-            function toggleElementDisabled(element, disable) {
-                element.disabled = disable;
-            }
-
-            // Helper Function: Toggle Multiple Elements Visibility
-            function toggleElementsVisibility(elements, show) {
-                elements.forEach(element => {
-                    element.parentElement.style.display = show ? "block" : "none";
-                });
-            }
-
-            // Event Listeners
-            requestType.addEventListener("change", handleRequestTypeChange);
-            locationType.addEventListener("change", handleLocationTypeChange);
-            startRequestDate.addEventListener("change", handleStartEndDateSelectChange);
-            endRequestDate.addEventListener("change", handleStartEndDateSelectChange);
-
-            // Initial Setup
-            handleRequestTypeChange();
-            handleLocationTypeChange();
-            handleStartEndDateSelectChange();
-        });
-    </script>*@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

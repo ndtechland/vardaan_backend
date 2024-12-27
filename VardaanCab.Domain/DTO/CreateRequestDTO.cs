@@ -53,6 +53,7 @@ namespace VardaanCab.Domain.DTO
         public string CompanyName { get; set; }
         public Nullable<int> CompanyId { get; set; }
         public string EmployeeId { get; set; }
+        public int Employee_Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Gender { get; set; }
@@ -65,6 +66,7 @@ namespace VardaanCab.Domain.DTO
         public string RequestorEmpId { get; set; }
         public string RequestorName { get; set; }
         public string RequestorContacts { get; set; }
+        public string OrgName { get; set; }
         public Nullable<System.DateTime> BookingReceivedDate { get; set; }
         public string RequestTripType { get; set; }
         public string DestinationRequestMethod { get; set; }

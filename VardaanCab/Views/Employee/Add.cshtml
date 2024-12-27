@@ -719,16 +719,4 @@
         </script>
  
 
-        <script>
-            function validateNumericInput(event) {
-                if ([46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
-                    (event.keyCode == 65 && event.ctrlKey === true) ||
-                    (event.keyCode >= 35 && event.keyCode <= 39)) {
-                    return;
-                }
-                if ((event.shiftKey || (event.keyCode < 48 || event.keyCode > 57)) && (event.keyCode < 96 || event.keyCode > 105)) {
-                    event.preventDefault();
-                }
-            }
-
-        </script>
+         

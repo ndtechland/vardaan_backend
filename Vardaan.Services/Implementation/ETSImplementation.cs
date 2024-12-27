@@ -85,7 +85,7 @@ namespace Vardaan.Services.Implementation
             try
             {
                 var data = (from er in ent.EmployeeRequests
-                                //join e in ent.Employees on er.EmployeeId equals e.Employee_Id
+                            join e in ent.Employees on er.EmployeeId equals e.Employee_Id
                             join c in ent.Customers on er.CompanyId equals c.Id
                             join tt in ent.TripTypes on er.TripType equals tt.Id
                             join st in ent.TripMasters on er.ShiftType equals st.Id
@@ -93,9 +93,11 @@ namespace Vardaan.Services.Implementation
                             select new EmployeeRequests
                             {
                                 Id = er.Id,
-                                CompanyName = c.CustomerName,
+                                CompanyName = c.CompanyName,
+                                OrgName = c.OrgName,
                                 RequestType = er.RequestType,
                                 EmployeeId = er.EmployeeId,
+                                Employee_Id = e.Id,
                                 //FirstName = e.Employee_First_Name,
                                 //LastName = e.Employee_Last_Name,
                                 //Gender = e.Gender,

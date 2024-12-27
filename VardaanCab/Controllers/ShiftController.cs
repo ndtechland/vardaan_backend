@@ -24,23 +24,7 @@ namespace VardaanCab.Controllers
         {
              var model = new ShiftDTO();
             model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x => x.Id).ToList(), "Id", "OrgName");
-            var data = (from sm in ent.ShiftMasters
-                        join tt in ent.TripTypes on sm.TripTypeId equals tt.Id
-                        join c in ent.Customers on sm.CompanyId equals c.Id
-                        join dm in ent.DepartmentMasters on sm.DepartmentId equals dm.Id
-                        join cz in ent.CompanyZones on sm.CompanyZoneId equals cz.Id
-                        orderby sm.Id descending
-                        select new GetShift
-                        {
-                            Id = sm.Id,
-                            TripType = tt.TripTypeName,
-                            CompanyName = c.CompanyName,
-                            CompanyZoneName = cz.CompanyZone1,
-                            DepartmentName = dm.DepartmentName,
-                            ShiftBufferTime = sm.ShiftBufferTime,
-                            ShiftTime = sm.ShiftTime
-                        }
-                       ).ToList();
+            
             model.ShiftList = await _shift.GetShifts();
              ViewBag.menuId = menuId;
             if (id > 0)
