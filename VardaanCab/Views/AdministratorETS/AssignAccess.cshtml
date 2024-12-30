@@ -200,7 +200,7 @@
 
                                             <div class="col-md-6">
                                                 <label class="form-label-title">Select Employee</label>
-                                                <input type="text" id="EmployeeIdhidden" hidden value="@ViewBag.EmployeeId" />
+                                                <input type="text" id="hiddenEmployeeId" hidden value="@ViewBag.EmployeeId" />
                                                 @Html.DropDownListFor(a => a.EmployeeId, Enumerable.Empty<SelectListItem>(), "--Select Employee Id--",
                                                     new { @class = "form-control", @required = "required" })
                                                 <span class="text-danger">@Html.ValidationMessageFor(a => a.EmployeeId)</span>
@@ -208,7 +208,7 @@
 
                                             <div class="col-md-6">
                                                 <label class="form-label-title">User Role</label>
-                                                <input type="text" id="UserRoleIdhidden" hidden value="@ViewBag.UserRoleId" />
+                                                <input type="text" id="hiddenRoleId" hidden value="@ViewBag.UserRoleId" />
                                                 @Html.DropDownListFor(a => a.UserRoleId, Enumerable.Empty<SelectListItem>(), "--Select Role--",
                                                     new { @class = "form-control", @required = "required" })
                                                 <span class="text-danger">@Html.ValidationMessageFor(a => a.UserRoleId)</span>
@@ -389,9 +389,11 @@
 
 <script>
 
-   document.addEventListener("DOMContentLoaded", function () {
-    // Get the Model.CompanyId value from Razor
-    var selectedCompanyId = '@Model.CompanyId';  // Razor syntax for dynamic model
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the Model.CompanyId value from Razor
+        /**/
+        var selectedCompanyId = $("#CompanyIdHidden").val();  // Razor syntax for dynamic model
+    /**/
 
     // Handle multiple selections (comma-separated values)
     var selectedCompanyIds = selectedCompanyId ? selectedCompanyId.split(',') : [];
@@ -469,8 +471,10 @@ $(document).ready(function () {
         }
     });
 
-    // Fetch and populate EmployeeId dropdown
     function updateEmployeeDropdown(companyId) {
+        // Get the existing employee ID from the hidden field
+        const selectedEmployeeId = $("#hiddenEmployeeId").val();
+
         $.get('/Common/GetEmployeeIdByCompany', { companyId: companyId }, function (data) {
             const employeeDropdown = $("#EmployeeId");
             employeeDropdown.empty();
@@ -484,14 +488,21 @@ $(document).ready(function () {
                     employeeDropdown.append(`<option value="${employee.Id}">${employee.Employee_Id}</option>`);
                 });
 
-                // Select the first employee option automatically
-                employeeDropdown.val(data[0].Id);  // Select the first employee ID
+                // Auto-select the existing employee ID from the hidden field
+                if (selectedEmployeeId) {
+                    employeeDropdown.val(selectedEmployeeId);
+                } else {
+                    // Select the first employee option automatically if no ID is provided
+                    employeeDropdown.val(data[0].Id);
+                }
             }
         });
     }
 
     // Fetch and populate UserRoleId dropdown
     function updateUserRoleDropdown(companyId) {
+        const selectedRoleId = $("#hiddenRoleId").val();
+
         $.get('/Common/GetUserRoleByCompany', { companyId: companyId }, function (data) {
             const roleDropdown = $("#UserRoleId");
             roleDropdown.empty();
@@ -505,8 +516,14 @@ $(document).ready(function () {
                     roleDropdown.append(`<option value="${role.Id}">${role.RoleName}</option>`);
                 });
 
+                if (selectedRoleId) {
+                    roleDropdown.val(selectedRoleId);
+                } else {
+                    // Select the first employee option automatically if no ID is provided
+                    roleDropdown.val(data[0].Id);
+                }
                 // Select the first role option automatically
-                roleDropdown.val(data[0].Id);  // Select the first role ID
+                //roleDropdown.val(data[0].Id);  // Select the first role ID
             }
         });
     }
@@ -550,6 +567,8 @@ $(document).ready(function () {
             //var getrolevalue = document.getElementById('UserRoleId').selectedOptions[0].value;
             $("#AccessTypeLabel").empty();
             $("#AccessTypeLabel").text(namerole);
+
+            uncheckAllCheckboxes();
             if (roleId) {
                 $.ajax({
                     url: '/AdministratorETS/GetDataByRoleId',
@@ -598,6 +617,13 @@ $(document).ready(function () {
         function CheckAllWrite(isAllWrite) {
             $('.Activechecked').prop('checked', isAllWrite);
         }
+
+        // Function to uncheck all checkboxes
+        function uncheckAllCheckboxes() {
+            $('input[type="checkbox"]').prop('checked', false);
+        }
+
+        
     });
 
 </script>
