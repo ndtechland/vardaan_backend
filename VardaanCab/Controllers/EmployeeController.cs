@@ -23,6 +23,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NPOI.SS.Formula.Functions;
 using Vardaan.Services.IContract;
+using Newtonsoft.Json;
 
 
 namespace VardaanCab.Controllers
@@ -216,40 +217,41 @@ namespace VardaanCab.Controllers
             dt.Columns.Add("Gender");
             dt.Columns.Add("AlternateNumber");
 
-            Dictionary<string, string> columnMappings = new Dictionary<string, string>()
-            {
-            { "Company_Id", "Company Name" },
-            { "Company_location", "Company Location" },
-            { "Employee_Id", "Employee ID" },
-            { "Employee_First_Name", "First Name" },
-            { "Employee_Middle_Name", "Middle Name" },
-            { "Employee_Last_Name", "Last Name" },
-            { "MobileNumber", "Mobile Number" },
-            { "Email", "Email Address" },
-            { "StateId", "State Name" },
-            { "CityId", "City Name" },
-            { "Pincode", "Postal Code" },
-            { "EmployeeCurrentAddress", "Current Address" },
-            { "LoginUserName", "Login Username" },
-            { "WeekOff", "Week Off" },
-            { "EmployeeGeoCode", "Geo Location" },
-            { "EmployeeBusinessUnit", "Business Unit" },
-            { "EmployeeDepartment", "Department" },
-            { "EmployeeProjectName", "Project Name" },
-            { "ReportingManager", "Reporting Manager" },
-            { "PrimaryFacilityZone", "Facility Zone" },
-            { "HomeRouteName", "Home Route Name" },
-            { "EmployeeDestinationArea", "Destination Area" },
-            { "EmployeeRegistrationType", "Registration Type" },
-            { "Gender", "Gender" },
-            { "AlternateNumber", "Alternate Contact" }
-            };
+            // Add dummy data
+            dt.Rows.Add("Test Vardaan car rental pvt ltd", "Location A", "8989898989", "John", "M", "Doe", "1234567890", "john.doe@example.com", "Uttar Pradesh", "Noida", "123456", "Address A", "johndoe123", "Sunday", "28.604624,77.358945", "Unit1", "Dept1", "Project1", "Manager1", "GHAZIABAD - 1", "New Ashok Nagar", "New Ashok Nagar Metro Station AK ", "Permanent", "Male", "9876543210");
 
-            // Export to Excel
+            Dictionary<string, string> columnMappings = new Dictionary<string, string>()
+    {
+        { "Company_Id", "Company Name" },
+        { "Company_location", "Company Location" },
+        { "Employee_Id", "Employee ID" },
+        { "Employee_First_Name", "First Name" },
+        { "Employee_Middle_Name", "Middle Name" },
+        { "Employee_Last_Name", "Last Name" },
+        { "MobileNumber", "Mobile Number" },
+        { "Email", "Email Address" },
+        { "StateId", "State Name" },
+        { "CityId", "City Name" },
+        { "Pincode", "Postal Code" },
+        { "EmployeeCurrentAddress", "Current Address" },
+        { "LoginUserName", "Login Username" },
+        { "WeekOff", "Week Off" },
+        { "EmployeeGeoCode", "Employee GeoCode" },
+        { "EmployeeBusinessUnit", "Business Unit" },
+        { "EmployeeDepartment", "Department" },
+        { "EmployeeProjectName", "Project Name" },
+        { "ReportingManager", "Reporting Manager" },
+        { "PrimaryFacilityZone", "Facility Zone" },
+        { "HomeRouteName", "Home Route Name" },
+        { "EmployeeDestinationArea", "Destination Area" },
+        { "EmployeeRegistrationType", "Registration Type" },
+        { "Gender", "Gender" },
+        { "AlternateNumber", "Alternate Contact" }
+    };
+
             using (XLWorkbook workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Employee");
-
 
                 int colIndex = 1;
                 foreach (DataColumn column in dt.Columns)
@@ -267,7 +269,18 @@ namespace VardaanCab.Controllers
                     colIndex++;
                 }
 
-                // Create a hidden sheet to store company names for dropdown
+                int rowIndex = 2;
+                foreach (DataRow row in dt.Rows)
+                {
+                    colIndex = 1;
+                    foreach (DataColumn column in dt.Columns)
+                    {
+                        worksheet.Cell(rowIndex, colIndex).Value = row[column];
+                        colIndex++;
+                    }
+                    rowIndex++;
+                }
+
                 var hiddenSheet = workbook.Worksheets.Add("CompanyList");
                 var StatehiddenSheet = workbook.Worksheets.Add("StateList");
                 var CityhiddenSheet = workbook.Worksheets.Add("CityList");
@@ -390,7 +403,6 @@ namespace VardaanCab.Controllers
                 //StatehiddenSheet.Hide();
                 //CityhiddenSheet.Hide();
 
-                // Save and return Excel file as download
                 using (MemoryStream stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
@@ -401,7 +413,7 @@ namespace VardaanCab.Controllers
         }
 
         [HttpPost]
-        public ActionResult ImportEmployeeData(HttpPostedFileBase file)
+        public async Task<ActionResult> ImportEmployeeData(HttpPostedFileBase file)
         {
             try
             {
@@ -426,6 +438,23 @@ namespace VardaanCab.Controllers
                             string DestinationAreaName = row.Cell(22).GetValue<string>();
                             string RegistrationTypeName = row.Cell(23).GetValue<string>();
                             string DaysName = row.Cell(14).GetValue<string>();
+
+                            string geoCode = row.Cell(15).GetValue<string>() ?? string.Empty;
+                            string[] coordinates = geoCode.Split(',');
+                            double latitude = 0;
+                            double longitude = 0;
+                            if (coordinates.Length == 2)
+                            {
+                                latitude = Convert.ToDouble(coordinates[0]);
+                                longitude = Convert.ToDouble(coordinates[1]);
+
+                            }
+                            // Call reverse geocoding to get the address
+                            string address = string.Empty;
+                            if (!string.IsNullOrEmpty(geoCode))
+                            {
+                                address = await GetLocationFromGeoCode(geoCode);
+                            }
 
                             Employee employee = new Employee
                             {
@@ -456,7 +485,8 @@ namespace VardaanCab.Controllers
                                 ent.DaysNames.Where(x => x.DayName.ToLower() == DaysName.ToLower())
                                 .FirstOrDefault()?.Id.ToString() ?? "",
 
-                                EmployeeGeoCode = row.Cell(15).GetValue<string>() ?? string.Empty,
+                                //EmployeeGeoCode = row.Cell(15).GetValue<string>() ?? string.Empty,
+                                EmployeeGeoCode = address,
                                 EmployeeBusinessUnit = row.Cell(16).GetValue<string>() ?? string.Empty,
                                 EmployeeDepartment = row.Cell(17).GetValue<string>() ?? string.Empty,
                                 EmployeeProjectName = row.Cell(18).GetValue<string>() ?? string.Empty,
@@ -480,7 +510,9 @@ namespace VardaanCab.Controllers
 
                                 IsActive = true,
                                 CreatedDate = DateTime.Now,
-                                IsFirst = true,
+                                IsFirst = false,
+                                Latitude = latitude,
+                                Longitude = longitude,
                                 Password = RandomPassword,
                                 Gender = row.Cell(24).GetValue<string>(),
                                 AlternateNumber = row.Cell(25).GetValue<string>() ?? string.Empty
@@ -521,6 +553,44 @@ namespace VardaanCab.Controllers
                 return View();
             }
         }
-        
+
+public async Task<string> GetLocationFromGeoCode(string geoCode)
+    {
+        try
+        {
+            string[] coordinates = geoCode.Split(',');
+
+            if (coordinates.Length == 2)
+            {
+                double latitude = Convert.ToDouble(coordinates[0]);
+                double longitude = Convert.ToDouble(coordinates[1]);
+
+                //string apiKey = "YOUR_GOOGLE_MAPS_API_KEY"; // Replace with your Google Maps API key
+                string requestUrl = $"https://maps.googleapis.com/maps/api/geocode/json?latlng={latitude},{longitude}&key={GoogleMapsApiKey}";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = await client.GetAsync(requestUrl);
+                    response.EnsureSuccessStatusCode();
+
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    dynamic result = JsonConvert.DeserializeObject(jsonResponse);
+
+                    if (result.status == "OK")
+                    {
+                        string address = result.results[0].formatted_address;
+                        return address;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the error
+            Console.WriteLine($"Error in geocoding: {ex.Message}");
+        }
+        return string.Empty;
     }
+
+}
 }
