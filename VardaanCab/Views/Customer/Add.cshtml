@@ -453,91 +453,12 @@
     });
 
 </script>
-@*<script>
-        let map;
-        let marker;
-        let circle;
-
-        function initMap() {
-            const initialLocation = { lat: 21.7679, lng: 78.8718 };
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: initialLocation,
-                zoom: 15,
-            });
-
-            marker = new google.maps.Marker({
-                position: initialLocation,
-                map: map,
-                draggable: true,
-            });
-
-            circle = new google.maps.Circle({
-                map: map,
-                radius: 0,
-                fillColor: "#FF0000",
-                fillOpacity: 0.35,
-                strokeColor: "#FF0000",
-                strokeOpacity: 0.8,
-            });
-
-            google.maps.event.addListener(marker, "dragend", updateCircle);
-            document.getElementById("radius-input").addEventListener("input", updateCircle);
-        }
-
-        function updateCircle() {
-            const radiusInput = parseInt(document.getElementById("radius-input").value, 10);
-
-            const position = marker.getPosition();
-            circle.setCenter(position);
-            circle.setRadius(radiusInput);
-
-            const lat = position.lat();
-            const lng = position.lng();
-            document.getElementById("latitude").value = lat;
-            document.getElementById("longitude").value = lng;
-
-            console.log(`Latitude: ${lat}, Longitude: ${lng}, Radius: ${radiusInput} meters`);
-            // alert(`Latitude: ${lat}, Longitude: ${lng}, Radius: ${radiusInput} meters`);
-        }
-
-
-
-        window.onload = initMap;
-        document.getElementById("location-input").addEventListener('keyup', function () {
-
-            const locationInput = document.getElementById("location-input").value;
-            // const radiusInput = parseInt(document.getElementById("radius-input").value, 10);
-
-            const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ address: locationInput }, (results, status) => {
-                if (status === "OK") {
-                    map.setCenter(results[0].geometry.location);
-                    marker.setPosition(results[0].geometry.location);
-                    updateCircle();
-                } else {
-                    // alert("Geocode was not successful for the following reason: " + status);
-                }
-            });
-        });
-        function triggerKeyupIn2Seconds() {
-            setTimeout(function () {
-                // Create a new keyup event
-                var event = new Event('keyup');
-
-                // Dispatch the event on the input element
-                document.getElementById("location-input").dispatchEvent(event);
-            }, 2000);  // 2000 milliseconds = 2 seconds
-        }
-
-        // Example usage: call the function
-        triggerKeyupIn2Seconds();
-    </script>*@
 
 <script>
     function initAutocomplete() {
         // Initialize the map
         const map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: -33.8688, lng: 151.2195 }, // Default to Sydney
+            center: { lat: 28.604624, lng: 77.358945 }, // Default to Sydney
             zoom: 13,
             mapTypeId: "roadmap",
         });

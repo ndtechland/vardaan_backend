@@ -31,7 +31,7 @@ namespace VardaanCab.Controllers
         public ActionResult Escort(int menuId = 0, int id = 0)
         {
             var model = new EscortDTO();
-            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).ToList(), "Id", "OrgName");
+            model.Companies = new SelectList(ent.Customers.Where(x => x.IsActive == true).OrderByDescending(x=>x.Id).ToList(), "Id", "OrgName");
             model.Vendors = new SelectList(ent.Vendors.Where(x => x.IsActive == true).ToList(), "Id", "VendorName");
             
             ViewBag.menuId = menuId;
@@ -109,7 +109,7 @@ namespace VardaanCab.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Errormsg"] = "Server error: " + ex.Message;
+                TempData["errormsg"] = "Server error: " + ex.Message;
                 return View(model);
             }
         }

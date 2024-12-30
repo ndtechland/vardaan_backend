@@ -92,8 +92,6 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return View(model);
                 bool isCreated=await _administrator.AddUpdateAssignAccess(model);
                 if (isCreated)
                 {
