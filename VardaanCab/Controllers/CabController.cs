@@ -429,6 +429,119 @@ namespace VardaanCab.Controllers
             }
         }
 
+        //public ActionResult ExportToExcel()
+        //{
+        //    DataTable dt = new DataTable();
+        //    dt.Columns.Add("VehicleModel_Id");
+        //    dt.Columns.Add("Company");
+        //    dt.Columns.Add("VehicleNumber");
+        //    dt.Columns.Add("FitnessVality");
+        //    dt.Columns.Add("PolutionValidity");
+        //    dt.Columns.Add("InsurranceValidity");
+        //    dt.Columns.Add("FitnessDoc");
+        //    dt.Columns.Add("PolutionDoc");
+        //    dt.Columns.Add("InsuranceDoc");
+        //    dt.Columns.Add("RCDoc");
+        //    dt.Columns.Add("FuelEfficiency");
+        //    dt.Columns.Add("PermitNo");
+        //    dt.Columns.Add("PermitDoc");
+        //    dt.Columns.Add("PermitValidity");
+        //    dt.Columns.Add("RcNumber");
+        //    dt.Columns.Add("RcValidity");
+        //    dt.Columns.Add("RcIssueDate");
+        //    dt.Columns.Add("Vendor_Id");
+
+        //    Dictionary<string, string> columnMappings = new Dictionary<string, string>()
+        //    {
+        //    { "VehicleModel_Id", "VehicleModel" },
+        //    { "Company", "Company" },
+        //    { "VehicleNumber", "Vehicle Number" },
+        //    { "FitnessVality", "Fitness Vality" },
+        //    { "PolutionValidity", "Polution Validity" },
+        //    { "InsurranceValidity", "Insurrance Validity" },
+        //    { "FitnessDoc", "Fitness Doc" },
+        //    { "PolutionDoc", "Polution Doc" },
+        //    { "InsuranceDoc", "Insurance Doc" },
+        //    { "RCDoc", "RC Doc" },
+        //    { "FuelEfficiency", "FuelEfficiency" },
+        //    { "PermitNo", "Permit No" },
+        //    { "PermitDoc", "Permit Doc" },
+        //    { "PermitValidity", "Permit Validity" },
+        //    { "RcNumber", "Rc Number" },
+        //    { "RcValidity", "Rc Validity" },
+        //    { "RcIssueDate", "Rc Issue Date" },
+        //    { "Vendor_Id", "Vendor" }
+        //    };
+
+        //    // Export to Excel
+        //    using (XLWorkbook workbook = new XLWorkbook())
+        //    {
+        //        var worksheet = workbook.Worksheets.Add("Cab");
+
+
+        //        int colIndex = 1;
+        //        foreach (DataColumn column in dt.Columns)
+        //        {
+        //            string oldColumnName = column.ColumnName;
+        //            if (columnMappings.ContainsKey(oldColumnName))
+        //            {
+        //                worksheet.Cell(1, colIndex).Value = columnMappings[oldColumnName];
+        //            }
+        //            else
+        //            {
+        //                worksheet.Cell(1, colIndex).Value = oldColumnName;
+        //            }
+        //            worksheet.Cell(1, colIndex).Style.Fill.BackgroundColor = XLColor.Yellow;
+        //            colIndex++;
+        //        }
+
+        //        // Create a hidden sheet to store company names for dropdown
+        //        var hiddenSheet = workbook.Worksheets.Add("VehicleModelList");
+        //        var hiddenVendorSheet = workbook.Worksheets.Add("VendorList");
+
+
+        //        // Retrieve active customers for the dropdown list
+        //        var vehicleModelList = ent.VehicleModels.ToList();
+        //        var vendorList = ent.Vendors.Where(x=>x.IsActive).ToList();
+
+        //        // Populate hidden sheet with company names
+        //        int hiddenRow = 1;
+        //        foreach (var company in vehicleModelList.OrderByDescending(x => x.Id))
+        //        {
+        //            hiddenSheet.Cell(hiddenRow++, 1).Value = company.ModelName;
+        //        }
+        //        hiddenRow = 1;
+        //        foreach (var ven in vendorList.OrderByDescending(x => x.Id))
+        //        {
+        //            hiddenVendorSheet.Cell(hiddenRow++, 1).Value = ven.VendorName;
+        //        }
+        //        // Define the dropdown list range
+        //        var veicleModelRange = hiddenSheet.Range($"A1:A{vehicleModelList.Count}");
+        //        var VendorRange = hiddenVendorSheet.Range($"A1:A{vendorList.Count}");
+
+
+        //        //Apply dropdown list validation to cell A2(under "Company ID")
+        //        var validationOne = worksheet.Cell(2, 1).DataValidation;
+        //        validationOne.List(veicleModelRange); // Dropdown from hidden sheet
+        //        validationOne.IgnoreBlanks = true;
+        //        validationOne.InCellDropdown = true;
+
+        //        //Vendor
+        //        var validationVendorOne = worksheet.Cell(2, 18).DataValidation;
+        //        validationVendorOne.List(VendorRange); // Dropdown from hidden sheet
+        //        validationVendorOne.IgnoreBlanks = true;
+        //        validationVendorOne.InCellDropdown = true;
+
+        //        // Save and return Excel file as download
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+        //            workbook.SaveAs(stream);
+        //            stream.Position = 0;
+        //            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "CabData.xlsx");
+        //        }
+        //    }
+        //}
+
         public ActionResult ExportToExcel()
         {
             DataTable dt = new DataTable();
@@ -438,47 +551,49 @@ namespace VardaanCab.Controllers
             dt.Columns.Add("FitnessVality");
             dt.Columns.Add("PolutionValidity");
             dt.Columns.Add("InsurranceValidity");
-            dt.Columns.Add("FitnessDoc");
-            dt.Columns.Add("PolutionDoc");
-            dt.Columns.Add("InsuranceDoc");
-            dt.Columns.Add("RCDoc");
+            //dt.Columns.Add("FitnessDoc");
+            //dt.Columns.Add("PolutionDoc");
+            //dt.Columns.Add("InsuranceDoc");
+            //dt.Columns.Add("RCDoc");
             dt.Columns.Add("FuelEfficiency");
             dt.Columns.Add("PermitNo");
-            dt.Columns.Add("PermitDoc");
+            //dt.Columns.Add("PermitDoc");
             dt.Columns.Add("PermitValidity");
             dt.Columns.Add("RcNumber");
             dt.Columns.Add("RcValidity");
             dt.Columns.Add("RcIssueDate");
             dt.Columns.Add("Vendor_Id");
 
-            Dictionary<string, string> columnMappings = new Dictionary<string, string>()
-            {
-            { "VehicleModel_Id", "VehicleModel" },
-            { "Company", "Company" },
-            { "VehicleNumber", "Vehicle Number" },
-            { "FitnessVality", "Fitness Vality" },
-            { "PolutionValidity", "Polution Validity" },
-            { "InsurranceValidity", "Insurrance Validity" },
-            { "FitnessDoc", "Fitness Doc" },
-            { "PolutionDoc", "Polution Doc" },
-            { "InsuranceDoc", "Insurance Doc" },
-            { "RCDoc", "RC Doc" },
-            { "FuelEfficiency", "FuelEfficiency" },
-            { "PermitNo", "Permit No" },
-            { "PermitDoc", "Permit Doc" },
-            { "PermitValidity", "Permit Validity" },
-            { "RcNumber", "Rc Number" },
-            { "RcValidity", "Rc Validity" },
-            { "RcIssueDate", "Rc Issue Date" },
-            { "Vendor_Id", "Vendor" }
-            };
+            // Adding dummy data
+            dt.Rows.Add("CIAZ", "MARUTI", "ABC123", "2025-01-01", "2025-06-01", "2025-12-01", "20", "Permit123", "2025-11-01", "RC123", "2025-08-01", "2024-12-01", "Vendor 1");
 
-            // Export to Excel
+            Dictionary<string, string> columnMappings = new Dictionary<string, string>()
+    {
+        { "VehicleModel_Id", "VehicleModel" },
+        { "Company", "Company" },
+        { "VehicleNumber", "Vehicle Number" },
+        { "FitnessVality", "Fitness Vality" },
+        { "PolutionValidity", "Polution Validity" },
+        { "InsurranceValidity", "Insurrance Validity" },
+        //{ "FitnessDoc", "Fitness Doc" },
+        //{ "PolutionDoc", "Polution Doc" },
+        //{ "InsuranceDoc", "Insurance Doc" },
+        //{ "RCDoc", "RC Doc" },
+        { "FuelEfficiency", "Fuel Efficiency" },
+        { "PermitNo", "Permit No" },
+        //{ "PermitDoc", "Permit Doc" },
+        { "PermitValidity", "Permit Validity" },
+        { "RcNumber", "RC Number" },
+        { "RcValidity", "RC Validity" },
+        { "RcIssueDate", "RC Issue Date" },
+        { "Vendor_Id", "Vendor" }
+    };
+
             using (XLWorkbook workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Cab");
 
-
+                // Write the headers
                 int colIndex = 1;
                 foreach (DataColumn column in dt.Columns)
                 {
@@ -495,14 +610,26 @@ namespace VardaanCab.Controllers
                     colIndex++;
                 }
 
+                // Write the data rows
+                int rowIndex = 2; // Start from the second row (below headers)
+                foreach (DataRow row in dt.Rows)
+                {
+                    colIndex = 1; // Reset column index for each row
+                    foreach (var item in row.ItemArray)
+                    {
+                        worksheet.Cell(rowIndex, colIndex).Value = item;
+                        colIndex++;
+                    }
+                    rowIndex++;
+                }
+
                 // Create a hidden sheet to store company names for dropdown
                 var hiddenSheet = workbook.Worksheets.Add("VehicleModelList");
                 var hiddenVendorSheet = workbook.Worksheets.Add("VendorList");
-                
 
                 // Retrieve active customers for the dropdown list
                 var vehicleModelList = ent.VehicleModels.ToList();
-                var vendorList = ent.Vendors.Where(x=>x.IsActive).ToList();
+                var vendorList = ent.Vendors.Where(x => x.IsActive).ToList();
 
                 // Populate hidden sheet with company names
                 int hiddenRow = 1;
@@ -518,21 +645,19 @@ namespace VardaanCab.Controllers
                 // Define the dropdown list range
                 var veicleModelRange = hiddenSheet.Range($"A1:A{vehicleModelList.Count}");
                 var VendorRange = hiddenVendorSheet.Range($"A1:A{vendorList.Count}");
-              
 
-                //Apply dropdown list validation to cell A2(under "Company ID")
+                // Apply dropdown list validation to cell A2(under "Company ID")
                 var validationOne = worksheet.Cell(2, 1).DataValidation;
                 validationOne.List(veicleModelRange); // Dropdown from hidden sheet
                 validationOne.IgnoreBlanks = true;
                 validationOne.InCellDropdown = true;
 
-                //Vendor
-                var validationVendorOne = worksheet.Cell(2, 18).DataValidation;
+                // Vendor
+                var validationVendorOne = worksheet.Cell(2, 13).DataValidation;
                 validationVendorOne.List(VendorRange); // Dropdown from hidden sheet
                 validationVendorOne.IgnoreBlanks = true;
                 validationVendorOne.InCellDropdown = true;
 
-                // Save and return Excel file as download
                 using (MemoryStream stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
@@ -542,25 +667,25 @@ namespace VardaanCab.Controllers
             }
         }
 
+
         [HttpPost]
         public ActionResult ImportCabData(HttpPostedFileBase file)
         {
             try
             {
-
                 // Check if a file is uploaded
                 if (file != null && file.ContentLength > 0)
                 {
                     using (var workbook = new XLWorkbook(file.InputStream))
                     {
                         var worksheet = workbook.Worksheet(1);
-                        var rows = worksheet.RowsUsed().Skip(1);
+                        var rows = worksheet.RowsUsed().Skip(1);  
                         List<Cab> cabs = new List<Cab>();
 
                         foreach (var row in rows)
                         {
                             string VehicleModel = row.Cell(1).GetValue<string>();
-                            string Vendors = row.Cell(18).GetValue<string>();
+                            string Vendors = row.Cell(13).GetValue<string>();
 
                             Cab cab = new Cab
                             {
@@ -569,21 +694,16 @@ namespace VardaanCab.Controllers
                                         .FirstOrDefault()?.Id ?? 0,
 
                                 Company = row.Cell(2).GetValue<string>() ?? string.Empty,
-                                VehicleNumber = row.Cell(3).GetValue<string>() ?? string.Empty,                                
+                                VehicleNumber = row.Cell(3).GetValue<string>() ?? string.Empty,
                                 FitnessVality = row.Cell(4).GetValue<DateTime>(),
-                                InsurranceValidity = row.Cell(6).GetValue<DateTime>(),
                                 PolutionValidity = row.Cell(5).GetValue<DateTime>(),
-                                FitnessDoc = row.Cell(7).GetValue<string>() ?? string.Empty,
-                                PolutionDoc = row.Cell(8).GetValue<string>() ?? string.Empty,
-                                InsuranceDoc = row.Cell(9).GetValue<string>() ?? string.Empty,
-                                RCDoc = row.Cell(10).GetValue<string>() ?? string.Empty,
-                                FuelEfficiency = row.Cell(11).GetValue<double?>() ?? 0.0,
-                                PermitNo = row.Cell(12).GetValue<string>() ?? string.Empty,
-                                PermitDoc = row.Cell(13).GetValue<string>() ?? string.Empty,
-                                PermitValidity = row.Cell(14).GetValue<DateTime>(),
-                                RcNumber = row.Cell(15).GetValue<string>() ?? string.Empty,
-                                RcValidity = row.Cell(16).GetValue<DateTime>(),
-                                RcIssueDate = row.Cell(17).GetValue<DateTime>(),
+                                InsurranceValidity = row.Cell(6).GetValue<DateTime>(),                                
+                                FuelEfficiency = row.Cell(7).GetValue<double?>() ?? 0.0,
+                                PermitNo = row.Cell(8).GetValue<string>() ?? string.Empty,
+                                PermitValidity = row.Cell(9).GetValue<DateTime>(),
+                                RcNumber = row.Cell(10).GetValue<string>() ?? string.Empty,
+                                RcValidity = row.Cell(11).GetValue<DateTime>(),
+                                RcIssueDate = row.Cell(12).GetValue<DateTime>(),
                                 Vendor_Id = string.IsNullOrEmpty(Vendors) ? 0 :
                                     ent.Vendors.Where(x => x.VendorName.ToLower() == Vendors.ToLower())
                                         .FirstOrDefault()?.Id ?? 0,
@@ -629,5 +749,6 @@ namespace VardaanCab.Controllers
                 return View();
             }
         }
+
     }
 }

@@ -142,7 +142,7 @@ namespace VardaanCab.Controllers
                 }
                 else
                 {
-                    TempData["dltmsg"] = "Data not fount";
+                    TempData["dltmsg"] = "Data not found";
                 }
                 
                 return RedirectToAction("EscortsList");
@@ -223,6 +223,104 @@ ORDER BY er.Id DESC;";
             }
         }
 
+        //public ActionResult ExportToExcelForImport()
+        //{
+        //    DataTable dt = new DataTable();
+        //    dt.Columns.Add("CompanyId");
+        //    dt.Columns.Add("EscortName");
+        //    dt.Columns.Add("EscortFatheName");
+        //    dt.Columns.Add("EscortMobileNumber");
+        //    dt.Columns.Add("EscortAadhaarNumber");
+        //    dt.Columns.Add("VendorId");
+        //    dt.Columns.Add("DOB");
+        //    dt.Columns.Add("EscortEmployeeId");
+        //    dt.Columns.Add("Pincode");            
+        //    dt.Columns.Add("PermanentAddress");
+        //    dt.Columns.Add("EscortAddress");
+
+        //    Dictionary<string, string> columnMappings = new Dictionary<string, string>()
+        //    {
+        //    { "CompanyId", "Company" },
+        //    { "EscortName", "Escort Name" },
+        //    { "EscortFatheName", "Escort Father Name" },
+        //    { "EscortMobileNumber", "Escort Mobile Number" },
+        //    { "EscortAadhaarNumber", "Escort Aadhaar Number" },
+        //    { "VendorId", "Vendor" },
+        //    { "DOB", "DOB" },
+        //    { "EscortEmployeeId", "Escort EmployeeId" },
+        //    { "Pincode", "Pincode" },            
+        //    { "PermanentAddress", "Permanent Address" },
+        //    { "EscortAddress", "Escort Address" }
+        //    };
+
+        //    // Export to Excel
+        //    using (XLWorkbook workbook = new XLWorkbook())
+        //    {
+        //        var worksheet = workbook.Worksheets.Add("Escort");
+
+
+        //        int colIndex = 1;
+        //        foreach (DataColumn column in dt.Columns)
+        //        {
+        //            string oldColumnName = column.ColumnName;
+        //            if (columnMappings.ContainsKey(oldColumnName))
+        //            {
+        //                worksheet.Cell(1, colIndex).Value = columnMappings[oldColumnName];
+        //            }
+        //            else
+        //            {
+        //                worksheet.Cell(1, colIndex).Value = oldColumnName;
+        //            }
+        //            worksheet.Cell(1, colIndex).Style.Fill.BackgroundColor = XLColor.Yellow;
+        //            colIndex++;
+        //        }
+
+        //        // Create a hidden sheet to store company names for dropdown
+        //        var hiddenSheet = workbook.Worksheets.Add("CompanyList");
+        //        var hiddenVendorSheet = workbook.Worksheets.Add("VendorList");
+
+
+        //        // Retrieve active customers for the dropdown list
+        //        var companyList = ent.Customers.Where(x=>x.IsActive).ToList();
+        //        var vendorList = ent.Vendors.Where(x => x.IsActive).ToList();
+
+        //        // Populate hidden sheet with company names
+        //        int hiddenRow = 1;
+        //        foreach (var company in companyList.OrderByDescending(x => x.Id))
+        //        {
+        //            hiddenSheet.Cell(hiddenRow++, 1).Value = company.OrgName;
+        //        }
+        //        hiddenRow = 1;
+        //        foreach (var ven in vendorList.OrderByDescending(x => x.Id))
+        //        {
+        //            hiddenVendorSheet.Cell(hiddenRow++, 1).Value = ven.VendorName;
+        //        }
+        //        // Define the dropdown list range
+        //        var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
+        //        var VendorRange = hiddenVendorSheet.Range($"A1:A{vendorList.Count}");
+
+
+        //        //Apply dropdown list validation to cell A2(under "Company ID")
+        //        var validationOne = worksheet.Cell(2, 1).DataValidation;
+        //        validationOne.List(companyRange); // Dropdown from hidden sheet
+        //        validationOne.IgnoreBlanks = true;
+        //        validationOne.InCellDropdown = true;
+
+        //        //Vendor
+        //        var validationVendorOne = worksheet.Cell(2, 6).DataValidation;
+        //        validationVendorOne.List(VendorRange); // Dropdown from hidden sheet
+        //        validationVendorOne.IgnoreBlanks = true;
+        //        validationVendorOne.InCellDropdown = true;
+
+        //        // Save and return Excel file as download
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+        //            workbook.SaveAs(stream);
+        //            stream.Position = 0;
+        //            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EscortData.xlsx");
+        //        }
+        //    }
+        //}
         public ActionResult ExportToExcelForImport()
         {
             DataTable dt = new DataTable();
@@ -234,30 +332,28 @@ ORDER BY er.Id DESC;";
             dt.Columns.Add("VendorId");
             dt.Columns.Add("DOB");
             dt.Columns.Add("EscortEmployeeId");
-            dt.Columns.Add("Pincode");            
+            dt.Columns.Add("Pincode");
             dt.Columns.Add("PermanentAddress");
             dt.Columns.Add("EscortAddress");
 
             Dictionary<string, string> columnMappings = new Dictionary<string, string>()
-            {
-            { "CompanyId", "Company" },
-            { "EscortName", "Escort Name" },
-            { "EscortFatheName", "Escort Father Name" },
-            { "EscortMobileNumber", "Escort Mobile Number" },
-            { "EscortAadhaarNumber", "Escort Aadhaar Number" },
-            { "VendorId", "Vendor" },
-            { "DOB", "DOB" },
-            { "EscortEmployeeId", "Escort EmployeeId" },
-            { "Pincode", "Pincode" },            
-            { "PermanentAddress", "Permanent Address" },
-            { "EscortAddress", "Escort Address" }
-            };
+    {
+        { "CompanyId", "Company" },
+        { "EscortName", "Escort Name" },
+        { "EscortFatheName", "Escort Father Name" },
+        { "EscortMobileNumber", "Escort Mobile Number" },
+        { "EscortAadhaarNumber", "Escort Aadhaar Number" },
+        { "VendorId", "Vendor" },
+        { "DOB", "DOB" },
+        { "EscortEmployeeId", "Escort EmployeeId" },
+        { "Pincode", "Pincode" },
+        { "PermanentAddress", "Permanent Address" },
+        { "EscortAddress", "Escort Address" }
+    };
 
-            // Export to Excel
             using (XLWorkbook workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Escort");
-
 
                 int colIndex = 1;
                 foreach (DataColumn column in dt.Columns)
@@ -275,42 +371,54 @@ ORDER BY er.Id DESC;";
                     colIndex++;
                 }
 
-                // Create a hidden sheet to store company names for dropdown
+                // Add dummy data
+                worksheet.Cell(2, 1).Value = "VARDAANSTF";
+                worksheet.Cell(2, 2).Value = "abc";
+                worksheet.Cell(2, 3).Value = "xyz";
+                worksheet.Cell(2, 4).Value = "9876543210";
+                worksheet.Cell(2, 5).Value = "123456789012";
+                worksheet.Cell(2, 6).Value = "Vendor 1";
+                worksheet.Cell(2, 7).Value = "1990-01-01";
+                worksheet.Cell(2, 8).Value = "1234567890";
+                worksheet.Cell(2, 9).Value = "123456";
+                worksheet.Cell(2, 10).Value = "123 Main St, City";
+                worksheet.Cell(2, 11).Value = "456 Elm St, City";
+
+                // Create a hidden sheet to store company and vendor names
                 var hiddenSheet = workbook.Worksheets.Add("CompanyList");
                 var hiddenVendorSheet = workbook.Worksheets.Add("VendorList");
 
-
-                // Retrieve active customers for the dropdown list
-                var companyList = ent.Customers.Where(x=>x.IsActive).ToList();
+                // Retrieve active customers and vendors
+                var companyList = ent.Customers.Where(x => x.IsActive).ToList();
                 var vendorList = ent.Vendors.Where(x => x.IsActive).ToList();
 
-                // Populate hidden sheet with company names
+                // Populate hidden sheets
                 int hiddenRow = 1;
                 foreach (var company in companyList.OrderByDescending(x => x.Id))
                 {
                     hiddenSheet.Cell(hiddenRow++, 1).Value = company.OrgName;
                 }
+
                 hiddenRow = 1;
-                foreach (var ven in vendorList.OrderByDescending(x => x.Id))
+                foreach (var vendor in vendorList.OrderByDescending(x => x.Id))
                 {
-                    hiddenVendorSheet.Cell(hiddenRow++, 1).Value = ven.VendorName;
+                    hiddenVendorSheet.Cell(hiddenRow++, 1).Value = vendor.VendorName;
                 }
-                // Define the dropdown list range
+
+                // Define dropdown list ranges
                 var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
-                var VendorRange = hiddenVendorSheet.Range($"A1:A{vendorList.Count}");
+                var vendorRange = hiddenVendorSheet.Range($"A1:A{vendorList.Count}");
 
+                // Apply dropdowns for CompanyId and VendorId
+                var companyValidation = worksheet.Cell(2, 1).DataValidation;
+                companyValidation.List(companyRange);
+                companyValidation.IgnoreBlanks = true;
+                companyValidation.InCellDropdown = true;
 
-                //Apply dropdown list validation to cell A2(under "Company ID")
-                var validationOne = worksheet.Cell(2, 1).DataValidation;
-                validationOne.List(companyRange); // Dropdown from hidden sheet
-                validationOne.IgnoreBlanks = true;
-                validationOne.InCellDropdown = true;
-
-                //Vendor
-                var validationVendorOne = worksheet.Cell(2, 6).DataValidation;
-                validationVendorOne.List(VendorRange); // Dropdown from hidden sheet
-                validationVendorOne.IgnoreBlanks = true;
-                validationVendorOne.InCellDropdown = true;
+                var vendorValidation = worksheet.Cell(2, 6).DataValidation;
+                vendorValidation.List(vendorRange);
+                vendorValidation.IgnoreBlanks = true;
+                vendorValidation.InCellDropdown = true;
 
                 // Save and return Excel file as download
                 using (MemoryStream stream = new MemoryStream())
@@ -321,6 +429,7 @@ ORDER BY er.Id DESC;";
                 }
             }
         }
+
 
         [HttpPost]
         public ActionResult ImportEscortData(HttpPostedFileBase file)
