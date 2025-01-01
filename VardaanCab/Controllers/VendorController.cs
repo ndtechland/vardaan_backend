@@ -310,98 +310,98 @@ namespace VardaanCab.Controllers
             dt.Columns.Add("FullAddress");
             dt.Columns.Add("PAN");
             dt.Columns.Add("CIN");
-            Dictionary<string, string> columnMappings = new Dictionary<string, string>()
-            {
-                { "CompanyName", "Company Name" },
-                { "VendorName", "Vendor Name" },
-                { "Email", "Email" },
-                { "MobileNumber", "Mobile Number" },
-                { "AlernateMobile", "Alternate Mobile" },
-                { "GSTIN", "GSTIN" },
-                { "ParentVendor_Id", "Parent Vendor ID" },
-                { "StateMaster_Id", "State Master ID" },
-                { "CityMaster_Id", "City Master ID" },
-                { "FullAddress", "Full Address" },
-                { "PAN", "PAN" },
-                { "CIN", "CIN" }
-            };
 
-            // Export to Excel
+            Dictionary<string, string> columnMappings = new Dictionary<string, string>()
+    {
+        { "CompanyName", "Company Name" },
+        { "VendorName", "Vendor Name" },
+        { "Email", "Email" },
+        { "MobileNumber", "Mobile Number" },
+        { "AlernateMobile", "Alternate Mobile" },
+        { "GSTIN", "GSTIN" },
+        { "ParentVendor_Id", "Parent Vendor ID" },
+        { "StateMaster_Id", "State Master ID" },
+        { "CityMaster_Id", "City Master ID" },
+        { "FullAddress", "Full Address" },
+        { "PAN", "PAN" },
+        { "CIN", "CIN" }
+    };
+
             using (XLWorkbook workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Vendor");
 
-
+                // Add column headers
                 int colIndex = 1;
                 foreach (DataColumn column in dt.Columns)
                 {
                     string oldColumnName = column.ColumnName;
-                    if (columnMappings.ContainsKey(oldColumnName))
-                    {
-                        worksheet.Cell(1, colIndex).Value = columnMappings[oldColumnName];
-                    }
-                    else
-                    {
-                        worksheet.Cell(1, colIndex).Value = oldColumnName;
-                    }
+                    worksheet.Cell(1, colIndex).Value = columnMappings.ContainsKey(oldColumnName)
+                        ? columnMappings[oldColumnName]
+                        : oldColumnName;
                     worksheet.Cell(1, colIndex).Style.Fill.BackgroundColor = XLColor.Yellow;
                     colIndex++;
                 }
 
-                // Create a hidden sheet to store company names for dropdown
+                // Add dummy data rows
+                var dummyData = new[]
+                {
+            new { CompanyName = "abc pvt ltd", VendorName = "Vendor 1", Email = "dummy1@example.com", MobileNumber = "1234567890", AlernateMobile = "9876543210", GSTIN = "GSTIN001", ParentVendor_Id = "", StateMaster_Id = "Uttar Pradesh", CityMaster_Id = "Noida", FullAddress = "Address 1", PAN = "AFZPK7190K", CIN = "CIN001" },
+            new { CompanyName = "Sample Co.", VendorName = "Vendor 2", Email = "sample2@example.com", MobileNumber = "1234567890", AlernateMobile = "9876543210", GSTIN = "GSTIN002", ParentVendor_Id = "", StateMaster_Id = "Uttar Pradesh", CityMaster_Id = "Aligarh", FullAddress = "Address 2", PAN = "AFZPK7190M", CIN = "CIN002" }
+        };
+
+                int rowIndex = 2;
+                foreach (var data in dummyData)
+                {
+                    worksheet.Cell(rowIndex, 1).Value = data.CompanyName;
+                    worksheet.Cell(rowIndex, 2).Value = data.VendorName;
+                    worksheet.Cell(rowIndex, 3).Value = data.Email;
+                    worksheet.Cell(rowIndex, 4).Value = data.MobileNumber;
+                    worksheet.Cell(rowIndex, 5).Value = data.AlernateMobile;
+                    worksheet.Cell(rowIndex, 6).Value = data.GSTIN;
+                    worksheet.Cell(rowIndex, 7).Value = data.ParentVendor_Id;
+                    worksheet.Cell(rowIndex, 8).Value = data.StateMaster_Id;
+                    worksheet.Cell(rowIndex, 9).Value = data.CityMaster_Id;
+                    worksheet.Cell(rowIndex, 10).Value = data.FullAddress;
+                    worksheet.Cell(rowIndex, 11).Value = data.PAN;
+                    worksheet.Cell(rowIndex, 12).Value = data.CIN;
+                    rowIndex++;
+                }
+
+                // Create hidden sheets for dropdown data
                 var hiddenSheet = workbook.Worksheets.Add("ParentVendorList");
-                var StatehiddenSheet = workbook.Worksheets.Add("StateList");
-                var CityhiddenSheet = workbook.Worksheets.Add("CityList");
+                var stateHiddenSheet = workbook.Worksheets.Add("StateList");
+                var cityHiddenSheet = workbook.Worksheets.Add("CityList");
 
+                // Retrieve active data for dropdowns
+                var vendorList = ent.Vendors.Where(x => x.IsActive == true).ToList();
+                var stateList = ent.StateMasters.ToList();
+                var cityList = ent.CityMasters.ToList();
 
-                // Retrieve active customers for the dropdown list
-                var VendorList = ent.Vendors.Where(x => x.IsActive == true).ToList();
-                var StateList = ent.StateMasters.ToList();
-                var CityList = ent.CityMasters.ToList();
+                // Populate hidden sheets
+                for (int i = 0; i < vendorList.Count; i++)
+                    hiddenSheet.Cell(i + 1, 1).Value = vendorList[i].VendorName;
 
+                for (int i = 0; i < stateList.Count; i++)
+                    stateHiddenSheet.Cell(i + 1, 1).Value = stateList[i].StateName;
 
-                // Populate hidden sheet with company names
-                int hiddenRow = 1;
-                foreach (var company in VendorList.OrderByDescending(x => x.Id))
+                for (int i = 0; i < cityList.Count; i++)
+                    cityHiddenSheet.Cell(i + 1, 1).Value = cityList[i].CityName;
+
+                // Define ranges
+                var companyRange = hiddenSheet.Range($"A1:A{vendorList.Count}");
+                var stateRange = stateHiddenSheet.Range($"A1:A{stateList.Count}");
+                var cityRange = cityHiddenSheet.Range($"A1:A{cityList.Count}");
+
+                // Apply dropdown validation to dummy data rows
+                for (int i = 2; i < rowIndex; i++)
                 {
-                    hiddenSheet.Cell(hiddenRow++, 1).Value = company.VendorName;
-                }
-                hiddenRow = 1;
-                foreach (var state in StateList.OrderByDescending(x => x.Id))
-                {
-                    StatehiddenSheet.Cell(hiddenRow++, 1).Value = state.StateName;
-
-                }
-                hiddenRow = 1;
-                foreach (var city in CityList.OrderByDescending(x => x.Id))
-                {
-                    CityhiddenSheet.Cell(hiddenRow++, 1).Value = city.CityName;
+                    worksheet.Cell(i, 7).DataValidation.List(companyRange);
+                    worksheet.Cell(i, 8).DataValidation.List(stateRange);
+                    worksheet.Cell(i, 9).DataValidation.List(cityRange);
                 }
 
-                // Define the dropdown list range
-                var companyRange = hiddenSheet.Range($"A1:A{VendorList.Count}");
-                var StateRange = StatehiddenSheet.Range($"A1:A{StateList.Count}");
-                var CityRange = CityhiddenSheet.Range($"A1:A{CityList.Count}");
-
-
-
-                //Apply dropdown list validation to cell A2(under "Company ID")
-                var validationOne = worksheet.Cell(2, 7).DataValidation;
-                validationOne.List(companyRange); // Dropdown from hidden sheet
-                validationOne.IgnoreBlanks = true;
-                validationOne.InCellDropdown = true;
-
-                var validationTwo = worksheet.Cell(2, 8).DataValidation;
-                validationTwo.List(StateRange); // Dropdown from hidden sheet
-                validationTwo.IgnoreBlanks = true;
-                validationTwo.InCellDropdown = true;
-
-                var validationThree = worksheet.Cell(2, 9).DataValidation;
-                validationThree.List(CityRange); // Dropdown from hidden sheet
-                validationThree.IgnoreBlanks = true;
-                validationThree.InCellDropdown = true;
-
-                // Save and return Excel file as download
+                // Save and return Excel file
                 using (MemoryStream stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
@@ -410,6 +410,7 @@ namespace VardaanCab.Controllers
                 }
             }
         }
+
 
         public ActionResult ImportVendorData(HttpPostedFileBase file)
         {

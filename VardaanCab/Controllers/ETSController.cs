@@ -200,47 +200,161 @@ namespace VardaanCab.Controllers
                 throw;
             }
         }
-     
+
+        //public ActionResult ExportToExcel()
+        //{
+        //    // Create DataTable and add columns
+        //    DataTable dt = new DataTable();
+        //    dt.Columns.Add("EmployeeId");
+        //    dt.Columns.Add("Company");//customer
+        //    dt.Columns.Add("RequestStartDate");
+        //    dt.Columns.Add("RequestEndDate");
+        //    dt.Columns.Add("TripType");//triptype
+        //    dt.Columns.Add("ShiftType");//tripmaster
+        //    dt.Columns.Add("PickUpTime"); //shiftmaster id(1)                      
+        //    dt.Columns.Add("DropTime");//shiftmaster id(2)  
+
+
+
+
+        //    //dt.Rows.Add("9169442654", 2768, "2024-12-01", "2024-12-03", 1, 1, 3, 0 );
+        //    //dt.Rows.Add("9169448743", 2768, "2024-12-02", "2024-12-04", 2, 1, 0, 15 );
+        //    //dt.Rows.Add("6785448743", 2768, "2024-12-02", "2024-12-04", 3, 1, 3, 15 );
+
+        //    // Create Excel workbook using ClosedXML
+        //    using (var workbook = new XLWorkbook())
+        //    {
+        //        // Add DataTable as a worksheet
+
+        //        var worksheet = workbook.Worksheets.Add("Employee Request Data");
+        //        worksheet.Cell(1, 1).InsertTable(dt);
+        //        var hiddenSheet = workbook.Worksheets.Add("CompanyList");
+        //        var hiddenTripTypeListSheet = workbook.Worksheets.Add("TripTypeList");
+        //        var hiddenShiftTypeSheet = workbook.Worksheets.Add("ShiftTypeList");
+        //        var hiddenPickuptimeSheet = workbook.Worksheets.Add("PickuptimeList");
+        //        var hiddenDroptimeSheet = workbook.Worksheets.Add("DroptimeList");
+
+        //        var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
+        //        var TriptypeList = ent.TripTypes.Where(x => x.TripMasterId == 1).ToList();
+        //        var ShiftTypeList = ent.TripMasters.Where(x => x.Id == 1).ToList();
+        //        var PickupTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList();
+        //        var DropTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList();
+
+        //        //for company
+        //        int hiddenRow = 1;
+        //        foreach (var company in companyList.OrderByDescending(x => x.Id))
+        //        {
+        //            hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
+        //        }
+        //        var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
+
+        //        //Apply dropdown list validation to cell A2(under "Company ID")
+        //        var validationOne = worksheet.Cell(2, 2).DataValidation;
+        //        validationOne.List(companyRange); // Dropdown from hidden sheet
+        //        validationOne.IgnoreBlanks = true;
+        //        validationOne.InCellDropdown = true;
+
+        //        //for TripType
+        //        hiddenRow = 1;
+        //        foreach (var triptype in TriptypeList.OrderByDescending(x => x.Id))
+        //        {
+        //            hiddenTripTypeListSheet.Cell(hiddenRow++, 1).Value = triptype.TripTypeName;
+        //        }
+        //        var TripTypeRange = hiddenTripTypeListSheet.Range($"A1:A{TriptypeList.Count}");
+
+        //        var validationtriptypeOne = worksheet.Cell(2, 5).DataValidation;
+        //        validationtriptypeOne.List(TripTypeRange); // Dropdown from hidden sheet
+        //        validationtriptypeOne.IgnoreBlanks = true;
+        //        validationtriptypeOne.InCellDropdown = true;
+
+        //        //for ShiftType
+        //        hiddenRow = 1;
+        //        foreach (var shifttype in ShiftTypeList.OrderByDescending(x => x.Id))
+        //        {
+        //            hiddenShiftTypeSheet.Cell(hiddenRow++, 1).Value = shifttype.TripName;
+        //        }
+        //        var ShiftTypeRange = hiddenShiftTypeSheet.Range($"A1:A{ShiftTypeList.Count}");
+
+        //        var validationShiftTypeOne = worksheet.Cell(2, 6).DataValidation;
+        //        validationShiftTypeOne.List(ShiftTypeRange);
+        //        validationShiftTypeOne.IgnoreBlanks = true;
+        //        validationShiftTypeOne.InCellDropdown = true;
+
+        //        //for Pickup time
+        //        hiddenRow = 1;
+        //        foreach (var pickuptime in PickupTimeList.OrderByDescending(x => x.Id))
+        //        {
+        //            hiddenPickuptimeSheet.Cell(hiddenRow++, 1).Value = pickuptime.ShiftTime;
+        //        }
+        //        var PickuptimeRange = hiddenPickuptimeSheet.Range($"A1:A{PickupTimeList.Count}");
+
+        //        var validationPickuptimeOne = worksheet.Cell(2, 7).DataValidation;
+        //        validationPickuptimeOne.List(PickuptimeRange);
+        //        validationPickuptimeOne.IgnoreBlanks = true;
+        //        validationPickuptimeOne.InCellDropdown = true;
+        //        //for DRop time
+        //        hiddenRow = 1;
+        //        foreach (var droptime in DropTimeList.OrderByDescending(x => x.Id))
+        //        {
+        //            hiddenDroptimeSheet.Cell(hiddenRow++, 1).Value = droptime.ShiftTime;
+        //        }
+        //        var DroptimeRange = hiddenDroptimeSheet.Range($"A1:A{DropTimeList.Count}");
+
+        //        var validationDroptimeOne = worksheet.Cell(2, 8).DataValidation;
+        //        validationDroptimeOne.List(DroptimeRange);
+        //        validationDroptimeOne.IgnoreBlanks = true;
+        //        validationDroptimeOne.InCellDropdown = true;
+
+        //        // Set response for Excel download
+        //        using (var stream = new System.IO.MemoryStream())
+        //        {
+        //            workbook.SaveAs(stream);
+        //            stream.Position = 0;
+        //            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeRequestData.xlsx");
+        //        }
+        //    }
+        //}
+
         public ActionResult ExportToExcel()
         {
             // Create DataTable and add columns
             DataTable dt = new DataTable();
             dt.Columns.Add("EmployeeId");
-            dt.Columns.Add("Company");//customer
+            dt.Columns.Add("Company"); // customer
             dt.Columns.Add("RequestStartDate");
             dt.Columns.Add("RequestEndDate");
-            dt.Columns.Add("TripType");//triptype
-            dt.Columns.Add("ShiftType");//tripmaster
-            dt.Columns.Add("PickUpTime"); //shiftmaster id(1)                      
-            dt.Columns.Add("DropTime");//shiftmaster id(2)  
+            dt.Columns.Add("TripType"); // triptype
+            dt.Columns.Add("ShiftType"); // tripmaster
+            dt.Columns.Add("PickUpTime"); // shiftmaster id(1)
+            dt.Columns.Add("DropTime"); // shiftmaster id(2)
 
-
-
-
-            //dt.Rows.Add("9169442654", 2768, "2024-12-01", "2024-12-03", 1, 1, 3, 0 );
-            //dt.Rows.Add("9169448743", 2768, "2024-12-02", "2024-12-04", 2, 1, 0, 15 );
-            //dt.Rows.Add("6785448743", 2768, "2024-12-02", "2024-12-04", 3, 1, 3, 15 );
+            // Add dummy rows
+            dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-01", "2024-12-03", "BOTH", "NORMAL", "08:00", "19:30");
+            dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-02", "2024-12-04", "PICKUP", "NORMAL", "09:00", "19:30");
+            dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-03", "2024-12-05", "DROP", "NORMAL", "10:00", "19:30");
 
             // Create Excel workbook using ClosedXML
             using (var workbook = new XLWorkbook())
             {
                 // Add DataTable as a worksheet
-
                 var worksheet = workbook.Worksheets.Add("Employee Request Data");
                 worksheet.Cell(1, 1).InsertTable(dt);
+
+                // Add hidden sheets for dropdown data
                 var hiddenSheet = workbook.Worksheets.Add("CompanyList");
                 var hiddenTripTypeListSheet = workbook.Worksheets.Add("TripTypeList");
                 var hiddenShiftTypeSheet = workbook.Worksheets.Add("ShiftTypeList");
                 var hiddenPickuptimeSheet = workbook.Worksheets.Add("PickuptimeList");
                 var hiddenDroptimeSheet = workbook.Worksheets.Add("DroptimeList");
 
+                // Fetch lists from the database
                 var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
                 var TriptypeList = ent.TripTypes.Where(x => x.TripMasterId == 1).ToList();
                 var ShiftTypeList = ent.TripMasters.Where(x => x.Id == 1).ToList();
                 var PickupTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList();
                 var DropTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList();
 
-                //for company
+                // Populate hidden sheets and create dropdown ranges
                 int hiddenRow = 1;
                 foreach (var company in companyList.OrderByDescending(x => x.Id))
                 {
@@ -248,26 +362,13 @@ namespace VardaanCab.Controllers
                 }
                 var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
 
-                //Apply dropdown list validation to cell A2(under "Company ID")
-                var validationOne = worksheet.Cell(2, 2).DataValidation;
-                validationOne.List(companyRange); // Dropdown from hidden sheet
-                validationOne.IgnoreBlanks = true;
-                validationOne.InCellDropdown = true;
-
-                //for TripType
                 hiddenRow = 1;
                 foreach (var triptype in TriptypeList.OrderByDescending(x => x.Id))
                 {
                     hiddenTripTypeListSheet.Cell(hiddenRow++, 1).Value = triptype.TripTypeName;
                 }
                 var TripTypeRange = hiddenTripTypeListSheet.Range($"A1:A{TriptypeList.Count}");
-                               
-                var validationtriptypeOne = worksheet.Cell(2, 5).DataValidation;
-                validationtriptypeOne.List(TripTypeRange); // Dropdown from hidden sheet
-                validationtriptypeOne.IgnoreBlanks = true;
-                validationtriptypeOne.InCellDropdown = true;
 
-                //for ShiftType
                 hiddenRow = 1;
                 foreach (var shifttype in ShiftTypeList.OrderByDescending(x => x.Id))
                 {
@@ -275,12 +376,6 @@ namespace VardaanCab.Controllers
                 }
                 var ShiftTypeRange = hiddenShiftTypeSheet.Range($"A1:A{ShiftTypeList.Count}");
 
-                var validationShiftTypeOne = worksheet.Cell(2, 6).DataValidation;
-                validationShiftTypeOne.List(ShiftTypeRange);
-                validationShiftTypeOne.IgnoreBlanks = true;
-                validationShiftTypeOne.InCellDropdown = true;
-
-                //for Pickup time
                 hiddenRow = 1;
                 foreach (var pickuptime in PickupTimeList.OrderByDescending(x => x.Id))
                 {
@@ -288,11 +383,6 @@ namespace VardaanCab.Controllers
                 }
                 var PickuptimeRange = hiddenPickuptimeSheet.Range($"A1:A{PickupTimeList.Count}");
 
-                var validationPickuptimeOne = worksheet.Cell(2, 7).DataValidation;
-                validationPickuptimeOne.List(PickuptimeRange);
-                validationPickuptimeOne.IgnoreBlanks = true;
-                validationPickuptimeOne.InCellDropdown = true;
-                //for DRop time
                 hiddenRow = 1;
                 foreach (var droptime in DropTimeList.OrderByDescending(x => x.Id))
                 {
@@ -300,10 +390,40 @@ namespace VardaanCab.Controllers
                 }
                 var DroptimeRange = hiddenDroptimeSheet.Range($"A1:A{DropTimeList.Count}");
 
-                var validationDroptimeOne = worksheet.Cell(2, 8).DataValidation;
-                validationDroptimeOne.List(DroptimeRange);
-                validationDroptimeOne.IgnoreBlanks = true;
-                validationDroptimeOne.InCellDropdown = true;
+                // Apply dropdown validations for all rows with dummy data
+                int rowCount = dt.Rows.Count + 1; // Including header row
+                for (int row = 2; row <= rowCount; row++)
+                {
+                    // Company Dropdown
+                    var companyValidation = worksheet.Cell(row, 2).DataValidation;
+                    companyValidation.List(companyRange);
+                    companyValidation.IgnoreBlanks = true;
+                    companyValidation.InCellDropdown = true;
+
+                    // TripType Dropdown
+                    var tripTypeValidation = worksheet.Cell(row, 5).DataValidation;
+                    tripTypeValidation.List(TripTypeRange);
+                    tripTypeValidation.IgnoreBlanks = true;
+                    tripTypeValidation.InCellDropdown = true;
+
+                    // ShiftType Dropdown
+                    var shiftTypeValidation = worksheet.Cell(row, 6).DataValidation;
+                    shiftTypeValidation.List(ShiftTypeRange);
+                    shiftTypeValidation.IgnoreBlanks = true;
+                    shiftTypeValidation.InCellDropdown = true;
+
+                    // PickupTime Dropdown
+                    var pickupTimeValidation = worksheet.Cell(row, 7).DataValidation;
+                    pickupTimeValidation.List(PickuptimeRange);
+                    pickupTimeValidation.IgnoreBlanks = true;
+                    pickupTimeValidation.InCellDropdown = true;
+
+                    // DropTime Dropdown
+                    var dropTimeValidation = worksheet.Cell(row, 8).DataValidation;
+                    dropTimeValidation.List(DroptimeRange);
+                    dropTimeValidation.IgnoreBlanks = true;
+                    dropTimeValidation.InCellDropdown = true;
+                }
 
                 // Set response for Excel download
                 using (var stream = new System.IO.MemoryStream())
@@ -314,6 +434,7 @@ namespace VardaanCab.Controllers
                 }
             }
         }
+
         [HttpPost]
         public ActionResult ImportEmployeeRequestData(HttpPostedFileBase file)
         {

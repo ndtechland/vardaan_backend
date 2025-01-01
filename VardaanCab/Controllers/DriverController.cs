@@ -350,48 +350,115 @@ namespace VardaanCab.Controllers
             return RedirectToAction("All",new { menuId=menuId });
         }
 
+        //    public ActionResult ExportToExcel()
+        //    {
+        //        DataTable dt = new DataTable();
+        //        dt.Columns.Add("DriverName");
+        //        dt.Columns.Add("DlNumber");
+        //        dt.Columns.Add("DlImage");
+        //        dt.Columns.Add("AadharNo");
+        //        dt.Columns.Add("AadharImage");
+        //        dt.Columns.Add("DriverImage");
+        //        dt.Columns.Add("MobileNumber");
+        //        dt.Columns.Add("DriverAddress");
+        //        dt.Columns.Add("PoliceVerificationNo");
+        //        dt.Columns.Add("LicenceExpDate");
+        //        dt.Columns.Add("PolVerifImg");
+        //        dt.Columns.Add("FatherName");
+        //        dt.Columns.Add("AlternateNo1");
+        //        dt.Columns.Add("AlternateNo2");
+        //        dt.Columns.Add("LocalAddress");
+        //        dt.Columns.Add("PermanentAddress");
+        //        dt.Columns.Add("PanImage");
+        //        dt.Columns.Add("PanNumber");
+        //        dt.Columns.Add("Email");
+
+        //        Dictionary<string, string> columnMappings = new Dictionary<string, string>()
+        //{
+        //    { "DriverName", "Driver Name" },
+        //    { "DlNumber", "Dl Number" },
+        //    { "DlImage", "Dl Image" },
+        //    { "AadharNo", "Aadhar No" },
+        //    { "AadharImage", "Aadhar Image" },
+        //    { "DriverImage", "Driver Image" },
+        //    { "MobileNumber", "Mobile Number" },
+        //    { "DriverAddress", "Driver Address" },
+        //    { "PoliceVerificationNo", "Police Verification No" },
+        //    { "LicenceExpDate", "Licence Expire Date" },
+        //    { "PolVerifImg", "Pol Verif Img" },
+        //    { "FatherName", "Father Name" },
+        //    { "AlternateNo1", "Alternate No 1" },
+        //    { "AlternateNo2", "Alternate No 2" },
+        //    { "LocalAddress", "Local Address" },
+        //    { "PermanentAddress", "Permanent Address" },
+        //    { "PanImage", "Pan Image" },
+        //    { "PanNumber", "Pan Number" },
+        //    { "Email", "Email" }
+        //};
+
+        //        using (XLWorkbook workbook = new XLWorkbook())
+        //        {
+        //            var worksheet = workbook.Worksheets.Add("Driver");
+
+        //            int colIndex = 1;
+        //            foreach (DataColumn column in dt.Columns)
+        //            {
+        //                string oldColumnName = column.ColumnName;
+        //                worksheet.Cell(1, colIndex).Value = columnMappings.ContainsKey(oldColumnName)
+        //                    ? columnMappings[oldColumnName]
+        //                    : oldColumnName;
+
+        //                worksheet.Cell(1, colIndex).Style.Fill.BackgroundColor = XLColor.Yellow;
+        //                colIndex++;
+        //            }
+
+        //            using (MemoryStream stream = new MemoryStream())
+        //            {
+        //                workbook.SaveAs(stream);
+        //                stream.Position = 0;
+        //                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DriverData.xlsx");
+        //            }
+        //        }
+        //    }
+
         public ActionResult ExportToExcel()
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("DriverName");
             dt.Columns.Add("DlNumber");
-            dt.Columns.Add("DlImage");
             dt.Columns.Add("AadharNo");
-            dt.Columns.Add("AadharImage");
-            dt.Columns.Add("DriverImage");
             dt.Columns.Add("MobileNumber");
             dt.Columns.Add("DriverAddress");
             dt.Columns.Add("PoliceVerificationNo");
             dt.Columns.Add("LicenceExpDate");
-            dt.Columns.Add("PolVerifImg");
             dt.Columns.Add("FatherName");
             dt.Columns.Add("AlternateNo1");
             dt.Columns.Add("AlternateNo2");
             dt.Columns.Add("LocalAddress");
             dt.Columns.Add("PermanentAddress");
-            dt.Columns.Add("PanImage");
             dt.Columns.Add("PanNumber");
             dt.Columns.Add("Email");
+
+            // Add dummy data
+            dt.Rows.Add("ABC", "DL12345", "123456789012", "9876543210", "123 Main Street", "PV123", "2025-12-31",
+                        "xyz", "9876543211", "9876543212", "456 Local St", "789 Permanent St", "PAN123456", "abcd@example.com");
+            dt.Rows.Add("XYZ", "DL67890", "987654321098", "8765432109", "456 Elm Street", "PV456", "2026-05-15",
+                        "abc", "8765432108", "8765432107", "789 Local St", "123 Permanent St", "PAN987654", "xyz12@example.com");
 
             Dictionary<string, string> columnMappings = new Dictionary<string, string>()
     {
         { "DriverName", "Driver Name" },
-        { "DlNumber", "Dl Number" },
-        { "DlImage", "Dl Image" },
+        { "DlNumber", "DL Number" },
         { "AadharNo", "Aadhar No" },
-        { "AadharImage", "Aadhar Image" },
-        { "DriverImage", "Driver Image" },
         { "MobileNumber", "Mobile Number" },
         { "DriverAddress", "Driver Address" },
         { "PoliceVerificationNo", "Police Verification No" },
         { "LicenceExpDate", "Licence Expire Date" },
-        { "PolVerifImg", "Pol Verif Img" },
         { "FatherName", "Father Name" },
         { "AlternateNo1", "Alternate No 1" },
         { "AlternateNo2", "Alternate No 2" },
         { "LocalAddress", "Local Address" },
         { "PermanentAddress", "Permanent Address" },
-        { "PanImage", "Pan Image" },
         { "PanNumber", "Pan Number" },
         { "Email", "Email" }
     };
@@ -412,6 +479,18 @@ namespace VardaanCab.Controllers
                     colIndex++;
                 }
 
+                int rowIndex = 2;
+                foreach (DataRow row in dt.Rows)
+                {
+                    colIndex = 1;
+                    foreach (var item in row.ItemArray)
+                    {
+                        worksheet.Cell(rowIndex, colIndex).Value = item?.ToString() ?? string.Empty;
+                        colIndex++;
+                    }
+                    rowIndex++;
+                }
+
                 using (MemoryStream stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
@@ -421,13 +500,95 @@ namespace VardaanCab.Controllers
             }
         }
 
+
         [HttpPost]
+        //public ActionResult ImportDriverData(HttpPostedFileBase file)
+        //{
+        //    try
+        //    {
+        //        string randomPassword = _random.GenerateRandomPassword();
+
+        //        if (file != null && file.ContentLength > 0)
+        //        {
+        //            using (var workbook = new XLWorkbook(file.InputStream))
+        //            {
+        //                var worksheet = workbook.Worksheet(1);
+        //                var rows = worksheet.RowsUsed().Skip(1);
+        //                List<Driver> drivers = new List<Driver>();
+
+        //                foreach (var row in rows)
+        //                {
+        //                    string ff = row.Cell(10).GetValue<string>();
+
+        //                    Driver driver = new Driver
+        //                    {
+        //                        DriverName = row.Cell(1).GetValue<string>() ?? string.Empty,
+        //                        DlNumber = row.Cell(2).GetValue<string>() ?? string.Empty,
+        //                        DlImage = row.Cell(3).GetValue<string>() ?? string.Empty,
+        //                        AadharNo = row.Cell(4).GetValue<string>() ?? string.Empty,
+        //                        AadharImage = row.Cell(5).GetValue<string>() ?? string.Empty,
+        //                        DriverImage = row.Cell(6).GetValue<string>() ?? string.Empty,
+        //                        MobileNumber = row.Cell(7).GetValue<string>() ?? string.Empty,
+        //                        DriverAddress = row.Cell(8).GetValue<string>() ?? string.Empty,
+        //                        PoliceVerificationNo = row.Cell(9).GetValue<string>() ?? string.Empty,
+        //                        LicenceExpDate = row.Cell(10).GetValue<DateTime>(),
+        //                        PolVerifImg = row.Cell(11).GetValue<string>() ?? string.Empty,
+        //                        FatherName = row.Cell(12).GetValue<string>() ?? string.Empty,
+        //                        AlternateNo1 = row.Cell(13).GetValue<string>() ?? string.Empty,
+        //                        AlternateNo2 = row.Cell(14).GetValue<string>() ?? string.Empty,
+        //                        LocalAddress = row.Cell(15).GetValue<string>() ?? string.Empty,
+        //                        PermanentAddress = row.Cell(16).GetValue<string>() ?? string.Empty,
+        //                        PanNumber = row.Cell(17).GetValue<string>() ?? string.Empty,
+        //                        PanImage = row.Cell(18).GetValue<string>() ?? string.Empty,
+        //                        Password = randomPassword,
+        //                        Email = row.Cell(19).GetValue<string>() ?? string.Empty,
+        //                        IsFirst = false,
+        //                        IsOnline = false,
+        //                        IsActive = true,
+        //                        CreateDate = DateTime.Now,
+        //                        IsOutsider = false,
+        //                        IsAvailable = false
+        //                    };
+
+        //                    drivers.Add(driver);
+        //                }
+
+        //                if (drivers.Any())
+        //                {
+        //                    ent.Drivers.AddRange(drivers);
+        //                    ent.SaveChanges();
+        //                }
+
+        //                TempData["msg"] = "Data imported successfully!";
+        //                return RedirectToAction("All");
+        //            }
+        //        }
+
+        //        TempData["errormsg"] = "Please select an Excel file to import.";
+        //        return RedirectToAction("All");
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        foreach (var validationError in ex.EntityValidationErrors)
+        //        {
+        //            foreach (var error in validationError.ValidationErrors)
+        //            {
+        //                Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
+        //            }
+        //        }
+        //        TempData["errormsg"] = "Validation failed for one or more entities. Please check the logs for more details.";
+        //        return RedirectToAction("All");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["errormsg"] = $"An error occurred: {ex.Message}";
+        //        return RedirectToAction("All");
+        //    }
+        //}
         public ActionResult ImportDriverData(HttpPostedFileBase file)
         {
             try
             {
-                string randomPassword = _random.GenerateRandomPassword();
-
                 if (file != null && file.ContentLength > 0)
                 {
                     using (var workbook = new XLWorkbook(file.InputStream))
@@ -437,31 +598,26 @@ namespace VardaanCab.Controllers
                         List<Driver> drivers = new List<Driver>();
 
                         foreach (var row in rows)
-                        {
-                            string ff = row.Cell(10).GetValue<string>();
+                        { 
+                            string randomPassword = _random.GenerateRandomPassword();
 
                             Driver driver = new Driver
                             {
                                 DriverName = row.Cell(1).GetValue<string>() ?? string.Empty,
                                 DlNumber = row.Cell(2).GetValue<string>() ?? string.Empty,
-                                DlImage = row.Cell(3).GetValue<string>() ?? string.Empty,
-                                AadharNo = row.Cell(4).GetValue<string>() ?? string.Empty,
-                                AadharImage = row.Cell(5).GetValue<string>() ?? string.Empty,
-                                DriverImage = row.Cell(6).GetValue<string>() ?? string.Empty,
-                                MobileNumber = row.Cell(7).GetValue<string>() ?? string.Empty,
-                                DriverAddress = row.Cell(8).GetValue<string>() ?? string.Empty,
-                                PoliceVerificationNo = row.Cell(9).GetValue<string>() ?? string.Empty,
-                                LicenceExpDate = row.Cell(10).GetValue<DateTime>(),
-                                PolVerifImg = row.Cell(11).GetValue<string>() ?? string.Empty,
-                                FatherName = row.Cell(12).GetValue<string>() ?? string.Empty,
-                                AlternateNo1 = row.Cell(13).GetValue<string>() ?? string.Empty,
-                                AlternateNo2 = row.Cell(14).GetValue<string>() ?? string.Empty,
-                                LocalAddress = row.Cell(15).GetValue<string>() ?? string.Empty,
-                                PermanentAddress = row.Cell(16).GetValue<string>() ?? string.Empty,
-                                PanNumber = row.Cell(17).GetValue<string>() ?? string.Empty,
-                                PanImage = row.Cell(18).GetValue<string>() ?? string.Empty,
+                                AadharNo = row.Cell(3).GetValue<string>() ?? string.Empty,
+                                MobileNumber = row.Cell(4).GetValue<string>() ?? string.Empty,
+                                DriverAddress = row.Cell(5).GetValue<string>() ?? string.Empty,
+                                PoliceVerificationNo = row.Cell(6).GetValue<string>() ?? string.Empty,
+                                LicenceExpDate = row.Cell(7).GetValue<DateTime>(),
+                                FatherName = row.Cell(8).GetValue<string>() ?? string.Empty,
+                                AlternateNo1 = row.Cell(9).GetValue<string>() ?? string.Empty,
+                                AlternateNo2 = row.Cell(10).GetValue<string>() ?? string.Empty,
+                                LocalAddress = row.Cell(11).GetValue<string>() ?? string.Empty,
+                                PermanentAddress = row.Cell(12).GetValue<string>() ?? string.Empty,
+                                PanNumber = row.Cell(13).GetValue<string>() ?? string.Empty,
                                 Password = randomPassword,
-                                Email = row.Cell(19).GetValue<string>() ?? string.Empty,
+                                Email = row.Cell(14).GetValue<string>() ?? string.Empty,
                                 IsFirst = false,
                                 IsOnline = false,
                                 IsActive = true,
@@ -505,6 +661,7 @@ namespace VardaanCab.Controllers
                 return RedirectToAction("All");
             }
         }
+
 
 
     }
