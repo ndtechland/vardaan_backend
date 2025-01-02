@@ -166,13 +166,13 @@
                                     </div>
                                 }
                                 @if (TempData["errormsg"] != null)
-{
-    <div class="mb-3">
-        <div class="alert alert-success">
-            @TempData["errormsg"]
-        </div>
-    </div>
-}
+                                {
+                                    <div class="mb-3">
+                                        <div class="alert alert-success">
+                                            @TempData["errormsg"]
+                                        </div>
+                                    </div>
+                                }
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
@@ -180,17 +180,15 @@
                                             <div class="col-md-6">
                                                 <label class="form-label-title">Select Company</label>
                                                 <div class="dropdown-container">
-                                                    <input type="hidden" id="CompanyIdHidden" value="@Model.CompanyId" />
+                                                    <input type="hidden" id="CompanyIdHidden" name="CompanyId" value="@Model.CompanyId" />
                                                     <input type="text" class="dropdown-search form-control" placeholder="Search Company..." />
                                                     <button class="dropdown-toggle form-control" type="button">--Select Company--</button>
                                                     <div class="dropdown-options">
                                                         @foreach (var company in Model.Companies)
                                                         {
                                                             <label class="dropdown-item">
-                                                              <label class="dropdown-item">
-                                                                  <input type="checkbox" name="CompanyId" value="@company.Value" class="dropdown-checkbox" />
-                                                                  @company.Text
-                                                              </label>
+                                                                <input type="checkbox" value="@company.Value" class="dropdown-checkbox" />
+                                                                @company.Text
                                                             </label>
                                                         }
                                                     </div>
@@ -386,177 +384,193 @@
         }
     }
 </script>
-
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
-        // Get the Model.CompanyId value from Razor
-        /**/
         var selectedCompanyId = $("#CompanyIdHidden").val();  // Razor syntax for dynamic model
-    /**/
 
-    // Handle multiple selections (comma-separated values)
-    var selectedCompanyIds = selectedCompanyId ? selectedCompanyId.split(',') : [];
+        // Handle multiple selections (comma-separated values)
+        var selectedCompanyIds = selectedCompanyId ? selectedCompanyId.split(',') : [];
 
-    // Loop through each checkbox and check it if its value is in the selectedCompanyIds array
-    document.querySelectorAll('.dropdown-checkbox').forEach(function (checkbox) {
-        if (selectedCompanyIds.includes(checkbox.value)) {
-            checkbox.checked = true;
+        // Loop through each checkbox and check it if its value is in the selectedCompanyIds array
+        document.querySelectorAll('.dropdown-checkbox').forEach(function (checkbox) {
+            if (selectedCompanyIds.includes(checkbox.value)) {
+                checkbox.checked = true;
+            }
+
+            // Add event listener to update hidden input when a checkbox is toggled
+            checkbox.addEventListener('change', function () {
+                updateHiddenInput();
+            });
+        });
+
+        // Function to update the hidden input with selected company IDs
+        function updateHiddenInput() {
+            var selectedValues = Array.from(document.querySelectorAll('.dropdown-checkbox:checked'))
+                .map(function (checkbox) {
+                    return checkbox.value;
+                });
+
+            // Set the comma-separated selected values to the hidden input field
+            $("#CompanyIdHidden").val(selectedValues.join(','));
         }
+
+        // Initial update of the hidden input when the page loads
+        updateHiddenInput();
+
+        // Initialize the dropdown text based on selected checkboxes
+        updateDropdownText();
+
+        // Attach event listeners to checkboxes for dynamic updates
+        document.querySelectorAll('.dropdown-checkbox').forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                updateDropdownText(); // Update the dropdown text on checkbox change
+
+                // Get the selected company ID(s)
+                var selectedCompanyIds = Array.from(document.querySelectorAll('.dropdown-checkbox:checked')).map(function (checkbox) {
+                    return checkbox.value;
+                });
+
+                // Trigger dropdown updates for employee and user role based on selected company IDs
+                if (selectedCompanyIds.length > 0) {
+                    const selectedCompanyId = selectedCompanyIds[0]; // Take the first selected company
+                    updateEmployeeDropdown(selectedCompanyId);
+                    updateUserRoleDropdown(selectedCompanyId);
+                }
+            });
+        });
     });
 
-    // Initialize the dropdown text based on selected checkboxes
-    updateDropdownText();
+    // Function to update the dropdown text based on selected checkboxes
+    function updateDropdownText() {
+        var selectedTexts = [];
 
-    // Attach event listeners to checkboxes for dynamic updates
-    document.querySelectorAll('.dropdown-checkbox').forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-            updateDropdownText(); // Update the dropdown text on checkbox change
+        // Gather the text content of checked checkboxes
+        document.querySelectorAll('.dropdown-checkbox:checked').forEach(function (checkbox) {
+            selectedTexts.push(checkbox.parentNode.textContent.trim());
+        });
 
-            // Get the selected company ID(s)
-            var selectedCompanyIds = Array.from(document.querySelectorAll('.dropdown-checkbox:checked')).map(function (checkbox) {
-                return checkbox.value;
-            });
+        // Get the dropdown toggle element and update its text
+        var dropdownToggle = document.querySelector('.dropdown-toggle');
+        if (selectedTexts.length > 0) {
+            dropdownToggle.textContent = selectedTexts.join(', ');
+        } else {
+            dropdownToggle.textContent = '--Select Company--';
+        }
+    }
 
-            // Trigger dropdown updates for employee and user role based on selected company IDs
-            if (selectedCompanyIds.length > 0) {
-                const selectedCompanyId = selectedCompanyIds[0]; // Take the first selected company
+    $(document).ready(function () {
+        // Handle single selection for checkboxes
+        $(".dropdown-checkbox").change(function () {
+            if (this.checked) {
+                // Uncheck all other checkboxes
+                $(".dropdown-checkbox").not(this).prop("checked", false);
+
+                // Update the dropdown toggle text to the selected company name
+                const selectedText = $(this).parent().text().trim();
+                $(".dropdown-toggle").text(selectedText);
+
+                // Trigger dependent dropdown updates
+                const selectedCompanyId = this.value;
                 updateEmployeeDropdown(selectedCompanyId);
                 updateUserRoleDropdown(selectedCompanyId);
+            } else {
+                // Reset dropdown toggle text if no company is selected
+                $(".dropdown-toggle").text("--Select Company--");
+
+                // Reset the Employee and User Role dropdowns to the placeholder option
+                $("#EmployeeId").val(""); // Select placeholder for Employee
+                $("#UserRoleId").val(""); // Select placeholder for Role
             }
         });
-    });
-});
 
-// Function to update the dropdown text based on selected checkboxes
-function updateDropdownText() {
-    var selectedTexts = [];
+        function updateEmployeeDropdown(companyId) {
+            // Get the existing employee ID from the hidden field
+            const selectedEmployeeId = $("#hiddenEmployeeId").val();
 
-    // Gather the text content of checked checkboxes
-    document.querySelectorAll('.dropdown-checkbox:checked').forEach(function (checkbox) {
-        selectedTexts.push(checkbox.parentNode.textContent.trim());
-    });
+            $.get('/Common/GetEmployeeIdByCompany', { companyId: companyId }, function (data) {
+                const employeeDropdown = $("#EmployeeId");
+                employeeDropdown.empty();
 
-    // Get the dropdown toggle element and update its text
-    var dropdownToggle = document.querySelector('.dropdown-toggle');
-    if (selectedTexts.length > 0) {
-        dropdownToggle.textContent = selectedTexts.join(', ');
-    } else {
-        dropdownToggle.textContent = '--Select Company--';
-    }
-}
+                // Add the placeholder option
+                employeeDropdown.append('<option value="" disabled selected>--Select Employee Id--</option>');
 
-$(document).ready(function () {
-    // Handle single selection for checkboxes
-    $(".dropdown-checkbox").change(function () {
-        if (this.checked) {
-            // Uncheck all other checkboxes
-            $(".dropdown-checkbox").not(this).prop("checked", false);
+                // Check if any employees are returned
+                if (data && data.length > 0) {
+                    data.forEach(employee => {
+                        employeeDropdown.append(`<option value="${employee.Id}">${employee.Employee_Id}</option>`);
+                    });
 
-            // Update the dropdown toggle text to the selected company name
-            const selectedText = $(this).parent().text().trim();
-            $(".dropdown-toggle").text(selectedText);
-
-            // Trigger dependent dropdown updates
-            const selectedCompanyId = this.value;
-            updateEmployeeDropdown(selectedCompanyId);
-            updateUserRoleDropdown(selectedCompanyId);
-        } else {
-            // Reset dropdown toggle text if no company is selected
-            $(".dropdown-toggle").text("--Select Company--");
-
-            // Reset the Employee and User Role dropdowns to the placeholder option
-            $("#EmployeeId").val(""); // Select placeholder for Employee
-            $("#UserRoleId").val(""); // Select placeholder for Role
-        }
-    });
-
-    function updateEmployeeDropdown(companyId) {
-        // Get the existing employee ID from the hidden field
-        const selectedEmployeeId = $("#hiddenEmployeeId").val();
-
-        $.get('/Common/GetEmployeeIdByCompany', { companyId: companyId }, function (data) {
-            const employeeDropdown = $("#EmployeeId");
-            employeeDropdown.empty();
-
-            // Add the placeholder option
-            employeeDropdown.append('<option value="" disabled selected>--Select Employee Id--</option>');
-
-            // Check if any employees are returned
-            if (data && data.length > 0) {
-                data.forEach(employee => {
-                    employeeDropdown.append(`<option value="${employee.Id}">${employee.Employee_Id}</option>`);
-                });
-
-                // Auto-select the existing employee ID from the hidden field
-                if (selectedEmployeeId) {
-                    employeeDropdown.val(selectedEmployeeId);
-                } else {
-                    // Select the first employee option automatically if no ID is provided
-                    employeeDropdown.val(data[0].Id);
+                    // Auto-select the existing employee ID from the hidden field
+                    if (selectedEmployeeId) {
+                        employeeDropdown.val(selectedEmployeeId);
+                    } else {
+                        // Select the first employee option automatically if no ID is provided
+                        employeeDropdown.val(data[0].Id);
+                    }
                 }
-            }
-        });
-    }
-
-    // Fetch and populate UserRoleId dropdown
-    function updateUserRoleDropdown(companyId) {
-        const selectedRoleId = $("#hiddenRoleId").val();
-
-        $.get('/Common/GetUserRoleByCompany', { companyId: companyId }, function (data) {
-            const roleDropdown = $("#UserRoleId");
-            roleDropdown.empty();
-
-            // Add the placeholder option
-            roleDropdown.append('<option value="" disabled selected>--Select Role--</option>');
-
-            // Check if any roles are returned
-            if (data && data.length > 0) {
-                data.forEach(role => {
-                    roleDropdown.append(`<option value="${role.Id}">${role.RoleName}</option>`);
-                });
-
-                if (selectedRoleId) {
-                    roleDropdown.val(selectedRoleId);
-                } else {
-                    // Select the first employee option automatically if no ID is provided
-                    roleDropdown.val(data[0].Id);
-                }
-                // Select the first role option automatically
-                //roleDropdown.val(data[0].Id);  // Select the first role ID
-            }
-        });
-    }
-
-    // Initialize dropdowns with hidden values (if any)
-    const initialCompanyId = $(".dropdown-checkbox:checked").val();
-    if (initialCompanyId) {
-        updateEmployeeDropdown(initialCompanyId);
-        updateUserRoleDropdown(initialCompanyId);
-    }
-
-    // Company dropdown behavior
-    const dropdownContainer = $(".dropdown-container");
-    $(".dropdown-toggle").click(() => dropdownContainer.toggleClass("open"));
-    $(document).click(event => {
-        if (!$(event.target).closest(".dropdown-container").length) {
-            dropdownContainer.removeClass("open");
+            });
         }
-    });
 
-    // Search functionality
-    $(".dropdown-search").on("input", function () {
-        const filter = this.value.toLowerCase();
-        $(".dropdown-item").each(function () {
-            const text = $(this).text().toLowerCase();
-            $(this).toggle(text.includes(filter));
+        // Fetch and populate UserRoleId dropdown
+        function updateUserRoleDropdown(companyId) {
+            const selectedRoleId = $("#hiddenRoleId").val();
+
+            $.get('/Common/GetUserRoleByCompany', { companyId: companyId }, function (data) {
+                const roleDropdown = $("#UserRoleId");
+                roleDropdown.empty();
+
+                // Add the placeholder option
+                roleDropdown.append('<option value="" disabled selected>--Select Role--</option>');
+
+                // Check if any roles are returned
+                if (data && data.length > 0) {
+                    data.forEach(role => {
+                        roleDropdown.append(`<option value="${role.Id}">${role.RoleName}</option>`);
+                    });
+
+                    if (selectedRoleId) {
+                        roleDropdown.val(selectedRoleId);
+                    } else {
+                        // Select the first employee option automatically if no ID is provided
+                        roleDropdown.val(data[0].Id);
+                    }
+                    // Select the first role option automatically
+                    //roleDropdown.val(data[0].Id);  // Select the first role ID
+                }
+            });
+        }
+
+        // Initialize dropdowns with hidden values (if any)
+        const initialCompanyId = $(".dropdown-checkbox:checked").val();
+        if (initialCompanyId) {
+            updateEmployeeDropdown(initialCompanyId);
+            updateUserRoleDropdown(initialCompanyId);
+        }
+
+        // Company dropdown behavior
+        const dropdownContainer = $(".dropdown-container");
+        $(".dropdown-toggle").click(() => dropdownContainer.toggleClass("open"));
+        $(document).click(event => {
+            if (!$(event.target).closest(".dropdown-container").length) {
+                dropdownContainer.removeClass("open");
+            }
+        });
+
+        // Search functionality
+        $(".dropdown-search").on("input", function () {
+            const filter = this.value.toLowerCase();
+            $(".dropdown-item").each(function () {
+                const text = $(this).text().toLowerCase();
+                $(this).toggle(text.includes(filter));
+            });
         });
     });
-});
 
 
 
 </script>
+
 
 <script>
     $(document).ready(function () {
@@ -623,7 +637,7 @@ $(document).ready(function () {
             $('input[type="checkbox"]').prop('checked', false);
         }
 
-        
+
     });
 
 </script>
