@@ -219,8 +219,7 @@ namespace VardaanCab.Controllers
                 bool isCreated= await _administrator.AddupdateRole(model);
                 if (isCreated)
                 {
-                    TempData["msg"] = model.Id > 0 ? "Record has been updated successfully."
-                        : "Record has been added successfully.";
+                    TempData["msg"] = model.Id > 0 ? "Record has been updated successfully." : "Record has been added successfully.";
                     return RedirectToAction("CreateRole", new { menuId = model.MenuId });
 
                 }
