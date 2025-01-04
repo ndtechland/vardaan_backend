@@ -298,6 +298,8 @@
           <Property Name="City_Id" Type="int" />
           <Property Name="GeoLocation" Type="nvarchar(max)" />
           <Property Name="OrgName" Type="nvarchar" MaxLength="250" />
+          <Property Name="Latitude" Type="float" />
+          <Property Name="Longitude" Type="float" />
         </EntityType>
         <EntityType Name="CustomerUserMapping">
           <Key>
@@ -1113,6 +1115,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyZoneId" Type="int" />
           <Property Name="HomeRouteName" Type="nvarchar" MaxLength="400" />
           <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="Latitude" Type="float" />
+          <Property Name="Longitude" Type="float" />
         </EntityType>
         <EntityType Name="CompanyZones">
           <Key>
@@ -1689,7 +1693,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="EmployeeDestinationArea" Type="int" Mode="In" />
           <Parameter Name="EmployeeRegistrationType" Type="int" Mode="In" />
           <Parameter Name="IsActive" Type="bit" Mode="In" />
-          <Parameter Name="Password" Type="nvarchar" Mode="In" />
           <Parameter Name="IsFirst" Type="bit" Mode="In" />
           <Parameter Name="Latitude" Type="float" Mode="In" />
           <Parameter Name="Longitude" Type="float" Mode="In" />
@@ -2206,6 +2209,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="City_Id" Type="Int32" />
           <Property Name="GeoLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="OrgName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="Double" />
+          <Property Name="Longitude" Type="Double" />
         </EntityType>
         <EntityType Name="CustomerUserMapping">
           <Key>
@@ -3351,7 +3356,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="EmployeeDestinationArea" Mode="In" Type="Int32" />
             <Parameter Name="EmployeeRegistrationType" Mode="In" Type="Int32" />
             <Parameter Name="IsActive" Mode="In" Type="Boolean" />
-            <Parameter Name="Password" Mode="In" Type="String" />
             <Parameter Name="IsFirst" Mode="In" Type="Boolean" />
             <Parameter Name="Latitude" Mode="In" Type="Double" />
             <Parameter Name="Longitude" Mode="In" Type="Double" />
@@ -4424,6 +4428,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyZoneId" Type="Int32" />
           <Property Name="HomeRouteName" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Latitude" Type="Double" />
+          <Property Name="Longitude" Type="Double" />
         </EntityType>
         <EntityType Name="CompanyZone">
           <Key>
@@ -4944,6 +4950,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="OrgName" ColumnName="OrgName" />
                 <ScalarProperty Name="GeoLocation" ColumnName="GeoLocation" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -6846,6 +6854,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="CompanyZoneHomeRoutes">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.CompanyZoneHomeRoute">
               <MappingFragment StoreEntitySet="CompanyZoneHomeRoute">
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="HomeRouteName" ColumnName="HomeRouteName" />
                 <ScalarProperty Name="CompanyZoneId" ColumnName="CompanyZoneId" />

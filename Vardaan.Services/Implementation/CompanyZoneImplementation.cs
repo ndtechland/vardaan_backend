@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -13,6 +15,7 @@ namespace Vardaan.Services.Implementation
     public class CompanyZoneImplementation: ICompanyZone
     {
         Vardaan_AdminEntities ent=new Vardaan_AdminEntities();
+        private const string GoogleMapsApiKey = "AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw";
         public async Task<bool> AddUpdateZone(CompanyZoneDTO model)
         {
 			try
@@ -88,12 +91,17 @@ namespace Vardaan.Services.Implementation
         {
             try
             {
+                var latlong = LatLog(model.HomeRouteName);
+                double latitude = latlong.Count > 0 && latlong[0].ContainsKey("latitude") ? latlong[0]["latitude"] : 0.0;
+                double longitude = latlong.Count > 0 && latlong[0].ContainsKey("longitude") ? latlong[0]["longitude"] : 0.0;
                 if (model.Id == 0)
                 {
                     var zone = new CompanyZoneHomeRoute()
                     {
                         CompanyZoneId = model.CompanyZoneId,
                         HomeRouteName = model.HomeRouteName,
+                        Latitude = latitude,
+                        Longitude = longitude,
                         CreatedDate = DateTime.Now
                     };
                     ent.CompanyZoneHomeRoutes.Add(zone);
@@ -103,6 +111,8 @@ namespace Vardaan.Services.Implementation
                     var data = ent.CompanyZoneHomeRoutes.Find(model.Id);
                     data.CompanyZoneId = model.CompanyZoneId;
                     data.HomeRouteName = model.HomeRouteName;
+                    data.Latitude = latitude;
+                    data.Longitude = longitude;
 
                 }
                 ent.SaveChanges();
@@ -113,6 +123,41 @@ namespace Vardaan.Services.Implementation
 
                 throw;
             }
+        }
+        public List<Dictionary<string, double>> LatLog(string address)
+        {
+            var url = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={GoogleMapsApiKey}";
+            var resultList = new List<Dictionary<string, double>>();
+
+            using (var client = new HttpClient())
+            {
+                // Send the request synchronously
+                var response = client.GetStringAsync(url).Result;
+
+                // Parse the response
+                var json = JObject.Parse(response);
+
+                // Check the response status
+                var status = json["status"].ToString();
+                if (status == "OK")
+                {
+                    // Extract latitude and longitude
+                    double lat = (double)json["results"][0]["geometry"]["location"]["lat"];
+                    double lng = (double)json["results"][0]["geometry"]["location"]["lng"];
+
+                    // Add latitude and longitude to the dictionary
+                    var locationData = new Dictionary<string, double>
+            {
+                { "latitude", lat },
+                { "longitude", lng }
+            };
+
+                    // Add the dictionary to the list
+                    resultList.Add(locationData);
+                }
+            }
+
+            return resultList;
         }
         public async Task<List<HomeRouteList>> GetHomeRoutes()
         {
