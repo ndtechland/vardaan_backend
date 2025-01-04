@@ -18,5 +18,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<int> CompanyZoneId { get; set; }
         public string HomeRouteName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<double> Latitude { get; set; }
+        public Nullable<double> Longitude { get; set; }
     }
 }

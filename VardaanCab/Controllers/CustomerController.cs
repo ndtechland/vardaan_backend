@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -23,6 +25,7 @@ namespace VardaanCab.Controllers
         CommonRepository commonRepo = new CommonRepository();
         private readonly CommonOperations _random = new CommonOperations();
         private readonly ICustomer _customer;
+        private const string GoogleMapsApiKey = "AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw";
         public CustomerController(ICustomer customer)
         {
             _customer = customer;
@@ -169,10 +172,16 @@ join VehicleModel vm on cp.VehicleModel_Id= vm.Id order by vm.ModelName").ToList
                       TempData["msg"] = "Company name already exist in our database";
                         return View(model);
                     }
+
+                    var latlong = LatLog(model.GeoLocation);
+                    double latitude = latlong.Count > 0 && latlong[0].ContainsKey("latitude") ? latlong[0]["latitude"] : 0.0;
+                    double longitude = latlong.Count > 0 && latlong[0].ContainsKey("longitude") ? latlong[0]["longitude"] : 0.0;
                     var data = Mapper.Map<Customer>(model);
                     data.CreateDate = DateTime.Now;
                     data.IsActive = true;
                     data.GeoLocation = model.GeoLocation;
+                    data.Latitude = latitude;
+                    data.Longitude = longitude;
                     ent.Customers.Add(data);
                     ent.SaveChanges();
                     //data saved in userlogin
@@ -246,7 +255,41 @@ join VehicleModel vm on cp.VehicleModel_Id= vm.Id order by vm.ModelName").ToList
             }
             return RedirectToAction("Add",new { menuId=model.MenuId});
         }
+        public List<Dictionary<string, double>> LatLog(string address)
+        {
+            var url = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={GoogleMapsApiKey}";
+            var resultList = new List<Dictionary<string, double>>();
 
+            using (var client = new HttpClient())
+            {
+                // Send the request synchronously
+                var response = client.GetStringAsync(url).Result;
+
+                // Parse the response
+                var json = JObject.Parse(response);
+
+                // Check the response status
+                var status = json["status"].ToString();
+                if (status == "OK")
+                {
+                    // Extract latitude and longitude
+                    double lat = (double)json["results"][0]["geometry"]["location"]["lat"];
+                    double lng = (double)json["results"][0]["geometry"]["location"]["lng"];
+
+                    // Add latitude and longitude to the dictionary
+                    var locationData = new Dictionary<string, double>
+            {
+                { "latitude", lat },
+                { "longitude", lng }
+            };
+
+                    // Add the dictionary to the list
+                    resultList.Add(locationData);
+                }
+            }
+
+            return resultList;
+        }
         public ActionResult Edit(int id,int menuId=0)
         {
             var data = ent.Customers.Find(id);
@@ -278,8 +321,13 @@ join VehicleModel vm on cp.VehicleModel_Id= vm.Id order by vm.ModelName").ToList
                     TempData["msg"] = "Company name already exist in our database";
                     return View(model);
                 }
+                var latlong = LatLog(model.GeoLocation);
+                double latitude = latlong.Count > 0 && latlong[0].ContainsKey("latitude") ? latlong[0]["latitude"] : 0.0;
+                double longitude = latlong.Count > 0 && latlong[0].ContainsKey("longitude") ? latlong[0]["longitude"] : 0.0;
                 var state = Mapper.Map<Customer>(model);
                 state.GeoLocation = model.GeoLocation;
+                state.Latitude = latitude;
+                state.Longitude = longitude;
                 ent.Entry(state).State = System.Data.Entity.EntityState.Modified;
                 ent.SaveChanges();
                 TempData["msg"] = "Record has updated.";

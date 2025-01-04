@@ -60,7 +60,7 @@ namespace VardaanCab.Controllers
         public ActionResult Add(int id = 0)
         {
             try
-            {
+            {                
                 var model = new EmployeeDTO();
                 model.States = new SelectList(ent.StateMasters.ToList(), "Id", "StateName");
                 //model.DayLists = new SelectList(ent.DaysNames.ToList(), "Id", "DayName");
@@ -218,7 +218,7 @@ namespace VardaanCab.Controllers
             dt.Columns.Add("AlternateNumber");
 
             // Add dummy data
-            dt.Rows.Add("Test Vardaan car rental pvt ltd", "Location A", "8989898989", "John", "M", "Doe", "1234567890", "john.doe@example.com", "Uttar Pradesh", "Noida", "123456", "Address A", "johndoe123", "Sunday", "28.604624,77.358945", "Unit1", "Dept1", "Project1", "Manager1", "GHAZIABAD - 1", "New Ashok Nagar", "New Ashok Nagar Metro Station AK ", "Permanent", "Male", "9876543210");
+            dt.Rows.Add("Test Vardaan car rental pvt ltd", "Location A", "8989898989", "John", "M", "Doe", "1234567890", "john.doe@example.com", "Uttar Pradesh", "Noida", "123456", "Address A", "johndoe123", "Sunday,Monday", "28.604624,77.358945", "Unit1", "Dept1", "Project1", "Manager1", "GHAZIABAD - 1", "New Ashok Nagar", "New Ashok Nagar Metro Station AK ", "Permanent", "Male", "9876543210");
 
             Dictionary<string, string> columnMappings = new Dictionary<string, string>()
     {
@@ -285,14 +285,37 @@ namespace VardaanCab.Controllers
                 var StatehiddenSheet = workbook.Worksheets.Add("StateList");
                 var CityhiddenSheet = workbook.Worksheets.Add("CityList");
                 var GenderList = "\"Male,Female,Other\"";
-                var WeekOffList = "\"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday\"";
+                //var WeekOffList = "\"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday\"";
                 var ZonehiddenSheet = workbook.Worksheets.Add("CompanyZone");
                 var HomeRoutehiddenSheet = workbook.Worksheets.Add("HomeRoute");
                 var DestinationAreahiddenSheet = workbook.Worksheets.Add("DestinationArea");
                 var RegistrationTypehiddenSheet = workbook.Worksheets.Add("RegistrationType");
 
-                // Retrieve active customers for the dropdown list
-                var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
+              
+                var companyList = new List<Customer>(); 
+                int userId = int.Parse(User.Identity.Name);
+
+                if (Session["IsAuth"] != null && Convert.ToBoolean(Session["IsAuth"]) == false)
+                {
+                    companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
+                }
+                else
+                {
+                    var empinfo = ent.Employees.FirstOrDefault(e => e.Id == userId);
+
+                    if (empinfo != null)
+                    {
+                        companyList = ent.Customers.Where(x => x.IsActive == true && x.Id == empinfo.Company_Id).ToList();
+                    }
+                    else
+                    {
+                        
+                        companyList = new List<Customer>(); 
+                    }
+                }
+
+
+                //var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
                 var StateList = ent.StateMasters.ToList();
                 var CityList = ent.CityMasters.ToList();
                 var ZoneList = ent.CompanyZones.ToList();
@@ -302,9 +325,13 @@ namespace VardaanCab.Controllers
 
                 // Populate hidden sheet with company names
                 int hiddenRow = 1;
+                //foreach (var company in companyList.OrderByDescending(x => x.Id))
+                //{
+                //    hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
+                //}
                 foreach (var company in companyList.OrderByDescending(x => x.Id))
                 {
-                    hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
+                    hiddenSheet.Cell(hiddenRow++, 1).Value = $"{company.CompanyName} - {company.OrgName}";
                 }
                 hiddenRow = 1;
                 foreach (var state in StateList.OrderByDescending(x => x.Id))
@@ -372,10 +399,10 @@ namespace VardaanCab.Controllers
                 validationFour.IgnoreBlanks = true;
                 validationFour.InCellDropdown = true;
 
-                var validationFive = worksheet.Cell(2, 14).DataValidation;
-                validationFive.List(WeekOffList); // Dropdown from hidden sheet
-                validationFive.IgnoreBlanks = true;
-                validationFive.InCellDropdown = true;
+                //var validationFive = worksheet.Cell(2, 14).DataValidation;
+                //validationFive.List(WeekOffList); // Dropdown from hidden sheet
+                //validationFive.IgnoreBlanks = true;
+                //validationFive.InCellDropdown = true;
 
                 //zone
                 var validationZone = worksheet.Cell(2, 20).DataValidation;
@@ -430,14 +457,21 @@ namespace VardaanCab.Controllers
 
                         foreach (var row in rows)
                         {
-                            string CompanyName = row.Cell(1).GetValue<string>();
+                            string[] splitParts = row.Cell(1).GetValue<string>().Split('-');
+                            string companyName = splitParts[0].Trim();
+                            int companyId = ent.Customers
+    .Where(x => x.CompanyName.ToLower() == companyName.ToLower())
+    .FirstOrDefault()?.Id ?? 0;
+
+                            
+                            //string CompanyName = row.Cell(1).GetValue<string>();
                             string StateName = row.Cell(9).GetValue<string>();
                             string CityName = row.Cell(10).GetValue<string>();
                             string CompanyZoneName = row.Cell(20).GetValue<string>();
                             string HomeRouteName = row.Cell(21).GetValue<string>();
                             string DestinationAreaName = row.Cell(22).GetValue<string>();
                             string RegistrationTypeName = row.Cell(23).GetValue<string>();
-                            string DaysName = row.Cell(14).GetValue<string>();
+                            string WeekOffDays = row.Cell(14).GetValue<string>() ?? string.Empty; 
 
                             string geoCode = row.Cell(15).GetValue<string>() ?? string.Empty;
                             string[] coordinates = geoCode.Split(',');
@@ -447,20 +481,34 @@ namespace VardaanCab.Controllers
                             {
                                 latitude = Convert.ToDouble(coordinates[0]);
                                 longitude = Convert.ToDouble(coordinates[1]);
-
                             }
-                            // Call reverse geocoding to get the address
                             string address = string.Empty;
                             if (!string.IsNullOrEmpty(geoCode))
                             {
                                 address = await GetLocationFromGeoCode(geoCode);
                             }
 
+                            // Get DayNameIds for WeekOffDays (e.g., "Sunday,Monday")
+                            List<int> weekOffIds = new List<int>();
+                            if (!string.IsNullOrEmpty(WeekOffDays))
+                            {
+                                string[] weekOffDaysArray = WeekOffDays.Split(',');
+                                foreach (var day in weekOffDaysArray)
+                                {
+                                    var dayNameId = ent.DaysNames
+                                        .Where(x => x.DayName.ToLower() == day.Trim().ToLower())
+                                        .FirstOrDefault()?.Id ?? 0;
+
+                                    if (dayNameId != 0)
+                                    {
+                                        weekOffIds.Add(dayNameId);
+                                    }
+                                }
+                            }
+
                             Employee employee = new Employee
                             {
-                                Company_Id = string.IsNullOrEmpty(CompanyName) ? 0 :
-                                    ent.Customers.Where(x => x.CompanyName.ToLower() == CompanyName.ToLower())
-                                        .FirstOrDefault()?.Id ?? 0,
+                                Company_Id = companyId,
 
                                 Company_location = row.Cell(2).GetValue<string>() ?? string.Empty,
                                 Employee_Id = row.Cell(3).GetValue<string>() ?? string.Empty,
@@ -481,11 +529,10 @@ namespace VardaanCab.Controllers
                                 Pincode = row.Cell(11).GetValue<int>(),
                                 EmployeeCurrentAddress = row.Cell(12).GetValue<string>() ?? string.Empty,
                                 LoginUserName = row.Cell(13).GetValue<string>() ?? string.Empty,
-                                WeekOff = string.IsNullOrEmpty(DaysName) ? "" :
-                                ent.DaysNames.Where(x => x.DayName.ToLower() == DaysName.ToLower())
-                                .FirstOrDefault()?.Id.ToString() ?? "",
 
-                                //EmployeeGeoCode = row.Cell(15).GetValue<string>() ?? string.Empty,
+                                // Save the WeekOff as comma-separated string of IDs
+                                WeekOff = string.Join(",", weekOffIds),
+
                                 EmployeeGeoCode = address,
                                 EmployeeBusinessUnit = row.Cell(16).GetValue<string>() ?? string.Empty,
                                 EmployeeDepartment = row.Cell(17).GetValue<string>() ?? string.Empty,
@@ -554,8 +601,149 @@ namespace VardaanCab.Controllers
             }
         }
 
-public async Task<string> GetLocationFromGeoCode(string geoCode)
-    {
+
+        //public async Task<ActionResult> ImportEmployeeData(HttpPostedFileBase file)
+        //{
+        //    try
+        //    {
+        //        //string RandomPassword = _random.GenerateRandomPassword();
+
+        //        // Check if a file is uploaded
+        //        if (file != null && file.ContentLength > 0)
+        //        {
+        //            using (var workbook = new XLWorkbook(file.InputStream))
+        //            {
+        //                var worksheet = workbook.Worksheet(1);
+        //                var rows = worksheet.RowsUsed().Skip(1);
+        //                List<Employee> employees = new List<Employee>();
+
+        //                foreach (var row in rows)
+        //                {
+        //                    string CompanyName = row.Cell(1).GetValue<string>();
+        //                    string StateName = row.Cell(9).GetValue<string>();
+        //                    string CityName = row.Cell(10).GetValue<string>();
+        //                    string CompanyZoneName = row.Cell(20).GetValue<string>();
+        //                    string HomeRouteName = row.Cell(21).GetValue<string>();
+        //                    string DestinationAreaName = row.Cell(22).GetValue<string>();
+        //                    string RegistrationTypeName = row.Cell(23).GetValue<string>();
+        //                    //string DaysName = row.Cell(14).GetValue<string>();
+
+        //                    string geoCode = row.Cell(15).GetValue<string>() ?? string.Empty;
+        //                    string[] coordinates = geoCode.Split(',');
+        //                    double latitude = 0;
+        //                    double longitude = 0;
+        //                    if (coordinates.Length == 2)
+        //                    {
+        //                        latitude = Convert.ToDouble(coordinates[0]);
+        //                        longitude = Convert.ToDouble(coordinates[1]);
+
+        //                    }
+        //                    // Call reverse geocoding to get the address
+        //                    string address = string.Empty;
+        //                    if (!string.IsNullOrEmpty(geoCode))
+        //                    {
+        //                        address = await GetLocationFromGeoCode(geoCode);
+        //                    }
+
+        //                    Employee employee = new Employee
+        //                    {
+        //                        Company_Id = string.IsNullOrEmpty(CompanyName) ? 0 :
+        //                            ent.Customers.Where(x => x.CompanyName.ToLower() == CompanyName.ToLower())
+        //                                .FirstOrDefault()?.Id ?? 0,
+
+        //                        Company_location = row.Cell(2).GetValue<string>() ?? string.Empty,
+        //                        Employee_Id = row.Cell(3).GetValue<string>() ?? string.Empty,
+        //                        Employee_First_Name = row.Cell(4).GetValue<string>() ?? string.Empty,
+        //                        Employee_Middle_Name = row.Cell(5).GetValue<string>() ?? string.Empty,
+        //                        Employee_Last_Name = row.Cell(6).GetValue<string>() ?? string.Empty,
+        //                        MobileNumber = row.Cell(7).GetValue<string>() ?? string.Empty,
+        //                        Email = row.Cell(8).GetValue<string>() ?? string.Empty,
+
+        //                        StateId = string.IsNullOrEmpty(StateName) ? 0 :
+        //                            ent.StateMasters.Where(x => x.StateName.ToLower() == StateName.ToLower())
+        //                                .FirstOrDefault()?.Id ?? 0,
+
+        //                        CityId = string.IsNullOrEmpty(CityName) ? 0 :
+        //                            ent.CityMasters.Where(x => x.CityName.ToLower() == CityName.ToLower())
+        //                                .FirstOrDefault()?.Id ?? 0,
+
+        //                        Pincode = row.Cell(11).GetValue<int>(),
+        //                        EmployeeCurrentAddress = row.Cell(12).GetValue<string>() ?? string.Empty,
+        //                        LoginUserName = row.Cell(13).GetValue<string>() ?? string.Empty,
+        //                        //WeekOff = string.IsNullOrEmpty(DaysName) ? "" :ent.DaysNames.Where(x => x.DayName.ToLower() == DaysName.ToLower()).FirstOrDefault()?.Id.ToString() ?? "",
+        //                        WeekOff = row.Cell(14).GetValue<string>() ?? string.Empty,
+
+        //                        //EmployeeGeoCode = row.Cell(15).GetValue<string>() ?? string.Empty,
+        //                        EmployeeGeoCode = address,
+        //                        EmployeeBusinessUnit = row.Cell(16).GetValue<string>() ?? string.Empty,
+        //                        EmployeeDepartment = row.Cell(17).GetValue<string>() ?? string.Empty,
+        //                        EmployeeProjectName = row.Cell(18).GetValue<string>() ?? string.Empty,
+        //                        ReportingManager = row.Cell(19).GetValue<string>() ?? string.Empty,
+
+        //                        PrimaryFacilityZone = string.IsNullOrEmpty(CompanyZoneName) ? 0 :
+        //                            ent.CompanyZones.Where(x => x.CompanyZone1.ToLower() == CompanyZoneName.ToLower())
+        //                                .FirstOrDefault()?.Id ?? 0,
+
+        //                        HomeRouteName = string.IsNullOrEmpty(HomeRouteName) ? 0 :
+        //                            ent.CompanyZoneHomeRoutes.Where(x => x.HomeRouteName.ToLower() == HomeRouteName.ToLower())
+        //                                .FirstOrDefault()?.Id ?? 0,
+
+        //                        EmployeeDestinationArea = string.IsNullOrEmpty(DestinationAreaName) ? 0 :
+        //                            ent.EmployeeDestinationAreas.Where(x => x.DestinationAreaName.ToLower() == DestinationAreaName.ToLower())
+        //                                .FirstOrDefault()?.Id ?? 0,
+
+        //                        EmployeeRegistrationType = string.IsNullOrEmpty(RegistrationTypeName) ? 0 :
+        //                            ent.EmployeeRegistrationTypes.Where(x => x.TypeName.ToLower() == RegistrationTypeName.ToLower())
+        //                                .FirstOrDefault()?.Id ?? 0,
+
+        //                        IsActive = true,
+        //                        CreatedDate = DateTime.Now,
+        //                        IsFirst = false,
+        //                        Latitude = latitude,
+        //                        Longitude = longitude,
+        //                        //Password = RandomPassword,
+        //                        Gender = row.Cell(24).GetValue<string>(),
+        //                        AlternateNumber = row.Cell(25).GetValue<string>() ?? string.Empty
+        //                    };
+        //                    employees.Add(employee);
+        //                }
+
+        //                if (employees.Any())
+        //                {
+        //                    ent.Employees.AddRange(employees);
+        //                    ent.SaveChanges();
+        //                }
+        //                TempData["dltmsg"] = "Data imported successfully!";
+        //                return RedirectToAction("GetEmployeeList");
+        //            }
+        //        }
+
+        //        ViewBag.Message = "Please select an Excel file to import.";
+        //        return View();
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        foreach (var validationError in ex.EntityValidationErrors)
+        //        {
+        //            foreach (var error in validationError.ValidationErrors)
+        //            {
+        //                // Log or output the validation errors
+        //                Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
+        //            }
+        //        }
+        //        ViewBag.Message = "Validation failed for one or more entities. Please check the logs for more details.";
+        //        return View();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle other errors
+        //        ViewBag.Message = $"An error occurred: {ex.Message}";
+        //        return View();
+        //    }
+        //}
+
+        public async Task<string> GetLocationFromGeoCode(string geoCode)
+        {
         try
         {
             string[] coordinates = geoCode.Split(',');
@@ -590,7 +778,7 @@ public async Task<string> GetLocationFromGeoCode(string geoCode)
             Console.WriteLine($"Error in geocoding: {ex.Message}");
         }
         return string.Empty;
-    }
+        }
 
-}
+    }
 }

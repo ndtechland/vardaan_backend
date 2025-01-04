@@ -31,5 +31,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<int> City_Id { get; set; }
         public string GeoLocation { get; set; }
         public string OrgName { get; set; }
+        public Nullable<double> Latitude { get; set; }
+        public Nullable<double> Longitude { get; set; }
     }
 }
