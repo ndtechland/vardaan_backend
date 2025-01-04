@@ -540,8 +540,17 @@ namespace VardaanCab.Controllers
                 if(model.StartDate != null && model.EndDate != null)
                 {
                     var EmployeeReqList = ent.EmployeeRequests.Where(x => x.StartRequestDate <= model.StartDate && x.EndRequestDate <= model.EndDate).ToList();   
+                    if(EmployeeReqList != null)
+                    {
+                        foreach(var item in EmployeeReqList)
+                        {
+                           // ent.CompanyZoneHomeRoutes.Where()
+                           
+                        }
+                    }
                 }
-                return View();
+                ViewBag.BtnTXT = "Create Routing";
+                return View(model);
             }
             catch (Exception ex)
             {
