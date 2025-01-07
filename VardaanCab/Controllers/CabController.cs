@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.ExtendedProperties;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -429,118 +430,7 @@ namespace VardaanCab.Controllers
             }
         }
 
-        //public ActionResult ExportToExcel()
-        //{
-        //    DataTable dt = new DataTable();
-        //    dt.Columns.Add("VehicleModel_Id");
-        //    dt.Columns.Add("Company");
-        //    dt.Columns.Add("VehicleNumber");
-        //    dt.Columns.Add("FitnessVality");
-        //    dt.Columns.Add("PolutionValidity");
-        //    dt.Columns.Add("InsurranceValidity");
-        //    dt.Columns.Add("FitnessDoc");
-        //    dt.Columns.Add("PolutionDoc");
-        //    dt.Columns.Add("InsuranceDoc");
-        //    dt.Columns.Add("RCDoc");
-        //    dt.Columns.Add("FuelEfficiency");
-        //    dt.Columns.Add("PermitNo");
-        //    dt.Columns.Add("PermitDoc");
-        //    dt.Columns.Add("PermitValidity");
-        //    dt.Columns.Add("RcNumber");
-        //    dt.Columns.Add("RcValidity");
-        //    dt.Columns.Add("RcIssueDate");
-        //    dt.Columns.Add("Vendor_Id");
-
-        //    Dictionary<string, string> columnMappings = new Dictionary<string, string>()
-        //    {
-        //    { "VehicleModel_Id", "VehicleModel" },
-        //    { "Company", "Company" },
-        //    { "VehicleNumber", "Vehicle Number" },
-        //    { "FitnessVality", "Fitness Vality" },
-        //    { "PolutionValidity", "Polution Validity" },
-        //    { "InsurranceValidity", "Insurrance Validity" },
-        //    { "FitnessDoc", "Fitness Doc" },
-        //    { "PolutionDoc", "Polution Doc" },
-        //    { "InsuranceDoc", "Insurance Doc" },
-        //    { "RCDoc", "RC Doc" },
-        //    { "FuelEfficiency", "FuelEfficiency" },
-        //    { "PermitNo", "Permit No" },
-        //    { "PermitDoc", "Permit Doc" },
-        //    { "PermitValidity", "Permit Validity" },
-        //    { "RcNumber", "Rc Number" },
-        //    { "RcValidity", "Rc Validity" },
-        //    { "RcIssueDate", "Rc Issue Date" },
-        //    { "Vendor_Id", "Vendor" }
-        //    };
-
-        //    // Export to Excel
-        //    using (XLWorkbook workbook = new XLWorkbook())
-        //    {
-        //        var worksheet = workbook.Worksheets.Add("Cab");
-
-
-        //        int colIndex = 1;
-        //        foreach (DataColumn column in dt.Columns)
-        //        {
-        //            string oldColumnName = column.ColumnName;
-        //            if (columnMappings.ContainsKey(oldColumnName))
-        //            {
-        //                worksheet.Cell(1, colIndex).Value = columnMappings[oldColumnName];
-        //            }
-        //            else
-        //            {
-        //                worksheet.Cell(1, colIndex).Value = oldColumnName;
-        //            }
-        //            worksheet.Cell(1, colIndex).Style.Fill.BackgroundColor = XLColor.Yellow;
-        //            colIndex++;
-        //        }
-
-        //        // Create a hidden sheet to store company names for dropdown
-        //        var hiddenSheet = workbook.Worksheets.Add("VehicleModelList");
-        //        var hiddenVendorSheet = workbook.Worksheets.Add("VendorList");
-
-
-        //        // Retrieve active customers for the dropdown list
-        //        var vehicleModelList = ent.VehicleModels.ToList();
-        //        var vendorList = ent.Vendors.Where(x=>x.IsActive).ToList();
-
-        //        // Populate hidden sheet with company names
-        //        int hiddenRow = 1;
-        //        foreach (var company in vehicleModelList.OrderByDescending(x => x.Id))
-        //        {
-        //            hiddenSheet.Cell(hiddenRow++, 1).Value = company.ModelName;
-        //        }
-        //        hiddenRow = 1;
-        //        foreach (var ven in vendorList.OrderByDescending(x => x.Id))
-        //        {
-        //            hiddenVendorSheet.Cell(hiddenRow++, 1).Value = ven.VendorName;
-        //        }
-        //        // Define the dropdown list range
-        //        var veicleModelRange = hiddenSheet.Range($"A1:A{vehicleModelList.Count}");
-        //        var VendorRange = hiddenVendorSheet.Range($"A1:A{vendorList.Count}");
-
-
-        //        //Apply dropdown list validation to cell A2(under "Company ID")
-        //        var validationOne = worksheet.Cell(2, 1).DataValidation;
-        //        validationOne.List(veicleModelRange); // Dropdown from hidden sheet
-        //        validationOne.IgnoreBlanks = true;
-        //        validationOne.InCellDropdown = true;
-
-        //        //Vendor
-        //        var validationVendorOne = worksheet.Cell(2, 18).DataValidation;
-        //        validationVendorOne.List(VendorRange); // Dropdown from hidden sheet
-        //        validationVendorOne.IgnoreBlanks = true;
-        //        validationVendorOne.InCellDropdown = true;
-
-        //        // Save and return Excel file as download
-        //        using (MemoryStream stream = new MemoryStream())
-        //        {
-        //            workbook.SaveAs(stream);
-        //            stream.Position = 0;
-        //            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "CabData.xlsx");
-        //        }
-        //    }
-        //}
+        
 
         public ActionResult ExportToExcel()
         {
@@ -681,12 +571,125 @@ namespace VardaanCab.Controllers
                         var worksheet = workbook.Worksheet(1);
                         var rows = worksheet.RowsUsed().Skip(1);  
                         List<Cab> cabs = new List<Cab>();
+                        List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
 
+                        int count = 0;
                         foreach (var row in rows)
                         {
+                            count++;
                             string VehicleModel = row.Cell(1).GetValue<string>();
                             string Vendors = row.Cell(13).GetValue<string>();
+                            string Company = row.Cell(2).GetValue<string>()?.Trim();
+                            string VehicleNumber = row.Cell(3).GetValue<string>()?.Trim();
+                            string FuelEfficiency = row.Cell(7).GetValue<string>()?.Trim();
+                            // Validate required fields
+                            if (string.IsNullOrEmpty(VehicleModel))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Vehicle Model",
+                                    AffectedRow = count,
+                                    Description = "Vehicle Model cannot be empty."
+                                });
+                            }
 
+                            if (string.IsNullOrEmpty(Company))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Company",
+                                    AffectedRow = count,
+                                    Description = "Company name cannot be empty."
+                                });
+                            }
+
+                            if (string.IsNullOrEmpty(VehicleNumber))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Vehicle Number",
+                                    AffectedRow = count,
+                                    Description = "Vehicle Number cannot be empty."
+                                });
+                            }
+
+                            // Validate date fields
+                            DateTime FitnessVality, PolutionValidity, InsurranceValidity, PermitValidity, RcValidity, RcIssueDate;
+                            if (!DateTime.TryParse(row.Cell(4).GetValue<string>(), out FitnessVality))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Fitness Validity",
+                                    AffectedRow = count,
+                                    Description = "Fitness Validity must be a valid date."
+                                });
+                            }
+
+                            if (!DateTime.TryParse(row.Cell(5).GetValue<string>(), out PolutionValidity))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Pollution Validity",
+                                    AffectedRow = count,
+                                    Description = "Pollution Validity must be a valid date."
+                                });
+                            }
+
+                            if (!DateTime.TryParse(row.Cell(6).GetValue<string>(), out InsurranceValidity))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Insurance Validity",
+                                    AffectedRow = count,
+                                    Description = "Insurance Validity must be a valid date."
+                                });
+                            }
+
+                            if (!DateTime.TryParse(row.Cell(9).GetValue<string>(), out PermitValidity))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Permit Validity",
+                                    AffectedRow = count,
+                                    Description = "Permit Validity must be a valid date."
+                                });
+                            }
+
+                            if (!DateTime.TryParse(row.Cell(11).GetValue<string>(), out RcValidity))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "RC Validity",
+                                    AffectedRow = count,
+                                    Description = "RC Validity must be a valid date."
+                                });
+                            }
+
+                            if (!DateTime.TryParse(row.Cell(12).GetValue<string>(), out RcIssueDate))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "RC Issue Date",
+                                    AffectedRow = count,
+                                    Description = "RC Issue Date must be a valid date."
+                                });
+                            }
+
+                            // Validate Fuel Efficiency
+                            if (!string.IsNullOrEmpty(FuelEfficiency))
+                            {
+                                if (!FuelEfficiency.All(char.IsDigit))
+                                {
+                                    excelErrorModels.Add(new ExcelErrorModel
+                                    {
+                                        ErrorType = "Fuel Efficiency",
+                                        AffectedRow = count,
+                                        Description = $"Fuel Efficiency {FuelEfficiency} contains invalid characters. Only digits are allowed."
+                                    });
+                                }
+                            }
+
+                            if (excelErrorModels.Any(e => e.AffectedRow == count)) continue;
                             Cab cab = new Cab
                             {
                                 VehicleModel_Id = string.IsNullOrEmpty(VehicleModel) ? 0 :
@@ -715,6 +718,13 @@ namespace VardaanCab.Controllers
 
                             cabs.Add(cab);
                         }
+                        if (excelErrorModels.Any())
+                        {
+                            TempData["HasErrors"] = true;
+                            TempData["ExcelErrors"] = Newtonsoft.Json.JsonConvert.SerializeObject(excelErrorModels);
+                            return RedirectToAction("Add");
+                        }
+
 
                         if (cabs.Any())
                         {

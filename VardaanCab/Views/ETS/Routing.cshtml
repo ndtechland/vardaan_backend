@@ -105,13 +105,13 @@
                                                 @Html.DropDownListFor(a => a.Zone_Id, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "ddldropshifttime" })
                                             </div>
                                             @*<div class="col-6">
-                                                <label class="form-label-title">
-                                                    <input class="form-check-input" type="radio" name="ShiftOption" id="selectShiftTime" value="shift" checked />
-                                                    Select Shift Time
-                                                </label>
-                                                @Html.DropDownListFor(a => a.Shift_Time, Model.PickUpshiftTimes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
-                                                @Html.ValidationMessageFor(model => model.Shift_Time, "", new { @class = "text-danger" })
-                                            </div>*@
+                                                    <label class="form-label-title">
+                                                        <input class="form-check-input" type="radio" name="ShiftOption" id="selectShiftTime" value="shift" checked />
+                                                        Select Shift Time
+                                                    </label>
+                                                    @Html.DropDownListFor(a => a.Shift_Time, Model.PickUpshiftTimes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
+                                                    @Html.ValidationMessageFor(model => model.Shift_Time, "", new { @class = "text-danger" })
+                                                </div>*@
 
                                             <div class="col-6">
                                                 <label class="form-label-title">
@@ -258,8 +258,6 @@
 </div>
 
 <!-- Button trigger modal -->
-
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -399,4 +397,12 @@
     });
 
 
+</script>
+<script>
+        // Get the modal element
+        var exampleModal = new bootstrap.Modal(document.getElementById("exampleModal"));
+
+        // Show the modal
+        exampleModal.show();
+    
 </script>

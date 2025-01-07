@@ -1,6 +1,8 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Spreadsheet;
+using NPOI.SS.Formula.Functions;
+using OfficeOpenXml.FormulaParsing.Exceptions;
 using Org.BouncyCastle.Asn1.Mozilla;
 using System;
 using System.Collections.Generic;
@@ -105,7 +107,16 @@ namespace VardaanCab.Controllers
             try
             {
                 var empinfo = ent.Employees.Where(e => e.IsActive == true && e.Employee_Id == model.EmployeeId).FirstOrDefault();
-                if(empinfo!=null)
+                if (model.EmployeeId != null)
+                {
+                    if (empinfo == null)
+                    {
+                        TempData["errormsg"] = $"Failed. Please register as an employee first with employee id {model.EmployeeId}.";
+
+                        return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
+                    }
+                }
+                else
                 {
                     bool isCreated = await _ets.AddUpdateRequest(model);
                     if (isCreated)
@@ -119,15 +130,12 @@ namespace VardaanCab.Controllers
                     else
                     {
                         TempData["errormsg"] = "Failed.";
-                        return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
+                        
 
                     }
                 }
-                else
-                {
-                    TempData["errormsg"] = $"Employee with ID {model.EmployeeId} does not exist or is not active.";
-                    return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
-                }
+                return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
+
 
             }
             catch (Exception)
@@ -139,7 +147,7 @@ namespace VardaanCab.Controllers
         }
         public JsonResult GetEmployeeDetails(string id)
         {
-            var employee = ent.Employees.FirstOrDefault(e => e.Employee_Id == id);
+            var employee = ent.Employees.FirstOrDefault(e => e.Employee_Id == id && e.IsActive==true);
 
             if (employee != null)
             {
@@ -330,8 +338,8 @@ namespace VardaanCab.Controllers
 
             // Add dummy rows
             dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-01", "2024-12-03", "BOTH", "NORMAL", "08:00", "19:30");
-            dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-02", "2024-12-04", "PICKUP", "NORMAL", "09:00", "19:30");
-            dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-03", "2024-12-05", "DROP", "NORMAL", "10:00", "19:30");
+            dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-02", "2", "PICKUP", "NORMAL", "09:00", "19:30");
+            dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "", "2024-12-05", "DROP", "NORMAL", "10:00", "19:30");
 
             // Create Excel workbook using ClosedXML
             using (var workbook = new XLWorkbook())
@@ -440,70 +448,249 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                // Check if a file is uploaded
                 if (file != null && file.ContentLength > 0)
                 {
                     using (var workbook = new XLWorkbook(file.InputStream))
                     {
-
                         var worksheet = workbook.Worksheet(1);
                         var rows = worksheet.RowsUsed().Skip(1);
                         List<EmployeeRequest> emprequest = new List<EmployeeRequest>();
+                        List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
+                        var count = 0;
 
                         foreach (var row in rows)
                         {
-                            string CompanyName = row.Cell(2).GetValue<string>(); 
-                            string TripTypeName = row.Cell(5).GetValue<string>();
-                            string ShiftTypeName = row.Cell(6).GetValue<string>();
-                            string PickupShiftTimeName = row.Cell(7).GetValue<string>();
-                            string DropShiftTimeName = row.Cell(8).GetValue<string>();  
-                           
-                            EmployeeRequest employeereq = new EmployeeRequest
+                            count++;
+                            try
                             {
-                                EmployeeId = row.Cell(1).GetValue<string>() ?? string.Empty,
-                                CompanyId = string.IsNullOrEmpty(CompanyName) == null ? 0 : ent.Customers.Where(x =>x.CompanyName.ToLower() == CompanyName.ToLower()).FirstOrDefault().Id,
-                                StartRequestDate = row.Cell(3).GetValue<DateTime>(),
-                                EndRequestDate = row.Cell(4).GetValue<DateTime>(),
-                                TripType = string.IsNullOrEmpty(TripTypeName) == null ? 0 : ent.TripTypes.Where(x => x.TripTypeName.ToLower() == TripTypeName.ToLower()).FirstOrDefault().Id,
-                                ShiftType = string.IsNullOrEmpty(ShiftTypeName) == null ? 0 : ent.TripMasters.Where(x => x.TripName.ToLower() == ShiftTypeName.ToLower()).FirstOrDefault().Id,
-                                 
-                                PickupShiftTimeId = row.Cell(7).GetValue<int>(),
-                                //PickupShiftTimeId = string.IsNullOrEmpty(PickupShiftTimeName) == null ? 0 : ent.ShiftMasters.Where(x => x.ShiftTime.ToLower() == PickupShiftTimeName.ToLower() && x.TripTypeId==1).FirstOrDefault().Id,
-                                //DropShiftTimeId = string.IsNullOrEmpty(DropShiftTimeName) == null ? 0 : ent.ShiftMasters.Where(x => x.ShiftTime.ToLower() == DropShiftTimeName.ToLower() && x.TripTypeId ==2).FirstOrDefault().Id,
-                                DropShiftTimeId = row.Cell(8).GetValue<int>(),
-                                RequestType= "EMPLOYEE",
-                                CreatedDate = DateTime.Now
-                            };
+                                string CompanyName = row.Cell(2).GetValue<string>();
+                                string TripTypeName = row.Cell(5).GetValue<string>();
+                                string ShiftTypeName = row.Cell(6).GetValue<string>();
+                                string PickupShiftTimeName = row.Cell(7).GetValue<string>();
+                                string DropShiftTimeName = row.Cell(8).GetValue<string>();
+                                var startdatevalue = row.Cell(3).GetValue<string>();
+                                DateTime? startRequestDate = string.IsNullOrEmpty(startdatevalue) ? (DateTime?)null : DateTime.Parse(startdatevalue);
+                                var enddatevalue = row.Cell(4).GetValue<string>();
+                                DateTime? endRequestDate = string.IsNullOrEmpty(enddatevalue) ? (DateTime?)null : DateTime.Parse(enddatevalue);
+                                var employeeId = row.Cell(1).GetValue<string>() ?? string.Empty;
 
+                                // Employee validation
+                                if (!string.IsNullOrEmpty(employeeId))
+                                {
+                                    var empinfo = ent.Employees.FirstOrDefault(e => e.IsActive == true && e.Employee_Id == employeeId);
 
-                            emprequest.Add(employeereq);
+                                    if (empinfo == null)
+                                    {
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = "Employee Id",
+                                            AffectedRow = count,
+                                            Description = $"Please register as an employee first with employee id {employeeId}."
+                                        });
+                                    }
+                                }
+
+                                // Request dates validation
+                                if (TripTypeName == "BOTH" && endRequestDate < startRequestDate)
+                                {
+                                    excelErrorModels.Add(new ExcelErrorModel
+                                    {
+                                        ErrorType = "Request Dates",
+                                        AffectedRow = count,
+                                        Description = "End Request Date cannot be earlier than Start Request Date."
+                                    });
+                                }
+
+                                if (TripTypeName == "PICKUP" || TripTypeName == "DROP")
+                                {
+                                    if (startRequestDate != null && endRequestDate != null)
+                                    {
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = TripTypeName,
+                                            AffectedRow = count,
+                                            Description = $"For {TripTypeName} trip type, only one of the dates (Start or End) should be filled."
+                                        });
+                                    }
+                                    if (startRequestDate == null && endRequestDate == null)
+                                    {
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = TripTypeName,
+                                            AffectedRow = count,
+                                            Description = $"For {TripTypeName} trip type, at least one of the dates (Start or End) is mandatory."
+                                        });
+                                    }
+                                }
+
+                                // Create EmployeeRequest
+                                EmployeeRequest employeereq = new EmployeeRequest
+                                {
+                                    EmployeeId = employeeId,
+                                    CompanyId = string.IsNullOrEmpty(CompanyName) ? 0 : ent.Customers.FirstOrDefault(x => x.CompanyName.ToLower() == CompanyName.ToLower())?.Id ?? 0,
+                                    StartRequestDate = startRequestDate,
+                                    EndRequestDate = endRequestDate,
+                                    TripType = string.IsNullOrEmpty(TripTypeName) ? 0 : ent.TripTypes.FirstOrDefault(x => x.TripTypeName.ToLower() == TripTypeName.ToLower())?.Id ?? 0,
+                                    ShiftType = string.IsNullOrEmpty(ShiftTypeName) ? 0 : ent.TripMasters.FirstOrDefault(x => x.TripName.ToLower() == ShiftTypeName.ToLower())?.Id ?? 0,
+                                    PickupShiftTimeId = row.Cell(7).GetValue<int>(),
+                                    DropShiftTimeId = row.Cell(8).GetValue<int>(),
+                                    RequestType = "EMPLOYEE",
+                                    CreatedDate = DateTime.Now
+                                };
+
+                                emprequest.Add(employeereq);
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log individual row errors
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "General",
+                                    AffectedRow = count,
+                                    Description = $"An error occurred while processing row {count}: {ex.Message}"
+                                });
+                            }
                         }
+
+                        // Save valid requests
                         if (emprequest.Any())
                         {
                             ent.EmployeeRequests.AddRange(emprequest);
                             ent.SaveChanges();
                         }
+
+                        // Handle errors
+                        if (excelErrorModels.Any())
+                        {
+                            TempData["HasErrors"] = true;
+                            TempData["ExcelErrors"] = Newtonsoft.Json.JsonConvert.SerializeObject(excelErrorModels);
+                            return RedirectToAction("CreateRequest");
+                        }
+
                         TempData["dltmsg"] = "Data imported successfully!";
                         return RedirectToAction("EmployeeRequestList");
                     }
                 }
+
                 ViewBag.Message = "Please select an Excel file to import.";
                 return View();
             }
-            catch (DbEntityValidationException ex)
+            catch (Exception ex)
             {
-                foreach (var validationError in ex.EntityValidationErrors)
-                {
-                    foreach (var error in validationError.ValidationErrors)
-                    {
-                        // Log or output the validation errors
-                        Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
-                    }
-                }
-                ViewBag.Message = "Validation failed for one or more entities. Please check the logs for more details.";
+                ViewBag.Message = $"An error occurred: {ex.Message}";
                 return View();
             }
-        }        
+        }
+
+
+        //public ActionResult ImportEmployeeRequestData(HttpPostedFileBase file)
+        //{
+        //    try
+        //    {
+        //        // Check if a file is uploaded
+        //        if (file != null && file.ContentLength > 0)
+        //        {
+        //            using (var workbook = new XLWorkbook(file.InputStream))
+        //            {
+
+        //                var worksheet = workbook.Worksheet(1);
+        //                var rows = worksheet.RowsUsed().Skip(1);
+        //                List<EmployeeRequest> emprequest = new List<EmployeeRequest>();
+
+        //                List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
+        //                var count = 0;
+        //                foreach (var row in rows)
+        //                {
+        //                    count++;
+
+        //                    string CompanyName = row.Cell(2).GetValue<string>(); 
+        //                    string TripTypeName = row.Cell(5).GetValue<string>();
+        //                    string ShiftTypeName = row.Cell(6).GetValue<string>();
+        //                    string PickupShiftTimeName = row.Cell(7).GetValue<string>();
+        //                    string DropShiftTimeName = row.Cell(8).GetValue<string>();
+        //                    DateTime startRequestDate = row.Cell(3).GetValue<DateTime>();
+        //                    DateTime endRequestDate = row.Cell(4).GetValue<DateTime>();
+        //                    var employeeId = row.Cell(1).GetValue<string>() ?? string.Empty;
+
+        //                    if (employeeId != null)
+        //                    {
+        //                        var empinfo = ent.Employees.Where(e => e.IsActive == true && e.Employee_Id == employeeId).FirstOrDefault();
+
+        //                        if (empinfo == null)
+        //                        {
+        //                            excelErrorModels.Add(new ExcelErrorModel
+        //                            {
+        //                                ErrorType = "Employee Id",
+        //                                AffectedRow = count,
+        //                                Description = $"Please register as an employee first with employee id {employeeId}."
+        //                            });                                    
+        //                        }
+        //                    }
+        //                    if(TripTypeName=="BOTH")
+        //                    {
+        //                        if (endRequestDate < startRequestDate)
+        //                        {
+        //                            excelErrorModels.Add(new ExcelErrorModel
+        //                            {
+        //                                ErrorType = "Request Dates",
+        //                                AffectedRow = count,
+        //                                Description = "End Request Date cannot be earlier than Start Request Date."
+        //                            });
+        //                        }
+        //                    }
+
+        //                    if (excelErrorModels.Count > 0)
+        //                    {
+        //                        TempData["HasErrors"] = true;
+        //                        TempData["ExcelErrors"] = Newtonsoft.Json.JsonConvert.SerializeObject(excelErrorModels);
+        //                        return RedirectToAction("CreateRequest");
+        //                    }
+        //                    EmployeeRequest employeereq = new EmployeeRequest
+        //                    {
+        //                        EmployeeId = row.Cell(1).GetValue<string>() ?? string.Empty,
+        //                        CompanyId = string.IsNullOrEmpty(CompanyName) == null ? 0 : ent.Customers.Where(x =>x.CompanyName.ToLower() == CompanyName.ToLower()).FirstOrDefault().Id,
+        //                        StartRequestDate = row.Cell(3).GetValue<DateTime>(),
+        //                        EndRequestDate = row.Cell(4).GetValue<DateTime>(),
+        //                        TripType = string.IsNullOrEmpty(TripTypeName) == null ? 0 : ent.TripTypes.Where(x => x.TripTypeName.ToLower() == TripTypeName.ToLower()).FirstOrDefault().Id,
+        //                        ShiftType = string.IsNullOrEmpty(ShiftTypeName) == null ? 0 : ent.TripMasters.Where(x => x.TripName.ToLower() == ShiftTypeName.ToLower()).FirstOrDefault().Id,
+
+        //                        PickupShiftTimeId = row.Cell(7).GetValue<int>(),
+        //                        //PickupShiftTimeId = string.IsNullOrEmpty(PickupShiftTimeName) == null ? 0 : ent.ShiftMasters.Where(x => x.ShiftTime.ToLower() == PickupShiftTimeName.ToLower() && x.TripTypeId==1).FirstOrDefault().Id,
+        //                        //DropShiftTimeId = string.IsNullOrEmpty(DropShiftTimeName) == null ? 0 : ent.ShiftMasters.Where(x => x.ShiftTime.ToLower() == DropShiftTimeName.ToLower() && x.TripTypeId ==2).FirstOrDefault().Id,
+        //                        DropShiftTimeId = row.Cell(8).GetValue<int>(),
+        //                        RequestType= "EMPLOYEE",
+        //                        CreatedDate = DateTime.Now
+        //                    };
+
+
+        //                    emprequest.Add(employeereq);
+        //                }
+        //                if (emprequest.Any())
+        //                {
+        //                    ent.EmployeeRequests.AddRange(emprequest);
+        //                    ent.SaveChanges();
+        //                }
+        //                TempData["dltmsg"] = "Data imported successfully!";
+        //                return RedirectToAction("EmployeeRequestList");
+        //            }
+        //        }
+        //        ViewBag.Message = "Please select an Excel file to import.";
+        //        return View();
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        foreach (var validationError in ex.EntityValidationErrors)
+        //        {
+        //            foreach (var error in validationError.ValidationErrors)
+        //            {
+        //                // Log or output the validation errors
+        //                Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
+        //            }
+        //        }
+        //        ViewBag.Message = "Validation failed for one or more entities. Please check the logs for more details.";
+        //        return View();
+        //    }
+        //}        
 
         public ActionResult Routing()
         {

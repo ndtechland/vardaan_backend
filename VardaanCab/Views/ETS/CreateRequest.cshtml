@@ -30,7 +30,6 @@
         .import-form-container .col-md-2 {
             margin-left: 10px; /* Adds space between the file input and the button */
         }
-
 </style>
 
 <div class="container-fluid">
@@ -73,7 +72,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                         <form class="theme-form mega-form" action="CreateRequest" method="post" enctype="multipart/form-data">
                             <div class="card-body">
                                 <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
@@ -274,7 +273,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label-title ">Shift Type</label>
-                                              
+
                                                 @Html.DropDownListFor(a => a.ShiftType, Model.ShiftTypes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
 
                                             </div>
@@ -288,7 +287,7 @@
                                                 @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "dropshifttime" })
 
                                             </div>
-                                          
+
 
                                         </div>
 
@@ -368,6 +367,67 @@
     </div>
 </div>
 
+<!--Model-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:130%;">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    Errors in Uploaded Data
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table id="errorTable" class="datatable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Row</th>
+                            <th>Error Type</th>
+                            <th>Description</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Error rows will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const hasErrors = '@TempData["HasErrors"]' === 'True';
+            if (hasErrors) {
+                const errorData = JSON.parse('@Html.Raw(TempData["ExcelErrors"])');
+                const errorTable = document.getElementById("errorTable").querySelector("tbody");
+
+                // Populate the table with error data
+                errorData.forEach(error => {
+                    const row = errorTable.insertRow();
+                    const affectedRowCell = row.insertCell(0);
+                    const errorTypeCell = row.insertCell(1);
+                    const descriptionCell = row.insertCell(2);
+
+
+
+                    affectedRowCell.textContent = error.AffectedRow;
+                    errorTypeCell.textContent = error.ErrorType;
+                    descriptionCell.textContent = error.Description;
+
+                });
+
+                // Show the modal
+                const modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+                modal.show();
+            }
+        });
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -505,34 +565,6 @@
         handleTripTypeShiftTypeChange();
     });
 </script>
-@*<script>
-        $(document).ready(function () {
-            $('#employeeId').on('keyup', function () {
-                var id = $(this).val();
-                if (id) {
-                    $.ajax({
-                        url: '@Url.Action("GetEmployeeDetails", "ETS")',
-                        type: 'GET',
-                        data: { id: id },
-                        success: function (response) {
-                            if (response) {
-                                $('#firstName').val(response.firstName);
-                                $('#lastName').val(response.lastName);
-                                $('#gender').val(response.gender);
-                                $('#email').val(response.email);
-                                $('#guestContact').val(response.guestContactNumber);
-                            } else {
-                                alert('Employee not found');
-                            }
-                        },
-                        error: function () {
-                            console.log('Error fetching employee details');
-                        }
-                    });
-                }
-            });
-        });
-    </script>*@
 <script>
     $(document).ready(function () {
         function fetchEmployeeDetails(id) {
