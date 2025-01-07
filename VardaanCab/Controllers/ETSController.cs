@@ -10,6 +10,7 @@ using System.ComponentModel.Design;
 using System.Configuration;
 using System.Data;
 using System.Data.Entity.Core.EntityClient;
+using System.Data.Entity.SqlServer;
 using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.IO;
@@ -727,14 +728,37 @@ namespace VardaanCab.Controllers
                 if(model.StartDate != null && model.EndDate != null)
                 {
                     var EmployeeReqList = ent.EmployeeRequests.Where(x => x.StartRequestDate <= model.StartDate && x.EndRequestDate <= model.EndDate).ToList();   
-                    if(EmployeeReqList != null)
-                    {
-                        foreach(var item in EmployeeReqList)
+                   
+                        if (EmployeeReqList != null && EmployeeReqList.Any())
                         {
-                           // ent.CompanyZoneHomeRoutes.Where()
-                           
+                            foreach (var request in EmployeeReqList)
+                            {
+                            var EmpList = ent.Employees.Where(x => x.Employee_Id == request.EmployeeId).FirstOrDefault();
+                            if(EmpList != null)
+                            {
+                                // Assuming EmployeeRequests has Latitude and Longitude fields
+                                double requestLat = (double)EmpList.Latitude;
+                                //double requestLong = (double)request.Longitude;
+
+                                // Fetch matching zones and home routes for the given lat-log
+                                //var matchingRoutes = ent.CompanyZoneHomeRoutes
+                                //    .Where(route =>
+                                //        SqlFunctions.Square(route.ZoneLat - requestLat) +
+                                //        SqlFunctions.Square(route.ZoneLong - requestLong) <=
+                                //        SqlFunctions.Square(yourProximityRadius))
+                                //    .ToList();
+
+                                //foreach (var route in matchingRoutes)
+                                //{
+                                //    // Process the matching route
+                                //    // Add your logic to handle matching zones and home routes here
+                                //    Console.WriteLine($"Matching Route ID: {route.Id}");
+                                //}
+                            }
+                               
+                            }
                         }
-                    }
+                    
                 }
                 ViewBag.BtnTXT = "Create Routing";
                 return View(model);
