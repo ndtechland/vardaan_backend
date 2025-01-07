@@ -17,6 +17,9 @@ using System.Data;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Data.Entity.Validation;
 using System.Security.Cryptography.X509Certificates;
+using NPOI.SS.Formula.Functions;
+using OfficeOpenXml.FormulaParsing.Exceptions;
+using System.Text.RegularExpressions;
 
 namespace VardaanCab.Controllers
 {
@@ -412,6 +415,154 @@ namespace VardaanCab.Controllers
         }
 
 
+        //public ActionResult ImportVendorData(HttpPostedFileBase file)
+        //{
+        //    try
+        //    {
+        //        if (file != null && file.ContentLength > 0)
+        //        {
+        //            using (var workbook = new XLWorkbook(file.InputStream))
+        //            {
+        //                var worksheet = workbook.Worksheet(1);
+        //                var rows = worksheet.RowsUsed().Skip(1);
+        //                List<Vendor> vendors = new List<Vendor>();
+        //                var count = 0;
+        //                List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
+        //                foreach (var row in rows)
+        //                {
+        //                    count++;
+        //                    string ParentVendorName = row.Cell(7).GetValue<string>();
+        //                    string StateName = row.Cell(8).GetValue<string>();
+        //                    string CityName = row.Cell(9).GetValue<string>();
+
+        //                    var mobno = row.Cell(4).GetValue<string>() ?? string.Empty;
+
+        //                    // Validate that the mobile number contains only digits
+        //                    if (!mobno.All(char.IsDigit))
+        //                    {
+        //                        excelErrorModels.Add(new ExcelErrorModel
+        //                        {
+        //                            ErrorType = "Mobile Number",
+        //                            AffectedRow = count,
+        //                            Description = $"Mobile Number {mobno} contains invalid characters. Only digits are allowed."
+        //                        });
+        //                    }
+        //                    else if (ent.Vendors.Where(d => d.IsActive).Any(e => e.MobileNumber == mobno))
+        //                    {
+        //                        excelErrorModels.Add(new ExcelErrorModel
+        //                        {
+        //                            ErrorType = "Mobile Number",
+        //                            AffectedRow = count,
+        //                            Description = $"Mobile Number {mobno} already exists."
+        //                        });
+        //                    }
+        //                    else if (mobno.ToString().Length != 10)
+        //                    {
+        //                        excelErrorModels.Add(new ExcelErrorModel
+        //                        {
+        //                            ErrorType = "Mobile Number",
+        //                            AffectedRow = count,
+        //                            Description = $"Mobile no. {mobno} must be exactly 10 digits."
+        //                        });
+        //                    }
+
+
+
+        //                    var alternateno = row.Cell(5).GetValue<string>() ?? string.Empty;
+
+        //                    // Validate that the Alternate number1 contains only digits
+        //                    if (!alternateno.All(char.IsDigit))
+        //                    {
+        //                        excelErrorModels.Add(new ExcelErrorModel
+        //                        {
+        //                            ErrorType = "Alternate Number",
+        //                            AffectedRow = count,
+        //                            Description = $"Alternate no.  {alternateno} contains invalid characters. Only digits are allowed."
+        //                        });
+        //                    }
+        //                    else if (alternateno.ToString().Length != 10)
+        //                    {
+        //                        excelErrorModels.Add(new ExcelErrorModel
+        //                        {
+        //                            ErrorType = "Alternate Number",
+        //                            AffectedRow = count,
+        //                            Description = $"Alternate no.  {alternateno} must be exactly 10 digits."
+        //                        });
+        //                    }
+
+
+        //                    var email = row.Cell(3).GetValue<string>() ?? string.Empty;
+
+        //                    // Validate that the email has a valid format
+        //                    if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+        //                    {
+        //                        excelErrorModels.Add(new ExcelErrorModel
+        //                        {
+        //                            ErrorType = "Email Address",
+        //                            AffectedRow = count,
+        //                            Description = $"Email address {email} is invalid. Please provide a valid email."
+        //                        });
+        //                    }
+
+
+        //                    if (excelErrorModels.Count > 0)
+        //                    {
+        //                        TempData["HasErrors"] = true;
+        //                        TempData["ExcelErrors"] = Newtonsoft.Json.JsonConvert.SerializeObject(excelErrorModels);
+        //                        return RedirectToAction("Add");
+        //                    }
+        //                    Vendor vendor = new Vendor()
+        //                    {
+        //                        CompanyName = row.Cell(1).GetValue<string>().ToString(),
+        //                        VendorName = row.Cell(2).GetValue<string>().ToString(),
+        //                        Email = row.Cell(3).GetValue<string>().ToString(),
+        //                        MobileNumber = row.Cell(4).GetValue<string>().ToString(),
+        //                        AlernateMobile = row.Cell(5).GetValue<string>().ToString(),
+        //                        GSTIN = row.Cell(6).GetValue<string>().ToString(),
+        //                        ParentVendor_Id = string.IsNullOrEmpty(ParentVendorName) ? 0 : ent.Vendors.Where(x => x.VendorName.ToLower() == ParentVendorName.ToLower()).FirstOrDefault()?.Id ?? 0,
+        //                        StateMaster_Id = string.IsNullOrEmpty(StateName) ? 0 : ent.StateMasters.Where(x => x.StateName.ToLower() == StateName.ToLower()).FirstOrDefault()?.Id ?? 0,
+        //                        CityMaster_Id = string.IsNullOrEmpty(CityName) ? 0 : ent.CityMasters.Where(x => x.CityName.ToLower() == CityName.ToLower()).FirstOrDefault()?.Id ?? 0,
+        //                        FullAddress = row.Cell(10).GetValue<string>().ToString(),
+        //                        PAN = row.Cell(11).GetValue<string>().ToString(),
+        //                        CIN = row.Cell(12).GetValue<string>().ToString(),
+        //                        IsActive =true,
+        //                        CreateDate =DateTime.Now,
+        //                    };
+        //                    vendors.Add(vendor);
+        //                }
+        //                if (vendors.Any())
+        //                {
+        //                    ent.Vendors.AddRange(vendors);
+        //                    ent.SaveChanges();
+        //                }
+        //                TempData["dltmsg"] = "Data imported successfully!";
+        //                return RedirectToAction("All");
+        //            }
+        //        }
+
+        //        ViewBag.Message = "Please select an Excel file to import.";
+        //        return View();
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        foreach (var validationError in ex.EntityValidationErrors)
+        //        {
+        //            foreach (var error in validationError.ValidationErrors)
+        //            {
+        //                // Log or output the validation errors
+        //                Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
+        //            }
+        //        }
+        //        ViewBag.Message = "Validation failed for one or more entities. Please check the logs for more details.";
+        //        return View();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle other errors
+        //        ViewBag.Message = $"An error occurred: {ex.Message}";
+        //        return View();
+        //    }
+        //}
         public ActionResult ImportVendorData(HttpPostedFileBase file)
         {
             try
@@ -423,37 +574,122 @@ namespace VardaanCab.Controllers
                         var worksheet = workbook.Worksheet(1);
                         var rows = worksheet.RowsUsed().Skip(1);
                         List<Vendor> vendors = new List<Vendor>();
+                        var count = 0;
+                        List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
 
                         foreach (var row in rows)
                         {
-
+                            count++;
                             string ParentVendorName = row.Cell(7).GetValue<string>();
                             string StateName = row.Cell(8).GetValue<string>();
                             string CityName = row.Cell(9).GetValue<string>();
-                            Vendor vendor = new Vendor()
+
+                            var mobno = row.Cell(4).GetValue<string>() ?? string.Empty;
+
+                            // Validate Mobile Number
+                            if (!mobno.All(char.IsDigit))
                             {
-                                CompanyName = row.Cell(1).GetValue<string>().ToString(),
-                                VendorName = row.Cell(2).GetValue<string>().ToString(),
-                                Email = row.Cell(3).GetValue<string>().ToString(),
-                                MobileNumber = row.Cell(4).GetValue<string>().ToString(),
-                                AlernateMobile = row.Cell(5).GetValue<string>().ToString(),
-                                GSTIN = row.Cell(6).GetValue<string>().ToString(),
-                                ParentVendor_Id = string.IsNullOrEmpty(ParentVendorName) ? 0 : ent.Vendors.Where(x => x.VendorName.ToLower() == ParentVendorName.ToLower()).FirstOrDefault()?.Id ?? 0,
-                                StateMaster_Id = string.IsNullOrEmpty(StateName) ? 0 : ent.StateMasters.Where(x => x.StateName.ToLower() == StateName.ToLower()).FirstOrDefault()?.Id ?? 0,
-                                CityMaster_Id = string.IsNullOrEmpty(CityName) ? 0 : ent.CityMasters.Where(x => x.CityName.ToLower() == CityName.ToLower()).FirstOrDefault()?.Id ?? 0,
-                                FullAddress = row.Cell(10).GetValue<string>().ToString(),
-                                PAN = row.Cell(11).GetValue<string>().ToString(),
-                                CIN = row.Cell(12).GetValue<string>().ToString(),
-                                IsActive =true,
-                                CreateDate =DateTime.Now,
-                            };
-                            vendors.Add(vendor);
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Mobile Number",
+                                    AffectedRow = count,
+                                    Description = $"Mobile Number {mobno} contains invalid characters. Only digits are allowed."
+                                });
+                            }
+                            else if (ent.Vendors.Where(d => d.IsActive).Any(e => e.MobileNumber == mobno))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Mobile Number",
+                                    AffectedRow = count,
+                                    Description = $"Mobile Number {mobno} already exists."
+                                });
+                            }
+                            else if (mobno.Length != 10)
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Mobile Number",
+                                    AffectedRow = count,
+                                    Description = $"Mobile no. {mobno} must be exactly 10 digits."
+                                });
+                            }
+
+                            var alternateno = row.Cell(5).GetValue<string>() ?? string.Empty;
+
+                            // Validate Alternate Number
+                            if (!alternateno.All(char.IsDigit))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Alternate Number",
+                                    AffectedRow = count,
+                                    Description = $"Alternate no. {alternateno} contains invalid characters. Only digits are allowed."
+                                });
+                            }
+                            else if (alternateno.Length != 10)
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Alternate Number",
+                                    AffectedRow = count,
+                                    Description = $"Alternate no. {alternateno} must be exactly 10 digits."
+                                });
+                            }
+
+                            var email = row.Cell(3).GetValue<string>() ?? string.Empty;
+
+                            // Validate Email Address
+                            if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Email Address",
+                                    AffectedRow = count,
+                                    Description = $"Email address {email} is invalid. Please provide a valid email."
+                                });
+                            }
+
+                            // Continue adding other validations here...
+
+                            // Add vendor to the list only if no errors for this row
+                            if (!excelErrorModels.Any(e => e.AffectedRow == count))
+                            {
+                                vendors.Add(new Vendor
+                                {
+                                    CompanyName = row.Cell(1).GetValue<string>(),
+                                    VendorName = row.Cell(2).GetValue<string>(),
+                                    Email = row.Cell(3).GetValue<string>(),
+                                    MobileNumber = mobno,
+                                    AlernateMobile = alternateno,
+                                    GSTIN = row.Cell(6).GetValue<string>(),
+                                    ParentVendor_Id = string.IsNullOrEmpty(ParentVendorName) ? 0 : ent.Vendors.Where(x => x.VendorName.ToLower() == ParentVendorName.ToLower()).FirstOrDefault()?.Id ?? 0,
+                                    StateMaster_Id = string.IsNullOrEmpty(StateName) ? 0 : ent.StateMasters.Where(x => x.StateName.ToLower() == StateName.ToLower()).FirstOrDefault()?.Id ?? 0,
+                                    CityMaster_Id = string.IsNullOrEmpty(CityName) ? 0 : ent.CityMasters.Where(x => x.CityName.ToLower() == CityName.ToLower()).FirstOrDefault()?.Id ?? 0,
+                                    FullAddress = row.Cell(10).GetValue<string>(),
+                                    PAN = row.Cell(11).GetValue<string>(),
+                                    CIN = row.Cell(12).GetValue<string>(),
+                                    IsActive = true,
+                                    CreateDate = DateTime.Now,
+                                });
+                            }
                         }
+
+                        // If errors exist, store them in TempData and redirect
+                        if (excelErrorModels.Any())
+                        {
+                            TempData["HasErrors"] = true;
+                            TempData["ExcelErrors"] = Newtonsoft.Json.JsonConvert.SerializeObject(excelErrorModels);
+                            return RedirectToAction("Add");
+                        }
+
+                        // Save valid vendors to the database
                         if (vendors.Any())
                         {
                             ent.Vendors.AddRange(vendors);
                             ent.SaveChanges();
                         }
+
                         TempData["dltmsg"] = "Data imported successfully!";
                         return RedirectToAction("All");
                     }
@@ -468,7 +704,6 @@ namespace VardaanCab.Controllers
                 {
                     foreach (var error in validationError.ValidationErrors)
                     {
-                        // Log or output the validation errors
                         Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
                     }
                 }
@@ -477,10 +712,10 @@ namespace VardaanCab.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception or handle other errors
                 ViewBag.Message = $"An error occurred: {ex.Message}";
                 return View();
             }
         }
+
     }
 }

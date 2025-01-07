@@ -97,6 +97,7 @@
     <Compile Include="DTO\EmployeeHomeRouteDTO.cs" />
     <Compile Include="DTO\EmployeeMobAppSettingDTO.cs" />
     <Compile Include="DTO\EscortDTO.cs" />
+    <Compile Include="DTO\ExcelErrorModel.cs" />
     <Compile Include="DTO\ForgotDTO.cs" />
     <Compile Include="DTO\LoginModel.cs" />
     <Compile Include="DTO\LogsDTO.cs" />
