@@ -13,11 +13,13 @@ using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.SqlServer;
 using System.Data.Entity.Validation;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
@@ -38,11 +40,11 @@ namespace VardaanCab.Controllers
         public ActionResult CreateRequest(int menuId = 0, int id = 0)
         {
             var model = new CreateRequestDTO();
-            model.Companies = new SelectList(ent.Customers.Where(c=>c.IsActive==true).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
-            model.TripTypes = new SelectList(ent.TripTypes.Where(x=>x.TripMasterId==1).ToList(), "Id", "TripTypeName");
-            model.ShiftTypes = new SelectList(ent.TripMasters.Where(x=>x.Id==1).ToList(), "Id", "TripName");
-            model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x=>x.TripTypeId==1).ToList(), "Id", "ShiftTime");
-            model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x=>x.TripTypeId==2).ToList(), "Id", "ShiftTime");
+            model.Companies = new SelectList(ent.Customers.Where(c => c.IsActive == true).OrderByDescending(c => c.Id).ToList(), "Id", "OrgName");
+            model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
+            model.ShiftTypes = new SelectList(ent.TripMasters.Where(x => x.Id == 1).ToList(), "Id", "TripName");
+            model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
+            model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
             ViewBag.menuId = menuId;
             if (id > 0)
             {
@@ -63,7 +65,7 @@ namespace VardaanCab.Controllers
                 model.DestinationRequestMethod = data.DestinationRequestMethod;
                 model.LocationType = data.LocationType;
                 model.StartRequestDate = data.StartRequestDate;
-                model.EndRequestDate = data.EndRequestDate;               
+                model.EndRequestDate = data.EndRequestDate;
                 model.TripType = data.TripType;
                 model.ShiftType = data.ShiftType;
                 model.SMSTriggeredLocation = data.SMSTriggeredLocation;
@@ -131,7 +133,7 @@ namespace VardaanCab.Controllers
                     else
                     {
                         TempData["errormsg"] = "Failed.";
-                        
+
 
                     }
                 }
@@ -144,24 +146,24 @@ namespace VardaanCab.Controllers
                 TempData["msg"] = "Server error";
                 return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
             }
-            
+
         }
         public JsonResult GetEmployeeDetails(string id)
         {
-            var employee = ent.Employees.FirstOrDefault(e => e.Employee_Id == id && e.IsActive==true);
+            var employee = ent.Employees.FirstOrDefault(e => e.Employee_Id == id && e.IsActive == true);
 
             if (employee != null)
             {
                 var employeeData = new
                 {
                     firstName = employee.Employee_First_Name,
-                    lastName = employee.Employee_Last_Name, 
+                    lastName = employee.Employee_Last_Name,
                     gender = employee.Gender,
                     email = employee.Email,
                     guestContactNumber = employee.MobileNumber
                 };
 
-                return Json(employeeData,JsonRequestBehavior.AllowGet);
+                return Json(employeeData, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -724,42 +726,100 @@ namespace VardaanCab.Controllers
                 model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
                 model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
                 model.Zones = new SelectList(ent.CompanyZones.ToList(), "Id", "CompanyZone1");
-                
-                if(model.StartDate != null && model.EndDate != null)
+
+                if (model.StartDate != null && model.EndDate != null)
                 {
-                    var EmployeeReqList = ent.EmployeeRequests.Where(x => x.StartRequestDate <= model.StartDate && x.EndRequestDate <= model.EndDate).ToList();   
-                   
-                        if (EmployeeReqList != null && EmployeeReqList.Any())
+                    var EmployeeReqList = ent.EmployeeRequests
+                        .Where(x => x.StartRequestDate <= model.StartDate && x.EndRequestDate >= model.EndDate)
+                        .ToList();
+
+                    if (EmployeeReqList != null && EmployeeReqList.Any())
+                    {
+                        List<dynamic> Cab4List = new List<dynamic>();
+                        List<dynamic> Cab6List = new List<dynamic>();
+
+                        foreach (var request in EmployeeReqList)
                         {
-                            foreach (var request in EmployeeReqList)
-                            {
-                            var EmpList = ent.Employees.Where(x => x.Employee_Id == request.EmployeeId).FirstOrDefault();
-                            if(EmpList != null)
-                            {
-                                // Assuming EmployeeRequests has Latitude and Longitude fields
-                                double requestLat = (double)EmpList.Latitude;
-                                //double requestLong = (double)request.Longitude;
+                            var Emp = ent.Employees.FirstOrDefault(x => x.Employee_Id == request.EmployeeId);
+                            var EmpCompany = ent.Customers.FirstOrDefault(x => x.Id == model.Company_Id);
 
-                                // Fetch matching zones and home routes for the given lat-log
-                                //var matchingRoutes = ent.CompanyZoneHomeRoutes
-                                //    .Where(route =>
-                                //        SqlFunctions.Square(route.ZoneLat - requestLat) +
-                                //        SqlFunctions.Square(route.ZoneLong - requestLong) <=
-                                //        SqlFunctions.Square(yourProximityRadius))
-                                //    .ToList();
+                            if (Emp != null && EmpCompany != null)
+                            {
+                                // Employee latitude and longitude
+                                double empLat = (double)Emp.Latitude;
+                                double empLong = (double)Emp.Longitude;
 
-                                //foreach (var route in matchingRoutes)
-                                //{
-                                //    // Process the matching route
-                                //    // Add your logic to handle matching zones and home routes here
-                                //    Console.WriteLine($"Matching Route ID: {route.Id}");
-                                //}
-                            }
-                               
+                                // Calculate proximity radius for 100 meters
+                                double proximityRadiusLat = 100 / 111000.0; // ~0.0009 degrees for latitude
+                                double proximityRadiusLong = 100 / (111000.0 * Math.Cos(DegreesToRadians(empLat))); // Adjusted for longitude
+
+                                // Get matching routes
+                                var MatchingRoutes = (from cz in ent.CompanyZones
+                                                      join chz in ent.CompanyZoneHomeRoutes on cz.Id equals chz.CompanyZoneId
+                                                      where cz.CompanyId == EmpCompany.Id &&
+                                                            cz.Id == Emp.PrimaryFacilityZone
+                                                      select new
+                                                      {
+                                                          chz.Id,
+                                                          chz.HomeRouteName,
+                                                          chz.Latitude,
+                                                          chz.Longitude
+                                                      }).ToList();
+
+                                if (MatchingRoutes.Any())
+                                {
+                                    // Find nearest routes and group employees
+                                    foreach (var route in MatchingRoutes)
+                                    {
+                                        double routeLat = (double)route.Latitude;
+                                        double routeLong = (double)route.Longitude;
+
+                                        // Calculate the distance between employee's location and the route's location
+                                        double distance = GetDistance(empLat, empLong, routeLat, routeLong);
+
+                                        // Check if the route is within the 100-meter proximity
+                                        if (Math.Abs(routeLat - empLat) <= proximityRadiusLat &&
+                                            Math.Abs(routeLong - empLong) <= proximityRadiusLong)
+                                        {
+                                            // Add to cab assignment list
+                                            if (Cab4List.Count < 4)
+                                            {
+                                                Cab4List.Add(new
+                                                {
+                                                    EmployeeId = Emp.Employee_Id,
+                                                    EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
+                                                    Distance = distance,
+                                                    CabType = "Cab-4",
+                                                    RouteId = route.Id
+                                                });
+                                            }
+                                            else if (Cab6List.Count < 6)
+                                            {
+                                                Cab6List.Add(new
+                                                {
+                                                    EmployeeId = Emp.Employee_Id,
+                                                    EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
+                                                    Distance = distance,
+                                                    CabType = "Cab-6",
+                                                    RouteId = route.Id
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
-                    
+
+                        // Serialize the cab lists to JSON if needed for further processing or saving
+                        var JsonCab4List = new JavaScriptSerializer().Serialize(Cab4List);
+                        var JsonCab6List = new JavaScriptSerializer().Serialize(Cab6List);
+
+                        // Cab4List and Cab6List now contain the assignments.
+                        // You can save these lists or process them further as needed.
+                    }
                 }
+
+
                 ViewBag.BtnTXT = "Create Routing";
                 return View(model);
             }
@@ -768,6 +828,37 @@ namespace VardaanCab.Controllers
 
                 throw new Exception("Server Error + " + ex.Message);
             }
+        }
+
+        static double GetDistance(double lat1, double lon1, double lat2, double lon2)
+        {
+            // Radius of the Earth in kilometers
+            const double R = 6371;
+
+            // Convert degrees to radians
+            lat1 = DegreesToRadians(lat1);
+            lon1 = DegreesToRadians(lon1);
+            lat2 = DegreesToRadians(lat2);
+            lon2 = DegreesToRadians(lon2);
+
+            // Haversine formula
+            double dlat = lat2 - lat1;
+            double dlon = lon2 - lon1;
+            double a = Math.Sin(dlat / 2) * Math.Sin(dlat / 2) +
+                       Math.Cos(lat1) * Math.Cos(lat2) *
+                       Math.Sin(dlon / 2) * Math.Sin(dlon / 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+            // Distance in kilometers
+            double distance = R * c;
+
+            // Convert distance to meters
+            return distance * 1000;
+        }
+
+        static double DegreesToRadians(double degrees)
+        {
+            return degrees * Math.PI / 180.0;
         }
     }
 }
