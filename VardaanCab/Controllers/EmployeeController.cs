@@ -218,41 +218,37 @@ namespace VardaanCab.Controllers
             //dt.Columns.Add("AlternateNumber");
 
             // Add dummy data
-
             dt.Rows.Add("Test Vardaan car rental pvt ltd - VARDAANSTFHYD", "Location A", "8989898989", "John", "M", "Doe", "1234567890", "john.doe@example.com", "Uttar Pradesh", "Noida", "123456", "Address A", "johndoe123", "Sunday,Monday", "28.604624,77.358945", "Unit1", "Dept1", "Project1", "Manager1", "NORTH CENTRAL HYDERABAD", "NIZAMPET", "MIYAPUR", "Permanent", "Male");
             dt.Rows.Add("Test Vardaan car rental pvt ltd - VARDAANSTFHYD", "Location B", "9899999980", "test", "M", "Doe", "9898989898", "test.doe@example.com", "Uttar Pradesh", "Noida", "123456", "Address B", "johndoe1234", "Sunday", "28.604624,77.358945", "Unit1", "Dept1", "Project1", "Manager1", "NORTH EAST HYDERABAD", "AMEERPET", "SANATHNAGAR", "Temporary", "Male");
 
-            dt.Rows.Add("Test Vardaan car rental pvt ltd - VARDAANSTF", "Location A", "8989898989", "John", "M", "Doe", "1234567890", "john.doe@example.com", "Uttar Pradesh", "Noida", "123456", "Address A", "johndoe123", "Sunday,Monday", "28.604624,77.358945", "Unit1", "Dept1", "Project1", "Manager1", "GHAZIABAD - 1 - VARDAANSTF", "New Ashok Nagar", "New Ashok Nagar Metro Station AK ", "Permanent", "Male", "9876543210");
-
-
             Dictionary<string, string> columnMappings = new Dictionary<string, string>()
-    {
-        { "Company_Id", "Company Name" },
-        { "Company_location", "Company Location" },
-        { "Employee_Id", "Employee ID" },
-        { "Employee_First_Name", "First Name" },
-        { "Employee_Middle_Name", "Middle Name" },
-        { "Employee_Last_Name", "Last Name" },
-        { "MobileNumber", "Mobile Number" },
-        { "Email", "Email Address" },
-        { "StateId", "State Name" },
-        { "CityId", "City Name" },
-        { "Pincode", "Postal Code" },
-        { "EmployeeCurrentAddress", "Current Address" },
-        { "LoginUserName", "Login Username" },
-        { "WeekOff", "Week Off" },
-        { "EmployeeGeoCode", "Employee GeoCode" },
-        { "EmployeeBusinessUnit", "Business Unit" },
-        { "EmployeeDepartment", "Department" },
-        { "EmployeeProjectName", "Project Name" },
-        { "ReportingManager", "Reporting Manager" },
-        { "PrimaryFacilityZone", "Facility Zone" },
-        { "HomeRouteName", "Home Route Name" },
-        { "EmployeeDestinationArea", "Destination Area" },
-        { "EmployeeRegistrationType", "Registration Type" },
-        { "Gender", "Gender" },
-        //{ "AlternateNumber", "Alternate Contact" }
-    };
+{
+    { "Company_Id", "Company Name" },
+    { "Company_location", "Company Location" },
+    { "Employee_Id", "Employee ID" },
+    { "Employee_First_Name", "First Name" },
+    { "Employee_Middle_Name", "Middle Name" },
+    { "Employee_Last_Name", "Last Name" },
+    { "MobileNumber", "Mobile Number" },
+    { "Email", "Email Address" },
+    { "StateId", "State Name" },
+    { "CityId", "City Name" },
+    { "Pincode", "Postal Code" },
+    { "EmployeeCurrentAddress", "Current Address" },
+    { "LoginUserName", "Login Username" },
+    { "WeekOff", "Week Off" },
+    { "EmployeeGeoCode", "Employee GeoCode" },
+    { "EmployeeBusinessUnit", "Business Unit" },
+    { "EmployeeDepartment", "Department" },
+    { "EmployeeProjectName", "Project Name" },
+    { "ReportingManager", "Reporting Manager" },
+    { "PrimaryFacilityZone", "Facility Zone" },
+    { "HomeRouteName", "Home Route Name" },
+    { "EmployeeDestinationArea", "Destination Area" },
+    { "EmployeeRegistrationType", "Registration Type" },
+    { "Gender", "Gender" },
+    //{ "AlternateNumber", "Alternate Contact" }
+};
 
             using (XLWorkbook workbook = new XLWorkbook())
             {
@@ -297,16 +293,9 @@ namespace VardaanCab.Controllers
                 //var RegistrationTypehiddenSheet = workbook.Worksheets.Add("RegistrationType");
 
 
-              
                 //var companyList = new List<Customer>(); 
                 //int userId = int.Parse(User.Identity.Name);
                 //
-
-
-                //var companyList = new List<Customer>(); 
-                //int userId = int.Parse(User.Identity.Name);
-
-
                 //if (Session["IsAuth"] != null && Convert.ToBoolean(Session["IsAuth"]) == false)
                 //{
                 //    companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
@@ -314,73 +303,20 @@ namespace VardaanCab.Controllers
                 //else
                 //{
                 //    var empinfo = ent.Employees.FirstOrDefault(e => e.Id == userId);
-
+                //
                 //    if (empinfo != null)
                 //    {
                 //        companyList = ent.Customers.Where(x => x.IsActive == true && x.Id == empinfo.Company_Id).ToList();
                 //    }
                 //    else
                 //    {
-
                 //        
                 //        companyList = new List<Customer>(); 
                 //    }
                 //}
 
 
-                //        companyList = new List<Customer>(); 
-                //    }
-                //}
-
-                var companyList = new List<Customer>();
-                var ZoneList = new List<CompanyZoneDTO>();
-                int userId = int.Parse(User.Identity.Name);
-
-                if (Session["IsAuth"] != null && Convert.ToBoolean(Session["IsAuth"]) == false)
-                {
-                    // Auth is false: show all zones
-                    companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
-                    ZoneList = (from cz in ent.CompanyZones
-                                join c in ent.Customers on cz.CompanyId equals c.Id
-                                select new CompanyZoneDTO()
-                                {
-                                    Id = cz.Id,
-                                    CompanyZone = cz.CompanyZone1,
-                                    CompanyId = c.Id,
-                                    CompanyName = c.OrgName
-                                }).ToList();
-                }
-                else
-                {
-                    var empinfo = ent.Employees.FirstOrDefault(e => e.Id == userId);
-
-                    if (empinfo != null)
-                    {
-                        // Employee login: show zones for the employee's company
-                        companyList = ent.Customers.Where(x => x.IsActive == true && x.Id == empinfo.Company_Id).ToList();
-
-                        ZoneList = (from cz in ent.CompanyZones
-                                    join c in ent.Customers on cz.CompanyId equals c.Id
-                                    where cz.CompanyId==empinfo.Company_Id
-                                    select new CompanyZoneDTO()
-                                    {
-                                        Id = cz.Id,
-                                        CompanyZone = cz.CompanyZone1,
-                                        CompanyId = c.Id,
-                                        CompanyName = c.OrgName
-                                    }).ToList();
-                    }
-                    else
-                    {
-                        // Employee not found: show no zones
-                        companyList = new List<Customer>();
-                        ZoneList = new List<CompanyZoneDTO>();
-                    }
-                }
-
-
                 //var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
-
                 //var StateList = ent.StateMasters.ToList();
                 //var CityList = ent.CityMasters.ToList();
                 //var ZoneList = ent.CompanyZones.ToList();
@@ -388,21 +324,12 @@ namespace VardaanCab.Controllers
                 //var DestinationAreaList = ent.EmployeeDestinationAreas.ToList();
                 //var RegistrationTypeList = ent.EmployeeRegistrationTypes.ToList();
 
-                var StateList = ent.StateMasters.ToList();
-                var CityList = ent.CityMasters.ToList();
-                //var ZoneList = ent.CompanyZones.ToList();
-                var HomeRouteList = ent.CompanyZoneHomeRoutes.ToList();
-                var DestinationAreaList = ent.EmployeeDestinationAreas.ToList();
-                var RegistrationTypeList = ent.EmployeeRegistrationTypes.ToList();
-
-
                 // Populate hidden sheet with company names
                 //int hiddenRow = 1;
                 //foreach (var company in companyList.OrderByDescending(x => x.Id))
                 //{
                 //    hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
                 //}
-
                 //foreach (var company in companyList.OrderByDescending(x => x.Id))
                 //{
                 //    hiddenSheet.Cell(hiddenRow++, 1).Value = $"{company.CompanyName} - {company.OrgName}";
@@ -420,30 +347,10 @@ namespace VardaanCab.Controllers
                 //}
                 ////zone
                 //hiddenRow = 1;
-
-                foreach (var company in companyList.OrderByDescending(x => x.Id))
-                {
-                    hiddenSheet.Cell(hiddenRow++, 1).Value = $"{company.CompanyName} - {company.OrgName}";
-                }
-                hiddenRow = 1;
-                foreach (var state in StateList.OrderByDescending(x => x.Id))
-                {
-                    StatehiddenSheet.Cell(hiddenRow++, 1).Value = state.StateName;
-
-                }
-                hiddenRow = 1;
-                foreach (var city in CityList.OrderByDescending(x => x.Id))
-                {
-                    CityhiddenSheet.Cell(hiddenRow++, 1).Value = city.CityName;
-                }
-                //zone
-                hiddenRow = 1;
-
                 //foreach (var zones in ZoneList.OrderByDescending(x => x.Id))
                 //{
                 //    ZonehiddenSheet.Cell(hiddenRow++, 1).Value = zones.CompanyZone1;
                 //}
-
                 ////home route
                 //hiddenRow = 1;
                 //foreach (var routes in HomeRouteList.OrderByDescending(x => x.Id))
@@ -456,24 +363,6 @@ namespace VardaanCab.Controllers
                 //{
                 //    DestinationAreahiddenSheet.Cell(hiddenRow++, 1).Value = areas.DestinationAreaName;
                 //}
-
-                foreach (var zones in ZoneList.OrderByDescending(x => x.Id))
-                {
-                    ZonehiddenSheet.Cell(hiddenRow++, 1).Value = $"{zones.CompanyZone} - {zones.CompanyName}";
-                }
-                //home route
-                hiddenRow = 1;
-                foreach (var routes in HomeRouteList.OrderByDescending(x => x.Id))
-                {
-                    HomeRoutehiddenSheet.Cell(hiddenRow++, 1).Value = routes.HomeRouteName;
-                }
-                //Destination Area
-                hiddenRow = 1;
-                foreach (var areas in DestinationAreaList.OrderByDescending(x => x.Id))
-                {
-                    DestinationAreahiddenSheet.Cell(hiddenRow++, 1).Value = areas.DestinationAreaName;
-                }
-
                 //Registration Type
                 //hiddenRow = 1;
                 //foreach (var Regtypes in RegistrationTypeList.OrderByDescending(x => x.Id))
@@ -495,12 +384,12 @@ namespace VardaanCab.Controllers
                 //validationOne.List(companyRange); // Dropdown from hidden sheet
                 //validationOne.IgnoreBlanks = true;
                 //validationOne.InCellDropdown = true;
-                
+
                 //var validationTwo = worksheet.Cell(2, 9).DataValidation;
                 //validationTwo.List(StateRange); // Dropdown from hidden sheet
                 //validationTwo.IgnoreBlanks = true;
                 //validationTwo.InCellDropdown = true;
-                
+
                 //var validationThree = worksheet.Cell(2, 10).DataValidation;
                 //validationThree.List(CityRange); // Dropdown from hidden sheet
                 //validationThree.IgnoreBlanks = true;
@@ -567,37 +456,19 @@ namespace VardaanCab.Controllers
                         var rows = worksheet.RowsUsed().Skip(1);
                         List<Employee> employees = new List<Employee>();
                         var count = 0;
-                       List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
-                            
+                        List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
+
                         foreach (var row in rows)
                         {
                             count++;
-                            //splitParts company 
+                            //ExcelErrorModel excelError = new ExcelErrorModel();
                             string[] splitParts = row.Cell(1).GetValue<string>().Split('-');
                             string companyName = splitParts[0].Trim();
                             int companyId = ent.Customers
                             .Where(x => x.CompanyName.ToLower() == companyName.ToLower())
                             .FirstOrDefault()?.Id ?? 0;
-                            //splitParts Zone 
-                            string[] zonesplitParts = row.Cell(1).GetValue<string>().Split('-');
-                            string zoneName = splitParts[0].Trim();
-                            int zoneId = ent.CompanyZones
-                            .Where(x => x.CompanyZone1.ToLower() == zoneName.ToLower())
-                            .FirstOrDefault()?.Id ?? 0;
-
 
                             string RegistrationTypeName = row.Cell(23).GetValue<string>();
-
-
-                            if (companyId == 0)
-                            {
-                                excelErrorModels.Add(new ExcelErrorModel
-                                {
-                                    ErrorType = "Customer",
-                                    AffectedRow = count,
-                                    Description = $"Customer {companyName} does not exist."
-                                });
-                            }
 
                             var employeeId = row.Cell(3).GetValue<string>() ?? string.Empty;
                             var gender = row.Cell(24).GetValue<string>();
@@ -654,7 +525,7 @@ namespace VardaanCab.Controllers
                                     Description = $"Mobile no. {mobno} must be exactly 10 digits."
                                 });
                             }
-                            var  pincode = row.Cell(11).GetValue<string>();
+                            var pincode = row.Cell(11).GetValue<string>();
 
                             // Validate the pincode
                             if (pincode.ToString().Any(c => !char.IsDigit(c)))
@@ -760,7 +631,7 @@ namespace VardaanCab.Controllers
                                     Description = $"Destination Area Name {DestinationAreaName} does not exists."
                                 });
                             }
-                            string WeekOffDays = row.Cell(14).GetValue<string>() ?? string.Empty; 
+                            string WeekOffDays = row.Cell(14).GetValue<string>() ?? string.Empty;
 
                             string geoCode = row.Cell(15).GetValue<string>() ?? string.Empty;
                             string[] coordinates = geoCode.Split(',');
@@ -795,7 +666,7 @@ namespace VardaanCab.Controllers
                                 }
                             }
                             if (excelErrorModels.Any(e => e.AffectedRow == count)) continue;
-                            
+
                             Employee employee = new Employee
                             {
                                 Company_Id = companyId,
@@ -829,10 +700,9 @@ namespace VardaanCab.Controllers
                                 EmployeeProjectName = row.Cell(18).GetValue<string>() ?? string.Empty,
                                 ReportingManager = row.Cell(19).GetValue<string>() ?? string.Empty,
 
-                                //PrimaryFacilityZone = string.IsNullOrEmpty(CompanyZoneName) ? 0 :
-                                //    ent.CompanyZones.Where(x => x.CompanyZone1.ToLower() == CompanyZoneName.ToLower())
-                                //        .FirstOrDefault()?.Id ?? 0,
-                                PrimaryFacilityZone = zoneId,
+                                PrimaryFacilityZone = string.IsNullOrEmpty(CompanyZoneName) ? 0 :
+                                    ent.CompanyZones.Where(x => x.CompanyZone1.ToLower() == CompanyZoneName.ToLower())
+                                        .FirstOrDefault()?.Id ?? 0,
 
                                 HomeRouteName = string.IsNullOrEmpty(HomeRouteName) ? 0 :
                                     ent.CompanyZoneHomeRoutes.Where(x => x.HomeRouteName.ToLower() == HomeRouteName.ToLower())
@@ -856,7 +726,7 @@ namespace VardaanCab.Controllers
                             };
 
                             employees.Add(employee);
-                            
+
                         }
 
                         // If errors exist, return them to the view
@@ -872,9 +742,9 @@ namespace VardaanCab.Controllers
                             ent.Employees.AddRange(employees);
                             ent.SaveChanges();
                             TempData["dltmsg"] = "Data imported successfully!";
-                        return RedirectToAction("GetEmployeeList");
+                            return RedirectToAction("GetEmployeeList");
                         }
-                        
+
                     }
                 }
 
