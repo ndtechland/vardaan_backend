@@ -164,8 +164,8 @@ namespace Vardaan.Services.Implementation
                             join hr in ent.CompanyZoneHomeRoutes on e.HomeRouteName equals hr.Id
                             join rt in ent.EmployeeRegistrationTypes on e.EmployeeRegistrationType equals rt.Id
                             join da in ent.EmployeeDestinationAreas on e.EmployeeDestinationArea equals da.Id
-                            join s in ent.StateMasters on e.StateId equals s.Id
-                            join ct in ent.CityMasters on e.CityId equals ct.Id
+                            //join s in ent.StateMasters on e.StateId equals s.Id
+                            //join ct in ent.CityMasters on e.CityId equals ct.Id
                             where e.IsActive == true
                             orderby e.Id descending
                             select new
@@ -185,8 +185,8 @@ namespace Vardaan.Services.Implementation
                                 e.EmployeeProjectName,
                                 e.ReportingManager,
                                 e.AlternateNumber,
-                                StateName = s.StateName,
-                                CityName = ct.CityName,
+                                //StateName = s.StateName,
+                                //CityName = ct.CityName,
                                 PrimaryFacilityZone = z.CompanyZone1,
                                 HomeRouteName = hr.HomeRouteName,
                                 CompanyName = c.CompanyName,
@@ -213,8 +213,8 @@ namespace Vardaan.Services.Implementation
                     EmployeeProjectName = e.EmployeeProjectName,
                     ReportingManager = e.ReportingManager,
                     AlternateNumber = e.AlternateNumber,
-                    StateName = e.StateName,
-                    CityName = e.CityName,
+                    //StateName = e.StateName,
+                    //CityName = e.CityName,
                     PrimaryFacilityZone = e.PrimaryFacilityZone,
                     HomeRouteName = e.HomeRouteName,
                     EmployeeDestinationArea = e.DestinationAreaName,
