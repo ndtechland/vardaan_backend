@@ -35,4 +35,28 @@ namespace VardaanCab.Domain.DTO
         public SelectList ShiftTypes { get; set; }
         public SelectList Zones { get; set; }
     }
+
+    public class RouteAssignment
+    {
+        public string RouteName { get; set; }
+        public string RouteId { get; set; }
+        public string CabNumber { get; set; }
+        public string CabType { get; set; }
+        public List<EmployeeRouting> Employees { get; set; }
+    }
+
+    public class EmployeeRouting
+    {
+        public string EmpId { get; set; }
+        public string Name { get; set; }
+        public string Gender { get; set; }
+        public string Facility { get; set; }
+        public string PickupDropLocation { get; set; }
+        public string Status { get; set; }
+        public string Area { get; set; }
+        public TimeSpan PickupTime { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+    }
+
 }

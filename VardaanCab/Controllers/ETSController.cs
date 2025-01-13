@@ -735,8 +735,12 @@ namespace VardaanCab.Controllers
 
                     if (EmployeeReqList != null && EmployeeReqList.Any())
                     {
-                        List<dynamic> Cab4List = new List<dynamic>();
-                        List<dynamic> Cab6List = new List<dynamic>();
+                        List<dynamic> AllRoutes = new List<dynamic>();
+                        int cabCounter = 1001; // Initialize counter for unique cab numbers
+
+                        // Define the proximity radius for 100 meters
+                        double proximityRadiusLat = 100 / 111000.0; // ~0.0009 degrees for latitude
+                        double proximityRadiusLong = 100 / (111000.0 * Math.Cos(DegreesToRadians(0))); // Adjust dynamically for longitude
 
                         foreach (var request in EmployeeReqList)
                         {
@@ -749,9 +753,8 @@ namespace VardaanCab.Controllers
                                 double empLat = (double)Emp.Latitude;
                                 double empLong = (double)Emp.Longitude;
 
-                                // Calculate proximity radius for 100 meters
-                                double proximityRadiusLat = 100 / 111000.0; // ~0.0009 degrees for latitude
-                                double proximityRadiusLong = 100 / (111000.0 * Math.Cos(DegreesToRadians(empLat))); // Adjusted for longitude
+                                // Adjust longitude proximity radius for employee's latitude
+                                proximityRadiusLong = 100 / (111000.0 * Math.Cos(DegreesToRadians(empLat)));
 
                                 // Get matching routes
                                 var MatchingRoutes = (from cz in ent.CompanyZones
@@ -766,58 +769,96 @@ namespace VardaanCab.Controllers
                                                           chz.Longitude
                                                       }).ToList();
 
+                                bool isAssigned = false;
+
                                 if (MatchingRoutes.Any())
                                 {
-                                    // Find nearest routes and group employees
                                     foreach (var route in MatchingRoutes)
                                     {
                                         double routeLat = (double)route.Latitude;
                                         double routeLong = (double)route.Longitude;
 
-                                        // Calculate the distance between employee's location and the route's location
-                                        double distance = GetDistance(empLat, empLong, routeLat, routeLong);
-
                                         // Check if the route is within the 100-meter proximity
                                         if (Math.Abs(routeLat - empLat) <= proximityRadiusLat &&
                                             Math.Abs(routeLong - empLong) <= proximityRadiusLong)
                                         {
-                                            // Add to cab assignment list
-                                            if (Cab4List.Count < 4)
+                                            // Check existing routes and group employees
+                                            var CurrentGroup = AllRoutes
+                                                .FirstOrDefault(r => r.RouteId == route.Id)?.Employees as List<dynamic>;
+
+                                            if (CurrentGroup == null)
                                             {
-                                                Cab4List.Add(new
+                                                CurrentGroup = new List<dynamic>();
+                                                AllRoutes.Add(new
                                                 {
-                                                    EmployeeId = Emp.Employee_Id,
-                                                    EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
-                                                    Distance = distance,
-                                                    CabType = "Cab-4",
-                                                    RouteId = route.Id
+                                                    RouteId = route.Id,
+                                                    RouteName = route.HomeRouteName,
+                                                    Employees = CurrentGroup
                                                 });
                                             }
-                                            else if (Cab6List.Count < 6)
+
+                                            CurrentGroup.Add(new
                                             {
-                                                Cab6List.Add(new
-                                                {
-                                                    EmployeeId = Emp.Employee_Id,
-                                                    EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
-                                                    Distance = distance,
-                                                    CabType = "Cab-6",
-                                                    RouteId = route.Id
-                                                });
+                                                EmployeeId = Emp.Employee_Id,
+                                                EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
+                                                Latitude = empLat,
+                                                Longitude = empLong
+                                            });
+
+                                            // Assign cab type based on group size
+                                            if (CurrentGroup.Count == 1 || CurrentGroup.Count <= 4)
+                                            {
+                                                string cabNumber = $"Dummy10GB{cabCounter++}";
+                                                CurrentGroup.ForEach(e => e.CabType = "Cab-4");
+                                                CurrentGroup.ForEach(e => e.CabNumber = cabNumber);
                                             }
+                                            else if (CurrentGroup.Count <= 6)
+                                            {
+                                                string cabNumber = $"Dummy10GB{cabCounter++}";
+                                                CurrentGroup.ForEach(e => e.CabType = "Cab-6");
+                                                CurrentGroup.ForEach(e => e.CabNumber = cabNumber);
+                                            }
+
+                                            isAssigned = true;
+                                            break;
                                         }
                                     }
+                                }
+
+                                // If the employee doesn't match any route, assign a new cab (4-seater) for them
+                                if (!isAssigned)
+                                {
+                                    string cabNumber = $"Dummy10GB{cabCounter++}";
+                                    AllRoutes.Add(new
+                                    {
+                                        RouteId = Guid.NewGuid().ToString(), // Use a unique identifier for this route
+                                        RouteName = $"Individual Route for {Emp.Employee_Id}",
+                                        Employees = new List<dynamic>
+                        {
+                            new
+                            {
+                                EmployeeId = Emp.Employee_Id,
+                                EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
+                                Latitude = empLat,
+                                Longitude = empLong,
+                                CabType = "Cab-4",
+                                CabNumber = cabNumber
+                            }
+                        }
+                                    });
                                 }
                             }
                         }
 
-                        // Serialize the cab lists to JSON if needed for further processing or saving
-                        var JsonCab4List = new JavaScriptSerializer().Serialize(Cab4List);
-                        var JsonCab6List = new JavaScriptSerializer().Serialize(Cab6List);
+                        // Serialize all routes to JSON for further processing or saving
+                        var JsonAllRoutes = new JavaScriptSerializer().Serialize(AllRoutes);
 
-                        // Cab4List and Cab6List now contain the assignments.
-                        // You can save these lists or process them further as needed.
+                        // AllRoutes now contains the cab assignments.
+                        // You can save these or process them further as needed.
                     }
                 }
+
+
 
 
                 ViewBag.BtnTXT = "Create Routing";

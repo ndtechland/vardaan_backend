@@ -215,10 +215,11 @@ namespace VardaanCab.Controllers
             dt.Columns.Add("EmployeeDestinationArea");
             dt.Columns.Add("EmployeeRegistrationType");
             dt.Columns.Add("Gender");
-            dt.Columns.Add("AlternateNumber");
+            //dt.Columns.Add("AlternateNumber");
 
             // Add dummy data
-            dt.Rows.Add("Test Vardaan car rental pvt ltd - VARDAANSTF", "Location A", "8989898989", "John", "M", "Doe", "1234567890", "john.doe@example.com", "Uttar Pradesh", "Noida", "123456", "Address A", "johndoe123", "Sunday,Monday", "28.604624,77.358945", "Unit1", "Dept1", "Project1", "Manager1", "GHAZIABAD - 1", "New Ashok Nagar", "New Ashok Nagar Metro Station AK ", "Permanent", "Male", "9876543210");
+            dt.Rows.Add("Test Vardaan car rental pvt ltd - VARDAANSTFHYD", "Location A", "8989898989", "John", "M", "Doe", "1234567890", "john.doe@example.com", "Uttar Pradesh", "Noida", "123456", "Address A", "johndoe123", "Sunday,Monday", "28.604624,77.358945", "Unit1", "Dept1", "Project1", "Manager1", "NORTH CENTRAL HYDERABAD", "NIZAMPET", "MIYAPUR", "Permanent", "Male");
+            dt.Rows.Add("Test Vardaan car rental pvt ltd - VARDAANSTFHYD", "Location B", "9899999980", "test", "M", "Doe", "9898989898", "test.doe@example.com", "Uttar Pradesh", "Noida", "123456", "Address B", "johndoe1234", "Sunday", "28.604624,77.358945", "Unit1", "Dept1", "Project1", "Manager1", "NORTH EAST HYDERABAD", "AMEERPET", "SANATHNAGAR", "Temporary", "Male");
 
             Dictionary<string, string> columnMappings = new Dictionary<string, string>()
     {
@@ -246,7 +247,7 @@ namespace VardaanCab.Controllers
         { "EmployeeDestinationArea", "Destination Area" },
         { "EmployeeRegistrationType", "Registration Type" },
         { "Gender", "Gender" },
-        { "AlternateNumber", "Alternate Contact" }
+        //{ "AlternateNumber", "Alternate Contact" }
     };
 
             using (XLWorkbook workbook = new XLWorkbook())
@@ -281,123 +282,123 @@ namespace VardaanCab.Controllers
                     rowIndex++;
                 }
 
-                var hiddenSheet = workbook.Worksheets.Add("CompanyList");
-                var StatehiddenSheet = workbook.Worksheets.Add("StateList");
-                var CityhiddenSheet = workbook.Worksheets.Add("CityList");
-                var GenderList = "\"Male,Female,Other\"";
+                //var hiddenSheet = workbook.Worksheets.Add("CompanyList");
+                //var StatehiddenSheet = workbook.Worksheets.Add("StateList");
+                //var CityhiddenSheet = workbook.Worksheets.Add("CityList");
+                //var GenderList = "\"Male,Female,Other\"";
                 //var WeekOffList = "\"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday\"";
-                var ZonehiddenSheet = workbook.Worksheets.Add("CompanyZone");
-                var HomeRoutehiddenSheet = workbook.Worksheets.Add("HomeRoute");
-                var DestinationAreahiddenSheet = workbook.Worksheets.Add("DestinationArea");
-                var RegistrationTypehiddenSheet = workbook.Worksheets.Add("RegistrationType");
+                //var ZonehiddenSheet = workbook.Worksheets.Add("CompanyZone");
+                //var HomeRoutehiddenSheet = workbook.Worksheets.Add("HomeRoute");
+                //var DestinationAreahiddenSheet = workbook.Worksheets.Add("DestinationArea");
+                //var RegistrationTypehiddenSheet = workbook.Worksheets.Add("RegistrationType");
 
               
-                var companyList = new List<Customer>(); 
-                int userId = int.Parse(User.Identity.Name);
-
-                if (Session["IsAuth"] != null && Convert.ToBoolean(Session["IsAuth"]) == false)
-                {
-                    companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
-                }
-                else
-                {
-                    var empinfo = ent.Employees.FirstOrDefault(e => e.Id == userId);
-
-                    if (empinfo != null)
-                    {
-                        companyList = ent.Customers.Where(x => x.IsActive == true && x.Id == empinfo.Company_Id).ToList();
-                    }
-                    else
-                    {
-                        
-                        companyList = new List<Customer>(); 
-                    }
-                }
+                //var companyList = new List<Customer>(); 
+                //int userId = int.Parse(User.Identity.Name);
+                //
+                //if (Session["IsAuth"] != null && Convert.ToBoolean(Session["IsAuth"]) == false)
+                //{
+                //    companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
+                //}
+                //else
+                //{
+                //    var empinfo = ent.Employees.FirstOrDefault(e => e.Id == userId);
+                //
+                //    if (empinfo != null)
+                //    {
+                //        companyList = ent.Customers.Where(x => x.IsActive == true && x.Id == empinfo.Company_Id).ToList();
+                //    }
+                //    else
+                //    {
+                //        
+                //        companyList = new List<Customer>(); 
+                //    }
+                //}
 
 
                 //var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
-                var StateList = ent.StateMasters.ToList();
-                var CityList = ent.CityMasters.ToList();
-                var ZoneList = ent.CompanyZones.ToList();
-                var HomeRouteList = ent.CompanyZoneHomeRoutes.ToList();
-                var DestinationAreaList = ent.EmployeeDestinationAreas.ToList();
-                var RegistrationTypeList = ent.EmployeeRegistrationTypes.ToList();
+                //var StateList = ent.StateMasters.ToList();
+                //var CityList = ent.CityMasters.ToList();
+                //var ZoneList = ent.CompanyZones.ToList();
+                //var HomeRouteList = ent.CompanyZoneHomeRoutes.ToList();
+                //var DestinationAreaList = ent.EmployeeDestinationAreas.ToList();
+                //var RegistrationTypeList = ent.EmployeeRegistrationTypes.ToList();
 
                 // Populate hidden sheet with company names
-                int hiddenRow = 1;
+                //int hiddenRow = 1;
                 //foreach (var company in companyList.OrderByDescending(x => x.Id))
                 //{
                 //    hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
                 //}
-                foreach (var company in companyList.OrderByDescending(x => x.Id))
-                {
-                    hiddenSheet.Cell(hiddenRow++, 1).Value = $"{company.CompanyName} - {company.OrgName}";
-                }
-                hiddenRow = 1;
-                foreach (var state in StateList.OrderByDescending(x => x.Id))
-                {
-                    StatehiddenSheet.Cell(hiddenRow++, 1).Value = state.StateName;
-
-                }
-                hiddenRow = 1;
-                foreach (var city in CityList.OrderByDescending(x => x.Id))
-                {
-                    CityhiddenSheet.Cell(hiddenRow++, 1).Value = city.CityName;
-                }
-                //zone
-                hiddenRow = 1;
-                foreach (var zones in ZoneList.OrderByDescending(x => x.Id))
-                {
-                    ZonehiddenSheet.Cell(hiddenRow++, 1).Value = zones.CompanyZone1;
-                }
-                //home route
-                hiddenRow = 1;
-                foreach (var routes in HomeRouteList.OrderByDescending(x => x.Id))
-                {
-                    HomeRoutehiddenSheet.Cell(hiddenRow++, 1).Value = routes.HomeRouteName;
-                }
-                //Destination Area
-                hiddenRow = 1;
-                foreach (var areas in DestinationAreaList.OrderByDescending(x => x.Id))
-                {
-                    DestinationAreahiddenSheet.Cell(hiddenRow++, 1).Value = areas.DestinationAreaName;
-                }
+                //foreach (var company in companyList.OrderByDescending(x => x.Id))
+                //{
+                //    hiddenSheet.Cell(hiddenRow++, 1).Value = $"{company.CompanyName} - {company.OrgName}";
+                //}
+                //hiddenRow = 1;
+                //foreach (var state in StateList.OrderByDescending(x => x.Id))
+                //{
+                //    StatehiddenSheet.Cell(hiddenRow++, 1).Value = state.StateName;
+                //
+                //}
+                //hiddenRow = 1;
+                //foreach (var city in CityList.OrderByDescending(x => x.Id))
+                //{
+                //    CityhiddenSheet.Cell(hiddenRow++, 1).Value = city.CityName;
+                //}
+                ////zone
+                //hiddenRow = 1;
+                //foreach (var zones in ZoneList.OrderByDescending(x => x.Id))
+                //{
+                //    ZonehiddenSheet.Cell(hiddenRow++, 1).Value = zones.CompanyZone1;
+                //}
+                ////home route
+                //hiddenRow = 1;
+                //foreach (var routes in HomeRouteList.OrderByDescending(x => x.Id))
+                //{
+                //    HomeRoutehiddenSheet.Cell(hiddenRow++, 1).Value = routes.HomeRouteName;
+                //}
+                ////Destination Area
+                //hiddenRow = 1;
+                //foreach (var areas in DestinationAreaList.OrderByDescending(x => x.Id))
+                //{
+                //    DestinationAreahiddenSheet.Cell(hiddenRow++, 1).Value = areas.DestinationAreaName;
+                //}
                 //Registration Type
-                hiddenRow = 1;
-                foreach (var Regtypes in RegistrationTypeList.OrderByDescending(x => x.Id))
-                {
-                    RegistrationTypehiddenSheet.Cell(hiddenRow++, 1).Value = Regtypes.TypeName;
-                }
+                //hiddenRow = 1;
+                //foreach (var Regtypes in RegistrationTypeList.OrderByDescending(x => x.Id))
+                //{
+                //    RegistrationTypehiddenSheet.Cell(hiddenRow++, 1).Value = Regtypes.TypeName;
+                //}
                 // Define the dropdown list range
-                var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
-                var StateRange = StatehiddenSheet.Range($"A1:A{StateList.Count}");
-                var CityRange = CityhiddenSheet.Range($"A1:A{CityList.Count}");
-                var ZoneRange = ZonehiddenSheet.Range($"A1:A{ZoneList.Count}");
-                var HomeRouteRange = HomeRoutehiddenSheet.Range($"A1:A{ZoneList.Count}");
-                var DestinationAreaRange = DestinationAreahiddenSheet.Range($"A1:A{DestinationAreaList.Count}");
-                var RegistrationTypeRange = RegistrationTypehiddenSheet.Range($"A1:A{RegistrationTypeList.Count}");
+                //var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
+                //var StateRange = StatehiddenSheet.Range($"A1:A{StateList.Count}");
+                //var CityRange = CityhiddenSheet.Range($"A1:A{CityList.Count}");
+                //var ZoneRange = ZonehiddenSheet.Range($"A1:A{ZoneList.Count}");
+                //var HomeRouteRange = HomeRoutehiddenSheet.Range($"A1:A{ZoneList.Count}");
+                //var DestinationAreaRange = DestinationAreahiddenSheet.Range($"A1:A{DestinationAreaList.Count}");
+                //var RegistrationTypeRange = RegistrationTypehiddenSheet.Range($"A1:A{RegistrationTypeList.Count}");
 
 
                 //Apply dropdown list validation to cell A2(under "Company ID")
-                var validationOne = worksheet.Cell(2, 1).DataValidation;
-                validationOne.List(companyRange); // Dropdown from hidden sheet
-                validationOne.IgnoreBlanks = true;
-                validationOne.InCellDropdown = true;
+                //var validationOne = worksheet.Cell(2, 1).DataValidation;
+                //validationOne.List(companyRange); // Dropdown from hidden sheet
+                //validationOne.IgnoreBlanks = true;
+                //validationOne.InCellDropdown = true;
+                
+                //var validationTwo = worksheet.Cell(2, 9).DataValidation;
+                //validationTwo.List(StateRange); // Dropdown from hidden sheet
+                //validationTwo.IgnoreBlanks = true;
+                //validationTwo.InCellDropdown = true;
+                
+                //var validationThree = worksheet.Cell(2, 10).DataValidation;
+                //validationThree.List(CityRange); // Dropdown from hidden sheet
+                //validationThree.IgnoreBlanks = true;
+                //validationThree.InCellDropdown = true;
 
-                var validationTwo = worksheet.Cell(2, 9).DataValidation;
-                validationTwo.List(StateRange); // Dropdown from hidden sheet
-                validationTwo.IgnoreBlanks = true;
-                validationTwo.InCellDropdown = true;
-
-                var validationThree = worksheet.Cell(2, 10).DataValidation;
-                validationThree.List(CityRange); // Dropdown from hidden sheet
-                validationThree.IgnoreBlanks = true;
-                validationThree.InCellDropdown = true;
-
-                var validationFour = worksheet.Cell(2, 24).DataValidation;
-                validationFour.List(GenderList); // Dropdown from hidden sheet
-                validationFour.IgnoreBlanks = true;
-                validationFour.InCellDropdown = true;
+                //var validationFour = worksheet.Cell(2, 24).DataValidation;
+                //validationFour.List(GenderList); // Dropdown from hidden sheet
+                //validationFour.IgnoreBlanks = true;
+                //validationFour.InCellDropdown = true;
 
                 //var validationFive = worksheet.Cell(2, 14).DataValidation;
                 //validationFive.List(WeekOffList); // Dropdown from hidden sheet
@@ -405,25 +406,25 @@ namespace VardaanCab.Controllers
                 //validationFive.InCellDropdown = true;
 
                 //zone
-                var validationZone = worksheet.Cell(2, 20).DataValidation;
-                validationZone.List(ZoneRange); // Dropdown from hidden sheet
-                validationZone.IgnoreBlanks = true;
-                validationZone.InCellDropdown = true;
-                //Route
-                var validationRoute = worksheet.Cell(2, 21).DataValidation;
-                validationRoute.List(HomeRouteRange); // Dropdown from hidden sheet
-                validationRoute.IgnoreBlanks = true;
-                validationRoute.InCellDropdown = true;
-                //Destination Area
-                var validationArea = worksheet.Cell(2, 22).DataValidation;
-                validationArea.List(DestinationAreaRange); // Dropdown from hidden sheet
-                validationArea.IgnoreBlanks = true;
-                validationArea.InCellDropdown = true;
-                //Destination Area
-                var validationRegistrationType = worksheet.Cell(2, 23).DataValidation;
-                validationRegistrationType.List(RegistrationTypeRange); // Dropdown from hidden sheet
-                validationRegistrationType.IgnoreBlanks = true;
-                validationRegistrationType.InCellDropdown = true;
+                //var validationZone = worksheet.Cell(2, 20).DataValidation;
+                //validationZone.List(ZoneRange); // Dropdown from hidden sheet
+                //validationZone.IgnoreBlanks = true;
+                //validationZone.InCellDropdown = true;
+                ////Route
+                //var validationRoute = worksheet.Cell(2, 21).DataValidation;
+                //validationRoute.List(HomeRouteRange); // Dropdown from hidden sheet
+                //validationRoute.IgnoreBlanks = true;
+                //validationRoute.InCellDropdown = true;
+                ////Destination Area
+                //var validationArea = worksheet.Cell(2, 22).DataValidation;
+                //validationArea.List(DestinationAreaRange); // Dropdown from hidden sheet
+                //validationArea.IgnoreBlanks = true;
+                //validationArea.InCellDropdown = true;
+                //RegistrationType
+                //var validationRegistrationType = worksheet.Cell(2, 23).DataValidation;
+                //validationRegistrationType.List(RegistrationTypeRange); // Dropdown from hidden sheet
+                //validationRegistrationType.IgnoreBlanks = true;
+                //validationRegistrationType.InCellDropdown = true;
 
                 // Hide the sheet containing company names
                 //hiddenSheet.Hide();
@@ -467,7 +468,8 @@ namespace VardaanCab.Controllers
                             .Where(x => x.CompanyName.ToLower() == companyName.ToLower())
                             .FirstOrDefault()?.Id ?? 0;
 
-                           
+                            string RegistrationTypeName = row.Cell(23).GetValue<string>();
+
                             var employeeId = row.Cell(3).GetValue<string>() ?? string.Empty;
                             var gender = row.Cell(24).GetValue<string>();
                             // Validate Employee ID
@@ -557,13 +559,78 @@ namespace VardaanCab.Controllers
                                 });
                             }
 
+                            var validRegTypes = new List<string> { "permanent", "temporary" };
+
+                            // Validate registration type
+                            if (!validRegTypes.Contains(RegistrationTypeName.ToLower()))
+                            {
+                                var validTypesHint = string.Join(", ", validRegTypes);
+
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Registration Type",
+                                    AffectedRow = count,
+                                    Description = $"Kindly check the employee Registration Type: {RegistrationTypeName}. " +
+                                                  $"Valid types are: {validTypesHint}."
+                                });
+                            }
+
+
                             //string CompanyName = row.Cell(1).GetValue<string>();
                             string StateName = row.Cell(9).GetValue<string>();
+
+                            if (!ent.CompanyZones.Any(e => e.CompanyZone1.ToLower() == StateName.ToLower()))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "State Name",
+                                    AffectedRow = count,
+                                    Description = $"Satate name {StateName} does not exists."
+                                });
+                            }
+
                             string CityName = row.Cell(10).GetValue<string>();
+                            if (!ent.CompanyZoneHomeRoutes.Any(e => e.HomeRouteName.ToLower() == CityName.ToLower()))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "City Name",
+                                    AffectedRow = count,
+                                    Description = $"City name {CityName} does not exists."
+                                });
+                            }
+
                             string CompanyZoneName = row.Cell(20).GetValue<string>();
+                            if (!ent.CompanyZones.Any(e => e.CompanyZone1.ToLower() == CompanyZoneName.ToLower()))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Company Zone Name",
+                                    AffectedRow = count,
+                                    Description = $"Company Zone Name {CompanyZoneName} does not exists."
+                                });
+                            }
                             string HomeRouteName = row.Cell(21).GetValue<string>();
+                            if (!ent.CompanyZoneHomeRoutes.Any(e => e.HomeRouteName.ToLower() == HomeRouteName.ToLower()))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Zone Home Route Name",
+                                    AffectedRow = count,
+                                    Description = $"Zone Home Route Name {HomeRouteName} does not exists."
+                                });
+                            }
+
                             string DestinationAreaName = row.Cell(22).GetValue<string>();
-                            string RegistrationTypeName = row.Cell(23).GetValue<string>();
+                            if (!ent.EmployeeDestinationAreas.Any(e => e.DestinationAreaName.ToLower() == DestinationAreaName.ToLower()))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Destination Area Name",
+                                    AffectedRow = count,
+                                    Description = $"Destination Area Name {DestinationAreaName} does not exists."
+                                });
+                            }
                             string WeekOffDays = row.Cell(14).GetValue<string>() ?? string.Empty; 
 
                             string geoCode = row.Cell(15).GetValue<string>() ?? string.Empty;
@@ -598,12 +665,8 @@ namespace VardaanCab.Controllers
                                     }
                                 }
                             }
-                            if (excelErrorModels.Count > 0)
-                            {
-                                TempData["HasErrors"] = true;
-                                TempData["ExcelErrors"] = Newtonsoft.Json.JsonConvert.SerializeObject(excelErrorModels);
-                                return RedirectToAction("Add");
-                            }
+                            if (excelErrorModels.Any(e => e.AffectedRow == count)) continue;
+                            
                             Employee employee = new Employee
                             {
                                 Company_Id = companyId,
@@ -659,16 +722,21 @@ namespace VardaanCab.Controllers
                                 Latitude = latitude,
                                 Longitude = longitude,
                                 //Password = RandomPassword,
-                                Gender = row.Cell(24).GetValue<string>(),
-                                AlternateNumber = row.Cell(25).GetValue<string>() ?? string.Empty
+                                Gender = gender
                             };
 
                             employees.Add(employee);
                             
                         }
 
+                        // If errors exist, return them to the view
+                        if (excelErrorModels.Any())
+                        {
+                            Session["HasErrors"] = true;
+                            Session["ExcelErrors"] = Newtonsoft.Json.JsonConvert.SerializeObject(excelErrorModels);
+                            return RedirectToAction("Add");
+                        }
 
-                        
                         if (employees.Any())
                         {
                             ent.Employees.AddRange(employees);
