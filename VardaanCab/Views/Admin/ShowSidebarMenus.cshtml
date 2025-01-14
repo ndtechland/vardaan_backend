@@ -2,127 +2,380 @@
 @{
     var UserName = @User.Identity.Name;
 }
-<div>
-    <div class="logo-wrapper">
-        <span class="back">Back</span>
-        <div class="back-btn"><i class="fa fa-angle-left"></i></div>
-        <div class="toggle-sidebar">
-            <i class="status_toggle middle sidebar-toggle" data-feather="grid">
-            </i>
-        </div>
-    </div>
-    <div class="logo-icon-wrapper">
-        <a href="#">
-            <img class="img-fluid"
-                 src="../assets/images/logo/logo-icon.png" alt="">
-        </a>
-    </div>
-    <nav class="sidebar-main">
-        <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
-        <div id="sidebar-menu">
-            <ul class="sidebar-links" id="simple-bar">
-                <li class="back-btn">
-                    <a href="index.html">
-                        <img class="img-fluid"
-                             src="../assets/images/logo/logo-icon.png" alt="">
-                    </a>
-                    <div class="mobile-back text-end">
-                        <span>Back</span><i class="fa fa-angle-right ps-2"
-                                            aria-hidden="true"></i>
-                    </div>
-                </li>
+@*<style>
+    .pcoded .pcoded-navbar {       
+        height: 96px;
+    }
+</style>*@
+<nav class="pcoded-navbar">
+    <div class="pcoded-inner-navbar">
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="pcoded-hasmenu">
+                <a href="/Admin/Dashboard" class="waves-effect waves-dark">
+                    @*<span class="pcoded-micon"><i class="ti-layout-cta-right"></i><b>D</b></span>*@
+                    <span class="pcoded-mtext">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                @*<ul class="pcoded-submenu">
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-home"></i></span>
+                            <span class="pcoded-mtext">Dashboard</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="index.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Default</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="dashboard-ecommerce.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Ecommerce</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="dashboard-crm.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">CRM</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="dashboard-analytics.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Analytics</span>
+                                    <span class="pcoded-badge label label-info ">NEW</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="dashboard-project.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Project</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-layout"></i></span>
+                            <span class="pcoded-mtext">Page layouts</span>
+                            <span class="pcoded-badge label label-warning">NEW</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                        <ul class="pcoded-submenu">
 
-                <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title link-nav"
-                       href="/Admin/Dashboard"><i data-feather="home"> </i><span>Dashboard</span></a>
-                </li>
-                @*@foreach (var item in Model.Data)
-                    {
-                        <li class="sidebar-list">
-                            <a class="sidebar-link sidebar-title" href="/admin/Submenu?menuId=@item.Id">
-                                <i data-feather="navigation"></i><span>@item.Title</span>
-                            </a>
-
-                        </li>
-
-                    }*@
-                @if (Model != null && Model.Count() > 0)
-                {
-                    foreach (var item in Model)
-                    {
-                        <li class="sidebar-list">
-                            <a class="sidebar-link sidebar-title" href="#">
-                                <i data-feather="navigation"></i><span>@item.Title</span>
-                            </a>
-                            @if (item.ChildMenus != null && item.ChildMenus.Count() > 0)
-                            {
-                                <ul class="sidebar-submenu">
-                                    @foreach (var menu in item.ChildMenus)
-                                    {
-                                        <li>
-                                            @if (menu.Url.Contains("?"))
-                                            {
-                                                <a href="@menu.Url&menuId=@item.Id">@menu.Title</a>
-                                            }
-                                            else
-                                            {
-                                                <a href="@menu.Url?&menuId=@item.Id">@menu.Title</a>
-                                            }
-                                        </li>
-                                    }
+                            <li class=" pcoded-hasmenu">
+                                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="icon-pie-chart"></i></span>
+                                    <span class="pcoded-mtext">Vertical</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="menu-static.html" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                            <span class="pcoded-mtext">Static Layout</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="menu-header-fixed.html" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                            <span class="pcoded-mtext">Header Fixed</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="menu-compact.html" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                            <span class="pcoded-mtext">Compact</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="menu-sidebar.html" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                            <span class="pcoded-mtext">Sidebar Fixed</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
 
                                 </ul>
-                            }
-                        </li>
-                    }
-                }
-                @*<li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title" href="#">
-                            <i data-feather="navigation"></i><span>Cab</span>
-                        </a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="#">Create Booking</a></li>
-                            <li><a href="#">All Booking</a></li>
-                            <li><a href="#">Cars's Details </a></li>
-
-                            <li><a href="#">Add New Cars</a></li>
-                            <li><a href="#">All Drivers</a></li>
-                            <li><a href="#">Add Drivers</a></li>
+                            </li>
+                            <li class=" pcoded-hasmenu">
+                                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="icon-pie-chart"></i></span>
+                                    <span class="pcoded-mtext">Horizontal</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="menu-horizontal-static.html" target="_blank" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                            <span class="pcoded-mtext">Static Layout</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="menu-horizontal-fixed.html" target="_blank" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                            <span class="pcoded-mtext">Fixed layout</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="menu-horizontal-icon.html" target="_blank" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                            <span class="pcoded-mtext">Static With Icon</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="menu-horizontal-icon-fixed.html" target="_blank" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                            <span class="pcoded-mtext">Fixed With Icon</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class=" ">
+                                <a href="menu-bottom.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="icon-pie-chart"></i></span>
+                                    <span class="pcoded-mtext">Bottom Menu</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="box-layout.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="icon-pie-chart"></i></span>
+                                    <span class="pcoded-mtext">Box Layout</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="menu-rtl.html" target="_blank" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="icon-pie-chart"></i></span>
+                                    <span class="pcoded-mtext">RTL</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
 
                         </ul>
-                    </li>*@
+                    </li>
+                    <li class="">
+                        <a href="navbar-light.html" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-layout-cta-right"></i><b>N</b></span>
+                            <span class="pcoded-mtext" data-i18n="nav.navigate.main">Navigation</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-view-grid"></i><b>W</b></span>
+                            <span class="pcoded-mtext">Widget</span>
+                            <span class="pcoded-badge label label-danger">100+</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="widget-statistic.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Statistic</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="widget-data.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Data</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="widget-chart.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Chart Widget</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="widget-chart-advance.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Advance Widgets</span>
+                                    <span class="pcoded-badge label label-info">25+</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>*@
+            </li>
+            @if (Model != null && Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            @*<span class="pcoded-micon"><i class="ti-gift "></i><b>U</b></span>*@
 
+                            <span class="pcoded-mtext">@item.Title</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                        @if (item.ChildMenus != null && item.ChildMenus.Count() > 0)
+                        {
+                            <ul class="pcoded-submenu">
+                                @foreach (var menu in item.ChildMenus)
+                                {
+                                    @*<li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
+                                    <span class="pcoded-mtext">@menu.Title</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>*@
+                                <li class=" ">
+                                    @if (menu.Url.Contains("?"))
+                                    {
+                                        <a href="@menu.Url?&menuId=@item.Id" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">@menu.Title</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@menu.Url?&menuId=@item.Id" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">@menu.Title</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    }
 
-            </ul>
-        </div>
-        <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
-    </nav>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // Get the current URL path
-        var path = window.location.pathname + window.location.search;
+                                    @*<ul class="pcoded-submenu">
+            <li class=" ">
+                <a href="alert.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Alert</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="breadcrumb.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Breadcrumbs</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="button.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Button</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="box-shadow.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Box-Shadow</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="accordion.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Accordion</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="generic-class.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Generic Class</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="tabs.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Tabs</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="color.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Color</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="label-badge.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Label Badge</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="progress-bar.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Progress Bar</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="preloader.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Pre-Loader</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="list.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">List</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="tooltip.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Tooltip And Popover</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="typography.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Typography</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="other.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Other</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
 
-        // Iterate over each sidebar link and submenu link
-        $('nav .sidebar-link, nav .sidebar-submenu a').each(function () {
-            var href = $(this).attr('href');
+        </ul>*@
+                                </li>
 
-            // Check if the current link matches the URL path
-            if (path === href) {
-                // Add 'active' class to the link
-                $(this).addClass('active');
-
-                // Add 'active' class to its parent <li>
-                $(this).closest('li').addClass('active');
-
-                // Show and open any parent <ul> with the class 'sidebar-submenu'
-                $(this).closest('.sidebar-submenu').show();
-
-                // Add 'menu-open' class to its closest parent with class 'sidebar-list'
-                $(this).closest('.sidebar-list').addClass('menu-open');
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
             }
-        });
-    });
-</script>
+        </ul>
+
+    </div>
+</nav>
 

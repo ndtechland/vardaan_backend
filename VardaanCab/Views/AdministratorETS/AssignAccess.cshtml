@@ -2,7 +2,7 @@
 @using System.Web.Script.Serialization
 @{
     ViewBag.Title = "AssignAccess";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 <style>
     body {
@@ -142,188 +142,209 @@
         pointer-events: none;
     }
 </style>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header  card-header--2">
-                            <div>
-                                <h5>@ViewBag.Heading</h5>
-                            </div>
+<div class="pcoded-content">
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card">
+                    <div class="card-block">
+                        <h5>@ViewBag.Heading</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Administrator ETS</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Assign Access</a>
+                                </li>
+                            </ul>
                         </div>
-                        <form class="theme-form mega-form" action="AssignAccess" method="post" enctype="multipart/form-data">
-                            <div class="card-body">
-                                <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
-                                <input name="Id" type="hidden" value="@Model.Id" />
-                                @if (TempData["msg"] != null)
-                                {
-                                    <div class="mb-3">
-                                        <div class="alert alert-success">
-                                            @TempData["msg"]
-                                        </div>
-                                    </div>
-                                }
-                                @if (TempData["errormsg"] != null)
-                                {
-                                    <div class="mb-3">
-                                        <div class="alert alert-success">
-                                            @TempData["errormsg"]
-                                        </div>
-                                    </div>
-                                }
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
+                    </div>
+                </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>@ViewBag.Heading</h5>
+                                </div>
 
-                                            <div class="col-md-6">
-                                                <label class="form-label-title">Select Company</label>
-                                                <div class="dropdown-container">
-                                                    <input type="hidden" id="CompanyIdHidden" name="CompanyId" value="@Model.CompanyId" />
-                                                    <input type="text" class="dropdown-search form-control" placeholder="Search Company..." />
-                                                    <button class="dropdown-toggle form-control" type="button">--Select Company--</button>
-                                                    <div class="dropdown-options">
-                                                        @foreach (var company in Model.Companies)
-                                                        {
-                                                            <label class="dropdown-item">
-                                                                <input type="checkbox" value="@company.Value" class="dropdown-checkbox" />
-                                                                @company.Text
-                                                            </label>
-                                                        }
+                                <div class="card-block">
+                                    <form class="theme-form mega-form" action="AssignAccess" method="post" enctype="multipart/form-data">
+                                        <div class="card-body">
+                                            <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
+                                            <input name="Id" type="hidden" value="@Model.Id" />
+                                            @if (TempData["msg"] != null)
+                                            {
+                                                <div class="mb-3">
+                                                    <div class="alert alert-success border-success">
+                                                        @TempData["msg"]
                                                     </div>
-                                                    <span class="text-danger">@Html.ValidationMessageFor(a => a.CompanyId)</span>
                                                 </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label class="form-label-title">Select Employee</label>
-                                                <input type="text" id="hiddenEmployeeId" hidden value="@ViewBag.EmployeeId" />
-                                                @Html.DropDownListFor(a => a.EmployeeId, Enumerable.Empty<SelectListItem>(), "--Select Employee Id--",
-                                                    new { @class = "form-control", @required = "required" })
-                                                <span class="text-danger">@Html.ValidationMessageFor(a => a.EmployeeId)</span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label class="form-label-title">User Role</label>
-                                                <input type="text" id="hiddenRoleId" hidden value="@ViewBag.UserRoleId" />
-                                                @Html.DropDownListFor(a => a.UserRoleId, Enumerable.Empty<SelectListItem>(), "--Select Role--",
-                                                    new { @class = "form-control", @required = "required" })
-                                                <span class="text-danger">@Html.ValidationMessageFor(a => a.UserRoleId)</span>
-                                            </div>
-                                            <div class="row mt-3">
-                                                <div class="col-md-12">
-                                                    <span style="color: #365977; font-size: 13px; font-weight: 700;">
-                                                        <span>Access Type :</span>
-                                                        <span style="color: #547171" class="ng-binding" id="AccessTypeLabel">New</span>
-                                                    </span>
-                                                    <div class="form-group-profile pull-right pointer-curser">
-
-                                                        <input type="checkbox" name="IsAllRead" value="true" id="fancy-checkbox-primary" autocomplete="off" class="ng-valid ng-dirty Activechecked" onclick="checkAllReadCheckboxes(this)">
-                                                        <div class="btn-group">
-                                                            <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;">
-
-                                                            </label>
-                                                            <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="btn btn-default active">
-                                                                <i class="icon-book"></i> <b>Read All</b>
-                                                            </label>
-                                                        </div>
-                                                        <input type="checkbox" name="IsAllWrite" value="true" id="fancy-checkbox-success" autocomplete="off" class="ng-pristine ng-valid Activechecked" onclick="checkAllWriteCheckboxes(this)">
-                                                        <div class="btn-group">
-                                                            <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;">
-
-                                                            </label>
-                                                            <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="btn btn-default active">
-                                                                <i class="icon-edit"></i> <b>Write All</b>
-                                                            </label>
-                                                        </div>
+                                            }
+                                            @if (TempData["errormsg"] != null)
+                                            {
+                                                <div class="mb-3">
+                                                    <div class="alert alert-success border-danger">
+                                                        @TempData["errormsg"]
                                                     </div>
-                                                    <br>
-                                                    <hr>
+                                                </div>
+                                            }
+                                            <div class="row">
 
+                                                        <div class="col-md-6">
+                                                            <label class="form-label-title">Select Company</label>
+                                                            <div class="dropdown-container">
+                                                                <input type="hidden" id="CompanyIdHidden" name="CompanyId" value="@Model.CompanyId" />
+                                                                <input type="text" class="dropdown-search form-control" placeholder="Search Company..." />
+                                                                <button class="dropdown-toggle form-control" type="button">--Select Company--</button>
+                                                                <div class="dropdown-options">
+                                                                    @foreach (var company in Model.Companies)
+                                                                    {
+                                                                        <label class="dropdown-item">
+                                                                            <input type="checkbox" value="@company.Value" class="dropdown-checkbox" />
+                                                                            @company.Text
+                                                                        </label>
+                                                                    }
+                                                                </div>
+                                                                <span class="text-danger">@Html.ValidationMessageFor(a => a.CompanyId)</span>
+                                                            </div>
+                                                        </div>
 
-                                                    @if (Model != null && Model.SoftwareLinkDTO.Count() > 0)
-                                                    {
-                                                        int count = 0;
-                                                        foreach (var item in Model.SoftwareLinkDTO)
-                                                        {
-                                                            count++;
-                                                            <div class="module-row" onclick="toggleSection('live-tracking_@count')">
+                                                        <div class="col-md-6">
+                                                            <label class="form-label-title">Select Employee</label>
+                                                            <input type="text" id="hiddenEmployeeId" hidden value="@ViewBag.EmployeeId" />
+                                                            @Html.DropDownListFor(a => a.EmployeeId, Enumerable.Empty<SelectListItem>(), "--Select Employee Id--",
+                                                                new { @class = "form-control", @required = "required" })
+                                                            <span class="text-danger">@Html.ValidationMessageFor(a => a.EmployeeId)</span>
+                                                        </div>
 
-                                                                <span>@item.Title</span>
-                                                                <div class="actions">
-                                                                    <label class="pointer-curser">
-                                                                        <input name="IsReadChecked[]" type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
-                                                                        @*<input type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />*@
-                                                                        <i class="icon-book" style="color: #245d90;"></i> <b>Read</b>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label-title">User Role</label>
+                                                            <input type="text" id="hiddenRoleId" hidden value="@ViewBag.UserRoleId" />
+                                                            @Html.DropDownListFor(a => a.UserRoleId, Enumerable.Empty<SelectListItem>(), "--Select Role--",
+                                                                new { @class = "form-control", @required = "required" })
+                                                            <span class="text-danger">@Html.ValidationMessageFor(a => a.UserRoleId)</span>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <span style="color: #365977; font-size: 13px; font-weight: 700;">
+                                                                <span>Access Type :</span>
+                                                                <span style="color: #547171" class="ng-binding" id="AccessTypeLabel">New</span>
+                                                            </span>
+                                                            <div class="form-group-profile pull-right pointer-curser">
+
+                                                                <input type="checkbox" name="IsAllRead" value="true" id="fancy-checkbox-primary" autocomplete="off" class="ng-valid ng-dirty Activechecked" onclick="checkAllReadCheckboxes(this)">
+                                                                <div class="btn-group">
+                                                                    <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;">
+
                                                                     </label>
-                                                                    &nbsp;
-                                                                    &nbsp;
-                                                                    &nbsp;
-                                                                    <label class="pointer-curser">
-                                                                        <input name="IsWriteChecked[]" type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
-                                                                        @*<input type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />*@
-                                                                        <i class="icon-edit" style="color:#188a18"></i> <b>Write</b>
+                                                                    <label for="fancy-checkbox-primary" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="btn btn-default active">
+                                                                        <i class="icon-book"></i> <b>Read All</b>
+                                                                    </label>
+                                                                </div>
+                                                                <input type="checkbox" name="IsAllWrite" value="true" id="fancy-checkbox-success" autocomplete="off" class="ng-pristine ng-valid Activechecked" onclick="checkAllWriteCheckboxes(this)">
+                                                                <div class="btn-group">
+                                                                    <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;">
+
+                                                                    </label>
+                                                                    <label for="fancy-checkbox-success" style="padding: 0px 1px; font-size: 13px; margin-top: 2px;" class="btn btn-default active">
+                                                                        <i class="icon-edit"></i> <b>Write All</b>
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                            if (item.ChildMenus != null && item.ChildMenus.Count() > 0)
-                                                            {
-                                                                <div class="sub-options" id="live-tracking_@count" style="display: none;">
-                                                                    <div class="col-md-12">
-                                                                        <div class="row">
-                                                                            @foreach (var menu in item.ChildMenus)
-                                                                            {
-                                                                                <div class="col-md-6">
-                                                                                    <div class="sub-option-row">
-                                                                                        <span><b>@menu.Title</b></span>
+                                                            <br>
+                                                            <hr>
 
-                                                                                        <div class="actions">
-                                                                                            <label class="pointer-curser">
-                                                                                                <input name="IsSubReadChecked[]" type="checkbox" class="read-checkbox" value="@menu.Id" onclick="toggleParentReadCheckboxFromChild(this);" />
-                                                                                                @*<input type="checkbox" value="@menu.Id" class="read-checkbox" />*@
-                                                                                                <i class="icon-book" style="color: #245d90;"></i>Read
-                                                                                            </label>
-                                                                                            &nbsp;
-                                                                                            &nbsp;
-                                                                                            &nbsp;
-                                                                                            <label class="pointer-curser">
-                                                                                                <input name="IsSubWriteChecked[]" type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />
-                                                                                                @*<input type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />*@
-                                                                                                <i class="icon-edit" style="color:#188a18"></i>Write
-                                                                                            </label>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            }
+
+                                                            @if (Model != null && Model.SoftwareLinkDTO.Count() > 0)
+                                                            {
+                                                                int count = 0;
+                                                                foreach (var item in Model.SoftwareLinkDTO)
+                                                                {
+                                                                    count++;
+                                                                    <div class="module-row" onclick="toggleSection('live-tracking_@count')">
+
+                                                                        <span>@item.Title</span>
+                                                                        <div class="actions">
+                                                                            <label class="pointer-curser">
+                                                                                <input name="IsReadChecked[]" type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />
+                                                                                @*<input type="checkbox" value="@item.Id" class="main-read-checkbox" onclick="toggleSubOptionCheckboxes('read', this); event.stopPropagation();" />*@
+                                                                                <i class="icon-book" style="color: #245d90;"></i> <b>Read</b>
+                                                                            </label>
+                                                                            &nbsp;
+                                                                            &nbsp;
+                                                                            &nbsp;
+                                                                            <label class="pointer-curser">
+                                                                                <input name="IsWriteChecked[]" type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />
+                                                                                @*<input type="checkbox" value="@item.Id" class="main-write-checkbox" onclick="toggleSubOptionCheckboxes('write', this); event.stopPropagation();" />*@
+                                                                                <i class="icon-edit" style="color:#188a18"></i> <b>Write</b>
+                                                                            </label>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                            }
-                                                        }
-                                                    }
+                                                                    if (item.ChildMenus != null && item.ChildMenus.Count() > 0)
+                                                                    {
+                                                                        <div class="sub-options" id="live-tracking_@count" style="display: none;">
+                                                                            <div class="col-md-12">
+                                                                                <div class="row">
+                                                                                    @foreach (var menu in item.ChildMenus)
+                                                                                    {
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="sub-option-row">
+                                                                                                <span><b>@menu.Title</b></span>
 
-                                                </div>
+                                                                                                <div class="actions">
+                                                                                                    <label class="pointer-curser">
+                                                                                                        <input name="IsSubReadChecked[]" type="checkbox" class="read-checkbox" value="@menu.Id" onclick="toggleParentReadCheckboxFromChild(this);" />
+                                                                                                        @*<input type="checkbox" value="@menu.Id" class="read-checkbox" />*@
+                                                                                                        <i class="icon-book" style="color: #245d90;"></i>Read
+                                                                                                    </label>
+                                                                                                    &nbsp;
+                                                                                                    &nbsp;
+                                                                                                    &nbsp;
+                                                                                                    <label class="pointer-curser">
+                                                                                                        <input name="IsSubWriteChecked[]" type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />
+                                                                                                        @*<input type="checkbox" value="@menu.Id" class="write-checkbox" onclick="syncReadCheckbox(this);" />*@
+                                                                                                        <i class="icon-edit" style="color:#188a18"></i>Write
+                                                                                                    </label>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="card-footer text-end">
+                                            <button type="submit" class="btn btn-primary">@ViewBag.BtnTXT</button>
+                                            <button type="reset" class="btn btn-outline-primary">Reset</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <div class="card-footer text-end">
-                                <button type="submit" class="btn btn-primary">@ViewBag.BtnTXT</button>
-                                <button type="reset" class="btn btn-outline-primary">Reset</button>
-                            </div>
-                        </form>
-
-
-
+                        </div>
                     </div>
                 </div>
-
+                <!-- Page body end -->
             </div>
         </div>
     </div>
 </div>
+ 
 
 <script>
     // Toggle section visibility and ensure only one section is open
@@ -439,7 +460,7 @@
                 }
             });
         });
-    });
+    
 
     // Function to update the dropdown text based on selected checkboxes
     function updateDropdownText() {
@@ -566,13 +587,14 @@
             });
         });
     });
-
+    });
 
 
 </script>
 
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
     $(document).ready(function () {
 
         $('#UserRoleId').change(function () {
@@ -638,6 +660,7 @@
         }
 
 
+    });
     });
 
 </script>

@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <head>
+        <title>Vardaan Car - Admin</title>
+        <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 10]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="Gradient Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+        <meta name="keywords" content="Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+        <meta name="author" content="Phoenixcoded" />
+        <!-- Favicon icon -->
+        <link rel="icon" href="~/files/assets/images/logoVardaan.png" type="image/x-icon">
+        <!-- Google font-->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+        <!-- Required Fremwork -->
+        <link rel="stylesheet" type="text/css" href="../files/bower_components/bootstrap/css/bootstrap.min.css">
+        <!-- waves.css -->
+        <link rel="stylesheet" href="../files/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+        <!-- themify-icons line icon -->
+        <link rel="stylesheet" type="text/css" href="../files/assets/icon/themify-icons/themify-icons.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" type="text/css" href="../files/assets/icon/font-awesome/css/font-awesome.min.css">
+        <!-- am chart export.css -->
+        <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+        <!-- Style.css -->
+        <link rel="stylesheet" type="text/css" href="../files/assets/css/style.css">
+        <link rel="stylesheet" type="text/css" href="../files/assets/css/jquery.mCustomScrollbar.css">
+        <link rel="stylesheet" type="text/css" href="../files/assets/css/pcoded-horizontal.min.css">
+
+        <!-- inner form design -->
+        <!-- Select 2 css -->
+        <link rel="stylesheet" href="../files/bower_components/select2/css/select2.min.css" />
+        <!-- Multi Select css -->
+        <link rel="stylesheet" type="text/css" href="../files/bower_components/bootstrap-multiselect/css/bootstrap-multiselect.css" />
+        <link rel="stylesheet" type="text/css" href="../files/bower_components/multiselect/css/multi-select.css" />
+        <!-- Data Table Css -->
+        <link rel="stylesheet" type="text/css" href="../files/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" type="text/css" href="../files/assets/pages/data-table/css/buttons.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="../files/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
+
+        <style>
+            /*.m-t-40 {
+                margin-top: 75px;
+            }*/
+
+            .form-material .form-default.form-static-label .float-label {
+                color: #070707;
+            }
+
+            .form-material .form-group.form-static-label .form-control ~ .float-label {
+                top: -14px;
+                font-size: 14px;
+            }
+
+            .select2-container--default .select2-selection--multiple .select2-selection__choice {
+                background-color: blue;
+                border: 1px solid black;
+                border-radius: 4px;
+                cursor: default;
+                float: left;
+                margin-right: 7px;
+                margin-top: 3px;
+                padding: 0px 5px;
+            }
+
+            .select2-container--default .select2-selection--multiple {
+                background-color: white;
+                border: 1px solid #aaa;
+                border-radius: 4px;
+                cursor: text;
+                margin-top: 10px;
+            }
+
+            .img-fluid {
+                max-width: 40%;
+                height: auto;
+            }
+
+            .pcoded .pcoded-navbar .pcoded-item > li {
+                float: left;
+                /*margin-left: -15px;*/
+            }
+        </style>
+    </head>
+</head>
+<body>
+    <!-- Pre-loader start -->
+    <div class="theme-loader">
+        <div class="loader-track">
+            <div class="preloader-wrapper">
+                <div class="spinner-layer spinner-blue">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+                <div class="spinner-layer spinner-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-yellow">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-green">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pre-loader end -->
+
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-container">
+            @Html.Partial("~/Views/Shared/New_Master/Nav_One.cshtml")
+            <div class="pcoded-main-container">
+                @Html.Action("ShowSidebarMenus", "Admin")
+
+                <div class="pcoded-wrapper">
+                    <div class="pcoded-content">
+                        <div class="pcoded-inner-content">
+
+                            <!-- Main-body start -->
+                            <div class="main-body">
+                                <div class="page-wrapper">
+
+                                    <!-- Page body start -->
+                                    <div class="page-body">
+                                        @RenderBody()
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../files/bower_components/jquery/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../files/bower_components/jquery-ui/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../files/bower_components/popper.js/js/popper.min.js"></script>
+    <script type="text/javascript" src="../files/bower_components/bootstrap/js/bootstrap.min.js"></script>
+    <!-- waves js -->
+    <script src="../files/assets/pages/waves/js/waves.min.js"></script>
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript" src="../files/bower_components/jquery-slimscroll/js/jquery.slimscroll.js"></script>
+    <!-- modernizr js -->
+    <script type="text/javascript" src="../files/bower_components/modernizr/js/modernizr.js"></script>
+    <script type="text/javascript" src="../files/bower_components/modernizr/js/css-scrollbars.js"></script>
+    <!-- Chart js -->
+    <script type="text/javascript" src="../files/bower_components/chart.js/js/Chart.js"></script>
+    <!-- amchart js -->
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="../files/assets/pages/widget/amchart/gauge.js"></script>
+    <script src="../files/assets/pages/widget/amchart/serial.js"></script>
+    <script src="../files/assets/pages/widget/amchart/light.js"></script>
+    <script src="../files/assets/pages/widget/amchart/pie.min.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+    <!-- Google map js -->
+    @*<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>*@
+    @*<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>*@
+    <script type="text/javascript" src="../files/assets/pages/google-maps/gmaps.js"></script>
+    <!-- Custom js -->
+    <script type="text/javascript" src="../files/assets/pages/dashboard/custom-dashboard.js"></script>
+    <script src="../files/assets/js/pcoded.min.js"></script>
+    <script src="../files/assets/js/vertical/horizontal-layout.min.js"></script>
+    <script src="../files/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript" src="../files/assets/js/script.js"></script>
+
+    <!-- New -->
+    <script src="../files/assets/pages/forms-wizard-validation/form-wizard.js"></script>
+    <script type="text/javascript" src="../files/assets/pages/form-validation/validate.js"></script>
+    <script src="../files/bower_components/jquery-validation/js/jquery.validate.js"></script>
+
+    <!-- Inner code js -->
+    <!-- Select2 js -->
+    <script type="text/javascript" src="../files/bower_components/select2/js/select2.full.min.js"></script>
+    <!-- Multiselect js -->
+    <script type="text/javascript" src="../files/bower_components/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+    <script type="text/javascript" src="../files/bower_components/multiselect/js/jquery.multi-select.js"></script>
+    <script type="text/javascript" src="../files/assets/js/jquery.quicksearch.js"></script>
+    <script type="text/javascript" src="../files/assets/pages/advance-elements/select2-custom.js"></script>
+
+    <!-- Syntax highlighter prism js -->
+    <script type="text/javascript" src="../files/assets/pages/prism/custom-prism.js"></script>
+    <!-- i18next.min.js -->
+    <script type="text/javascript" src="../files/bower_components/i18next/js/i18next.min.js"></script>
+    <script type="text/javascript" src="../files/bower_components/i18next-xhr-backend/js/i18nextXHRBackend.min.js"></script>
+    <script type="text/javascript" src="../files/bower_components/i18next-browser-languagedetector/js/i18nextBrowserLanguageDetector.min.js"></script>
+    <script type="text/javascript" src="../files/bower_components/jquery-i18next/js/jquery-i18next.min.js"></script>
+
+    <!-- Custom js -->
+    <script src="../files/assets/js/vertical/menu/menu-hori-fixed.js"></script>
+    <script src="../files/assets/pages/data-table/js/data-table-custom.js"></script>
+    <!-- data-table js -->
+    <script src="../files/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../files/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../files/assets/pages/data-table/js/jszip.min.js"></script>
+    <script src="../files/assets/pages/data-table/js/pdfmake.min.js"></script>
+    <script src="../files/assets/pages/data-table/js/vfs_fonts.js"></script>
+    <script src="../files/bower_components/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="../files/bower_components/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../files/bower_components/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../files/bower_components/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../files/bower_components/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+    <!-- amchart js -->
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="../files/assets/pages/widget/amchart/gauge.js"></script>
+    <script src="../files/assets/pages/widget/amchart/serial.js"></script>
+    <script src="../files/assets/pages/widget/amchart/light.js"></script>
+    <script src="../files/assets/pages/widget/amchart/pie.min.js"></script>
+    <script src="../files/assets/pages/widget/amchart/ammap.min.js"></script>
+    <script src="../files/assets/pages/widget/amchart/usaLow.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+    <script type="text/javascript" src="../files/assets/pages/dashboard/analytic-dashboard.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+</body>
+</html>
