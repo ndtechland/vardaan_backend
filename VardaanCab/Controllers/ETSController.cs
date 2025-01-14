@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using NPOI.SS.Formula.Functions;
+using NPOI.XSSF.Model;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using Org.BouncyCastle.Asn1.Mozilla;
 using System;
@@ -171,7 +172,6 @@ namespace VardaanCab.Controllers
                 return Json(null);
             }
         }
-
         public async Task<ActionResult> EmployeeRequestList(int menuId = 0)
         {
             try
@@ -196,8 +196,6 @@ namespace VardaanCab.Controllers
                 return RedirectToAction("EmployeeRequestList", new { menuId = menuId });
             }
         }
-
-
         public async Task<ActionResult> DeleteEmployeeRequest(int id)
         {
             try
@@ -212,7 +210,6 @@ namespace VardaanCab.Controllers
                 throw;
             }
         }
-
         public ActionResult ExportToExcel()
         {
             // Create DataTable and add columns
@@ -227,9 +224,47 @@ namespace VardaanCab.Controllers
             dt.Columns.Add("DropTime"); // shiftmaster id(2)
 
             // Add dummy rows
-            dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-01", "2024-12-03", "BOTH", "NORMAL", "08:00", "19:30");
-            dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-02", "2", "PICKUP", "NORMAL", "09:00", "19:30");
-            dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "", "2024-12-05", "DROP", "NORMAL", "10:00", "19:30");
+
+            
+            int userId = int.Parse(User.Identity.Name);
+            string companyName = "";
+            List<Customer> companyList = new List<Customer>();
+
+            if (Session["IsAuth"] != null && Convert.ToBoolean(Session["IsAuth"]) == false)
+            {
+                companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
+                companyName = companyList.FirstOrDefault()?.CompanyName ?? "Unknown Company";
+
+
+                dt.Rows.Add("9898989898", "Dummy pvt ltd", "2025-01-14", "2025-02-14", "BOTH", "NORMAL", "08:00", "07:00");
+                dt.Rows.Add("9898989898", "Dummy pvt ltd", "2025-03-14", "2025-04-14", "PICKUP", "NORMAL", "09:00", "");
+                dt.Rows.Add("9898989898", "Dummy pvt ltd", "2025 -05-14", "2025-06-14", "DROP", "NORMAL", "", "07:00");
+            }
+            else
+            {
+                var empinfo = ent.Employees.FirstOrDefault(e => e.Id == userId);
+
+                if (empinfo != null)
+                {
+                    companyList = ent.Customers.Where(x => x.IsActive == true && x.Id == empinfo.Company_Id).ToList();
+                    companyName = companyList.FirstOrDefault()?.CompanyName ?? "Unknown Company";
+
+                    
+                    dt.Rows.Add("9898989898", companyName, "2025-01-14", "2025-02-14", "BOTH", "NORMAL", "08:00", "07:00");
+                    dt.Rows.Add("9898989898", companyName, "2025-03-14", "PICKUP", "NORMAL", "09:00", "");
+                    dt.Rows.Add("9898989898", companyName, "2025-05-14", "2025-06-14", "DROP", "NORMAL", "", "07:00");
+                }
+                else
+                {
+                    companyList = new List<Customer>();
+                }
+            }
+
+            // Optionally handle cases where the DataTable is empty for additional logic.
+
+            //dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-01", "2024-12-03", "BOTH", "NORMAL", "08:00", "19:30");
+            //dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-02", "2", "PICKUP", "NORMAL", "09:00", "19:30");
+            //dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "", "2024-12-05", "DROP", "NORMAL", "10:00", "19:30");
 
             // Create Excel workbook using ClosedXML
             using (var workbook = new XLWorkbook())
@@ -239,89 +274,89 @@ namespace VardaanCab.Controllers
                 worksheet.Cell(1, 1).InsertTable(dt);
 
                 // Add hidden sheets for dropdown data
-                var hiddenSheet = workbook.Worksheets.Add("CompanyList");
-                var hiddenTripTypeListSheet = workbook.Worksheets.Add("TripTypeList");
-                var hiddenShiftTypeSheet = workbook.Worksheets.Add("ShiftTypeList");
-                var hiddenPickuptimeSheet = workbook.Worksheets.Add("PickuptimeList");
-                var hiddenDroptimeSheet = workbook.Worksheets.Add("DroptimeList");
+                //var hiddenSheet = workbook.Worksheets.Add("CompanyList");
+                //var hiddenTripTypeListSheet = workbook.Worksheets.Add("TripTypeList");
+                //var hiddenShiftTypeSheet = workbook.Worksheets.Add("ShiftTypeList");
+                //var hiddenPickuptimeSheet = workbook.Worksheets.Add("PickuptimeList");
+                //var hiddenDroptimeSheet = workbook.Worksheets.Add("DroptimeList");
 
-                // Fetch lists from the database
-                var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
-                var TriptypeList = ent.TripTypes.Where(x => x.TripMasterId == 1).ToList();
-                var ShiftTypeList = ent.TripMasters.Where(x => x.Id == 1).ToList();
-                var PickupTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList();
-                var DropTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList();
+                //// Fetch lists from the database
+                //var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
+                //var TriptypeList = ent.TripTypes.Where(x => x.TripMasterId == 1).ToList();
+                //var ShiftTypeList = ent.TripMasters.Where(x => x.Id == 1).ToList();
+                //var PickupTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList();
+                //var DropTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList();
 
-                // Populate hidden sheets and create dropdown ranges
-                int hiddenRow = 1;
-                foreach (var company in companyList.OrderByDescending(x => x.Id))
-                {
-                    hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
-                }
-                var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
+                //// Populate hidden sheets and create dropdown ranges
+                //int hiddenRow = 1;
+                //foreach (var company in companyList.OrderByDescending(x => x.Id))
+                //{
+                //    hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
+                //}
+                //var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
 
-                hiddenRow = 1;
-                foreach (var triptype in TriptypeList.OrderByDescending(x => x.Id))
-                {
-                    hiddenTripTypeListSheet.Cell(hiddenRow++, 1).Value = triptype.TripTypeName;
-                }
-                var TripTypeRange = hiddenTripTypeListSheet.Range($"A1:A{TriptypeList.Count}");
+                //hiddenRow = 1;
+                //foreach (var triptype in TriptypeList.OrderByDescending(x => x.Id))
+                //{
+                //    hiddenTripTypeListSheet.Cell(hiddenRow++, 1).Value = triptype.TripTypeName;
+                //}
+                //var TripTypeRange = hiddenTripTypeListSheet.Range($"A1:A{TriptypeList.Count}");
 
-                hiddenRow = 1;
-                foreach (var shifttype in ShiftTypeList.OrderByDescending(x => x.Id))
-                {
-                    hiddenShiftTypeSheet.Cell(hiddenRow++, 1).Value = shifttype.TripName;
-                }
-                var ShiftTypeRange = hiddenShiftTypeSheet.Range($"A1:A{ShiftTypeList.Count}");
+                //hiddenRow = 1;
+                //foreach (var shifttype in ShiftTypeList.OrderByDescending(x => x.Id))
+                //{
+                //    hiddenShiftTypeSheet.Cell(hiddenRow++, 1).Value = shifttype.TripName;
+                //}
+                //var ShiftTypeRange = hiddenShiftTypeSheet.Range($"A1:A{ShiftTypeList.Count}");
 
-                hiddenRow = 1;
-                foreach (var pickuptime in PickupTimeList.OrderByDescending(x => x.Id))
-                {
-                    hiddenPickuptimeSheet.Cell(hiddenRow++, 1).Value = pickuptime.ShiftTime;
-                }
-                var PickuptimeRange = hiddenPickuptimeSheet.Range($"A1:A{PickupTimeList.Count}");
+                //hiddenRow = 1;
+                //foreach (var pickuptime in PickupTimeList.OrderByDescending(x => x.Id))
+                //{
+                //    hiddenPickuptimeSheet.Cell(hiddenRow++, 1).Value = pickuptime.ShiftTime;
+                //}
+                //var PickuptimeRange = hiddenPickuptimeSheet.Range($"A1:A{PickupTimeList.Count}");
 
-                hiddenRow = 1;
-                foreach (var droptime in DropTimeList.OrderByDescending(x => x.Id))
-                {
-                    hiddenDroptimeSheet.Cell(hiddenRow++, 1).Value = droptime.ShiftTime;
-                }
-                var DroptimeRange = hiddenDroptimeSheet.Range($"A1:A{DropTimeList.Count}");
+                //hiddenRow = 1;
+                //foreach (var droptime in DropTimeList.OrderByDescending(x => x.Id))
+                //{
+                //    hiddenDroptimeSheet.Cell(hiddenRow++, 1).Value = droptime.ShiftTime;
+                //}
+                //var DroptimeRange = hiddenDroptimeSheet.Range($"A1:A{DropTimeList.Count}");
 
-                // Apply dropdown validations for all rows with dummy data
-                int rowCount = dt.Rows.Count + 1; // Including header row
-                for (int row = 2; row <= rowCount; row++)
-                {
-                    // Company Dropdown
-                    var companyValidation = worksheet.Cell(row, 2).DataValidation;
-                    companyValidation.List(companyRange);
-                    companyValidation.IgnoreBlanks = true;
-                    companyValidation.InCellDropdown = true;
+                //// Apply dropdown validations for all rows with dummy data
+                //int rowCount = dt.Rows.Count + 1; // Including header row
+                //for (int row = 2; row <= rowCount; row++)
+                //{
+                //    // Company Dropdown
+                //    var companyValidation = worksheet.Cell(row, 2).DataValidation;
+                //    companyValidation.List(companyRange);
+                //    companyValidation.IgnoreBlanks = true;
+                //    companyValidation.InCellDropdown = true;
 
-                    // TripType Dropdown
-                    var tripTypeValidation = worksheet.Cell(row, 5).DataValidation;
-                    tripTypeValidation.List(TripTypeRange);
-                    tripTypeValidation.IgnoreBlanks = true;
-                    tripTypeValidation.InCellDropdown = true;
+                //    // TripType Dropdown
+                //    var tripTypeValidation = worksheet.Cell(row, 5).DataValidation;
+                //    tripTypeValidation.List(TripTypeRange);
+                //    tripTypeValidation.IgnoreBlanks = true;
+                //    tripTypeValidation.InCellDropdown = true;
 
-                    // ShiftType Dropdown
-                    var shiftTypeValidation = worksheet.Cell(row, 6).DataValidation;
-                    shiftTypeValidation.List(ShiftTypeRange);
-                    shiftTypeValidation.IgnoreBlanks = true;
-                    shiftTypeValidation.InCellDropdown = true;
+                //    // ShiftType Dropdown
+                //    var shiftTypeValidation = worksheet.Cell(row, 6).DataValidation;
+                //    shiftTypeValidation.List(ShiftTypeRange);
+                //    shiftTypeValidation.IgnoreBlanks = true;
+                //    shiftTypeValidation.InCellDropdown = true;
 
-                    // PickupTime Dropdown
-                    var pickupTimeValidation = worksheet.Cell(row, 7).DataValidation;
-                    pickupTimeValidation.List(PickuptimeRange);
-                    pickupTimeValidation.IgnoreBlanks = true;
-                    pickupTimeValidation.InCellDropdown = true;
+                //    // PickupTime Dropdown
+                //    var pickupTimeValidation = worksheet.Cell(row, 7).DataValidation;
+                //    pickupTimeValidation.List(PickuptimeRange);
+                //    pickupTimeValidation.IgnoreBlanks = true;
+                //    pickupTimeValidation.InCellDropdown = true;
 
-                    // DropTime Dropdown
-                    var dropTimeValidation = worksheet.Cell(row, 8).DataValidation;
-                    dropTimeValidation.List(DroptimeRange);
-                    dropTimeValidation.IgnoreBlanks = true;
-                    dropTimeValidation.InCellDropdown = true;
-                }
+                //    // DropTime Dropdown
+                //    var dropTimeValidation = worksheet.Cell(row, 8).DataValidation;
+                //    dropTimeValidation.List(DroptimeRange);
+                //    dropTimeValidation.IgnoreBlanks = true;
+                //    dropTimeValidation.InCellDropdown = true;
+                //}
 
                 // Set response for Excel download
                 using (var stream = new System.IO.MemoryStream())
@@ -332,7 +367,6 @@ namespace VardaanCab.Controllers
                 }
             }
         }
-
         [HttpPost]
         public ActionResult ImportEmployeeRequestData(HttpPostedFileBase file)
         {
@@ -356,79 +390,242 @@ namespace VardaanCab.Controllers
                                 string CompanyName = row.Cell(2).GetValue<string>();
                                 string TripTypeName = row.Cell(5).GetValue<string>();
                                 string ShiftTypeName = row.Cell(6).GetValue<string>();
-                                string PickupShiftTimeName = row.Cell(7).GetValue<string>();
-                                string DropShiftTimeName = row.Cell(8).GetValue<string>();
+                                //string PickupShiftTimeName = row.Cell(7).GetValue<string>();
+                                string PickupShiftTimeName = row.Cell(7).GetValue<string>() ?? null;
+
+                                // Parse the string into a DateTime object
+                                DateTime dateTimeValue;
+                                if (DateTime.TryParse(PickupShiftTimeName, out dateTimeValue))
+                                {
+                                    // Extract the time in the desired format (e.g., "4:00")
+                                    
+                                     PickupShiftTimeName = dateTimeValue.ToString("HH:mm");
+
+                                }
+                                string DropShiftTimeName = row.Cell(8).GetValue<string>() ?? null;
+                                if (DateTime.TryParse(DropShiftTimeName, out dateTimeValue))
+                                {
+                                    // Extract the time in the desired format (e.g., "4:00")
+                                    DropShiftTimeName = dateTimeValue.ToString("HH:mm");
+
+                                }
                                 var startdatevalue = row.Cell(3).GetValue<string>();
                                 DateTime? startRequestDate = string.IsNullOrEmpty(startdatevalue) ? (DateTime?)null : DateTime.Parse(startdatevalue);
                                 var enddatevalue = row.Cell(4).GetValue<string>();
                                 DateTime? endRequestDate = string.IsNullOrEmpty(enddatevalue) ? (DateTime?)null : DateTime.Parse(enddatevalue);
                                 var employeeId = row.Cell(1).GetValue<string>() ?? string.Empty;
 
-                               
+                                if (TripTypeName.ToLower() == "pickup" || TripTypeName.ToLower() == "both")
+                                {
+                                    if (!string.IsNullOrEmpty(PickupShiftTimeName))
+                                    {
+                                        var shifttimeinfo = ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList();
+
+                                        bool isValidShiftTime = shifttimeinfo.Any(x => x.ShiftTime.Equals(PickupShiftTimeName, StringComparison.OrdinalIgnoreCase));
+
+                                        if (!isValidShiftTime)
+                                        {
+                                            excelErrorModels.Add(new ExcelErrorModel
+                                            {
+                                                ErrorType = "Pickup Shift Time",
+                                                AffectedRow = count,
+                                                Description = $"The pickup shift time {PickupShiftTimeName} does not exist in the master table. Please provide a valid shift time."
+                                            });
+                                        }
+                                    }
+                                    else
+                                    {
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = "Pickup Shift Time",
+                                            AffectedRow = count, 
+                                            Description = "Pickup shift time cannot be empty. Please provide a valid shift time."
+                                        });
+                                    }
+                                }
+                                if (TripTypeName.ToLower() == "drop" || TripTypeName.ToLower() == "both")
+                                {
+                                    if (!string.IsNullOrEmpty(DropShiftTimeName))
+                                    {
+                                        var shifttimeinfo = ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList();
+
+                                        bool isValidShiftTime = shifttimeinfo.Any(x => x.ShiftTime.Equals(DropShiftTimeName, StringComparison.OrdinalIgnoreCase));
+
+                                        if (!isValidShiftTime)
+                                        {
+                                            excelErrorModels.Add(new ExcelErrorModel
+                                            {
+                                                ErrorType = "Drop Shift Time",
+                                                AffectedRow = count,
+                                                Description = $"The Drop shift time {DropShiftTimeName} does not exist in the master table. Please provide a valid shift time."
+                                            });
+                                        }
+                                    }
+                                    else
+                                    {
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = "Drop Shift Time",
+                                            AffectedRow = count,
+                                            Description = "Drop shift time cannot be empty. Please provide a valid shift time."
+                                        });
+                                    }
+                                }
+
+                                var validTripTypes = new List<string> { "both", "pickup", "drop" };
+
+                                // Validate registration type
+                                if (!validTripTypes.Contains(TripTypeName.ToLower()))
+                                {
+                                    var validTypesHint = string.Join(", ", validTripTypes);
+
+                                    excelErrorModels.Add(new ExcelErrorModel
+                                    {
+                                        ErrorType = "Trip Type",
+                                        AffectedRow = count,
+                                        Description = $"Kindly check the employee Trip Type: {TripTypeName}. " +
+                                                      $"Valid types are: {validTypesHint}."
+                                    });
+                                }
+                                var validShiftType = "normal";
+
+                                // Validate shift type
+                                if (!validShiftType.Contains(validShiftType.ToLower()))
+                                {
+                                    var validTypesHint = string.Join(", ", validShiftType);
+
+                                    excelErrorModels.Add(new ExcelErrorModel
+                                    {
+                                        ErrorType = "Shift Type",
+                                        AffectedRow = count,
+                                        Description = $"Kindly check the Shift Type: {validShiftType}. " +
+                                                      $"Valid types are: {validTypesHint}."
+                                    });
+                                }
+
+
                                 if (!string.IsNullOrEmpty(employeeId))
                                 {
                                     var empinfo = ent.Employees.FirstOrDefault(e => e.IsActive == true && e.Employee_Id == employeeId);
 
+                                    
                                     if (empinfo == null)
                                     {
                                         excelErrorModels.Add(new ExcelErrorModel
                                         {
                                             ErrorType = "Employee Id",
-                                            AffectedRow = count,
-                                            Description = $"Please register as an employee first with employee id {employeeId}."
+                                            AffectedRow = count, 
+                                            Description = $"Please register as an employee first with Employee ID {employeeId}."
                                         });
                                     }
                                 }
-
-                                if (TripTypeName == "BOTH")
+                                else
                                 {
-                                    if (startRequestDate == null || endRequestDate == null)
+                                    excelErrorModels.Add(new ExcelErrorModel
                                     {
-                                        excelErrorModels.Add(new ExcelErrorModel
-                                        {
-                                            ErrorType = TripTypeName,
-                                            AffectedRow = count,
-                                            Description = $"For {TripTypeName} trip type, both Start and End dates are mandatory."
-                                        });
-                                    }
-
-                                    
-                                    if (endRequestDate < startRequestDate)
-                                    {
-                                        excelErrorModels.Add(new ExcelErrorModel
-                                        {
-                                            ErrorType = "Request Dates",
-                                            AffectedRow = count,
-                                            Description = "End Request Date cannot be earlier than Start Request Date."
-                                        });
-                                    }
+                                        ErrorType = "Employee Id",
+                                        AffectedRow = count, 
+                                        Description = "Employee ID cannot be empty. Please provide a valid Employee ID."
+                                    });
                                 }
 
-                                
 
-                                if (TripTypeName == "PICKUP" || TripTypeName == "DROP")
+                                if (startRequestDate == null || endRequestDate == null)
                                 {
-                                    if (startRequestDate != null && endRequestDate != null)
+                                    excelErrorModels.Add(new ExcelErrorModel
+                                    {
+                                        ErrorType = TripTypeName,
+                                        AffectedRow = count,
+                                        Description = $"For {TripTypeName} trip type, both Start and End dates are mandatory."
+                                    });
+                                }
+                                if (startRequestDate < DateTime.Now.Date || endRequestDate < DateTime.Now.Date) // Use .Date to compare dates only
+                                {
+                                    if (startRequestDate < DateTime.Now.Date && endRequestDate < DateTime.Now.Date)
                                     {
                                         excelErrorModels.Add(new ExcelErrorModel
                                         {
-                                            ErrorType = TripTypeName,
+                                            ErrorType = "Dates",
                                             AffectedRow = count,
-                                            Description = $"For {TripTypeName} trip type, only one of the dates (Start or End) should be filled."
+                                            Description = $"Start Date and End Date must not be earlier than today."
                                         });
                                     }
-                                    if (startRequestDate == null && endRequestDate == null)
+                                    else if (startRequestDate < DateTime.Now.Date)
                                     {
                                         excelErrorModels.Add(new ExcelErrorModel
                                         {
-                                            ErrorType = TripTypeName,
+                                            ErrorType = "Start Date",
                                             AffectedRow = count,
-                                            Description = $"For {TripTypeName} trip type, at least one of the dates (Start or End) is mandatory."
+                                            Description = $"Start Date must not be earlier than today."
+                                        });
+                                    }
+                                    else if (endRequestDate < DateTime.Now.Date)
+                                    {
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = "End Date",
+                                            AffectedRow = count,
+                                            Description = $"End Date must not be earlier than today."
                                         });
                                     }
                                 }
 
-                                
+                                if (endRequestDate < startRequestDate)
+                                {
+                                    excelErrorModels.Add(new ExcelErrorModel
+                                    {
+                                        ErrorType = "Request Dates",
+                                        AffectedRow = count,
+                                        Description = "End Request Date cannot be earlier than Start Request Date."
+                                    });
+                                }
+
+                                if (TripTypeName.ToLower() == "pickup" || TripTypeName.ToLower() == "drop")
+                                {
+                                    if (!string.IsNullOrEmpty(PickupShiftTimeName) && !string.IsNullOrEmpty(DropShiftTimeName))
+                                    {
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = TripTypeName,
+                                            AffectedRow = count,
+                                            Description = $"For {TripTypeName} trip type, only one of the shift time {TripTypeName} should be filled."
+                                        });
+                                    }
+                                    if (string.IsNullOrEmpty(PickupShiftTimeName) && string.IsNullOrEmpty(DropShiftTimeName))
+                                    {
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = TripTypeName,
+                                            AffectedRow = count,
+                                            Description = $"For {TripTypeName} trip type, at least one of the shift time ({TripTypeName}) is mandatory."
+                                        });
+                                    }
+                                }
+
+                                if(!string.IsNullOrEmpty(CompanyName))
+                                {
+                                    var cominfo = ent.Customers.Where(c => c.CompanyName.ToLower() == CompanyName.ToLower()).FirstOrDefault();
+                                    if(cominfo==null)
+                                    {
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = "Company Name",
+                                            AffectedRow = count,
+                                            Description = $"Company {CompanyName} not exist in the database."
+                                        });
+                                    }
+                                }
+                                else
+                                {
+                                    excelErrorModels.Add(new ExcelErrorModel
+                                    {
+                                        ErrorType = "Company Name",
+                                        AffectedRow = count,
+                                        Description = $"Company cannot be empty."
+                                    });
+                                }
+
+                                if (excelErrorModels.Any(e => e.AffectedRow == count)) continue;
                                 EmployeeRequest employeereq = new EmployeeRequest
                                 {
                                     EmployeeId = employeeId,
@@ -437,8 +634,8 @@ namespace VardaanCab.Controllers
                                     EndRequestDate = endRequestDate,
                                     TripType = string.IsNullOrEmpty(TripTypeName) ? 0 : ent.TripTypes.FirstOrDefault(x => x.TripTypeName.ToLower() == TripTypeName.ToLower())?.Id ?? 0,
                                     ShiftType = string.IsNullOrEmpty(ShiftTypeName) ? 0 : ent.TripMasters.FirstOrDefault(x => x.TripName.ToLower() == ShiftTypeName.ToLower())?.Id ?? 0,
-                                    PickupShiftTimeId = row.Cell(7).GetValue<int>(),
-                                    DropShiftTimeId = row.Cell(8).GetValue<int>(),
+                                    PickupShiftTimeId = string.IsNullOrEmpty(PickupShiftTimeName) ? 0 : ent.ShiftMasters.Where(x=>x.TripTypeId==1).FirstOrDefault(x => x.ShiftTime.ToLower() == PickupShiftTimeName.ToLower())?.Id ?? 0,
+                                    DropShiftTimeId = string.IsNullOrEmpty(DropShiftTimeName) ? 0 : ent.ShiftMasters.Where(x => x.TripTypeId == 2).FirstOrDefault(x => x.ShiftTime.ToLower() == DropShiftTimeName.ToLower())?.Id ?? 0,
                                     RequestType = "EMPLOYEE",
                                     CreatedDate = DateTime.Now
                                 };
@@ -456,15 +653,6 @@ namespace VardaanCab.Controllers
                                 });
                             }
                         }
-
-                       
-                        if (emprequest.Any())
-                        {
-                            ent.EmployeeRequests.AddRange(emprequest);
-                            ent.SaveChanges();
-                        }
-
-                       
                         if (excelErrorModels.Any())
                         {
                             TempData["HasErrors"] = true;
@@ -472,8 +660,14 @@ namespace VardaanCab.Controllers
                             return RedirectToAction("CreateRequest");
                         }
 
-                        TempData["dltmsg"] = "Data imported successfully!";
-                        return RedirectToAction("EmployeeRequestList");
+                        if (emprequest.Any())
+                        {
+                            ent.EmployeeRequests.AddRange(emprequest);
+                            ent.SaveChanges();
+                        }
+
+                        TempData["Message"] = "Data imported successfully!";
+                        return RedirectToAction("CreateRequest");
                     }
                 }
 
@@ -486,8 +680,6 @@ namespace VardaanCab.Controllers
                 return View();
             }
         }
-
-
         public ActionResult Routing()
         {
             try
@@ -663,7 +855,6 @@ namespace VardaanCab.Controllers
                 throw new Exception("Server Error + " + ex.Message);
             }
         }
-
         static double GetDistance(double lat1, double lon1, double lat2, double lon2)
         {
             // Radius of the Earth in kilometers
@@ -689,7 +880,6 @@ namespace VardaanCab.Controllers
             // Convert distance to meters
             return distance * 1000;
         }
-
         static double DegreesToRadians(double degrees)
         {
             return degrees * Math.PI / 180.0;
