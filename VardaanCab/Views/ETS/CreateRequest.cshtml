@@ -32,6 +32,33 @@
             margin-left: 10px; /* Adds space between the file input and the button */
         }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var message = "@TempData["Message"]";
+        if (message != null) {
+            if (message) {
+                let alertText;
+
+                alertText = "@TempData["Message"]";
+
+                Swal.fire({
+                    title: 'Success',
+                    text: alertText,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("EmployeeRequestList", "ETS")';
+                        }, 1000);
+                    }
+                });
+            }
+        }
+    });
+</script>
 <div class="pcoded-content">
 
     <!-- Page-header end -->
@@ -77,7 +104,7 @@
                                         </a>
 
                                         <!-- Import Form -->
-                                        @using (Html.BeginForm("ImportEmployeeRequestData", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        @using (Html.BeginForm("ImportEmployeeRequestData", "ETS", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                         {
                                             <div class="d-flex align-items-center ml-3">
                                                 <input type="file" class="form-control-file mr-2" name="file" required style="width: 200px;" />
@@ -98,161 +125,173 @@
                                 }
                                 <div class="card-block">
                                     <form class="theme-form mega-form" action="CreateRequest" method="post" enctype="multipart/form-data">
-                                        
-                                            <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
-                                            <input name="Id" type="hidden" value="@Model.Id" />
-                                            @if (TempData["msg"] != null)
-                                            {
-                                                <div class="mb-3">
-                                                    <div class="alert alert-success">
-                                                        @TempData["msg"]
-                                                    </div>
+
+                                        <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
+                                        <input name="Id" type="hidden" value="@Model.Id" />
+                                        @if (TempData["msg"] != null)
+                                        {
+                                            <div class="mb-3">
+                                                <div class="alert alert-success">
+                                                    @TempData["msg"]
                                                 </div>
-                                            }
-                                            @if (TempData["errormsg"] != null)
-                                            {
-                                                <div class="mb-3">
-                                                    <div class="alert alert-danger">
-                                                        @TempData["errormsg"]
-                                                    </div>
+                                            </div>
+                                        }
+                                        @if (TempData["errormsg"] != null)
+                                        {
+                                            <div class="mb-3">
+                                                <div class="alert alert-danger">
+                                                    @TempData["errormsg"]
                                                 </div>
-                                            }
-                                            <div class="row">
-                                                <div class="col-md-12">
+                                            </div>
+                                        }
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label-title ">Request Type</label>
+                                                        <select name="RequestType" id="RequestType" class="form-control">
+                                                            <option value="">--Select Request Type--</option>
+                                                            <option value="SELF" @(Model.RequestType == "SELF" ? "selected" : "")>SELF</option>
+                                                            <option value="EMPLOYEE" @(Model.RequestType == "EMPLOYEE" ? "selected" : "")>EMPLOYEE</option>
+                                                            <option value="GUEST" @(Model.RequestType == "GUEST" ? "selected" : "")>GUEST</option>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label-title ">Select Company</label>
+                                                        @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control", @required = "" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.CompanyId)
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label-title ">Employee Id</label>
+                                                        @Html.TextBoxFor(a => a.EmployeeId, new { @class = "form-control", id = "employeeId", placeholder = "Employee Id" })
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="form-label-title ">First Name</label>
+                                                        @Html.TextBoxFor(a => a.FirstName, new { @class = "form-control", id = "firstName", placeholder = "Employee First Name", @readonly = "true" })
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="form-label-title ">Last Name</label>
+                                                        @Html.TextBoxFor(a => a.LastName, new { @class = "form-control", id = "lastName", placeholder = "Employee Last Name", @readonly = "true" })
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="form-label-title ">Gender</label>
+                                                        <select id="gender" name="Gender" style="pointer-events: none; background-color: #e9ecef;"
+                                                                class="form-control" readonly>
+                                                            <option value="">--Select Gender--</option>
+                                                            <option value="Male" @(Model.Gender == "Male" ? "selected" : "")>Male</option>
+                                                            <option value="Female" @(Model.Gender == "Female" ? "selected" : "")>Female</option>
+                                                            <option value="Other" @(Model.Gender == "Other" ? "Other" : "")>Other</option>
+
+
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="form-label-title ">Email</label>
+                                                        @Html.TextBoxFor(a => a.Email, new { @class = "form-control", id = "email", placeholder = "Employee Email", @readonly = "true" })
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label-title ">Guest Contact Number With Country Code</label>
+                                                        @Html.TextBoxFor(a => a.GuestContact, new { @class = "form-control", id = "guestContact", placeholder = "eg.919999999999", @readonly = "true" })
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <div class="guestpart">
+                                                            <label class="form-label-title ">Unit (ASPL/AZTEC)</label>
+                                                            <select name="Unit" id="unit" class="form-control">
+                                                                <option value="ASPL" @(Model.Unit == "ASPL" ? "ASPL" : "")>ASPL</option>
+                                                                <option value="AZTEC" @(Model.Unit == "AZTEC" ? "AZTEC" : "")>AZTEC</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="guestpart">
+                                                            <label class="form-label-title ">Department</label>
+                                                            @Html.TextBoxFor(a => a.Department, new { @class = "form-control", id = "department", placeholder = "Enter Department" })
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="guestpart">
+                                                            <label class="form-label-title ">Cost Centre</label>
+                                                            @Html.TextBoxFor(a => a.CostCentre, new { @class = "form-control", placeholder = "Cost Centre" })
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="guestpart">
+                                                            <label class="form-label-title ">Expence Code</label>
+                                                            @Html.TextBoxFor(a => a.ExpenseCode, new { @class = "form-control", placeholder = "Expence Code" })
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="guestpart">
+                                                            <label class="form-label-title ">Requestor Emp ID</label>
+                                                            @Html.TextBoxFor(a => a.RequestorEmpId, new { @class = "form-control", placeholder = "Requestor Emp ID" })
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="guestpart">
+                                                            <label class="form-label-title ">Requestor Name</label>
+                                                            @Html.TextBoxFor(a => a.RequestorName, new { @class = "form-control", placeholder = "Requestor Name" })
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="guestpart">
+                                                            <label class="form-label-title ">Requestor Contact No. Comma Separated</label>
+                                                            @Html.TextBoxFor(a => a.RequestorContacts, new { @class = "form-control", placeholder = "Eg.919811172193,919999999999" })
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="guestpart">
+                                                            @*<label class="form-label-title ">Date of Booking Received</label>*@
+                                                            <label class="form-label-title ">Booking Received Date</label>
+                                                            @Html.TextBoxFor(a => a.BookingReceivedDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Date of Booking Received", type = "Date" })
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="guestpart">
+                                                            <label class="form-label-title ">Request Trip Type</label>
+                                                            <select name="RequestTripType" id="requesttripType" class="form-control">
+                                                                <option value="1" @(Model.RequestTripType == "1" ? "selected" : "")>Airport Pickup</option>
+                                                                <option value="2" @(Model.RequestTripType == "2" ? "selected" : "")>Airport Drop</option>
+                                                                <option value="3" @(Model.RequestTripType == "3" ? "selected" : "")>Medical Emergency</option>
+                                                                <option value="4" @(Model.RequestTripType == "4" ? "selected" : "")>Office Transfer</option>
+                                                                <option value="5" @(Model.RequestTripType == "5" ? "selected" : "")>Hotel Transfer</option>
+                                                                <option value="6" @(Model.RequestTripType == "6" ? "selected" : "")>Railway Station Pickup</option>
+                                                                <option value="7" @(Model.RequestTripType == "7" ? "selected" : "")>Administration</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="guestpart">
+                                                            <label class="form-label-title ">Destination Request Method</label>
+                                                            <select name="DestinationRequestMethod" class="form-control" disabled>
+                                                                <option value="Single" @(Model.DestinationRequestMethod == "Single" ? "selected" : "")>Single</option>
+                                                                <option value="Multiple" @(Model.DestinationRequestMethod == "Multiple" ? "selected" : "")>Multiple</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <label class="form-label-title ">Request Type</label>
-                                                            <select name="RequestType" id="RequestType" class="form-control">
-                                                                <option value="">--Select Request Type--</option>
-                                                                <option value="SELF" @(Model.RequestType == "SELF" ? "selected" : "")>SELF</option>
-                                                                <option value="EMPLOYEE" @(Model.RequestType == "EMPLOYEE" ? "selected" : "")>EMPLOYEE</option>
-                                                                <option value="GUEST" @(Model.RequestType == "GUEST" ? "selected" : "")>GUEST</option>
-
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <label class="form-label-title ">Select Company</label>
-                                                            @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "--Select Company--", new { @class = "form-control", @required = "" })
-                                                            <span class="text-danger">
-                                                                @Html.ValidationMessageFor(a => a.CompanyId)
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label class="form-label-title ">Employee Id</label>
-                                                            @Html.TextBoxFor(a => a.EmployeeId, new { @class = "form-control", id = "employeeId", placeholder = "Employee Id" })
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label class="form-label-title ">First Name</label>
-                                                            @Html.TextBoxFor(a => a.FirstName, new { @class = "form-control", id = "firstName", placeholder = "Employee First Name", @readonly = "true" })
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label class="form-label-title ">Last Name</label>
-                                                            @Html.TextBoxFor(a => a.LastName, new { @class = "form-control", id = "lastName", placeholder = "Employee Last Name", @readonly = "true" })
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label class="form-label-title ">Gender</label>
-                                                            <select id="gender" name="Gender" style="pointer-events: none; background-color: #e9ecef;"
-                                                                    class="form-control" readonly>
-                                                                <option value="">--Select Gender--</option>
-                                                                <option value="Male" @(Model.Gender == "Male" ? "selected" : "")>Male</option>
-                                                                <option value="Female" @(Model.Gender == "Female" ? "selected" : "")>Female</option>
-                                                                <option value="Other" @(Model.Gender == "Other" ? "Other" : "")>Other</option>
-
-
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label class="form-label-title ">Email</label>
-                                                            @Html.TextBoxFor(a => a.Email, new { @class = "form-control", id = "email", placeholder = "Employee Email", @readonly = "true" })
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label class="form-label-title ">Guest Contact Number With Country Code</label>
-                                                            @Html.TextBoxFor(a => a.GuestContact, new { @class = "form-control", id = "guestContact", placeholder = "eg.919999999999", @readonly = "true" })
-                                                        </div>
-
-                                                        <div class="col-md-3">
                                                             <div class="guestpart">
-                                                                <label class="form-label-title ">Unit (ASPL/AZTEC)</label>
-                                                                <select name="Unit" id="unit" class="form-control">
-                                                                    <option value="ASPL" @(Model.Unit == "ASPL" ? "ASPL" : "")>ASPL</option>
-                                                                    <option value="AZTEC" @(Model.Unit == "AZTEC" ? "AZTEC" : "")>AZTEC</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="guestpart">
-                                                                <label class="form-label-title ">Department</label>
-                                                                @Html.TextBoxFor(a => a.Department, new { @class = "form-control", id = "department", placeholder = "Enter Department" })
-                                                            </div>
-
-
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="guestpart">
-                                                                <label class="form-label-title ">Cost Centre</label>
-                                                                @Html.TextBoxFor(a => a.CostCentre, new { @class = "form-control", placeholder = "Cost Centre" })
-
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="guestpart">
-                                                                <label class="form-label-title ">Expence Code</label>
-                                                                @Html.TextBoxFor(a => a.ExpenseCode, new { @class = "form-control", placeholder = "Expence Code" })
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="guestpart">
-                                                                <label class="form-label-title ">Requestor Emp ID</label>
-                                                                @Html.TextBoxFor(a => a.RequestorEmpId, new { @class = "form-control", placeholder = "Requestor Emp ID" })
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="guestpart">
-                                                                <label class="form-label-title ">Requestor Name</label>
-                                                                @Html.TextBoxFor(a => a.RequestorName, new { @class = "form-control", placeholder = "Requestor Name" })
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="guestpart">
-                                                                <label class="form-label-title ">Requestor Contact No. Comma Separated</label>
-                                                                @Html.TextBoxFor(a => a.RequestorContacts, new { @class = "form-control", placeholder = "Eg.919811172193,919999999999" })
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="guestpart">
-                                                                @*<label class="form-label-title ">Date of Booking Received</label>*@
-                                                                <label class="form-label-title ">Booking Received Date</label>
-                                                                @Html.TextBoxFor(a => a.BookingReceivedDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Date of Booking Received", type = "Date" })
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="guestpart">
-                                                                <label class="form-label-title ">Request Trip Type</label>
-                                                                <select name="RequestTripType" id="requesttripType" class="form-control">
-                                                                    <option value="1" @(Model.RequestTripType == "1" ? "selected" : "")>Airport Pickup</option>
-                                                                    <option value="2" @(Model.RequestTripType == "2" ? "selected" : "")>Airport Drop</option>
-                                                                    <option value="3" @(Model.RequestTripType == "3" ? "selected" : "")>Medical Emergency</option>
-                                                                    <option value="4" @(Model.RequestTripType == "4" ? "selected" : "")>Office Transfer</option>
-                                                                    <option value="5" @(Model.RequestTripType == "5" ? "selected" : "")>Hotel Transfer</option>
-                                                                    <option value="6" @(Model.RequestTripType == "6" ? "selected" : "")>Railway Station Pickup</option>
-                                                                    <option value="7" @(Model.RequestTripType == "7" ? "selected" : "")>Administration</option>
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="guestpart">
-                                                                <label class="form-label-title ">Destination Request Method</label>
-                                                                <select name="DestinationRequestMethod" class="form-control" disabled>
-                                                                    <option value="Single" @(Model.DestinationRequestMethod == "Single" ? "selected" : "")>Single</option>
-                                                                    <option value="Multiple" @(Model.DestinationRequestMethod == "Multiple" ? "selected" : "")>Multiple</option>
+                                                                <label class="form-label-title ">Location Types</label>
+                                                                <select name="LocationType" id="locationType" class="form-control">
+                                                                    <option value="">Select Location Type</option>
+                                                                    <option value="Multiple Location" @(Model.LocationType == "Multiple Location" ? "selected" : "")>Multiple Location</option>
+                                                                    <option value="Single Location" @(Model.LocationType == "Single Location" ? "selected" : "")>Single Location</option>
                                                                 </select>
                                                             </div>
 
@@ -275,8 +314,12 @@
                                                                         <label class="form-label-title ">SMS Triggered Location</label>
                                                                         @Html.TextBoxFor(a => a.SMSTriggeredLocation, new { @class = "form-control" })
                                                                     </div>
+                                                        <div class="col-md-6">
+                                                            <div class="guestpart">
+                                                                <div id="smstriggerlocation">
+                                                                    <label class="form-label-title ">SMS Triggered Location</label>
+                                                                    @Html.TextBoxFor(a => a.SMSTriggeredLocation, new { @class = "form-control" })
                                                                 </div>
-
                                                             </div>
                                                     
 
@@ -285,40 +328,47 @@
                                                             @Html.TextBoxFor(m => m.StartRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Start Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
 
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <label class="form-label-title ">End Request Date</label>
-                                                            @Html.TextBoxFor(m => m.EndRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "End Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
+                                                    </div>
 
-                                                        </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label-title ">Start Request Date</label>
+                                                        @Html.TextBoxFor(m => m.StartRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Start Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
 
-                                                        <div class="col-md-3">
-                                                            <label class="form-label-title">Trip Type</label>
-                                                            @Html.DropDownListFor(a => a.TripType, Model.TripTypes, "--Select Trip Types--", new { @class = "form-control" })
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label class="form-label-title ">Shift Type</label>
-
-                                                            @Html.DropDownListFor(a => a.ShiftType, Model.ShiftTypes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
-
-                                                        </div>
-                                                        <div class="col-md-3" id="pickupShiftTimeContainer">
-                                                            <label class="form-label-title">Pickup Shift Time</label>
-
-                                                            @Html.DropDownListFor(a => a.PickupShiftTimeId, Model.PickUpshiftTimes, "--Select Pickup Shift Time--", new { @class = "form-control", id = "pickupshifttime" })
-                                                        </div>
-                                                        <div class="col-md-3" id="dropShiftTimeContainer">
-                                                            <label class="form-label-title">Drop Shift Time</label>
-                                                            @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "dropshifttime" })
-
-                                                        </div>
-
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label-title ">End Request Date</label>
+                                                        @Html.TextBoxFor(m => m.EndRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "End Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
 
                                                     </div>
 
+                                                    <div class="col-md-3">
+                                                        <label class="form-label-title">Trip Type</label>
+                                                        @Html.DropDownListFor(a => a.TripType, Model.TripTypes, "--Select Trip Types--", new { @class = "form-control" })
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="form-label-title ">Shift Type</label>
+
+                                                        @Html.DropDownListFor(a => a.ShiftType, Model.ShiftTypes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
+
+                                                    </div>
+                                                    <div class="col-md-3" id="pickupShiftTimeContainer">
+                                                        <label class="form-label-title">Pickup Shift Time</label>
+
+                                                        @Html.DropDownListFor(a => a.PickupShiftTimeId, Model.PickUpshiftTimes, "--Select Pickup Shift Time--", new { @class = "form-control", id = "pickupshifttime" })
+                                                    </div>
+                                                    <div class="col-md-3" id="dropShiftTimeContainer">
+                                                        <label class="form-label-title">Drop Shift Time</label>
+                                                        @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "dropshifttime" })
+
+                                                    </div>
+
+
                                                 </div>
 
-
                                             </div>
+
+
+                                        </div>
                                         <div class="card-footer text-end">
                                             <button type="submit" class="btn btn-primary">@ViewBag.BtnTXT</button>
                                             <button type="reset" class="btn btn-outline-primary">Reset</button>
@@ -393,15 +443,15 @@
     </div>
 </div>
 
-<!--Model-->
+<!--Error Model-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="width:130%;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">
-                    Errors in Uploaded Data
-                </h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h4 class="modal-title">Errors in Uploaded Data</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <table id="errorTable" class="datatable table table-striped">
@@ -419,12 +469,13 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-<script src="jquery-3.7.1.min.js"></script>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
