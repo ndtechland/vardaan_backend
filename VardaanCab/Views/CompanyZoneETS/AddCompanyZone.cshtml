@@ -1,7 +1,7 @@
 ﻿@model VardaanCab.Domain.DTO.CompanyZoneDTO
 @{
     ViewBag.Title = "AddCompanyZone";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 <style>
     #map {
@@ -9,73 +9,104 @@
         width: 100%;
     }
 </style>
-<div class="container-fluid">
-    <div class="row">
+<div class="pcoded-content">
 
-        <div class="col-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header  card-header--2">
-                            <div>
-                                <h5>@ViewBag.Heading</h5>
-                            </div>
-                            <form class="d-inline-flex">
-                                <a href="/CompanyZoneETS/AllCompanyZones?menuId=@ViewBag.menuId" class="btn btn-theme">
-                                    Show All
-                                </a>
-                            </form>
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card">
+                    <div class="card-block">
+                        <h5>@ViewBag.Heading</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Master Enteries</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Add Company Zones</a>
+                                </li>
+                            </ul>
                         </div>
-                        <form class="theme-form mega-form" action="AddCompanyZone"  method="post" >
-                            <div class="card-body">
-                                <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
-                                <input name="Id" type="hidden" value="@Model.Id" />
-                                @if (TempData["msg"] != null)
-                                {
-                                    <div class="mb-3">
-                                        <div class="alert alert-info">
-                                            @TempData["msg"]
-                                        </div>
-                                    </div>
-                                }
-                                <div class="row">
+                    </div>
+                </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>@ViewBag.Heading</h5>
 
-                                    <div class="col-md-6">
-                                        <label for="menu-type" class="form-label-title ">
-                                            Company <span class="text-danger">*</span>
-                                        </label>
-                                        @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "Select Company", new { @class = "form-control", @required = "required" })
-                                        <span class="text-danger">
-                                            @Html.ValidationMessageFor(a => a.CompanyId)
-                                        </span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label-title">Company Zone<span class="text-danger">*</span></label>
-                                        @Html.TextBoxFor(a => a.CompanyZone, new { @class = "form-control", @required = "required" })
-                                        <span class="text-danger">
-                                            @Html.ValidationMessageFor(a => a.CompanyZone)
-                                        </span>
-                                    </div>
-                                    <div class="col-md-12 p-2">
-
-                                        <div id="map"></div>
-                                         @Html.HiddenFor(a => a.Zonelatlong);
+                                    <!-- Import and Export Section -->
+                                    <div class="d-flex align-items-center">
+                                        <a href="/CompanyZoneETS/AllCompanyZones?menuId=@ViewBag.menuId" class="btn btn-primary btn-sm">
+                                            Show All
+                                        </a>
                                     </div>
                                 </div>
+                                <div class="card-block">
+                                    <form class="theme-form mega-form" action="AddCompanyZone" method="post">
+                                        <div class="card-body">
+                                            <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
+                                            <input name="Id" type="hidden" value="@Model.Id" />
+                                            @if (TempData["msg"] != null)
+                                            {
+                                                <div class="mb-3">
+                                                    <div class="alert alert-info">
+                                                        @TempData["msg"]
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="row">
+
+                                                <div class="col-md-6">
+                                                    <label for="menu-type" class="form-label-title ">
+                                                        Company <span class="text-danger">*</span>
+                                                    </label>
+                                                    @Html.DropDownListFor(a => a.CompanyId, Model.Companies, "Select Company", new { @class = "form-control", @required = "required" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.CompanyId)
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label-title">Company Zone<span class="text-danger">*</span></label>
+                                                    @Html.TextBoxFor(a => a.CompanyZone, new { @class = "form-control", @required = "required" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.CompanyZone)
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-12 p-2">
+
+                                                    <div id="map"></div>
+                                                    @Html.HiddenFor(a => a.Zonelatlong)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-end">
+                                            <button type="submit" id="BtnSubmit" class="btn btn-primary me-3">@ViewBag.BtnTXT</button>
+                                            <a href="/CompanyZoneETS/AllCompanyZones?menuId=@ViewBag.menuId" class="btn btn-outline-primary">Cancel</a>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="card-footer text-end">
-                                <button type="submit" id="BtnSubmit" class="btn btn-primary me-3">@ViewBag.BtnTXT</button>
-                                <a href="/CompanyZoneETS/AllCompanyZones?menuId=@ViewBag.menuId" class="btn btn-outline-primary">Cancel</a>
-                            </div>
-                        </form>
+                        </div>
 
                     </div>
                 </div>
-
+                <!-- Page body end -->
             </div>
         </div>
     </div>
 </div>
+ 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw&callback=initMap&libraries=places&callback=initAutocomplete&libraries=drawing"></script>
 <script>
     // JavaScript for Google Maps Polygon Drawing and Binding Coordinates

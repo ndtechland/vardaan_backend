@@ -1,84 +1,115 @@
 ﻿@model VardaanCab.Domain.DTO.BannerDTO
 @{
     ViewBag.Title = "Add";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 <style>
     .form-check {
         padding-left: 0em;
     }
 </style>
-<div class="container-fluid">
-    <div class="row">
+<div class="pcoded-content">
 
-        <div class="col-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header  card-header--2">
-
-                            <div>
-                                <h5>@ViewBag.Heading</h5>
-                            </div>
-                            <form class="d-inline-flex">
-                                <a href="/Banner/All" class="btn btn-theme">
-                                    Show All
-                                </a>
-                            </form>
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card">
+                    <div class="card-block">
+                        <h5>@ViewBag.Heading</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">ETS</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Add Banner</a>
+                                </li>
+                            </ul>
                         </div>
-                        <form class="theme-form mega-form" method="post" action="Add" enctype="multipart/form-data">
-                            <div class="card-body">
-                                <input name="Id" type="hidden" value="@Model.Id" />
-                                @if (TempData["msg"] != null)
-                                {
-                                    <div class="alert alert-success">@TempData["msg"]</div>
-                                }
-                                else if (TempData["errormsg"] != null)
-                                {
-                                    <div class="alert alert-danger">@TempData["errormsg"]</div>
-
-                                }
-                                <div class="mb-3">
-                                    <label class="form-label-title">Select Role</label>
-                                    <div class="d-flex align-items-center">
-                                        <div class="form-check me-3">
-                                            <input type="radio" id="employee" name="role" value="Employee"
-                                                   @(Model.Role == "Employee" ? "checked" : "") required>
-                                            <label for="employee" class="form-check-label">Employee</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="radio" id="driver" name="role" value="Driver"
-                                                   @(Model.Role == "Driver" ? "checked" : "") required>
-                                            <label for="driver" class="form-check-label">Driver</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label-title">Banner Image</label>
-                                    @if (!string.IsNullOrEmpty(Model.BannerImage))
-                                    {
-                                        <a href="/images/@Model.BannerImage"> <img class="thumb" src="/images/@Model.BannerImage" /></a>
-                                    }
-                                    @Html.TextBoxFor(a => a.ImageFile, new { @class = "form-control", type = "file" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.ImageFile)
-                                    </span>
-                                </div>
-
-
-                            </div>
-
-                            <div class="card-footer text-end">
-                                <button class="btn btn-primary me-3">@ViewBag.BtnTXT</button>
-                                <a href="/Banner/All" class="btn btn-outline-primary">Cancel</a>
-                            </div>
-                        </form>
                     </div>
                 </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>@ViewBag.Heading</h5>
 
+                                    <!-- Import and Export Section -->
+                                    <div class="d-flex align-items-center">
+
+
+                                        <a href="/Banner/All" class="btn btn-primary btn-sm">
+                                            Show All
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-block">
+                                    <form class="theme-form mega-form" method="post" action="Add" enctype="multipart/form-data">
+
+                                        <input name="Id" type="hidden" value="@Model.Id" />
+                                        @if (TempData["msg"] != null)
+                                        {
+                                            <div class="alert alert-success">@TempData["msg"]</div>
+                                        }
+                                        else if (TempData["errormsg"] != null)
+                                        {
+                                            <div class="alert alert-danger">@TempData["errormsg"]</div>
+
+                                        }
+                                        <div class="mb-3">
+                                            <label class="form-label-title">Select Role</label>
+                                            <div class="d-flex align-items-center">
+                                                <div class="form-check me-3">
+                                                    <input type="radio" id="employee" name="role" value="Employee"
+                                                           @(Model.Role == "Employee" ? "checked" : "") required>
+                                                    <label for="employee" class="form-check-label">Employee</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="radio" id="driver" name="role" value="Driver"
+                                                           @(Model.Role == "Driver" ? "checked" : "") required>
+                                                    <label for="driver" class="form-check-label">Driver</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label-title">Banner Image</label>
+                                            @if (!string.IsNullOrEmpty(Model.BannerImage))
+                                            {
+                                                <a href="/images/@Model.BannerImage"> <img class="thumb" src="/images/@Model.BannerImage" /></a>
+                                            }
+                                            @Html.TextBoxFor(a => a.ImageFile, new { @class = "form-control", type = "file" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.ImageFile)
+                                            </span>
+                                        </div>
+
+                                        <div class="card-footer text-end">
+                                            <button class="btn btn-primary me-3">@ViewBag.BtnTXT</button>
+                                            <a href="/Banner/All" class="btn btn-outline-primary">Cancel</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Page body end -->
             </div>
         </div>
     </div>
 </div>
+ 
 

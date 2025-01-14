@@ -1,79 +1,107 @@
 ﻿@model VardaanCab.Domain.DTO.AccessAssignDTO
 @{
     ViewBag.Title = "AccessAssignList";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
     int Count = 1;
 }
+<div class="pcoded-content">
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header  card-header--2">
-
-                    <div>
-                        <h5>Access Assign List</h5>
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card">
+                    <div class="card-block">
+                        <h5>Assign Access List</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Administrator ETS</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Assign Access List</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-
                 </div>
+                <!-- Page-body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>Access Assign List</h5>
 
-                <div class="card-body">
-                    @if (TempData["dltmsg"] != null)
-                    {
-                        <div class="row r">
-                            <div class="col-md-12">
-                                <div class="alert alert-success">
-                                    @TempData["dltmsg"]
+                                </div>
+                                @if (TempData["dltmsg"] != null)
+                                {
+                                    <div class="row r">
+                                        <div class="col-md-12">
+                                            <div class="alert alert-success border-success">
+                                                @TempData["dltmsg"]
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="order-table" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th nowrap>Sr No.</th>
+                                                    <th nowrap>Employee Id</th>
+                                                    <th nowrap>Employee Name</th>
+                                                    <th nowrap>User Name</th>
+                                                    <th nowrap>Mobile Number</th>
+                                                    <th nowrap>Email Id</th>
+                                                    <th nowrap>User Type</th>
+                                                    <th nowrap>Company</th>
+                                                    <th nowrap>Assign Access</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.AccessAssignList != null)
+                                                {
+                                                    foreach (var item in Model.AccessAssignList)
+                                                    {
+                                                        <tr>
+                                                            <td nowrap>@Count</td>
+                                                            <td nowrap>@item.EmployeeId</td>
+                                                            <td nowrap>@item.EmployeeName</td>
+                                                            <td nowrap>@item.UserName</td>
+                                                            <td nowrap>@item.Mobile</td>
+                                                            <td nowrap>@item.Email</td>
+                                                            <td nowrap>@item.RoleName</td>
+                                                            <td nowrap>@item.CompanyName</td>
+                                                            <td nowrap>
+                                                                <a href="/AdministratorETS/AssignAccess?Id=@item.Id" class="btn btn-outline-success">
+                                                                    Assign Access
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        Count++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
-                    }
-
-                    <div class="table-responsive table-desi">
-                        <table class="datatable all-cars-table table table-striped">
-                            <thead>
-                                <tr>
-                                    <th nowrap>Sr No.</th>
-                                    <th nowrap>Employee Id</th>
-                                    <th nowrap>Employee Name</th>
-                                    <th nowrap>User Name</th>
-                                    <th nowrap>Mobile Number</th>
-                                    <th nowrap>Email Id</th>
-                                    <th nowrap>User Type</th>
-                                    <th nowrap>Company</th>
-                                    <th nowrap>Assign Access</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model.AccessAssignList != null)
-                                {
-                                    foreach (var item in Model.AccessAssignList)
-                                    {
-                                        <tr>
-                                            <td nowrap>@Count</td>
-                                            <td nowrap>@item.EmployeeId</td>
-                                            <td nowrap>@item.EmployeeName</td>
-                                            <td nowrap>@item.UserName</td>
-                                            <td nowrap>@item.Mobile</td>
-                                            <td nowrap>@item.Email</td>
-                                            <td nowrap>@item.RoleName</td>
-                                            <td nowrap>@item.CompanyName</td>
-                                            <td nowrap>
-                                                <a href="/AdministratorETS/AssignAccess?Id=@item.Id" class="btn btn-outline-success">
-                                                    Assign Access
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        Count++;
-                                    }
-                                }
-                            </tbody>
-                        </table>
                     </div>
-
                 </div>
+                <!-- Page-body end -->
             </div>
         </div>
     </div>
 </div>
+
 

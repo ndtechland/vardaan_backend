@@ -1,973 +1,466 @@
 ﻿@model VardaanCab.Domain.ViewModels.DashboardModel
 @{
     //Layout = @"~/Views/Shared/AdminLayout.cshtml";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
     //Layout = null;
 }
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet">
-<!-- Font Awesome CDN -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<!-- Bootstrap Icons CDN -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-<style>
+<div class="pcoded-inner-content">
+    <!-- Main-body start -->
+    <div class="main-body">
+        <div class="page-wrapper">
 
-    .card {
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        background-color: #fff;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
+            <div class="page-body">
+                <div class="row">
 
-    .card-header {
-        background-color: #eee;
-        padding: 10px 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #ddd;
-    }
+                    <!-- task, page, download counter  start -->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c-purple">₹30200</h4>
+                                        <h6 class="text-muted m-b-0">SOS Alerts</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fa fa-bar-chart f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-c-purple">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% change</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
 
-    .card-body {
-        padding: 15px;
-    }
-
-    .card-header i {
-        font-size: 20px;
-        margin-left: 10px;
-        cursor: pointer;
-    }
-</style>
-<div class="container-fluid">
-    <div class="row">
-        <!-- chart caard section start -->
-        <div class="col-sm-6 col-xxl-3 col-lg-6">
-            <div class="b-b-primary border-5 border-0 card o-hidden">
-                <div class="custome-1-bg b-r-4 card-body">
-                    <div class="media align-items-center static-top-widget">
-
-                        <div class="media-body p-0">
-                            <span class="m-0">SOS Alerts</span>
-                            <h4 class="mb-0 counter">
-                                6659
-                                <span class="badge badge-light-primary grow  ">
-                                    <i data-feather="trending-up">
-                                    </i>8.5%
-                                </span>
-                            </h4>
-
+                            </div>
                         </div>
-                        <div class="align-self-center text-center"><i data-feather="database"></i></div>
-
-
-
                     </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c-green">290+</h4>
+                                        <h6 class="text-muted m-b-0">Total Drop In Progress</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fa fa-file-text-o f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-c-green">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% change</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c-red">145</h4>
+                                        <h6 class="text-muted m-b-0">Total Pickup In Progress</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fa fa-calendar-check-o f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-c-red">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% change</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c-blue">500</h4>
+                                        <h6 class="text-muted m-b-0">Total Vehicles On Road</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fa fa-hand-o-down f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-c-blue">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% change</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- task, page, download counter  end -->
+                    <!--  sale analytics start -->
+                    <div class="col-xl-8 col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Sales Analytics</h5>
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div id="sales-analytics" style="height: 330px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Sales Prediction</h5>
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="row justify-content-end align-items-center">
+                                    <div class="col-md-6">
+                                        <h3>₹3987</h3>
+                                        <p class="text-muted m-b-5">25% Increased</p>
+                                        <h6>(160-180 Sales)</h6>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="sales-prediction-chart" style="height: 100px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Emails Sent</h5>
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="row justify-content-end align-items-center">
+                                    <div class="col-md-6">
+                                        <h6 id="opened" class="text-c-blue">520 Opened</h6>
+                                        <h6 id="unopened" class="text-c-red">70 Unopened</h6>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="emails-sentsales-chart" style="height: 100px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  sale analytics end -->
+                    <!--  application sale start -->
+                    <div class="col-xl-8 col-md-12">
+                        <div class="card table-card">
+                            <div class="card-header">
+                                <h5>Application Sales</h5>
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="table-responsive">
+                                    <table class="table table-hover  table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <div class="chk-option">
+                                                        <div class="checkbox-fade fade-in-primary">
+                                                            <label class="check-task">
+                                                                <input type="checkbox" value="">
+                                                                <span class="cr">
+                                                                    <i class="cr-icon fa fa-check txt-default"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    Application
+                                                </th>
+                                                <th>Sales</th>
+                                                <th>Change</th>
+                                                <th>Avg Price</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="chk-option">
+                                                        <div class="checkbox-fade fade-in-primary">
+                                                            <label class="check-task">
+                                                                <input type="checkbox" value="">
+                                                                <span class="cr">
+                                                                    <i class="cr-icon fa fa-check txt-default"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-inline-block align-middle">
+                                                        <h6>Able Pro</h6>
+                                                        <p class="text-muted m-b-0">Powerful Admin Theme</p>
+                                                    </div>
+                                                </td>
+                                                <td>16,300</td>
+                                                <td><canvas id="app-sale1" style="height:50px"></canvas></td>
+                                                <td>₹53</td>
+                                                <td class="text-c-blue">₹15,652</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="chk-option">
+                                                        <div class="checkbox-fade fade-in-primary">
+                                                            <label class="check-task">
+                                                                <input type="checkbox" value="">
+                                                                <span class="cr">
+                                                                    <i class="cr-icon fa fa-check txt-default"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-inline-block align-middle">
+                                                        <h6>Photoshop</h6>
+                                                        <p class="text-muted m-b-0">Design Software</p>
+                                                    </div>
+                                                </td>
+                                                <td>26,421</td>
+                                                <td><canvas id="app-sale2" style="height:50px"></canvas></td>
+                                                <td>₹35</td>
+                                                <td class="text-c-blue">₹18,785</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="chk-option">
+                                                        <div class="checkbox-fade fade-in-primary">
+                                                            <label class="check-task">
+                                                                <input type="checkbox" value="">
+                                                                <span class="cr">
+                                                                    <i class="cr-icon fa fa-check txt-default"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-inline-block align-middle">
+                                                        <h6>Guruable</h6>
+                                                        <p class="text-muted m-b-0">Best Admin Template</p>
+                                                    </div>
+                                                </td>
+                                                <td>8,265</td>
+                                                <td><canvas id="app-sale3" style="height:50px"></canvas></td>
+                                                <td>₹98</td>
+                                                <td class="text-c-blue">₹9,652</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="chk-option">
+                                                        <div class="checkbox-fade fade-in-primary">
+                                                            <label class="check-task">
+                                                                <input type="checkbox" value="">
+                                                                <span class="cr">
+                                                                    <i class="cr-icon fa fa-check txt-default"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-inline-block align-middle">
+                                                        <h6>Flatable</h6>
+                                                        <p class="text-muted m-b-0">Admin App</p>
+                                                    </div>
+                                                </td>
+                                                <td>10,652</td>
+                                                <td><canvas id="app-sale4" style="height:50px"></canvas></td>
+                                                <td>₹20</td>
+                                                <td class="text-c-blue">₹7,856</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="text-center">
+                                        <a href="#!" class=" b-b-primary text-primary">View all Projects</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>New Users</h5>
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <canvas id="newuserchart" height="200"></canvas>
+                            </div>
+                            <div class="card-footer ">
+                                <div class="row text-center b-t-default">
+                                    <div class="col-4 b-r-default m-t-15">
+                                        <h5>85%</h5>
+                                        <p class="text-muted m-b-0">Satisfied</p>
+                                    </div>
+                                    <div class="col-4 b-r-default m-t-15">
+                                        <h5>6%</h5>
+                                        <p class="text-muted m-b-0">Unsatisfied</p>
+                                    </div>
+                                    <div class="col-4 m-t-15">
+                                        <h5>9%</h5>
+                                        <p class="text-muted m-b-0">NA</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c-green">290+</h4>
+                                        <h6 class="text-muted m-b-0">Page Views</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fa fa-file-text-o f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-c-green">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% change</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  application sale end -->
+                    <!-- seo start -->
+                    <div class="col-xl-6 col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Allocation</h5>
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div id="allocation-map" style="height:250px"></div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div id="allocation-chart" style="height:250px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-md-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <h3>₹16,756</h3>
+                                        <h6 class="text-muted m-b-0">Visits<i class="fa fa-caret-down text-c-red m-l-10"></i></h6>
+                                    </div>
+                                    <div class="col-6">
+                                        <canvas id="seo-chart1" height="80px"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <h3>49.54%</h3>
+                                        <h6 class="text-muted m-b-0">Bounce Rate<i class="fa fa-caret-up text-c-green m-l-10"></i></h6>
+                                    </div>
+                                    <div class="col-6">
+                                        <canvas id="seo-chart2" height="80px"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <h3>1,62,564</h3>
+                                        <h6 class="text-muted m-b-0">Products<i class="fa fa-caret-down text-c-red m-l-10"></i></h6>
+                                    </div>
+                                    <div class="col-6">
+                                        <canvas id="seo-chart3" height="80px"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- seo end -->
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-xxl-3 col-lg-6">
-            <div class="b-b-danger border-5  border-0 card o-hidden">
-                <div class=" custome-2-bg  b-r-4 card-body">
-                    <div class="media static-top-widget">
 
-                        <div class="media-body p-0">
-                            <span class="m-0">Total Drop In Progress</span>
-                            <h4 class="mb-0 counter">
-                                9856
-                                <span class="badge badge-light-danger grow  ">
-                                    <i data-feather="trending-down">
-                                    </i>8.5%
-                                </span>
-                            </h4>
-
-                        </div>
-                        <div class="align-self-center text-center">
-                            <i data-feather="shopping-bag"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xxl-3 col-lg-6">
-            <div class="b-b-secondary border-5 border-0  card o-hidden">
-                <div class=" custome-3-bg b-r-4 card-body">
-                    <div class="media static-top-widget">
-
-                        <div class="media-body p-0">
-                            <span class="m-0">Total Pickup In Progress</span>
-                            <h4 class="mb-0 counter">
-                                893
-                                <span class="badge badge-light-secondary grow  ">
-                                    <i data-feather="trending-up">
-                                    </i>8.5%
-                                </span>
-                            </h4>
-
-                        </div>
-                        <div class="align-self-center text-center">
-                            <i data-feather="message-circle"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xxl-3 col-lg-6">
-            <div class="b-b-success border-5 border-0 card o-hidden">
-                <div class=" custome-4-bg b-r-4 card-body">
-                    <div class="media static-top-widget">
-
-                        <div class="media-body p-0">
-                            <span class="m-0">Total Vehicles On Road</span>
-                            <h4 class="mb-0 counter">
-                                45631
-                                <span class="badge badge-light-success grow">
-                                    <i data-feather="trending-down">
-                                    </i>8.5%
-                                </span>
-                            </h4>
-
-                        </div>
-                        <div class="align-self-center text-center">
-                            <i data-feather="user-plus"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- chart caard section start -->
-        <!-- New add on ui -->
-        <div class="col-xxl-12">
-            <div class="row">
-                <!-- Card 1 -->
-                <div class="col-xxl-4 col-lg-6 col-md-12">
-                    <div class="card" id="sos-card">
-                        <div class="card-header" style="background-color: #eee; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="margin-bottom: 0;">SOS Alert(s)-Status</span>
-
-                            <!-- Right-aligned Icons (X-cross, refresh, down-arrow) -->
-                            <div>
-                                <!-- X-Cross Icon -->
-                                <i class="fas fa-times" title="Close" onclick="closeCard('sos-card')"></i>
-
-                                <!-- Refresh Icon -->
-                                <i class="fas fa-sync-alt" title="Refresh" onclick="refreshCard('sos-card')"></i>
-
-                                <!-- Down Arrow Icon -->
-                                <i class="fas fa-arrow-down" title="Minimize" onclick="toggleMinimize('sos-card')"></i>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-right: 8px;">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z"></path>
-                                    </svg>
-                                    <span>SOS Alert</span>
-                                </div>
-                                <button class="btn btn-primary">0</button>
-                            </div> <br>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-right: 8px;">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z"></path>
-                                    </svg>
-                                    <span>Road Alert</span>
-                                </div>
-                                <button class="btn btn-primary">0</button>
-                            </div> <br>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-right: 8px;">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z"></path>
-                                    </svg>
-                                    <span>Road Alert</span>
-                                </div>
-                                <button class="btn btn-primary">0</button>
-                            </div> <br>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-right: 8px;">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z"></path>
-                                    </svg>
-                                    <span>Road Alert</span>
-                                </div>
-                                <button class="btn btn-primary">0</button>
-                            </div> <br>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="col-xxl-4 col-lg-6 col-md-12">
-                    <div class="card">
-                        <div class="card-header"
-                             style="background-color: #eee; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="margin-bottom: 0;">SOS Alert(s)-Status</span>
-
-                            <!-- Right-aligned Icons (X-cross, refresh, down-arrow) -->
-                            <div>
-                                <!-- X-Cross Icon -->
-                                <i class="fas fa-times"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Close"></i>
-
-                                <!-- Refresh Icon -->
-                                <i class="fas fa-sync-alt"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Refresh"></i>
-
-                                <!-- Down Arrow Icon -->
-                                <i class="fas fa-arrow-down"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Minimize"></i>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Total Planned Drops</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">576</button>
-                            </div> <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee Allocated To Cab</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">51</button>
-                            </div> <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee Dropped</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">80</button>
-                            </div> <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee No Show</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">31</button>
-                            </div> <br />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="col-xxl-4 col-lg-6 col-md-12">
-                    <div class="card">
-                        <div class="card-header"
-                             style="background-color: #eee; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="margin-bottom: 0;">SOS Alert(s)-Status</span>
-
-                            <!-- Right-aligned Icons (X-cross, refresh, down-arrow) -->
-                            <div>
-                                <!-- X-Cross Icon -->
-                                <i class="fas fa-times"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Close"></i>
-
-                                <!-- Refresh Icon -->
-                                <i class="fas fa-sync-alt"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Refresh"></i>
-
-                                <!-- Down Arrow Icon -->
-                                <i class="fas fa-arrow-down"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Minimize"></i>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Total Planned Pickups</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">510</button>
-                            </div>
-                            <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee Allocated To Cab</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">14</button>
-                            </div><br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee Picked</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">35</button>
-                            </div><br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee No Show</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">10</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <!-- Card 1 -->
-                <div class="col-xxl-4 col-lg-6 col-md-12">
-                    <div class="card">
-                        <div class="card-header"
-                             style="background-color: #eee; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="margin-bottom: 0;">SOS Alert(s)-Status</span>
-
-                            <!-- Right-aligned Icons (X-cross, refresh, down-arrow) -->
-                            <div>
-                                <!-- X-Cross Icon -->
-                                <i class="fas fa-times"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Close"></i>
-
-                                <!-- Refresh Icon -->
-                                <i class="fas fa-sync-alt"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Refresh"></i>
-
-                                <!-- Down Arrow Icon -->
-                                <i class="fas fa-arrow-down"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Minimize"></i>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">SOS Alert</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">0</button>
-                            </div> <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Road Alert</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">0</button>
-                            </div> <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Vehicle stoppage Alerts Alert</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">0</button>
-                            </div> <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Over speed Alerts</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">0</button>
-                            </div> <br />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="col-xxl-4 col-lg-6 col-md-12">
-                    <div class="card">
-                        <div class="card-header"
-                             style="background-color: #eee; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="margin-bottom: 0;">SOS Alert(s)-Status</span>
-
-                            <!-- Right-aligned Icons (X-cross, refresh, down-arrow) -->
-                            <div>
-                                <!-- X-Cross Icon -->
-                                <i class="fas fa-times"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Close"></i>
-
-                                <!-- Refresh Icon -->
-                                <i class="fas fa-sync-alt"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Refresh"></i>
-
-                                <!-- Down Arrow Icon -->
-                                <i class="fas fa-arrow-down"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Minimize"></i>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Total Planned Drops</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">576</button>
-                            </div> <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee Allocated To Cab</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">51</button>
-                            </div> <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee Dropped</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">80</button>
-                            </div> <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee No Show</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">31</button>
-                            </div> <br />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="col-xxl-4 col-lg-6 col-md-12">
-                    <div class="card">
-                        <div class="card-header"
-                             style="background-color: #eee; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="margin-bottom: 0;">SOS Alert(s)-Status</span>
-
-                            <!-- Right-aligned Icons (X-cross, refresh, down-arrow) -->
-                            <div>
-                                <!-- X-Cross Icon -->
-                                <i class="fas fa-times"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Close"></i>
-
-                                <!-- Refresh Icon -->
-                                <i class="fas fa-sync-alt"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Refresh"></i>
-
-                                <!-- Down Arrow Icon -->
-                                <i class="fas fa-arrow-down"
-                                   style="font-size: 20px; margin-left: 10px; cursor: pointer;"
-                                   title="Minimize"></i>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Total Planned Pickups</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">510</button>
-                            </div>
-                            <br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee Allocated To Cab</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">14</button>
-                            </div><br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee Picked</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">35</button>
-                            </div><br />
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <!-- SOS Icon with margin-right for spacing -->
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" class="me-2" style="margin-right: 8px; ">
-                                        <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                        </path>
-                                    </svg>
-                                    <!-- SOS Text with margin-left for spacing -->
-                                    <span style="margin-left: 1px;">Employee No Show</span>
-                                </div>
-
-                                <!-- Button with count -->
-                                <button class="btn btn-primary" style="padding: 5px 10px;">10</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div id="styleSelector">
 
         </div>
-        <!-- New add on ui End -->
-        <!-- visitors chart  start-->
-        <div class="col-xl-4">
-            <div class="h-100">
-                <div class="card o-hidden  ">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div class="card-header-title">
-                                <h4>Visitors </h4>
-
-                            </div>
-                            <div class="dropdown">
-                                <button class="btn dropdown-toggle" id="dropdownMenuButton"
-                                        type="button" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                    Weekly
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end"
-                                     aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item"
-                                       href="#">Weekly</a><a class="dropdown-item"
-                                                             href="#">Monthly</a><a class="dropdown-item" href="#">Yearly</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body ">
-                        <div class="pie-chart">
-                            <div id="pie-chart-visitors"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- visitors chart  end-->
-        <!-- Earning chart  star-->
-        <div class="col-xl-8">
-            <div class="card o-hidden ">
-                <div class="card-header">
-
-                    <div class="card-header-title">
-                        <h4>Earning </h4>
-                    </div>
-                    <div class="card-body p-0">
-                        <div id="bar-chart-earning"></div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- Earning chart  end-->
-        <!-- Booking history  start-->
-        <div class="col-xxl-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-header-title">
-                        <h5>Booking History</h5>
-
-                    </div>
-
-
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive ">
-                        <table class=" dashboard-table table border-0 ">
-
-                            <tbody>
-                                <tr>
-                                    <td><img src="~/adminassets/images/tours/1.jpg" alt="tour 1"></td>
-                                    <td>
-                                        <span class="fw-500">
-                                            Hot Air
-                                            Balloon
-                                        </span><span>Egyptair</span>
-                                    </td>
-                                    <td><span> 10 Night </span></td>
-                                    <td>
-                                        <span>
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                 width="24" height="24" viewBox="0 0 24 24">
-                                                <title>flight_takeoff</title>
-                                                <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                                </path>
-                                            </svg>02 November
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span></span>
-                                        <span>25h 10m (2 stop)</span>
-                                    </td>
-                                    <td>
-                                        <span>
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                 width="24" height="24" viewBox="0 0 24 24">
-                                                <title>flight_land</title>
-                                                <path d="M14.016 14.438q-3.844-1.078-9.656-2.578l-1.594-0.469v-5.156l1.453 0.375 0.938 2.344 4.969 1.313v-8.25l1.922 0.516 2.766 9 5.297 1.406q0.609 0.188 0.914 0.727t0.164 1.148q-0.188 0.609-0.703 0.891t-1.125 0.141zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                                </path>
-                                            </svg>03 November
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-primary">Active</span>
-                                    </td>
-                                    <td>
-                                        <span>$900</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src="~/adminassets/images/tours/2.jpg" alt="tour 2"></td>
-                                    <td><span> Cool Water Ride</span><span>chine</span></td>
-                                    <td><span> 25 Night </span></td>
-                                    <td>
-                                        <span>
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                 width="24" height="24" viewBox="0 0 24 24">
-                                                <title>flight_takeoff</title>
-                                                <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                                </path>
-                                            </svg>04 march
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span></span>
-                                        <span>10h 20m (1 stop)</span>
-                                    </td>
-                                    <td>
-                                        <span>
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                 width="24" height="24" viewBox="0 0 24 24">
-                                                <title>flight_land</title>
-                                                <path d="M14.016 14.438q-3.844-1.078-9.656-2.578l-1.594-0.469v-5.156l1.453 0.375 0.938 2.344 4.969 1.313v-8.25l1.922 0.516 2.766 9 5.297 1.406q0.609 0.188 0.914 0.727t0.164 1.148q-0.188 0.609-0.703 0.891t-1.125 0.141zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                                </path>
-                                            </svg>05 march
-                                        </span>
-                                    </td>
-                                    <td><span class="badge badge-secondary">Booked</span>
-                                    <td>
-                                        <span>$900</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src="~/adminassets/images/tours/3.jpg" alt=""></td>
-                                    <td>
-                                        <span class="fw-500">
-                                            Tour of
-                                            Shimala
-                                        </span><span>India</span>
-                                    </td>
-                                    <td><span> 15 Night </span></td>
-                                    <td>
-                                        <span>
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                 width="24" height="24" viewBox="0 0 24 24">
-                                                <title>flight_takeoff</title>
-                                                <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                                </path>
-                                            </svg>03 November
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span></span>
-                                        <span>30h 20m (2 stop)</span>
-                                    </td>
-                                    <td>
-                                        <span>
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                 width="24" height="24" viewBox="0 0 24 24">
-                                                <title>flight_land</title>
-                                                <path d="M14.016 14.438q-3.844-1.078-9.656-2.578l-1.594-0.469v-5.156l1.453 0.375 0.938 2.344 4.969 1.313v-8.25l1.922 0.516 2.766 9 5.297 1.406q0.609 0.188 0.914 0.727t0.164 1.148q-0.188 0.609-0.703 0.891t-1.125 0.141zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                                </path>
-                                            </svg>03 November
-                                        </span>
-                                    </td>
-                                    <td><span class="badge badge-primary">Active</span>
-                                    <td>
-                                        <span>$1500</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src="~/adminassets/images/tours/4.jpg" alt=""></td>
-                                    <td>
-                                        <span class="fw-500"> Beautiful Bali</span><span>Us</span>
-                                    </td>
-                                    <td><span> 14 Night </span></td>
-                                    <td>
-                                        <span>
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                 width="24" height="24" viewBox="0 0 24 24">
-                                                <title>flight_takeoff</title>
-                                                <path d="M22.078 9.656q0.141 0.609-0.164 1.125t-0.914 0.703q-5.813 1.547-9.656 2.578l-5.297 1.406-1.594 0.469-2.625-4.5 1.453-0.375 1.969 1.5 4.969-1.313-4.125-7.172 1.922-0.516 6.891 6.422 5.344-1.406q0.609-0.188 1.148 0.141t0.68 0.938zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                                </path>
-                                            </svg>02 November
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span></span>
-                                        <span>30h 20m (1 stop)</span>
-                                    </td>
-                                    <td>
-                                        <span>
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                 width="24" height="24" viewBox="0 0 24 24">
-                                                <title>flight_land</title>
-                                                <path d="M14.016 14.438q-3.844-1.078-9.656-2.578l-1.594-0.469v-5.156l1.453 0.375 0.938 2.344 4.969 1.313v-8.25l1.922 0.516 2.766 9 5.297 1.406q0.609 0.188 0.914 0.727t0.164 1.148q-0.188 0.609-0.703 0.891t-1.125 0.141zM2.484 18.984h19.031v2.016h-19.031v-2.016z">
-                                                </path>
-                                            </svg>02 November
-                                        </span>
-                                    </td>
-                                    <td><span class="badge badge-secondary">Booked</span>
-                                    <td>
-                                        <span>$1200</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Booking history  end-->
-        <!-- datepicker start -->
-        @*<div class="col-lg-6 col-xxl-4">
-                <div class="datepicker-dashboard">
-                    <div class="datepicker-here" data-language="en"></div>
-                </div>
-            </div>*@
-        <!-- datepicker start -->
-
     </div>
 </div>
-@*<link href="/css/component.css" rel="stylesheet" />
-    <link href="/css/style_grid.css" rel="stylesheet" />
-    <link href="/css/font-awesome.css" rel="stylesheet">
-    <!DOCTYPE html>
-    <head>
-        <style>
-            .containerDiv {
-      width:100%;
-      /*height:650px;
-      margin: auto;
-      border:1px solid;*/
-    }
-     .btnLogout {
-     background-color: #008CBA;/* Blue */
-      border: none;
-      color: white;
-
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-      width:20%;
-    }
-        </style>
-    </head>
-    <body>
-
-    <div class="containerDiv">
-        <div class="row">
-            <div class="col-sm-4">
-                <h2>Dashboard</h2>
-            </div>
-            @if (Session["uEmail"] == null)
-            {
-                Response.Redirect("/Admin/Login");
-            }
-            else
-            {
-                <div class="col-sm-4"><h3>Welcome : @Session["uEmail"].ToString()</h3></div>
-            }
-
-            <div class="col-sm-4">
-                <a href="/Admin/Logout" class="btnLogout"><i class="fa fa-lock"></i> Logout</a>
-            </div>
-        </div>
-                    <div class="agile_top_w3_grids">
-                        <ul class="ca-menu">
-                          @foreach (var item in Model.Data)
-                          {
-                            <li>
-                                <a href="/admin/Submenu?menuId=@item.Id">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
-                                    <div class="ca-content">
-                                        <h3 class="ca-sub">@item.Title</h3>
-                                    </div>
-                                </a>
-                            </li>
-                          }
-                        </ul>
-                    </div>
-      </div>
-    </body>*@
-
-
-<script>
-    function closeCard(cardId) {
-        const card = document.getElementById(cardId);
-        if (card) {
-            card.style.display = 'none'; 
-        }
-    }
-
-    function refreshCard(cardId) {
-        console.log(`Refreshing card with ID: ${cardId}`);
-        alert("Card refreshed!");
-    }
-
-    function toggleMinimize(cardId) {
-        const card = document.getElementById(cardId);
-        const cardBody = card.querySelector('.card-body');
-        if (cardBody) {
-            cardBody.style.display = cardBody.style.display === 'none' ? 'block' : 'none';
-        }
-    }
-</script>

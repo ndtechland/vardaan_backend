@@ -450,7 +450,7 @@ namespace VardaanCab.Controllers
                 var user = ent.UserLogins.Find(id);
                 if (user.Password != model.OldPassword)
                 {
-                    TempData["msg"] = "Old password is incorrect";
+                    TempData["errormsg"] = "Old password is incorrect";
                     return View(model);
                 }
                 user.Password = model.NewPassword;
@@ -461,7 +461,7 @@ namespace VardaanCab.Controllers
             }
             catch (Exception ex)
             {
-                TempData["msg"] = "Server error";
+                TempData["errormsg"] = "Server error";
             }
             return RedirectToAction("ChangePassword");
         }
