@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using NPOI.SS.Formula.Functions;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using Org.BouncyCastle.Asn1.Mozilla;
@@ -212,120 +213,6 @@ namespace VardaanCab.Controllers
             }
         }
 
-        //public ActionResult ExportToExcel()
-        //{
-        //    // Create DataTable and add columns
-        //    DataTable dt = new DataTable();
-        //    dt.Columns.Add("EmployeeId");
-        //    dt.Columns.Add("Company");//customer
-        //    dt.Columns.Add("RequestStartDate");
-        //    dt.Columns.Add("RequestEndDate");
-        //    dt.Columns.Add("TripType");//triptype
-        //    dt.Columns.Add("ShiftType");//tripmaster
-        //    dt.Columns.Add("PickUpTime"); //shiftmaster id(1)                      
-        //    dt.Columns.Add("DropTime");//shiftmaster id(2)  
-
-
-
-
-        //    //dt.Rows.Add("9169442654", 2768, "2024-12-01", "2024-12-03", 1, 1, 3, 0 );
-        //    //dt.Rows.Add("9169448743", 2768, "2024-12-02", "2024-12-04", 2, 1, 0, 15 );
-        //    //dt.Rows.Add("6785448743", 2768, "2024-12-02", "2024-12-04", 3, 1, 3, 15 );
-
-        //    // Create Excel workbook using ClosedXML
-        //    using (var workbook = new XLWorkbook())
-        //    {
-        //        // Add DataTable as a worksheet
-
-        //        var worksheet = workbook.Worksheets.Add("Employee Request Data");
-        //        worksheet.Cell(1, 1).InsertTable(dt);
-        //        var hiddenSheet = workbook.Worksheets.Add("CompanyList");
-        //        var hiddenTripTypeListSheet = workbook.Worksheets.Add("TripTypeList");
-        //        var hiddenShiftTypeSheet = workbook.Worksheets.Add("ShiftTypeList");
-        //        var hiddenPickuptimeSheet = workbook.Worksheets.Add("PickuptimeList");
-        //        var hiddenDroptimeSheet = workbook.Worksheets.Add("DroptimeList");
-
-        //        var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
-        //        var TriptypeList = ent.TripTypes.Where(x => x.TripMasterId == 1).ToList();
-        //        var ShiftTypeList = ent.TripMasters.Where(x => x.Id == 1).ToList();
-        //        var PickupTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList();
-        //        var DropTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList();
-
-        //        //for company
-        //        int hiddenRow = 1;
-        //        foreach (var company in companyList.OrderByDescending(x => x.Id))
-        //        {
-        //            hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
-        //        }
-        //        var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
-
-        //        //Apply dropdown list validation to cell A2(under "Company ID")
-        //        var validationOne = worksheet.Cell(2, 2).DataValidation;
-        //        validationOne.List(companyRange); // Dropdown from hidden sheet
-        //        validationOne.IgnoreBlanks = true;
-        //        validationOne.InCellDropdown = true;
-
-        //        //for TripType
-        //        hiddenRow = 1;
-        //        foreach (var triptype in TriptypeList.OrderByDescending(x => x.Id))
-        //        {
-        //            hiddenTripTypeListSheet.Cell(hiddenRow++, 1).Value = triptype.TripTypeName;
-        //        }
-        //        var TripTypeRange = hiddenTripTypeListSheet.Range($"A1:A{TriptypeList.Count}");
-
-        //        var validationtriptypeOne = worksheet.Cell(2, 5).DataValidation;
-        //        validationtriptypeOne.List(TripTypeRange); // Dropdown from hidden sheet
-        //        validationtriptypeOne.IgnoreBlanks = true;
-        //        validationtriptypeOne.InCellDropdown = true;
-
-        //        //for ShiftType
-        //        hiddenRow = 1;
-        //        foreach (var shifttype in ShiftTypeList.OrderByDescending(x => x.Id))
-        //        {
-        //            hiddenShiftTypeSheet.Cell(hiddenRow++, 1).Value = shifttype.TripName;
-        //        }
-        //        var ShiftTypeRange = hiddenShiftTypeSheet.Range($"A1:A{ShiftTypeList.Count}");
-
-        //        var validationShiftTypeOne = worksheet.Cell(2, 6).DataValidation;
-        //        validationShiftTypeOne.List(ShiftTypeRange);
-        //        validationShiftTypeOne.IgnoreBlanks = true;
-        //        validationShiftTypeOne.InCellDropdown = true;
-
-        //        //for Pickup time
-        //        hiddenRow = 1;
-        //        foreach (var pickuptime in PickupTimeList.OrderByDescending(x => x.Id))
-        //        {
-        //            hiddenPickuptimeSheet.Cell(hiddenRow++, 1).Value = pickuptime.ShiftTime;
-        //        }
-        //        var PickuptimeRange = hiddenPickuptimeSheet.Range($"A1:A{PickupTimeList.Count}");
-
-        //        var validationPickuptimeOne = worksheet.Cell(2, 7).DataValidation;
-        //        validationPickuptimeOne.List(PickuptimeRange);
-        //        validationPickuptimeOne.IgnoreBlanks = true;
-        //        validationPickuptimeOne.InCellDropdown = true;
-        //        //for DRop time
-        //        hiddenRow = 1;
-        //        foreach (var droptime in DropTimeList.OrderByDescending(x => x.Id))
-        //        {
-        //            hiddenDroptimeSheet.Cell(hiddenRow++, 1).Value = droptime.ShiftTime;
-        //        }
-        //        var DroptimeRange = hiddenDroptimeSheet.Range($"A1:A{DropTimeList.Count}");
-
-        //        var validationDroptimeOne = worksheet.Cell(2, 8).DataValidation;
-        //        validationDroptimeOne.List(DroptimeRange);
-        //        validationDroptimeOne.IgnoreBlanks = true;
-        //        validationDroptimeOne.InCellDropdown = true;
-
-        //        // Set response for Excel download
-        //        using (var stream = new System.IO.MemoryStream())
-        //        {
-        //            workbook.SaveAs(stream);
-        //            stream.Position = 0;
-        //            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeRequestData.xlsx");
-        //        }
-        //    }
-        //}
-
         public ActionResult ExportToExcel()
         {
             // Create DataTable and add columns
@@ -477,7 +364,7 @@ namespace VardaanCab.Controllers
                                 DateTime? endRequestDate = string.IsNullOrEmpty(enddatevalue) ? (DateTime?)null : DateTime.Parse(enddatevalue);
                                 var employeeId = row.Cell(1).GetValue<string>() ?? string.Empty;
 
-                                // Employee validation
+                               
                                 if (!string.IsNullOrEmpty(employeeId))
                                 {
                                     var empinfo = ent.Employees.FirstOrDefault(e => e.IsActive == true && e.Employee_Id == employeeId);
@@ -493,16 +380,31 @@ namespace VardaanCab.Controllers
                                     }
                                 }
 
-                                // Request dates validation
-                                if (TripTypeName == "BOTH" && endRequestDate < startRequestDate)
+                                if (TripTypeName == "BOTH")
                                 {
-                                    excelErrorModels.Add(new ExcelErrorModel
+                                    if (startRequestDate == null || endRequestDate == null)
                                     {
-                                        ErrorType = "Request Dates",
-                                        AffectedRow = count,
-                                        Description = "End Request Date cannot be earlier than Start Request Date."
-                                    });
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = TripTypeName,
+                                            AffectedRow = count,
+                                            Description = $"For {TripTypeName} trip type, both Start and End dates are mandatory."
+                                        });
+                                    }
+
+                                    
+                                    if (endRequestDate < startRequestDate)
+                                    {
+                                        excelErrorModels.Add(new ExcelErrorModel
+                                        {
+                                            ErrorType = "Request Dates",
+                                            AffectedRow = count,
+                                            Description = "End Request Date cannot be earlier than Start Request Date."
+                                        });
+                                    }
                                 }
+
+                                
 
                                 if (TripTypeName == "PICKUP" || TripTypeName == "DROP")
                                 {
@@ -526,7 +428,7 @@ namespace VardaanCab.Controllers
                                     }
                                 }
 
-                                // Create EmployeeRequest
+                                
                                 EmployeeRequest employeereq = new EmployeeRequest
                                 {
                                     EmployeeId = employeeId,
@@ -555,14 +457,14 @@ namespace VardaanCab.Controllers
                             }
                         }
 
-                        // Save valid requests
+                       
                         if (emprequest.Any())
                         {
                             ent.EmployeeRequests.AddRange(emprequest);
                             ent.SaveChanges();
                         }
 
-                        // Handle errors
+                       
                         if (excelErrorModels.Any())
                         {
                             TempData["HasErrors"] = true;
@@ -585,115 +487,6 @@ namespace VardaanCab.Controllers
             }
         }
 
-
-        //public ActionResult ImportEmployeeRequestData(HttpPostedFileBase file)
-        //{
-        //    try
-        //    {
-        //        // Check if a file is uploaded
-        //        if (file != null && file.ContentLength > 0)
-        //        {
-        //            using (var workbook = new XLWorkbook(file.InputStream))
-        //            {
-
-        //                var worksheet = workbook.Worksheet(1);
-        //                var rows = worksheet.RowsUsed().Skip(1);
-        //                List<EmployeeRequest> emprequest = new List<EmployeeRequest>();
-
-        //                List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
-        //                var count = 0;
-        //                foreach (var row in rows)
-        //                {
-        //                    count++;
-
-        //                    string CompanyName = row.Cell(2).GetValue<string>(); 
-        //                    string TripTypeName = row.Cell(5).GetValue<string>();
-        //                    string ShiftTypeName = row.Cell(6).GetValue<string>();
-        //                    string PickupShiftTimeName = row.Cell(7).GetValue<string>();
-        //                    string DropShiftTimeName = row.Cell(8).GetValue<string>();
-        //                    DateTime startRequestDate = row.Cell(3).GetValue<DateTime>();
-        //                    DateTime endRequestDate = row.Cell(4).GetValue<DateTime>();
-        //                    var employeeId = row.Cell(1).GetValue<string>() ?? string.Empty;
-
-        //                    if (employeeId != null)
-        //                    {
-        //                        var empinfo = ent.Employees.Where(e => e.IsActive == true && e.Employee_Id == employeeId).FirstOrDefault();
-
-        //                        if (empinfo == null)
-        //                        {
-        //                            excelErrorModels.Add(new ExcelErrorModel
-        //                            {
-        //                                ErrorType = "Employee Id",
-        //                                AffectedRow = count,
-        //                                Description = $"Please register as an employee first with employee id {employeeId}."
-        //                            });                                    
-        //                        }
-        //                    }
-        //                    if(TripTypeName=="BOTH")
-        //                    {
-        //                        if (endRequestDate < startRequestDate)
-        //                        {
-        //                            excelErrorModels.Add(new ExcelErrorModel
-        //                            {
-        //                                ErrorType = "Request Dates",
-        //                                AffectedRow = count,
-        //                                Description = "End Request Date cannot be earlier than Start Request Date."
-        //                            });
-        //                        }
-        //                    }
-
-        //                    if (excelErrorModels.Count > 0)
-        //                    {
-        //                        TempData["HasErrors"] = true;
-        //                        TempData["ExcelErrors"] = Newtonsoft.Json.JsonConvert.SerializeObject(excelErrorModels);
-        //                        return RedirectToAction("CreateRequest");
-        //                    }
-        //                    EmployeeRequest employeereq = new EmployeeRequest
-        //                    {
-        //                        EmployeeId = row.Cell(1).GetValue<string>() ?? string.Empty,
-        //                        CompanyId = string.IsNullOrEmpty(CompanyName) == null ? 0 : ent.Customers.Where(x =>x.CompanyName.ToLower() == CompanyName.ToLower()).FirstOrDefault().Id,
-        //                        StartRequestDate = row.Cell(3).GetValue<DateTime>(),
-        //                        EndRequestDate = row.Cell(4).GetValue<DateTime>(),
-        //                        TripType = string.IsNullOrEmpty(TripTypeName) == null ? 0 : ent.TripTypes.Where(x => x.TripTypeName.ToLower() == TripTypeName.ToLower()).FirstOrDefault().Id,
-        //                        ShiftType = string.IsNullOrEmpty(ShiftTypeName) == null ? 0 : ent.TripMasters.Where(x => x.TripName.ToLower() == ShiftTypeName.ToLower()).FirstOrDefault().Id,
-
-        //                        PickupShiftTimeId = row.Cell(7).GetValue<int>(),
-        //                        //PickupShiftTimeId = string.IsNullOrEmpty(PickupShiftTimeName) == null ? 0 : ent.ShiftMasters.Where(x => x.ShiftTime.ToLower() == PickupShiftTimeName.ToLower() && x.TripTypeId==1).FirstOrDefault().Id,
-        //                        //DropShiftTimeId = string.IsNullOrEmpty(DropShiftTimeName) == null ? 0 : ent.ShiftMasters.Where(x => x.ShiftTime.ToLower() == DropShiftTimeName.ToLower() && x.TripTypeId ==2).FirstOrDefault().Id,
-        //                        DropShiftTimeId = row.Cell(8).GetValue<int>(),
-        //                        RequestType= "EMPLOYEE",
-        //                        CreatedDate = DateTime.Now
-        //                    };
-
-
-        //                    emprequest.Add(employeereq);
-        //                }
-        //                if (emprequest.Any())
-        //                {
-        //                    ent.EmployeeRequests.AddRange(emprequest);
-        //                    ent.SaveChanges();
-        //                }
-        //                TempData["dltmsg"] = "Data imported successfully!";
-        //                return RedirectToAction("EmployeeRequestList");
-        //            }
-        //        }
-        //        ViewBag.Message = "Please select an Excel file to import.";
-        //        return View();
-        //    }
-        //    catch (DbEntityValidationException ex)
-        //    {
-        //        foreach (var validationError in ex.EntityValidationErrors)
-        //        {
-        //            foreach (var error in validationError.ValidationErrors)
-        //            {
-        //                // Log or output the validation errors
-        //                Console.WriteLine($"Property: {error.PropertyName}, Error: {error.ErrorMessage}");
-        //            }
-        //        }
-        //        ViewBag.Message = "Validation failed for one or more entities. Please check the logs for more details.";
-        //        return View();
-        //    }
-        //}        
 
         public ActionResult Routing()
         {
@@ -735,8 +528,12 @@ namespace VardaanCab.Controllers
 
                     if (EmployeeReqList != null && EmployeeReqList.Any())
                     {
-                        List<dynamic> Cab4List = new List<dynamic>();
-                        List<dynamic> Cab6List = new List<dynamic>();
+                        List<dynamic> AllRoutes = new List<dynamic>();
+                        int cabCounter = 1001; // Initialize counter for unique cab numbers
+
+                        // Define the proximity radius for 100 meters
+                        double proximityRadiusLat = 100 / 111000.0; // ~0.0009 degrees for latitude
+                        double proximityRadiusLong = 100 / (111000.0 * Math.Cos(DegreesToRadians(0))); // Adjust dynamically for longitude
 
                         foreach (var request in EmployeeReqList)
                         {
@@ -749,9 +546,8 @@ namespace VardaanCab.Controllers
                                 double empLat = (double)Emp.Latitude;
                                 double empLong = (double)Emp.Longitude;
 
-                                // Calculate proximity radius for 100 meters
-                                double proximityRadiusLat = 100 / 111000.0; // ~0.0009 degrees for latitude
-                                double proximityRadiusLong = 100 / (111000.0 * Math.Cos(DegreesToRadians(empLat))); // Adjusted for longitude
+                                // Adjust longitude proximity radius for employee's latitude
+                                proximityRadiusLong = 100 / (111000.0 * Math.Cos(DegreesToRadians(empLat)));
 
                                 // Get matching routes
                                 var MatchingRoutes = (from cz in ent.CompanyZones
@@ -766,58 +562,96 @@ namespace VardaanCab.Controllers
                                                           chz.Longitude
                                                       }).ToList();
 
+                                bool isAssigned = false;
+
                                 if (MatchingRoutes.Any())
                                 {
-                                    // Find nearest routes and group employees
                                     foreach (var route in MatchingRoutes)
                                     {
                                         double routeLat = (double)route.Latitude;
                                         double routeLong = (double)route.Longitude;
 
-                                        // Calculate the distance between employee's location and the route's location
-                                        double distance = GetDistance(empLat, empLong, routeLat, routeLong);
-
                                         // Check if the route is within the 100-meter proximity
                                         if (Math.Abs(routeLat - empLat) <= proximityRadiusLat &&
                                             Math.Abs(routeLong - empLong) <= proximityRadiusLong)
                                         {
-                                            // Add to cab assignment list
-                                            if (Cab4List.Count < 4)
+                                            // Check existing routes and group employees
+                                            var CurrentGroup = AllRoutes
+                                                .FirstOrDefault(r => r.RouteId == route.Id)?.Employees as List<dynamic>;
+
+                                            if (CurrentGroup == null)
                                             {
-                                                Cab4List.Add(new
+                                                CurrentGroup = new List<dynamic>();
+                                                AllRoutes.Add(new
                                                 {
-                                                    EmployeeId = Emp.Employee_Id,
-                                                    EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
-                                                    Distance = distance,
-                                                    CabType = "Cab-4",
-                                                    RouteId = route.Id
+                                                    RouteId = route.Id,
+                                                    RouteName = route.HomeRouteName,
+                                                    Employees = CurrentGroup
                                                 });
                                             }
-                                            else if (Cab6List.Count < 6)
+
+                                            CurrentGroup.Add(new
                                             {
-                                                Cab6List.Add(new
-                                                {
-                                                    EmployeeId = Emp.Employee_Id,
-                                                    EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
-                                                    Distance = distance,
-                                                    CabType = "Cab-6",
-                                                    RouteId = route.Id
-                                                });
+                                                EmployeeId = Emp.Employee_Id,
+                                                EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
+                                                Latitude = empLat,
+                                                Longitude = empLong
+                                            });
+
+                                            // Assign cab type based on group size
+                                            if (CurrentGroup.Count == 1 || CurrentGroup.Count <= 4)
+                                            {
+                                                string cabNumber = $"Dummy10GB{cabCounter++}";
+                                                CurrentGroup.ForEach(e => e.CabType = "Cab-4");
+                                                CurrentGroup.ForEach(e => e.CabNumber = cabNumber);
                                             }
+                                            else if (CurrentGroup.Count <= 6)
+                                            {
+                                                string cabNumber = $"Dummy10GB{cabCounter++}";
+                                                CurrentGroup.ForEach(e => e.CabType = "Cab-6");
+                                                CurrentGroup.ForEach(e => e.CabNumber = cabNumber);
+                                            }
+
+                                            isAssigned = true;
+                                            break;
                                         }
                                     }
+                                }
+
+                                // If the employee doesn't match any route, assign a new cab (4-seater) for them
+                                if (!isAssigned)
+                                {
+                                    string cabNumber = $"Dummy10GB{cabCounter++}";
+                                    AllRoutes.Add(new
+                                    {
+                                        RouteId = Guid.NewGuid().ToString(), // Use a unique identifier for this route
+                                        RouteName = $"Individual Route for {Emp.Employee_Id}",
+                                        Employees = new List<dynamic>
+                        {
+                            new
+                            {
+                                EmployeeId = Emp.Employee_Id,
+                                EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
+                                Latitude = empLat,
+                                Longitude = empLong,
+                                CabType = "Cab-4",
+                                CabNumber = cabNumber
+                            }
+                        }
+                                    });
                                 }
                             }
                         }
 
-                        // Serialize the cab lists to JSON if needed for further processing or saving
-                        var JsonCab4List = new JavaScriptSerializer().Serialize(Cab4List);
-                        var JsonCab6List = new JavaScriptSerializer().Serialize(Cab6List);
+                        // Serialize all routes to JSON for further processing or saving
+                        var JsonAllRoutes = new JavaScriptSerializer().Serialize(AllRoutes);
 
-                        // Cab4List and Cab6List now contain the assignments.
-                        // You can save these lists or process them further as needed.
+                        // AllRoutes now contains the cab assignments.
+                        // You can save these or process them further as needed.
                     }
                 }
+
+
 
 
                 ViewBag.BtnTXT = "Create Routing";

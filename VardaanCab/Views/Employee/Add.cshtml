@@ -494,6 +494,7 @@
                             </div>
                         </div>
 
+
                     </div>
                 </div>
                 <!-- Page body end -->
@@ -540,7 +541,7 @@
                 <table id="errorTable" class="datatable table table-striped">
                     <thead>
                         <tr>
-                            <th>Affected Row</th>
+                            <th>Row</th>
                             <th>Error Type</th>
                             <th>Description</th>
 
@@ -561,9 +562,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const hasErrors = '@TempData["HasErrors"]' === 'True';
+            const hasErrors = '@Session["HasErrors"]' === 'True';
             if (hasErrors) {
-                const errorData = JSON.parse('@Html.Raw(TempData["ExcelErrors"])');
+                const errorData = JSON.parse('@Html.Raw(Session["ExcelErrors"])');
                 const errorTable = document.getElementById("errorTable").querySelector("tbody");
 
                 // Populate the table with error data
