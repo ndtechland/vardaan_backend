@@ -101,7 +101,36 @@
         width: 345px;
     }
 </style>
+<style>
+    .loader-block {
+        width: 120px;
+        height: 120px;
+        /*animation: spin 2s linear infinite;*/
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        display: none;
+    }
 
+    .overlay {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /*background-color: rgba(0, 0, 0, 0.5);*/ /* Adjust opacity as needed */
+        z-index: 9998;
+    }
+
+    .blurred {
+        filter: blur(1px);
+    }
+</style>
 @*<style>
         .dropdown-menu {
             padding: 10px;
@@ -160,7 +189,7 @@
     </style>*@
 
 
-<div class="pcoded-content">
+<div class="pcoded-content" id="pcoded-content">
 
     <!-- Page-header end -->
     <div class="pcoded-inner-content">
@@ -209,7 +238,7 @@
                                         {
                                             <div class="d-flex align-items-center ml-3">
                                                 <input type="file" class="form-control-file mr-2" name="file" required style="width: 200px;" />
-                                                <button type="submit" class="btn btn-primary btn-sm">Import</button>
+                                                <button type="submit" class="btn btn-primary btn-sm" id="BtnImport">Import</button>
                                             </div>
                                         }
                                     </div>
@@ -502,9 +531,25 @@
         </div>
     </div>
 </div>
- 
+<div class="overlay" id="overlay"></div>
+    <div class="loader-block" id="loader-block">
+        <div class="preloader6">
+            <hr>
+        </div>
+    </div>
 <!--End new-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).on("click", "#BtnImport", function () {
+        document.getElementById('loader-block').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('pcoded-content').classList.add('blurred');
+    })
+    document.getElementById('loader-block').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('pcoded-content').classList.remove('blurred');
+</script>
 <script>
     $(document).ready(function () {
         $("#myForm").submit(function (e) {
