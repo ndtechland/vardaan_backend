@@ -284,52 +284,28 @@
                                                         </div>
 
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="guestpart">
-                                                                <label class="form-label-title ">Location Types</label>
-                                                                <select name="LocationType" id="locationType" class="form-control">
-                                                                    <option value="">Select Location Type</option>
-                                                                    <option value="Multiple Location" @(Model.LocationType == "Multiple Location" ? "selected" : "")>Multiple Location</option>
-                                                                    <option value="Single Location" @(Model.LocationType == "Single Location" ? "selected" : "")>Single Location</option>
-                                                                </select>
-                                                            </div>
 
+                                                    <div class="col-md-6">
+                                                        <div class="guestpart">
+                                                            <label class="form-label-title ">Location Types</label>
+                                                            <select name="LocationType" id="locationType" class="form-control">
+                                                                <option value="">Select Location Type</option>
+                                                                <option value="Multiple Location" @(Model.LocationType == "Multiple Location" ? "selected" : "")>Multiple Location</option>
+                                                                <option value="Single Location" @(Model.LocationType == "Single Location" ? "selected" : "")>Single Location</option>
+                                                            </select>
                                                         </div>
-                                                        
-                                                            <div class="col-md-6">
-                                                                <div class="guestpart">
-                                                                    <label class="form-label-title ">Location Types</label>
-                                                                    <select name="LocationType" id="locationType" class="form-control">
-                                                                        <option value="">Select Location Type</option>
-                                                                        <option value="Multiple Location" @(Model.LocationType == "Multiple Location" ? "selected" : "")>Multiple Location</option>
-                                                                        <option value="Single Location" @(Model.LocationType == "Single Location" ? "selected" : "")>Single Location</option>
-                                                                    </select>
-                                                                </div>
 
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="guestpart">
-                                                                    <div id="smstriggerlocation">
-                                                                        <label class="form-label-title ">SMS Triggered Location</label>
-                                                                        @Html.TextBoxFor(a => a.SMSTriggeredLocation, new { @class = "form-control" })
-                                                                    </div>
-                                                        <div class="col-md-6">
-                                                            <div class="guestpart">
-                                                                <div id="smstriggerlocation">
-                                                                    <label class="form-label-title ">SMS Triggered Location</label>
-                                                                    @Html.TextBoxFor(a => a.SMSTriggeredLocation, new { @class = "form-control" })
-                                                                </div>
-                                                            </div>
-                                                    
-
-                                                        <div class="col-md-6">
-                                                            <label class="form-label-title ">Start Request Date</label>
-                                                            @Html.TextBoxFor(m => m.StartRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Start Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
-
-                                                        </div>
                                                     </div>
 
+                                                    <div class="col-md-6">
+                                                        <div class="guestpart">
+                                                            <div id="smstriggerlocation">
+                                                                <label class="form-label-title ">SMS Triggered Location</label>
+                                                                @Html.TextBoxFor(a => a.SMSTriggeredLocation, new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label-title ">Start Request Date</label>
                                                         @Html.TextBoxFor(m => m.StartRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Start Request Date", type = "Date", min = DateTime.Now.ToString("yyyy-MM-dd") })
@@ -361,13 +337,8 @@
                                                         @Html.DropDownListFor(a => a.DropShiftTimeId, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "dropshifttime" })
 
                                                     </div>
-
-
                                                 </div>
-
                                             </div>
-
-
                                         </div>
                                         <div class="card-footer text-end">
                                             <button type="submit" class="btn btn-primary">@ViewBag.BtnTXT</button>
