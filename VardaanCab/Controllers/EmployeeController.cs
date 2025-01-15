@@ -585,7 +585,7 @@ namespace VardaanCab.Controllers
                                 {
                                     ErrorType = "State Name",
                                     AffectedRow = count,
-                                    Description = $"Satate name {StateName} does not exists."
+                                    Description = $"State name {StateName} does not exists."
                                 });
                             }
 
@@ -741,8 +741,9 @@ namespace VardaanCab.Controllers
                         {
                             ent.Employees.AddRange(employees);
                             ent.SaveChanges();
-                            TempData["dltmsg"] = "Data imported successfully!";
-                            return RedirectToAction("GetEmployeeList");
+                            Session["HasErrors"] = false;
+                            TempData["Message"] = "Data imported successfully!";
+                            return RedirectToAction("Add");
                         }
 
                     }
