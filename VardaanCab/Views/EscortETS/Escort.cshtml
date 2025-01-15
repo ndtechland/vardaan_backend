@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 <style>
-   
+
     .import-row {
         display: flex;
         flex-direction: column;
@@ -32,6 +32,33 @@
             margin-left: 10px;
         }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var message = "@TempData["Message"]";
+        if (message != null) {
+            if (message) {
+                let alertText;
+
+                alertText = "@TempData["Message"]";
+
+                Swal.fire({
+                    title: 'Success',
+                    text: alertText,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("EscortsList", "EscortETS")';
+                        }, 1000);
+                    }
+                });
+            }
+        }
+    });
+</script>
 <div class="row m-t-40">
     <div class="col-sm-12">
         <div class="card">
@@ -199,7 +226,66 @@
 
     </div>
 </div>
+<!--Error Model-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Errors in Uploaded Data</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="errorTable" class="datatable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Row</th>
+                            <th>Error Type</th>
+                            <th>Description</th>
 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Error rows will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+            const hasErrors = '@TempData["HasErrors"]' === 'True';
+            if (hasErrors) {
+                const errorData = JSON.parse('@Html.Raw(TempData["ExcelErrors"])');
+                const errorTable = document.getElementById("errorTable").querySelector("tbody");
+
+                // Populate the table with error data
+                errorData.forEach(error => {
+                    const row = errorTable.insertRow();
+                    const affectedRowCell = row.insertCell(0);
+                    const errorTypeCell = row.insertCell(1);
+                    const descriptionCell = row.insertCell(2);
+
+
+
+                    affectedRowCell.textContent = error.AffectedRow;
+                    errorTypeCell.textContent = error.ErrorType;
+                    descriptionCell.textContent = error.Description;
+
+                });
+
+                // Show the modal
+                const modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+                modal.show();
+            }
+        });
+</script>
 
 <script>
     function validateNumericInput(event) {
@@ -214,12 +300,12 @@
     }
 
 </script>
-@*<script> 
+@*<script>
 
-    function validateNumericInput(event) {
-        const keyCode = event.keyCode || event.which;
-        if (keyCode < 48 || keyCode > 57) {
-            event.preventDefault();
+        function validateNumericInput(event) {
+            const keyCode = event.keyCode || event.which;
+            if (keyCode < 48 || keyCode > 57) {
+                event.preventDefault();
+            }
         }
-    }
-</script>*@
+    </script>*@

@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -385,40 +386,40 @@ ORDER BY er.Id DESC;";
                 worksheet.Cell(2, 11).Value = "456 Elm St, City";
 
                 // Create a hidden sheet to store company and vendor names
-                var hiddenSheet = workbook.Worksheets.Add("CompanyList");
-                var hiddenVendorSheet = workbook.Worksheets.Add("VendorList");
+                //var hiddenSheet = workbook.Worksheets.Add("CompanyList");
+                //var hiddenVendorSheet = workbook.Worksheets.Add("VendorList");
 
                 // Retrieve active customers and vendors
-                var companyList = ent.Customers.Where(x => x.IsActive).ToList();
-                var vendorList = ent.Vendors.Where(x => x.IsActive).ToList();
+                //var companyList = ent.Customers.Where(x => x.IsActive).ToList();
+                //var vendorList = ent.Vendors.Where(x => x.IsActive).ToList();
 
-                // Populate hidden sheets
-                int hiddenRow = 1;
-                foreach (var company in companyList.OrderByDescending(x => x.Id))
-                {
-                    hiddenSheet.Cell(hiddenRow++, 1).Value = company.OrgName;
-                }
+                //// Populate hidden sheets
+                //int hiddenRow = 1;
+                //foreach (var company in companyList.OrderByDescending(x => x.Id))
+                //{
+                //    hiddenSheet.Cell(hiddenRow++, 1).Value = company.OrgName;
+                //}
 
-                hiddenRow = 1;
-                foreach (var vendor in vendorList.OrderByDescending(x => x.Id))
-                {
-                    hiddenVendorSheet.Cell(hiddenRow++, 1).Value = vendor.VendorName;
-                }
+                //hiddenRow = 1;
+                //foreach (var vendor in vendorList.OrderByDescending(x => x.Id))
+                //{
+                //    hiddenVendorSheet.Cell(hiddenRow++, 1).Value = vendor.VendorName;
+                //}
 
-                // Define dropdown list ranges
-                var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
-                var vendorRange = hiddenVendorSheet.Range($"A1:A{vendorList.Count}");
+                //// Define dropdown list ranges
+                //var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
+                //var vendorRange = hiddenVendorSheet.Range($"A1:A{vendorList.Count}");
 
-                // Apply dropdowns for CompanyId and VendorId
-                var companyValidation = worksheet.Cell(2, 1).DataValidation;
-                companyValidation.List(companyRange);
-                companyValidation.IgnoreBlanks = true;
-                companyValidation.InCellDropdown = true;
+                //// Apply dropdowns for CompanyId and VendorId
+                //var companyValidation = worksheet.Cell(2, 1).DataValidation;
+                //companyValidation.List(companyRange);
+                //companyValidation.IgnoreBlanks = true;
+                //companyValidation.InCellDropdown = true;
 
-                var vendorValidation = worksheet.Cell(2, 6).DataValidation;
-                vendorValidation.List(vendorRange);
-                vendorValidation.IgnoreBlanks = true;
-                vendorValidation.InCellDropdown = true;
+                //var vendorValidation = worksheet.Cell(2, 6).DataValidation;
+                //vendorValidation.List(vendorRange);
+                //vendorValidation.IgnoreBlanks = true;
+                //vendorValidation.InCellDropdown = true;
 
                 // Save and return Excel file as download
                 using (MemoryStream stream = new MemoryStream())
@@ -445,28 +446,94 @@ ORDER BY er.Id DESC;";
                         var worksheet = workbook.Worksheet(1);
                         var rows = worksheet.RowsUsed().Skip(1);
                         List<Escort> escorts = new List<Escort>();
-
+                        List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
+                        var count = 0;
                         foreach (var row in rows)
                         {
+                            count++;
                             string comapny = row.Cell(1).GetValue<string>();
+                            int companyId = ent.Customers
+                            .Where(x => x.CompanyName.ToLower() == comapny.ToLower() || x.OrgName.ToLower()== comapny.ToLower())
+                            .FirstOrDefault()?.Id ?? 0;
+                            
+                            var pincode = row.Cell(9).GetValue<string>()??string.Empty;
                             string Vendors = row.Cell(6).GetValue<string>();
+                            int vendorId = ent.Vendors
+                            .Where(x => x.CompanyName.ToLower() == Vendors.ToLower() || x.VendorName.ToLower() == Vendors.ToLower())
+                            .FirstOrDefault()?.Id ?? 0;
+                            string EmployeeId = row.Cell(8).GetValue<string>()?? string.Empty;
+                            if(!string.IsNullOrEmpty(EmployeeId))
+                            {
+                                if(!ent.Employees.Any(e => e.Employee_Id.ToLower() == EmployeeId.ToLower()))
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Employee Id",
+                                    AffectedRow = count,
+                                    Description = $"Please register as an employee first with employee id {EmployeeId}"
+                                });
+                            }
+                            else
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Employee Id",
+                                    AffectedRow = count,
+                                    Description = $"EmployeeId can not be empty."
+                                });
+                            }
+                            if (vendorId == 0)
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Vendor",
+                                    AffectedRow = count,
+                                    Description = $"Vendor {Vendors} not exist in the database."
+                                });
+                            }
+
+
+                            // Validate the pincode
+                            if (pincode.ToString().Any(c => !char.IsDigit(c)))
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Pincode",
+                                    AffectedRow = count,
+                                    Description = $"Pincode {pincode} contains invalid characters. Only digits are allowed."
+                                });
+                            }
+                            else if (pincode.ToString().Length != 6)
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Pincode",
+                                    AffectedRow = count,
+                                    Description = $"Pincode {pincode} must be exactly 6 digits."
+                                });
+                            }
+                            if (companyId==0)
+                            {
+                                excelErrorModels.Add(new ExcelErrorModel
+                                {
+                                    ErrorType = "Company Name",
+                                    AffectedRow = count,
+                                    Description = $"Company {comapny} not exist in the database."
+                                });
+                            }
+                            if (excelErrorModels.Any(e => e.AffectedRow == count)) continue;
 
                             Escort es = new Escort
                             {
-                                CompanyId = string.IsNullOrEmpty(comapny) ? 0 :
-                                    ent.Customers.Where(x => x.OrgName.ToLower() == comapny.ToLower())
-                                        .FirstOrDefault()?.Id ?? 0,
+                                CompanyId = companyId,
 
                                 EscortName = row.Cell(2).GetValue<string>() ?? string.Empty,
                                 EscortFatheName = row.Cell(3).GetValue<string>() ?? string.Empty,
                                 EscortMobileNumber = row.Cell(4).GetValue<string>() ?? string.Empty,
                                 EscortAadhaarNumber = row.Cell(5).GetValue<string>() ?? string.Empty,
-                                VendorId = string.IsNullOrEmpty(Vendors) ? 0 :
-                                    ent.Vendors.Where(x => x.VendorName.ToLower() == Vendors.ToLower())
-                                        .FirstOrDefault()?.Id ?? 0,
+                                VendorId = vendorId,
                                 DOB = row.Cell(7).GetValue<DateTime>(),
-                                EscortEmployeeId = row.Cell(8).GetValue<string>() ?? string.Empty,
-                                Pincode = row.Cell(9).GetValue<string>() ?? string.Empty,
+                                EscortEmployeeId = EmployeeId,
+                                Pincode = pincode,
                                 PermanentAddress = row.Cell(10).GetValue<string>() ?? string.Empty,
                                 EscortAddress = row.Cell(11).GetValue<string>() ?? string.Empty,                             
                                 IsActive = true,
@@ -475,18 +542,23 @@ ORDER BY er.Id DESC;";
 
                             escorts.Add(es);
                         }
-
+                        if (excelErrorModels.Any())
+                        {
+                            TempData["HasErrors"] = true;
+                            TempData["ExcelErrors"] = Newtonsoft.Json.JsonConvert.SerializeObject(excelErrorModels);
+                            return RedirectToAction("Escort");
+                        }
                         if (escorts.Any())
                         {
+                            TempData["HasErrors"] = false;
                             ent.Escorts.AddRange(escorts);
                             ent.SaveChanges();
                         }
-                        TempData["dltmsg"] = "Data imported successfully!";
-                        return RedirectToAction("EscortsList");
+                        TempData["Message"] = "Data imported successfully!";
+                        return RedirectToAction("Escort");
                     }
                 }
 
-                TempData["msg"] = "Please select an Excel file to import.";
                 return RedirectToAction("Escort");
             }
             catch (DbEntityValidationException ex)
