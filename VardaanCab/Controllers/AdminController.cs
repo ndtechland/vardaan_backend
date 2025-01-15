@@ -198,7 +198,7 @@ namespace VardaanCab.Controllers
                         {
                             TempData["Username"] = model.Username;
                             TempData["isFirst"] = user.IsFirst;
-                            TempData["msg"] = "Invalid OTP.";
+                            TempData["Message"] = "InvalidOTP.";
                             return RedirectToAction("CreatePassword");
 
                         }
@@ -210,20 +210,19 @@ namespace VardaanCab.Controllers
 
                             TempData["Username"] = model.Username;
                             TempData["isFirst"] = user.IsFirst;
-                            TempData["msg"] = "Password has been set successfully. Please log in with your new password.";
-                            return RedirectToAction("Login");
-                        }
-                       
+                            TempData["Message"] = "ok";
+                            return RedirectToAction("CreatePassword");
+                        }                       
                     }
                     else
                     {
-                        TempData["msg"] = "User not found. Please try again.";
+                        TempData["Message"] = "User not found. Please try again.";
                         return RedirectToAction("CreatePassword");
                     }
                 }
                 else
                 {
-                    TempData["msg"] = "Please fill in all required fields.";
+                    TempData["Message"] = "Please fill in all required fields.";
                     return View(model);
                 }
             }
