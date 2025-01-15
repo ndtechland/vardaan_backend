@@ -692,7 +692,7 @@ namespace VardaanCab.Controllers
                 model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
                 model.Zones = new SelectList(ent.CompanyZones.ToList(), "Id", "CompanyZone1");
                 ViewBag.BtnTXT = "Create Routing";
-                ViewBag.Heading = "Add Shift Time";
+                ViewBag.Heading = "Create Routing";
                 return View(model);
             }
             catch (Exception ex)
