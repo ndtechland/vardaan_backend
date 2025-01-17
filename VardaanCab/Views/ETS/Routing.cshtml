@@ -73,11 +73,16 @@
 
                                                     <div class="col-md-6">
                                                         <label class="form-label-title">Select Vehicle Type</label>
-                                                        <select id="Vehicle_Type" name="Vehicle_Type" class="form-control">
-                                                            <option value="">--Select Vehicle Type--</option>
-                                                            <option value="4">Cab Capacity 4/4</option>
-                                                            <option value="6">Cab Capacity 6/6</option>
-                                                        </select>
+                                                        @*<select id="Vehicle_Type" name="Vehicle_Type" class="form-control">
+            <option value="">--Select Vehicle Type--</option>
+            <option value="4">Cab Capacity 4/4</option>
+            <option value="6">Cab Capacity 6/6</option>
+        </select>*@
+                                                    <select name="Vehicle_Type" class="js-example-basic-multiple col-sm-12" multiple="multiple">
+                                                        <option value="">--Select Vehicle Type--</option>
+                                                        <option value="4">Cab Capacity 4/4</option>
+                                                        <option value="6">Cab Capacity 6/6</option>
+                                                    </select>
                                                         @Html.ValidationMessageFor(model => model.Vehicle_Type, "", new { @class = "text-danger" })
 
                                                     </div>
@@ -119,12 +124,12 @@
                                                     <div class="col-md-6" id="ddlpickupShiftTimeContainer" style="display: none;">
                                                         <input class="form-check-input" type="radio" name="ShiftOption" id="selectShiftTime" value="shift" checked />
                                                         <label class="form-label-title">Pickup Shift Time</label>
-                                                        @Html.DropDownListFor(a => a.Zone_Id, Model.PickUpshiftTimes, "--Select Pickup Shift Time--", new { @class = "form-control", id = "ddlpickupshifttime" })
+                                                        @Html.DropDownListFor(a => a.Zone_Id, Model.PickUpshiftTimes, "--Select Pickup Shift Time--", new { @class = "js-example-basic-multiple col-sm-12", multiple = "multiple", id = "ddlpickupshifttime" })
                                                     </div>
 
                                                     <div class="col-md-6" id="ddldropShiftTimeContainer" style="display: none;">
                                                         <label class="form-label-title">Drop Shift Time</label>
-                                                        @Html.DropDownListFor(a => a.Zone_Id, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "form-control", id = "ddldropshifttime" })
+                                                        @Html.DropDownListFor(a => a.Zone_Id, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "js-example-basic-multiple col-sm-12", multiple = "multiple", id = "ddldropshifttime" })
                                                     </div>
                                                     @*<div class="col-md-6">
                                                             <label class="form-label-title">
