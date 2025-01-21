@@ -1,0 +1,319 @@
+﻿@model Dictionary<string, List<VardaanCab.Domain.DTO.EmployeeGroup>>
+@{
+    ViewBag.Title = "RoutingList";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
+    var jsonData = Json.Encode(Model);
+}
+
+<style>
+    /* Word wrap for long text in table cells */
+    .wrap-cell {
+        word-wrap: break-word;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        max-width: 200px;
+        white-space: normal;
+    }
+
+    /* Route header styles */
+    .route-header {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+        /* Details container inside route header */
+        .route-header .details {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap; /* Makes it responsive */
+        }
+
+            .route-header .details span {
+                display: inline-block;
+            }
+
+        /* Actions button container */
+        .route-header .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+    /* Sticky header */
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+        /* Sticky header details */
+        .sticky-header .details {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+    .edit-icon {
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    /* Scrollable data container */
+    .scrollable-container {
+        overflow-y: auto;
+        max-height: 400px;
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+
+    /* Table styling */
+    #data-container table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    /* Table headers and data cells */
+    #data-container th, #data-container td {
+        padding: 12px 15px;
+        text-align: left;
+        border-left: 2px solid #ddd; /* Vertical border for column separation */
+        border-top: 2px solid #ddd; /* Horizontal border for row separation */
+        font-size: 14px;
+    }
+
+        /* Remove left border for the first column (optional) */
+        #data-container th:first-child, #data-container td:first-child {
+            border-left: none;
+        }
+
+    /* Table header styling */
+    #data-container th {
+        background-color: #f1f1f1;
+        font-weight: bold;
+        color: #333;
+        border-top: 2px solid #ddd;
+        border-left: 2px solid #ddd;
+    }
+
+    /* Table row hover effect */
+    #data-container tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+
+    /* Table cell on hover */
+    #data-container td:hover {
+        background-color: #e9ecef;
+    }
+
+    /* Actions button in route header */
+    .route-header .actions button {
+        background-color: #007bff;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+        /* Button hover effect */
+        .route-header .actions button:hover {
+            background-color: #0056b3;
+        }
+
+    /* Wrap cell with long text */
+    .wrap-cell {
+        max-width: 200px;
+        word-wrap: break-word;
+    }
+</style>
+
+
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card">
+                    <div class="card-block">
+                        <h5>Routing List</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">ETS</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">RoutingList</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5>Routing List</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div class="sticky-header">
+                                        <div class="details group mb-4" id="route-summary">
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Data Container -->
+                                    <div id="data-container" class="scrollable-container"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Embed the JSON data into the script
+    const data = @Html.Raw(jsonData);
+    const container = document.getElementById('data-container');
+    const routeSummaryElement = document.getElementById('route-summary');
+
+    // Variables for totals
+    let totalEmployees = 0;
+    let escortRequired = 0;
+    let maleCount = 0;
+    let femaleCount = 0;
+    let totalOnBoard = 0;
+    let yetToBoard = 0;
+
+    // Set to track unique groups
+    const uniqueGroups = new Set();
+
+    // Loop through each group in the data
+    for (const group in data) {
+        const groupData = data[group];
+        const groupZoneWise = groupData[0].ZoneWise;
+        const routeId = groupData[0].Group ?? 'N/A'; // Example: Replace with actual property
+        const availableSeats = groupData[0].AvailableSeats ?? 'N/A'; // Example
+
+        // Add the group to the uniqueGroups set (this will ensure each group is counted only once)
+        uniqueGroups.add(group);
+
+        // Create a container for the group
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'group mb-4';
+
+        // Add the route header
+        const routeHeader = document.createElement('div');
+        routeHeader.className = 'route-header';
+        routeHeader.innerHTML = `
+            <div class="details">
+                <label>
+                    <input type="checkbox" id="select-all-${group}" />
+                </label>
+                <span>Route Name: ${groupZoneWise}</span>
+                <span>Route ID: ${routeId}</span>
+                <span>Available Seats: ${availableSeats}</span>
+            </div>
+            <div class="actions">
+                <button class="btn btn-sm btn-primary">Leave</button>
+            </div>
+        `;
+
+
+
+        groupDiv.appendChild(routeHeader);
+
+        // Create the table
+        const table = document.createElement('table');
+        table.className = 'table table-striped table-bordered';
+
+        const thead = document.createElement('thead');
+        thead.innerHTML = `
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Company ID</th>
+                <th>Pickup/Drop Location</th>
+                <th>Status</th>
+                <th>Area</th>
+                <th>Pick-up Time</th>
+                <th>No Show</th>
+                <th>Delete</th>
+            </tr>
+        `;
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        groupData.forEach(employee => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${employee.Employee_Id}</td>
+                <td>${employee.Name}</td>
+                <td>${employee.Gender}</td>
+                <td>${employee.CompanyName}</td>
+                <td class="wrap-cell" title="${employee.PickupandDropAddress}">${employee.PickupandDropAddress}</td>
+                <td>${employee.Status ?? 'N/A'}</td>
+                <td>${employee.DestinationAreaWise}</td>
+                <td>${employee.PickupTime ?? 'N/A'}</td>
+                <td><input type="checkbox"></td>
+                <td><i class="fa fa-trash delete-icon"></i></td>
+            `;
+            tbody.appendChild(row);
+
+            // Update totals based on the employee data
+            totalEmployees++;
+            if (employee.EscortRequired) escortRequired++;
+            if (employee.Gender === 'Male') maleCount++;
+            if (employee.Gender === 'Female') femaleCount++;
+            if (employee.Status === 'OnBoard') totalOnBoard++;
+            if (employee.Status === 'Yet To Board') yetToBoard++;
+        });
+        table.appendChild(tbody);
+
+        // Append the table to the group container
+        groupDiv.appendChild(table);
+
+        // Append the group container to the main container
+        container.appendChild(groupDiv);
+    }
+
+    // Update the sticky header with the totals
+    routeSummaryElement.innerHTML = `
+        <i class="edit edit-icon"></i>
+        <span>Route Summary - ${uniqueGroups.size}/${uniqueGroups.size}</span> |
+        <span>Total Employees - ${totalEmployees}</span> |
+        <span>Escort Required - ${escortRequired}</span> |
+        <span>Male - ${maleCount}</span> |
+        <span>Female - ${femaleCount}</span> |
+        <span>Total OnBoard - ${totalOnBoard}</span> |
+        <span>Yet To Board - ${yetToBoard}</span>
+    `;
+</script>
+

@@ -113,12 +113,18 @@ namespace VardaanCab.Domain.DTO
     public class EmployeeGroup
     {
         public int Id { get; set; }
+        public string Employee_Id { get; set; }
+        public string Gender { get; set; }
+        public string CompanyName { get; set; }
+        public string Name { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public string Name { get; set; }
+        
         public string Group { get; set; }
-        public int ZoneWise { get; set; }
-        public int ZoneHomeWise { get; set; }
-        public int DestinationAreaWise { get; set; }
+        public string ZoneWise { get; set; }
+        public string ZoneHomeWise { get; set; }
+        public string DestinationAreaWise { get; set; }
+        public string PickupandDropAddress { get; set; }
+        public string Status { get; set; }
     }
 }

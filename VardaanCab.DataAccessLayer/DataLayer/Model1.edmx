@@ -1089,6 +1089,15 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsActive" Type="bit" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="AllRoute">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Routing_Id" Type="int" />
+          <Property Name="RouteId" Type="bigint" />
+          <Property Name="Employee_Id" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="AreaMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -1279,6 +1288,22 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Reason" Type="nvarchar(max)" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Routing">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RouteStartDate" Type="datetime" />
+          <Property Name="RouteEndDate" Type="datetime" />
+          <Property Name="Company_Id" Type="int" />
+          <Property Name="TripType" Type="int" />
+          <Property Name="PickupShiftTime" Type="nvarchar" MaxLength="200" />
+          <Property Name="DropShiftTime" Type="nvarchar" MaxLength="200" />
+          <Property Name="AdhocShiftTime" Type="nvarchar" MaxLength="200" />
+          <Property Name="VehicleType" Type="nvarchar" MaxLength="200" />
+          <Property Name="Routingtype" Type="nvarchar" MaxLength="200" />
+          <Property Name="RoutingOption" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="ShiftMaster">
           <Key>
@@ -1746,6 +1771,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="VendorPersonalPackage" EntityType="Self.VendorPersonalPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccessAssign" EntityType="Self.AccessAssign" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="AccessType" EntityType="Self.AccessType" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="AllRoute" EntityType="Self.AllRoute" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="AreaMaster" EntityType="Self.AreaMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="BannerMaster" EntityType="Self.BannerMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="CompanyZoneHomeRoute" EntityType="Self.CompanyZoneHomeRoute" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -1760,6 +1786,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="Escort" EntityType="Self.Escort" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="FeedBackEmployee" EntityType="Self.FeedBackEmployee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="HelpEmployee" EntityType="Self.HelpEmployee" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="Routing" EntityType="Self.Routing" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="ShiftMaster" EntityType="Self.ShiftMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Support" EntityType="Self.Support" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="TripMaster" EntityType="Self.TripMaster" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -3381,6 +3408,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="UserRoles" EntityType="Vardaan_AdminModel.UserRole" />
           <EntitySet Name="AccessAssigns" EntityType="Vardaan_AdminModel.AccessAssign" />
           <EntitySet Name="Employees" EntityType="Vardaan_AdminModel.Employee" />
+          <EntitySet Name="AllRoutes" EntityType="Vardaan_AdminModel.AllRoute" />
+          <EntitySet Name="Routings" EntityType="Vardaan_AdminModel.Routing" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4655,6 +4684,31 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="DeviceId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Latitude" Type="Double" />
           <Property Name="Longitude" Type="Double" />
+        </EntityType>
+        <EntityType Name="AllRoute">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Routing_Id" Type="Int32" />
+          <Property Name="RouteId" Type="Int64" />
+          <Property Name="Employee_Id" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Routing">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RouteStartDate" Type="DateTime" Precision="3" />
+          <Property Name="RouteEndDate" Type="DateTime" Precision="3" />
+          <Property Name="Company_Id" Type="Int32" />
+          <Property Name="TripType" Type="Int32" />
+          <Property Name="PickupShiftTime" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DropShiftTime" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AdhocShiftTime" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleType" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Routingtype" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RoutingOption" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7100,6 +7154,33 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="Company_location" ColumnName="Company_location" />
                 <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AllRoutes">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.AllRoute">
+              <MappingFragment StoreEntitySet="AllRoute">
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="Routing_Id" ColumnName="Routing_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Routings">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Routing">
+              <MappingFragment StoreEntitySet="Routing">
+                <ScalarProperty Name="RoutingOption" ColumnName="RoutingOption" />
+                <ScalarProperty Name="Routingtype" ColumnName="Routingtype" />
+                <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+                <ScalarProperty Name="AdhocShiftTime" ColumnName="AdhocShiftTime" />
+                <ScalarProperty Name="DropShiftTime" ColumnName="DropShiftTime" />
+                <ScalarProperty Name="PickupShiftTime" ColumnName="PickupShiftTime" />
+                <ScalarProperty Name="TripType" ColumnName="TripType" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="RouteEndDate" ColumnName="RouteEndDate" />
+                <ScalarProperty Name="RouteStartDate" ColumnName="RouteStartDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
