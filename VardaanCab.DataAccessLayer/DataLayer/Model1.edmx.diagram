@@ -76,6 +76,8 @@
         <EntityTypeShape EntityType="Vardaan_AdminModel.UserRole" Width="1.5" PointX="15.375" PointY="26.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.AccessAssign" Width="1.5" PointX="21.375" PointY="26.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.Employee" Width="1.5" PointX="11.375" PointY="26.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.AllRoute" Width="1.5" PointX="27.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.Routing" Width="1.5" PointX="27.375" PointY="3.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

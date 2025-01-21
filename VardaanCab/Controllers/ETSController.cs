@@ -18,8 +18,11 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Controllers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
@@ -680,6 +683,38 @@ namespace VardaanCab.Controllers
                 return View();
             }
         }
+        [HttpGet]
+        public ActionResult RoutingList()
+        {
+            try
+            {
+                //List<EmployeeGroup> employeelist = new List<EmployeeGroup>();
+                Dictionary<string, List<EmployeeGroup>> dict = new Dictionary<string, List<EmployeeGroup>>();
+
+                 var employeelistJson = Session["AllRoutes"].ToString();
+                 dict = new JavaScriptSerializer().Deserialize<Dictionary<string, List<EmployeeGroup>>>(employeelistJson);
+                return View(dict);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
+        }
+        [HttpPost]
+        public ActionResult RoutingList(List<EmployeeGroup> employeelist)
+        {
+            try
+            {
+                
+                return View();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
+        }
         public ActionResult Routing()
         {
             try
@@ -756,15 +791,19 @@ namespace VardaanCab.Controllers
                     }
                     Dictionary<string, List<EmployeeGroup>> dict = new Dictionary<string, List<EmployeeGroup>>();
 
-                    
+
                     var groupedData = employeelist.GroupBy(x => x.Group);
 
                     foreach (var group in groupedData)
                     {
-                        dict[group.Key] = group.ToList(); 
+                        dict[group.Key] = group.ToList();
                     }
 
                     var JsonAllRoutes = new JavaScriptSerializer().Serialize(dict);
+
+                    Session["AllRoutes"] = JsonAllRoutes;
+
+                    return RedirectToAction("RoutingList","ETS");
                 }
 
 
@@ -772,11 +811,11 @@ namespace VardaanCab.Controllers
                 #region no use
                 //if (EmployeeReqList != null && EmployeeReqList.Any())
                 //    {
-               // List<dynamic> AllRoutes = new List<dynamic>();
+                // List<dynamic> AllRoutes = new List<dynamic>();
                 //        int cabCounter = 1001; // Initialize counter for unique cab numbers
 
-                        // Define the proximity radius for 100 meters
-                 //       double proximityRadiusLat = 100 / 111000.0; // ~0.0009 degrees for latitude
+                // Define the proximity radius for 100 meters
+                //       double proximityRadiusLat = 100 / 111000.0; // ~0.0009 degrees for latitude
 
                 //foreach (var request in EmployeeReqList)
                 //{
@@ -894,7 +933,7 @@ namespace VardaanCab.Controllers
                 //}
 
 
-#endregion
+                #endregion
 
 
                 ViewBag.BtnTXT = "Create Routing";
@@ -922,12 +961,17 @@ namespace VardaanCab.Controllers
         {
             return originalData.Select(c => new EmployeeGroup
             {
+                Id = c.Id,
+                Employee_Id = c.Employee_Id,
+                Gender = c.Gender,
+                CompanyName = ent.Customers.Where(x =>x.Id == c.Company_Id).FirstOrDefault().OrgName,
                 Latitude = (double)c.Latitude,  
-                Longitude = (double)c.Longitude,  
-                Name = c.Employee_First_Name,
-                ZoneWise = (int)c.PrimaryFacilityZone,
-                ZoneHomeWise = (int)c.HomeRouteName,
-                DestinationAreaWise = (int)c.EmployeeDestinationArea 
+                Longitude = (double)c.Longitude,
+                PickupandDropAddress = c.EmployeeGeoCode,
+                Name = $"{c.Employee_First_Name} {c.Employee_Middle_Name} {c.Employee_Last_Name}",
+                ZoneWise = ent.CompanyZones.Where(x =>x.Id == c.PrimaryFacilityZone).FirstOrDefault().CompanyZone1,
+                ZoneHomeWise = ent.CompanyZoneHomeRoutes.Where(x => x.Id == c.HomeRouteName).FirstOrDefault().HomeRouteName,
+                DestinationAreaWise = ent.EmployeeDestinationAreas.Where(x => x.Id == c.EmployeeDestinationArea).FirstOrDefault().DestinationAreaName  
             }).ToList();
         }
         static double GetDistance(double lat1, double lon1, double lat2, double lon2)
