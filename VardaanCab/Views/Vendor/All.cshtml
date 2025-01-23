@@ -140,7 +140,10 @@
                                                             }
                                                             @if (links.Contains("Edit Vendor"))
                                                             {
-                                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                                                                <a href="/Vendor/Edit?Id=@item.Id&&menuId=@ViewBag.menuId" class="btn btn-info">
+                                                                    Edit
+                                                                </a>
+                                                                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })*@
                                                             }
                                                             @if (links.Contains("Delete Vendor"))
                                                             {

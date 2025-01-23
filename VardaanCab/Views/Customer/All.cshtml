@@ -137,7 +137,10 @@
                                                             }
                                                             @if (links.Contains("Edit Client"))
                                                             {
-                                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })
+                                                                <a href="/Customer/Edit?Id=@item.Id&&menuId=@ViewBag.menuId" class="btn btn-info">
+                                                                    Edit
+                                                                </a>
+                                                                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = ViewBag.menuId }, new { @class = "btn btn-info" })*@
                                                             }
                                                             @if (links.Contains("Delete Client"))
                                                             {
