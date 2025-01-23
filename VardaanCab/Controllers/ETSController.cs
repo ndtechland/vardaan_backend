@@ -1,33 +1,20 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Wordprocessing;
 using NPOI.SS.Formula.Functions;
-using NPOI.XSSF.Model;
-using OfficeOpenXml.FormulaParsing.Exceptions;
-using Org.BouncyCastle.Asn1.Mozilla;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Configuration;
 using System.Data;
 using System.Data.Entity.Core.EntityClient;
-using System.Data.Entity.SqlServer;
 using System.Data.Entity.Validation;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Http.Controllers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using System.Web.UI.WebControls;
 using Vardaan.Services.IContract;
-using Vardaan.Services.IContractApi;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
@@ -118,11 +105,11 @@ namespace VardaanCab.Controllers
                 var empinfo = ent.Employees.Where(e => e.IsActive == true && e.Employee_Id == model.EmployeeId).FirstOrDefault();
                 if (empinfo == null)
                 {
-                    
-                        TempData["errormsg"] = $"Failed. Please register as an employee first with employee id {model.EmployeeId}.";
 
-                        return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
-                    
+                    TempData["errormsg"] = $"Failed. Please register as an employee first with employee id {model.EmployeeId}.";
+
+                    return RedirectToAction("CreateRequest", new { menuId = model.MenuId });
+
                 }
                 else
                 {
@@ -228,7 +215,7 @@ namespace VardaanCab.Controllers
 
             // Add dummy rows
 
-            
+
             int userId = int.Parse(User.Identity.Name);
             string companyName = "";
             List<Customer> companyList = new List<Customer>();
@@ -252,7 +239,7 @@ namespace VardaanCab.Controllers
                     companyList = ent.Customers.Where(x => x.IsActive == true && x.Id == empinfo.Company_Id).ToList();
                     companyName = companyList.FirstOrDefault()?.CompanyName ?? "Unknown Company";
 
-                    
+
                     dt.Rows.Add("9898989898", companyName, "2025-01-14", "2025-02-14", "BOTH", "NORMAL", "08:00", "07:00");
                     dt.Rows.Add("9898989898", companyName, "2025-03-14", "PICKUP", "NORMAL", "09:00", "");
                     dt.Rows.Add("9898989898", companyName, "2025-05-14", "2025-06-14", "DROP", "NORMAL", "", "07:00");
@@ -401,8 +388,8 @@ namespace VardaanCab.Controllers
                                 if (DateTime.TryParse(PickupShiftTimeName, out dateTimeValue))
                                 {
                                     // Extract the time in the desired format (e.g., "4:00")
-                                    
-                                     PickupShiftTimeName = dateTimeValue.ToString("HH:mm");
+
+                                    PickupShiftTimeName = dateTimeValue.ToString("HH:mm");
 
                                 }
                                 string DropShiftTimeName = row.Cell(8).GetValue<string>() ?? null;
@@ -441,7 +428,7 @@ namespace VardaanCab.Controllers
                                         excelErrorModels.Add(new ExcelErrorModel
                                         {
                                             ErrorType = "Pickup Shift Time",
-                                            AffectedRow = count, 
+                                            AffectedRow = count,
                                             Description = "Pickup shift time cannot be empty. Please provide a valid shift time."
                                         });
                                     }
@@ -511,13 +498,13 @@ namespace VardaanCab.Controllers
                                 {
                                     var empinfo = ent.Employees.FirstOrDefault(e => e.IsActive == true && e.Employee_Id == employeeId);
 
-                                    
+
                                     if (empinfo == null)
                                     {
                                         excelErrorModels.Add(new ExcelErrorModel
                                         {
                                             ErrorType = "Employee Id",
-                                            AffectedRow = count, 
+                                            AffectedRow = count,
                                             Description = $"Please register as an employee first with Employee ID {employeeId}."
                                         });
                                     }
@@ -527,7 +514,7 @@ namespace VardaanCab.Controllers
                                     excelErrorModels.Add(new ExcelErrorModel
                                     {
                                         ErrorType = "Employee Id",
-                                        AffectedRow = count, 
+                                        AffectedRow = count,
                                         Description = "Employee ID cannot be empty. Please provide a valid Employee ID."
                                     });
                                 }
@@ -605,10 +592,10 @@ namespace VardaanCab.Controllers
                                     }
                                 }
 
-                                if(!string.IsNullOrEmpty(CompanyName))
+                                if (!string.IsNullOrEmpty(CompanyName))
                                 {
                                     var cominfo = ent.Customers.Where(c => c.CompanyName.ToLower() == CompanyName.ToLower()).FirstOrDefault();
-                                    if(cominfo==null)
+                                    if (cominfo == null)
                                     {
                                         excelErrorModels.Add(new ExcelErrorModel
                                         {
@@ -637,7 +624,7 @@ namespace VardaanCab.Controllers
                                     EndRequestDate = endRequestDate,
                                     TripType = string.IsNullOrEmpty(TripTypeName) ? 0 : ent.TripTypes.FirstOrDefault(x => x.TripTypeName.ToLower() == TripTypeName.ToLower())?.Id ?? 0,
                                     ShiftType = string.IsNullOrEmpty(ShiftTypeName) ? 0 : ent.TripMasters.FirstOrDefault(x => x.TripName.ToLower() == ShiftTypeName.ToLower())?.Id ?? 0,
-                                    PickupShiftTimeId = string.IsNullOrEmpty(PickupShiftTimeName) ? 0 : ent.ShiftMasters.Where(x=>x.TripTypeId==1).FirstOrDefault(x => x.ShiftTime.ToLower() == PickupShiftTimeName.ToLower())?.Id ?? 0,
+                                    PickupShiftTimeId = string.IsNullOrEmpty(PickupShiftTimeName) ? 0 : ent.ShiftMasters.Where(x => x.TripTypeId == 1).FirstOrDefault(x => x.ShiftTime.ToLower() == PickupShiftTimeName.ToLower())?.Id ?? 0,
                                     DropShiftTimeId = string.IsNullOrEmpty(DropShiftTimeName) ? 0 : ent.ShiftMasters.Where(x => x.TripTypeId == 2).FirstOrDefault(x => x.ShiftTime.ToLower() == DropShiftTimeName.ToLower())?.Id ?? 0,
                                     RequestType = "EMPLOYEE",
                                     CreatedDate = DateTime.Now
@@ -691,8 +678,8 @@ namespace VardaanCab.Controllers
                 //List<EmployeeGroup> employeelist = new List<EmployeeGroup>();
                 Dictionary<string, List<EmployeeGroup>> dict = new Dictionary<string, List<EmployeeGroup>>();
 
-                 var employeelistJson = Session["AllRoutes"].ToString();
-                 dict = new JavaScriptSerializer().Deserialize<Dictionary<string, List<EmployeeGroup>>>(employeelistJson);
+                var employeelistJson = Session["AllRoutes"].ToString();
+                dict = new JavaScriptSerializer().Deserialize<Dictionary<string, List<EmployeeGroup>>>(employeelistJson);
                 return View(dict);
             }
             catch (Exception ex)
@@ -706,7 +693,7 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                
+
                 return View();
             }
             catch (Exception ex)
@@ -751,7 +738,9 @@ namespace VardaanCab.Controllers
                 {
                     var EmployeeReqList = (from empr in ent.EmployeeRequests
                                            join emp in ent.Employees on empr.EmployeeId equals emp.Employee_Id
-                                           where empr.StartRequestDate <= model.StartDate && empr.EndRequestDate >= model.EndDate
+                                           where empr.CompanyId == model.Company_Id && empr.TripType == model.Trip_Type
+                                           //&& empr.PickupShiftTimeId == model.PickupShiftid && empr.DropShiftTimeId == model.DropShiftid 
+                                           && empr.StartRequestDate <= model.StartDate && empr.EndRequestDate >= model.EndDate
                                            select new
                                            {
                                                Employee = emp
@@ -760,51 +749,67 @@ namespace VardaanCab.Controllers
                     var employeelist = TransformData(emplist);
                     double threshold = 0.1; // Approx. 100 meters in degrees
                     int groupCounter = 0;
+                    int cabCounter = 1001;
+
+
+                    var groupMemberCount = new Dictionary<string, int>(); // Track the member count of each group
 
                     foreach (var emp in employeelist)
                     {
                         if (emp.Group == null) // Only group ungrouped employees
                         {
-                            // Check for matches
-                            bool hasMatch = false;
-
                             foreach (var other in employeelist)
                             {
                                 if (other.Group == null && CalculateDistance(emp.Latitude, emp.Longitude, other.Latitude, other.Longitude) <= threshold)
                                 {
-                                    hasMatch = true;
                                     if (emp.Group == null)
                                     {
                                         groupCounter++;
                                         emp.Group = groupCounter.ToString(); // Assign a numbered group
+                                        emp.CabNumber = $"Dummy10GB{cabCounter++}";
+                                        groupMemberCount[emp.Group] = 1; // Initialize group count for emp
+                                        emp.groupMemberCount = groupMemberCount[emp.Group];
                                     }
-                                    other.Group = emp.Group; // Assign the same group to the matching employee
-                                }
-                            }
 
-                            // If no match is found, assign a GUID
-                            if (!hasMatch && emp.Group == null)
-                            {
-                                emp.Group = Guid.NewGuid().ToString();
+                                    // Check if `other` is not already in the group and the group has space
+                                    if (other.Group == null && groupMemberCount[emp.Group] < 6)
+                                    {
+                                        other.Group = emp.Group; // Assign the same group
+                                        other.CabNumber = emp.CabNumber;
+                                        groupMemberCount[emp.Group]++; // Increment group count
+                                    }
+                                    else if (other.Group == null)
+                                    {
+                                        // Create a new group for the overflow member
+                                        groupCounter++;
+                                        other.Group = groupCounter.ToString();
+                                        other.CabNumber = $"Dummy10GB{cabCounter++}";
+                                        groupMemberCount[other.Group] = 1; // Initialize new group count
+                                    }
+
+                                    // Update the group member count for all members of the group
+                                    foreach (var member in employeelist.Where(e => e.Group == emp.Group))
+                                    {
+                                        member.groupMemberCount = groupMemberCount[emp.Group];
+                                    }
+                                }
                             }
                         }
                     }
-                    Dictionary<string, List<EmployeeGroup>> dict = new Dictionary<string, List<EmployeeGroup>>();
-
-
-                    var groupedData = employeelist.GroupBy(x => x.Group);
-
-                    foreach (var group in groupedData)
+                    if (employeelist.Count > 0)
                     {
-                        dict[group.Key] = group.ToList();
+                        Dictionary<string, List<EmployeeGroup>> dict = new Dictionary<string, List<EmployeeGroup>>();
+                        var groupedData = employeelist.GroupBy(x => x.Group);
+                        foreach (var group in groupedData)
+                        {
+                            dict[group.Key] = group.ToList();
+                        }
+                        var JsonAllRoutes = new JavaScriptSerializer().Serialize(dict);
+                        Session["AllRoutes"] = JsonAllRoutes;
+                        return RedirectToAction("RoutingList", "ETS");
                     }
-
-                    var JsonAllRoutes = new JavaScriptSerializer().Serialize(dict);
-
-                    Session["AllRoutes"] = JsonAllRoutes;
-
-                    return RedirectToAction("RoutingList","ETS");
                 }
+
 
 
 
@@ -937,6 +942,7 @@ namespace VardaanCab.Controllers
 
 
                 ViewBag.BtnTXT = "Create Routing";
+                TempData["errormsg"] = "Data not foud between these dates...!";
                 return View(model);
             }
             catch (Exception ex)
@@ -964,14 +970,14 @@ namespace VardaanCab.Controllers
                 Id = c.Id,
                 Employee_Id = c.Employee_Id,
                 Gender = c.Gender,
-                CompanyName = ent.Customers.Where(x =>x.Id == c.Company_Id).FirstOrDefault().OrgName,
-                Latitude = (double)c.Latitude,  
+                CompanyName = ent.Customers.Where(x => x.Id == c.Company_Id).FirstOrDefault().OrgName,
+                Latitude = (double)c.Latitude,
                 Longitude = (double)c.Longitude,
                 PickupandDropAddress = c.EmployeeGeoCode,
                 Name = $"{c.Employee_First_Name} {c.Employee_Middle_Name} {c.Employee_Last_Name}",
-                ZoneWise = ent.CompanyZones.Where(x =>x.Id == c.PrimaryFacilityZone).FirstOrDefault().CompanyZone1,
+                ZoneWise = ent.CompanyZones.Where(x => x.Id == c.PrimaryFacilityZone).FirstOrDefault().CompanyZone1,
                 ZoneHomeWise = ent.CompanyZoneHomeRoutes.Where(x => x.Id == c.HomeRouteName).FirstOrDefault().HomeRouteName,
-                DestinationAreaWise = ent.EmployeeDestinationAreas.Where(x => x.Id == c.EmployeeDestinationArea).FirstOrDefault().DestinationAreaName  
+                DestinationAreaWise = ent.EmployeeDestinationAreas.Where(x => x.Id == c.EmployeeDestinationArea).FirstOrDefault().DestinationAreaName
             }).ToList();
         }
         static double GetDistance(double lat1, double lon1, double lat2, double lon2)
