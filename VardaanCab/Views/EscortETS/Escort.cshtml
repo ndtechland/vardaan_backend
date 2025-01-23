@@ -61,9 +61,9 @@
 </script>
 <div class="row m-t-40">
     <div class="col-sm-12">
-        <div class="card">
-            <div class="card-block">
-                <h5>Add Escort</h5>
+        <div class="card bread">
+            <div class="card-body">
+                <h5>@ViewBag.Heading</h5>
                 <div class="page-header-breadcrumb">
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -99,7 +99,7 @@
                     @using (Html.BeginForm("ImportEscortData", "EscortETS", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <div class="d-flex align-items-center ml-3">
-                            <input type="file" class="form-control-file mr-2" name="file" required style="width: 200px;" />
+                            <input type="file" class="form-control" name="file" required style="width: 200px;" />
                             <button type="submit" class="btn btn-primary btn-sm">Import</button>
                         </div>
                     }
