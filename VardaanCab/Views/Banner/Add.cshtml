@@ -60,11 +60,11 @@
                                         <input name="Id" type="hidden" value="@Model.Id" />
                                         @if (TempData["msg"] != null)
                                         {
-                                            <div class="alert alert-success">@TempData["msg"]</div>
+                                            <div class="alert alert-success border-success">@TempData["msg"]</div>
                                         }
                                         else if (TempData["errormsg"] != null)
                                         {
-                                            <div class="alert alert-danger">@TempData["errormsg"]</div>
+                                            <div class="alert alert-danger border-danger">@TempData["errormsg"]</div>
 
                                         }
                                         <div class="mb-3">
