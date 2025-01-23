@@ -1,17 +1,293 @@
 ﻿@model VardaanCab.Domain.DTO.CabDTO
 @{
     ViewBag.Title = "Add Cab";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 
-<style>
-    .row {
-        margin-top: 1% !important;
-    }
-</style>
+<div class="pcoded-content" id="pcoded-content">
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card bread">
+                    <div class="card-body">
+                        <h5>Edit Client</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Registration</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Show Customers</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>Edit Client</h5>
+
+                                    <!-- Import and Export Section -->
+                                    <div class="d-flex align-items-center">
+                                        <!-- Export Section -->
+                                        <a href="/Cab/All" class="btn btn-primary btn-sm">
+                                            Show All
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="card-block">
+                                    @using (Html.BeginForm("Edit", "Cab", FormMethod.Post, new { encType = "multipart/form-data" }))
+                                    {
+                                            if (TempData["msg"] != null)
+                                            {
+                                                <div class="row r">
+                                                    <div class="col-md-12">
+                                                        <div class="alert alert-info">
+                                                            @TempData["msg"]
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            @Html.HiddenFor(a => a.Id)
+                                            @Html.HiddenFor(a => a.CreateDate)
+                                            @Html.HiddenFor(a => a.IsActive)
+
+                                            @Html.HiddenFor(a => a.FitnessDoc)
+                                            @Html.HiddenFor(a => a.InsuranceDoc)
+                                            @Html.HiddenFor(a => a.PolutionDoc)
+                                            @Html.HiddenFor(a => a.RCDoc)
+                                            @Html.HiddenFor(a => a.PermitDoc)
+                                            @Html.HiddenFor(a => a.MenuId)
 
 
-@using (Html.BeginForm("Edit", "Cab", FormMethod.Post, new { encType = "multipart/form-data" }))
+                                            <div class="row r">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        Company Name *
+                                                        @Html.TextBoxFor(a => a.Company, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.Company)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        Model *
+                                                        @Html.DropDownListFor(a => a.VehicleModel_Id, Model.VehicleModels, "Select", new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.VehicleModel_Id)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        VehicleNumber *
+                                                        @Html.TextBoxFor(a => a.VehicleNumber, new { @class = "form-control", @maxlength = "10", @style = "text-transform:uppercase" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.VehicleNumber)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        Fuel Efficiancy
+                                                        @Html.TextBoxFor(a => a.FuelEfficiency, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.FuelEfficiency)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        Vendor
+                                                        @Html.HiddenFor(a => a.Vendor_Id)
+                                                        @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control", id = "vendorName" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.Vendor_Id)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        FitnessVality *
+                                                        @Html.TextBoxFor(a => a.FitnessVality, new { @class = "form-control sdp" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.FitnessVality)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        InsurranceValidity *
+                                                        @Html.TextBoxFor(a => a.InsurranceValidity, new { @class = "form-control sdp" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.InsurranceValidity)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        PolutionValidity *
+                                                        @Html.TextBoxFor(a => a.PolutionValidity, new { @class = "form-control sdp" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PolutionValidity)
+                                                        </span>
+                                                    </div>
+
+
+
+                                                    <div class="form-group">
+                                                        Fitness Doc
+                                                        @Html.TextBoxFor(a => a.FitnessDocFile, new { @class = "form-control", type = "file" })
+                                                        @{Html.EnableClientValidation(false);
+                                                        }
+                                                        @*@if (!string.IsNullOrEmpty(Model.FitnessDoc))
+                            {
+                                <br/>
+                                <a href="/images/@Model.FitnessDoc"><img src="/images/@Model.FitnessDoc" class="thumb"/></a>
+                            }*@
+
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.FitnessDocFile)
+                                                        </span>
+                                                        @{Html.EnableClientValidation(true);}
+
+
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        Polution Doc
+                                                        @Html.TextBoxFor(a => a.PolutionDocFile, new { @class = "form-control", type = "file" })
+                                                        @{Html.EnableClientValidation(false);}
+                                                        @*@if (!string.IsNullOrEmpty(Model.PolutionDoc))
+                            {
+                              <br />
+                              <a href="/images/@Model.PolutionDoc"><img src="/images/@Model.PolutionDoc" class="thumb" /></a>
+                                Html.EnableClientValidation(false);
+                            }*@
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PolutionDocFile)
+                                                        </span>
+                                                        @{Html.EnableClientValidation(true);}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        Insurance Doc
+                                                        @{Html.EnableClientValidation(false);}
+                                                        @*@if (!string.IsNullOrEmpty(Model.InsuranceDoc))
+                            {
+                                <br />
+                                <a href="/images/@Model.InsuranceDoc"><img src="/images/@Model.InsuranceDoc" class="thumb" /></a>
+                                Html.EnableClientValidation(false);
+                            }*@
+                                                        @Html.TextBoxFor(a => a.InsuranceDocFile, new { @class = "form-control", type = "file" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.InsuranceDocFile)
+                                                        </span>
+                                                        @{Html.EnableClientValidation(true);}
+                                                    </div>
+                                                    <div class="form-group">
+                                                        RC No
+                                                        @Html.TextBoxFor(a => a.RcNumber, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.RcNumber)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        RC Issue Date
+                                                        @Html.TextBoxFor(a => a.RcIssueDate, new { @class = "form-control sdp" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.RcIssueDate)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        RC Validity
+                                                        @Html.TextBoxFor(a => a.RcValidity, new { @class = "form-control sdp" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.RcValidity)
+                                                        </span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        RC Doc
+                                                        @*@if (!string.IsNullOrEmpty(Model.RCDoc))
+                            {
+                                <br />
+                                <a href="/images/@Model.RCDoc"><img src="/images/@Model.RCDoc" class="thumb" /></a>
+                            }*@
+                                                        @Html.TextBoxFor(a => a.RCDocFile, new { @class = "form-control", type = "file" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.RCDocFile)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        Permit No
+                                                        @Html.TextBoxFor(a => a.PermitNo, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PermitNo)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        Permit Doc
+                                                        @{Html.EnableClientValidation(false);}
+                                                        @*@if (!string.IsNullOrEmpty(Model.PermitDoc))
+                            {
+                                <br />
+                                <a href="/images/@Model.PermitDoc"><img src="/images/@Model.PermitDoc" class="thumb" /></a>
+                                Html.EnableClientValidation(false);
+                            }*@
+                                                        @Html.TextBoxFor(a => a.PermitDocFile, new { @class = "form-control", type = "file" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PermitDocFile)
+                                                        </span>
+                                                        @{Html.EnableClientValidation(true);}
+                                                    </div>
+                                                    <div class="form-group">
+                                                        Permit Validity *
+                                                        @Html.TextBoxFor(a => a.PermitValidity, new { @class = "form-control ssdp" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PermitValidity)
+                                                        </span>
+                                                    </div>
+                                                    <dv class="form-group">
+                                                        Cab Available
+                                                        @Html.CheckBoxFor(a => a.IsAvailable)
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.IsAvailable)
+                                                        </span>
+                                                    </dv>
+                                                    <div class="form-group">
+                                                        <input type="submit" class="btn btn-info" value="Save" />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- Page body end -->
+            </div>
+        </div>
+    </div>
+</div>
+@*@using (Html.BeginForm("Edit", "Cab", FormMethod.Post, new { encType = "multipart/form-data" }))
 {
     <div style="width:50%">
 
@@ -124,11 +400,7 @@
                     @Html.TextBoxFor(a => a.FitnessDocFile, new { @class = "form-control", type = "file" })
                     @{Html.EnableClientValidation(false);
                     }
-                      @*@if (!string.IsNullOrEmpty(Model.FitnessDoc))
-                      {
-                          <br/>
-                          <a href="/images/@Model.FitnessDoc"><img src="/images/@Model.FitnessDoc" class="thumb"/></a>
-                      }*@
+                     
 
                     <span class="text-danger">
                         @Html.ValidationMessageFor(a => a.FitnessDocFile)
@@ -142,12 +414,7 @@
                     Polution Doc 
                     @Html.TextBoxFor(a => a.PolutionDocFile, new { @class = "form-control", type = "file" })
                     @{Html.EnableClientValidation(false);}
-                  @*@if (!string.IsNullOrEmpty(Model.PolutionDoc))
-                  {
-                    <br />
-                    <a href="/images/@Model.PolutionDoc"><img src="/images/@Model.PolutionDoc" class="thumb" /></a>
-                      Html.EnableClientValidation(false);
-                  }*@
+                 
                       <span class="text-danger">
                         @Html.ValidationMessageFor(a => a.PolutionDocFile)
                     </span>
@@ -157,12 +424,7 @@
                 <div class="form-group">
                     Insurance Doc 
                     @{Html.EnableClientValidation(false);}
-                    @*@if (!string.IsNullOrEmpty(Model.InsuranceDoc))
-                    {
-                        <br />
-                        <a href="/images/@Model.InsuranceDoc"><img src="/images/@Model.InsuranceDoc" class="thumb" /></a>
-                        Html.EnableClientValidation(false);
-                    }*@
+                    
                     @Html.TextBoxFor(a => a.InsuranceDocFile, new { @class = "form-control", type = "file" })
                     <span class="text-danger">
                         @Html.ValidationMessageFor(a => a.InsuranceDocFile)
@@ -194,11 +456,7 @@
                 </div>
                 <div class="form-group">
                     RC Doc 
-                    @*@if (!string.IsNullOrEmpty(Model.RCDoc))
-                    {
-                        <br />
-                        <a href="/images/@Model.RCDoc"><img src="/images/@Model.RCDoc" class="thumb" /></a>
-                    }*@
+                   
                     @Html.TextBoxFor(a => a.RCDocFile, new { @class = "form-control", type = "file" })
                     <span class="text-danger">
                         @Html.ValidationMessageFor(a => a.RCDocFile)
@@ -216,12 +474,7 @@
                 <div class="form-group">
                     Permit Doc 
                     @{Html.EnableClientValidation(false);}
-                    @*@if (!string.IsNullOrEmpty(Model.PermitDoc))
-                    {
-                        <br />
-                        <a href="/images/@Model.PermitDoc"><img src="/images/@Model.PermitDoc" class="thumb" /></a>
-                        Html.EnableClientValidation(false);
-                    }*@
+                    
                     @Html.TextBoxFor(a => a.PermitDocFile, new { @class = "form-control", type = "file" })
                     <span class="text-danger">
                         @Html.ValidationMessageFor(a => a.PermitDocFile)
@@ -252,7 +505,7 @@
     </div>
 
 
-}
+}*@
 
 <link href="/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
 <script src="/js/jquery2.0.3.min.js"></script>

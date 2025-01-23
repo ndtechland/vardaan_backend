@@ -1,7 +1,7 @@
 ﻿@model VardaanCab.Domain.DTO.DriverDTO
 @{
     ViewBag.Title = "Add Driver";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 
 <style>
@@ -35,256 +35,259 @@
             margin-left: 10px;
         }
 </style>
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="row">
-                <div class="card">
-                    <div class="card-header card-header--2">
-                        <div>
-                            <h5>Add Driver</h5>
+<div class="pcoded-content" id="pcoded-content">
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card bread">
+                    <div class="card-body">
+                        <h5>Add Driver</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Registration</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Add Driver</a>
+                                </li>
+                            </ul>
                         </div>
-                        <div>
-                            <div class="import-row">
-                                <!-- First Section: Excel Export -->
-                                <div class="col-md-12">
-                                    <h5>
-                                        Import to Excel Format :
-                                        <a href="@Url.Action("ExportToExcel", "Driver")">
-                                            <img src="~/adminassets/images/icon/Export-Image.png" alt="Export" class="img-fluid" />
+                    </div>
+                </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>Add Driver</h5>
+
+                                    <!-- Import and Export Section -->
+                                    <div class="d-flex align-items-center">
+                                        <!-- Export Section -->
+                                        <b class="mr-2">Import To Excel Format:</b>
+                                        <a href="@Url.Action("ExportToExcel", "Driver")" class="btn btn-link">
+                                            <img src="~/files/assets/images/Export-Image.png" alt="Export" class="img-fluid" style="height: 42px; width: 108px;" />
                                         </a>
-                                    </h5>
+
+                                        <!-- Import Form -->
+                                        @using (Html.BeginForm("ImportDriverData", "Driver", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="d-flex align-items-center ml-3">
+                                                <input type="file" class="form-control" name="file" required style="width: 200px;" />
+                                                <button type="submit" class="btn btn-primary btn-sm" id="BtnImport">Import</button>
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
 
-                                <!-- Second Section: File Import and Button -->
-                                <div class="col-md-12">
-                                    @using (Html.BeginForm("ImportDriverData", "Driver", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                <div class="card-block">
+                                    @using (Html.BeginForm("Add", "Driver", FormMethod.Post, new { encType = "multipart/form-data" }))
                                     {
-                                        <div class="import-form-container">
-                                            <div class="col-md-7">
-                                                <input type="file" class="form-control" name="file" required />
+                                        <input type="hidden" name="MenuId" value="@ViewBag.menuId" />
+                                        @*<div class="row r">
+                <div class="col-md-12">
+                    <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+
+                    <a href="/Driver/All?menuId=@ViewBag.menuId" class="btn btn-info">Show all</a>
+                </div>
+            </div>*@
+
+
+
+                                        if (TempData["msg"] != null)
+                                        {
+                                            <div class="row r">
+                                                <div class="col-md-12">
+                                                    <div class="alert alert-success border-success">
+                                                        @TempData["msg"]
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-2">
-                                                <button type="submit" class="btn btn-primary">Import</button>
+                                        }
+
+                                        <div class="row r">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+
+                                                        Driver Name *
+                                                        @Html.TextBoxFor(a => a.DriverName, new { @class = "form-control", @style = "text-transform:uppercase" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.DriverName)
+                                                        </span>
+
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        Father Name
+                                                        @Html.TextBoxFor(a => a.FatherName, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.FatherName)
+                                                        </span>
+
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        Email
+                                                        @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.Email)
+                                                        </span>
+
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        Contact No.
+                                                        @Html.TextBoxFor(a => a.MobileNumber, new { @class = "form-control", @maxlength = "10" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.MobileNumber)
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        Alternate Contact No. 1
+                                                        @Html.TextBoxFor(a => a.AlternateNo1, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.AlternateNo1)
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        Alternate Contact No. 2
+                                                        @Html.TextBoxFor(a => a.AlternateNo2, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.AlternateNo2)
+                                                        </span>
+
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        Local Address
+                                                        @Html.TextAreaFor(a => a.LocalAddress, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.LocalAddress)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        Permanent Address
+                                                        @Html.TextAreaFor(a => a.PermanentAddress, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PermanentAddress)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        Aadhar No.
+                                                        @Html.TextBoxFor(a => a.AadharNo, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.AadharNo)
+                                                        </span>
+                                                    </div>
+
+                                                    @*<div class="form-group">
+                            Address *
+                            @Html.TextBoxFor(a => a.DriverAddress, new { @class = "form-control" })
+                            <span class="text-danger">
+                                @Html.ValidationMessageFor(a => a.DriverAddress)
+                            </span>
+                        </div>*@
+
+                                                    <div class="col-md-6">
+                                                        DL No.
+                                                        @Html.TextBoxFor(a => a.DlNumber, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.DlNumber)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        Licence Expiry Date. *
+                                                        @Html.TextBoxFor(a => a.LicenceExpDate, new { @class = "form-control sdp" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.LicenceExpDate)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        Driver's Pic.
+                                                        @Html.TextBoxFor(a => a.DriverImageFile, new { @class = "form-control", type = "file" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.DriverImageFile)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        Aadhar Doc.
+                                                        @Html.TextBoxFor(a => a.AadharImageFile, new { @class = "form-control", type = "file" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.AadharImageFile)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        DL Doc.
+                                                        @Html.TextBoxFor(a => a.DlImageFile, new { @class = "form-control", type = "file" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.DlImageFile)
+                                                        </span>
+                                                    </div>
+
+
+
+                                                    <div class="col-md-6">
+                                                        Police Verification Doc.
+                                                        @Html.TextBoxFor(a => a.PolVerifImgFile, new { @class = "form-control", type = "file" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PolVerifImgFile)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        PAN Card Doc.
+                                                        @Html.TextBoxFor(a => a.PanFile, new { @class = "form-control", type = "file" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PanFile)
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        Pan No.
+                                                        @Html.TextBoxFor(a => a.PanNumber, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PanNumber)
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                @*<div class="form-group">
+                        <input type="submit" class="btn btn-info" value="Save" />
+                    </div>*@
+
                                             </div>
+                                        </div>
+                                        <div class="card-footer text-end">
+                                            <input type="submit" class="btn btn-primary" value="Save" />
+                                            @*<button class="btn btn-outline-primary">Cancel</button>*@
                                         </div>
                                     }
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
-                    @using (Html.BeginForm("Add", "Driver", FormMethod.Post, new { encType = "multipart/form-data" }))
-                    {
-                        <div class="card-body">
-
-
-                            <input type="hidden" name="MenuId" value="@ViewBag.menuId" />
-                            @*<div class="row r">
-                                    <div class="col-md-12">
-                                        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
-
-                                        <a href="/Driver/All?menuId=@ViewBag.menuId" class="btn btn-info">Show all</a>
-                                    </div>
-                                </div>*@
-
-
-
-                            @if (TempData["msg"] != null)
-                            {
-                                <div class="row r">
-                                    <div class="col-md-12">
-                                        <div class="alert alert-info">
-                                            @TempData["msg"]
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-
-                            <div class="row r">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-6">
-
-                                            Driver Name *
-                                            @Html.TextBoxFor(a => a.DriverName, new { @class = "form-control", @style = "text-transform:uppercase" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.DriverName)
-                                            </span>
-
-                                        </div>
-                                        <div class="col-md-6">
-                                            Father Name
-                                            @Html.TextBoxFor(a => a.FatherName, new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.FatherName)
-                                            </span>
-
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            Email
-                                            @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.Email)
-                                            </span>
-
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            Contact No.
-                                            @Html.TextBoxFor(a => a.MobileNumber, new { @class = "form-control", @maxlength = "10" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.MobileNumber)
-                                            </span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            Alternate Contact No. 1
-                                            @Html.TextBoxFor(a => a.AlternateNo1, new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.AlternateNo1)
-                                            </span>
-                                        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-                                        <div class="col-md-6">
-                                            Alternate Contact No. 2
-                                            @Html.TextBoxFor(a => a.AlternateNo2, new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.AlternateNo2)
-                                            </span>
-
-                                        </div>
-                                        <div class="col-md-6">
-                                            Local Address
-                                            @Html.TextAreaFor(a => a.LocalAddress, new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.LocalAddress)
-                                            </span>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            Permanent Address
-                                            @Html.TextAreaFor(a => a.PermanentAddress, new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.PermanentAddress)
-                                            </span>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            Aadhar No.
-                                            @Html.TextBoxFor(a => a.AadharNo, new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.AadharNo)
-                                            </span>
-                                        </div>
-
-                                        @*<div class="form-group">
-                                                Address *
-                                                @Html.TextBoxFor(a => a.DriverAddress, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.DriverAddress)
-                                                </span>
-                                            </div>*@
-
-                                        <div class="col-md-6">
-                                            DL No.
-                                            @Html.TextBoxFor(a => a.DlNumber, new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.DlNumber)
-                                            </span>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            Licence Expiry Date. *
-                                            @Html.TextBoxFor(a => a.LicenceExpDate, new { @class = "form-control sdp" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.LicenceExpDate)
-                                            </span>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            Driver's Pic.
-                                            @Html.TextBoxFor(a => a.DriverImageFile, new { @class = "form-control", type = "file" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.DriverImageFile)
-                                            </span>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            Aadhar Doc.
-                                            @Html.TextBoxFor(a => a.AadharImageFile, new { @class = "form-control", type = "file" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.AadharImageFile)
-                                            </span>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            DL Doc.
-                                            @Html.TextBoxFor(a => a.DlImageFile, new { @class = "form-control", type = "file" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.DlImageFile)
-                                            </span>
-                                        </div>
-
-
-
-                                        <div class="col-md-6">
-                                            Police Verification Doc.
-                                            @Html.TextBoxFor(a => a.PolVerifImgFile, new { @class = "form-control", type = "file" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.PolVerifImgFile)
-                                            </span>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            PAN Card Doc.
-                                            @Html.TextBoxFor(a => a.PanFile, new { @class = "form-control", type = "file" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.PanFile)
-                                            </span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            Pan No.
-                                            @Html.TextBoxFor(a => a.PanNumber, new { @class = "form-control" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.PanNumber)
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    @*<div class="form-group">
-                                            <input type="submit" class="btn btn-info" value="Save" />
-                                        </div>*@
-
-                                </div>
-                            </div>
-
-
-
-
-                        </div>
-                        <div class="card-footer text-end">
-                            <input type="submit" class="btn btn-primary" value="Save" />
-                            @*<button class="btn btn-outline-primary">Cancel</button>*@
-                        </div>
-                    }
                 </div>
-
+                <!-- Page body end -->
             </div>
         </div>
     </div>
 </div>
+ 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

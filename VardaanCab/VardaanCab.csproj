@@ -2464,6 +2464,7 @@
     <Content Include="files\assets\images\widget\wathernature.png" />
     <Content Include="files\assets\images\widget\watherstar1.png" />
     <Content Include="files\assets\images\widget\watherstar2.png" />
+    <Content Include="files\assets\images\Yo %283%29.png" />
     <Content Include="files\assets\js\animation.js" />
     <Content Include="files\assets\js\bootstrap-growl.min.js" />
     <Content Include="files\assets\js\classie.js" />

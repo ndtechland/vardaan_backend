@@ -1,7 +1,7 @@
 ﻿@model VardaanCab.Domain.DTO.CustomerDTO
 @{
     ViewBag.Title = "Add Client";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 <link href="/css/fixtable.css" rel="stylesheet" />
 
@@ -175,243 +175,288 @@
 
 
 </style>
-@using (Html.BeginForm())
-{
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header  card-header--2">
-
-                        <div>
-                            <h5>Add Client</h5>
-                        </div>
-                        <a href="/Customer/All?menuId=@ViewBag.menuId" class="btn btn-primary">Show all</a>
-
-                    </div>
-
+<div class="pcoded-content" id="pcoded-content">
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card bread">
                     <div class="card-body">
-                        <input type="hidden" name="MenuId" value="@ViewBag.menuId" />
-
-
-
-                        @*<div class="row r">
-            <div class="col-md-12">
-                <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
-
-                <a href="/Customer/All?menuId=@ViewBag.menuId" class="btn btn-info">Show all</a>
-            </div>
-        </div>*@
-
-                        @if (TempData["msg"] != null)
-                        {
-                            <div class="row r">
-                                <div class="col-md-12">
-                                    <div class="alert alert-info">
-                                        @TempData["msg"]
-                                    </div>
-                                </div>
-                            </div>
-                        }
-
-
-                        <div class="row r">
-                            <div class="col-md-6">
-                                State *
-                                @Html.DropDownListFor(a => a.State_Id, Model.StateList, "Select", new { @class = "form-control", required = "required" })
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.State_Id)
-                                </span>
-                            </div>
-                            <div class="col-md-6">
-                                City *
-                                @Html.DropDownListFor(a => a.City_Id, Enumerable.Empty<SelectListItem>(), "Select City", new { @class = "form-control", required = "required" })
-
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.City_Id)
-                                </span>
-                            </div>
-
+                        <h5>Add Client</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Registration</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Add Customer</a>
+                                </li>
+                            </ul>
                         </div>
-
-                        <div class="row r">
-
-                            <div class="col-md-6">
-                                Company Name *
-                                @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.CompanyName)
-                                </span>
-                            </div>
-                            <div class="col-md-6">
-                                Parent Customer (If any)
-                                @Html.DropDownListFor(a => a.ParentCustomer_Id, Model.CustomerList, "Select", new { @class = "form-control" })
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.CustomerName)
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="row r">
-                            <div class="col-md-6">
-                                Contact Person Name *
-                                @Html.TextBoxFor(a => a.CustomerName, new { @class = "form-control" })
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.CustomerName)
-                                </span>
-                            </div>
-                            <div class="col-md-6">
-                                Email *
-                                @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.Email)
-                                </span>
-                            </div>
-
-
-                        </div>
-
-                        <div class="row r">
-                            <div class="col-md-6">
-                                Contact No *
-                                @Html.TextBoxFor(a => a.ContactNo, new { @class = "form-control" })
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.ContactNo)
-                                </span>
-                            </div>
-                            <div class="col-md-6">
-                                Alternate Contact No
-                                @Html.TextBoxFor(a => a.AlternateNo, new { @class = "form-control" })
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.AlternateNo)
-                                </span>
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="row r">
-                            <div class="col-md-6">
-                                GSTIN
-                                @Html.TextBoxFor(a => a.GSTIN, new { @class = "form-control" })
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.GSTIN)
-                                </span>
-                            </div>
-                            <div class="col-md-6">
-                                Full Address *
-                                @Html.TextAreaFor(a => a.FullAddress, new { @class = "form-control" })
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.FullAddress)
-                                </span>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                GEO Location
-                                @Html.TextBoxFor(a => a.GeoLocation, new { @class = "form-control", id = "pac-input", placeholder = "Enter a location" })
-                                <span class="text-danger">
-                                    @Html.ValidationMessageFor(a => a.GeoLocation)
-                                </span>
-
-
-                            </div>
-                        </div>
-                        <!--Map-->
-                        <div class="row">
-                            <div class="row gx-3 mb-3">
-                                <div class="col-md-12">
-                                    <div id="map"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin-top:2%;" id="packageDiv">
-                            Packages *
-                            @if (Model.Packages.Count() > 0)
-                            {
-
-                                <div class=" table-responsive table-desi scrollable">
-                                    <table class="all-cars-table table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th class="sticky-col first-col"><input type="checkbox" id="all" /></th>
-                                                <th class="sticky-col second-col">Vehicle</th>
-                                                <th class="sticky-col third-col">RentalType</th>
-                                                <th>PackageType</th>
-                                                <th>Fare</th>
-                                                <th>MinKm</th>
-                                                <th>MinHrs</th>
-                                                <th>ExtraPerHour</th>
-                                                <th>ExtraPerKm</th>
-                                                <th>NightCharges</th>
-                                                @*<th>Interstate Charges</th>*@
-                                                <th>Outstation TA/Day</th>
-                                                <th>Pickup loc.</th>
-                                                <th>Drop loc.</th>
-                                                <th>Days(For Monthly)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @for (int i = 0; i < Model.Packages.Count(); i++)
-                                            {
-
-                                                <tr>
-                                                    <td class="sticky-col first-col">@Html.CheckBoxFor(a => a.Packages[i].IsChecked, new { @class = "chkAvail" })</td>
-                                                    <td class="sticky-col second-col">
-                                                        @Html.HiddenFor(a => a.Packages[i].CorporatePackage_Id)
-                                                        @Html.HiddenFor(a => a.Packages[i].RentalType_Id)
-                                                        @Html.HiddenFor(a => a.Packages[i].VehicleModel_Id)
-
-                                                        @Model.Packages[i].ModelName
-                                                    </td>
-                                                    <td class="sticky-col third-col">
-                                                        <span>@Model.Packages[i].RentalTypeName</span>
-                                                        @*@Html.TextBoxFor(a => a.Packages[i].RentalTypeName, new { @class = "form-control", Value = Model.Packages[i].RentalTypeName, disabled = "disabled" })*@
-                                                    </td>
-                                                    <td>
-                                                        @Model.Packages[i].PackageTypeName
-                                                    </td>
-
-
-                                                    <td>
-                                                        @Html.TextBoxFor(a => a.Packages[i].Fare, new { @class = "form-control", Value = Model.Packages[i].Fare, required = "required" })
-                                                    </td>
-                                                    @*<td><input type="text" class="form-control" name="Packages[@i].Fare" value="@Model.Packages[i].Fare" required /></td>*@
-                                                    <td>@Html.TextBoxFor(a => a.Packages[i].MinKm, new { @class = "form-control", Value = Model.Packages[i].MinKm, required = "required" })</td>
-                                                    <td>@Html.TextBoxFor(a => a.Packages[i].MinHrs, new { @class = "form-control", Value = Model.Packages[i].MinHrs, required = "required" })</td>
-                                                    <td>@Html.TextBoxFor(a => a.Packages[i].ExtraPerHour, new { @class = "form-control", Value = Model.Packages[i].ExtraPerHour, required = "required" })</td>
-                                                    <td>@Html.TextBoxFor(a => a.Packages[i].ExtraPerKm, new { @class = "form-control", Value = Model.Packages[i].ExtraPerKm, required = "required" })</td>
-                                                    <td>@Html.TextBoxFor(a => a.Packages[i].NightCharges, new { @class = "form-control", Value = Model.Packages[i].NightCharges, required = "required" })</td>
-                                                    @* <td>@Html.TextBoxFor(a => a.Packages[i].InterStateCharge, new { @class = "form-control", Value = Model.Packages[i].InterStateCharge, required = "required" })</td>*@
-                                                    <td>@Html.TextBoxFor(a => a.Packages[i].OutStationCharge, new { @class = "form-control", Value = Model.Packages[i].OutStationCharge, required = "required" })</td>
-                                                    <td>@Html.TextBoxFor(a => a.Packages[i].PickupLocation, new { @class = "form-control", Value = Model.Packages[i].PickupLocation })</td>
-                                                    <td>@Html.TextBoxFor(a => a.Packages[i].DropLocation, new { @class = "form-control", Value = Model.Packages[i].DropLocation })</td>
-                                                    <td>@Html.TextBoxFor(a => a.Packages[i].NoOfDays, new { @class = "form-control", Value = Model.Packages[i].NoOfDays })</td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-
-
-
-                            }
-                        </div>
-
-
-
-
-                    </div>
-                    <div class="card-footer text-end">
-                        <input type="submit" class="btn btn-primary" value="Save" />
                     </div>
                 </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>Add Client</h5>
+
+                                    <!-- Import and Export Section -->
+                                    <div class="d-flex align-items-center">
+                                        <!-- Export Section -->
+                                        <b class="mr-2">Import To Excel Format:</b>
+                                        <a href="@Url.Action("ExportToExcel", "Cab")" class="btn btn-link">
+                                            <img src="~/files/assets/images/Export-Image.png" alt="Export" class="img-fluid" style="height: 42px; width: 108px;" />
+                                        </a>
+
+                                        <!-- Import Form -->
+                                        @using (Html.BeginForm("ImportCabData", "Cab", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="d-flex align-items-center ml-3">
+                                                <input type="file" class="form-control" name="file" required style="width: 200px;" />
+                                                <button type="submit" class="btn btn-primary btn-sm" id="BtnImport">Import</button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="card-block">
+                                    @using (Html.BeginForm())
+                                    {
+                                            <input type="hidden" name="MenuId" value="@ViewBag.menuId" />
+
+
+
+                                            @*<div class="row r">
+                    <div class="col-md-12">
+                        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+
+                        <a href="/Customer/All?menuId=@ViewBag.menuId" class="btn btn-info">Show all</a>
+                    </div>
+                </div>*@
+
+                                            if (TempData["msg"] != null)
+                                            {
+                                                <div class="row r">
+                                                    <div class="col-md-12">
+                                                        <div class="alert alert-success border-success">
+                                                            @TempData["msg"]
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+
+                                            <div class="row r">
+                                                <div class="col-md-6">
+                                                    State *
+                                                    @Html.DropDownListFor(a => a.State_Id, Model.StateList, "Select", new { @class = "form-control", required = "required" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.State_Id)
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    City *
+                                                    @Html.DropDownListFor(a => a.City_Id, Enumerable.Empty<SelectListItem>(), "Select City", new { @class = "form-control", required = "required" })
+
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.City_Id)
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row r">
+
+                                                <div class="col-md-6">
+                                                    Company Name *
+                                                    @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.CompanyName)
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    Parent Customer (If any)
+                                                    @Html.DropDownListFor(a => a.ParentCustomer_Id, Model.CustomerList, "Select", new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.CustomerName)
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row r">
+                                                <div class="col-md-6">
+                                                    Contact Person Name *
+                                                    @Html.TextBoxFor(a => a.CustomerName, new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.CustomerName)
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    Email *
+                                                    @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.Email)
+                                                    </span>
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="row r">
+                                                <div class="col-md-6">
+                                                    Contact No *
+                                                    @Html.TextBoxFor(a => a.ContactNo, new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.ContactNo)
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    Alternate Contact No
+                                                    @Html.TextBoxFor(a => a.AlternateNo, new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.AlternateNo)
+                                                    </span>
+                                                </div>
+
+
+                                            </div>
+
+
+                                            <div class="row r">
+                                                <div class="col-md-6">
+                                                    GSTIN
+                                                    @Html.TextBoxFor(a => a.GSTIN, new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.GSTIN)
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    Full Address *
+                                                    @Html.TextAreaFor(a => a.FullAddress, new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.FullAddress)
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    GEO Location
+                                                    @Html.TextBoxFor(a => a.GeoLocation, new { @class = "form-control", id = "pac-input", placeholder = "Enter a location" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.GeoLocation)
+                                                    </span>
+
+
+                                                </div>
+                                            </div>
+                                            <!--Map-->
+                                            <div class="row">
+                                                <div class="row gx-3 mb-3">
+                                                    <div class="col-md-12">
+                                                        <div id="map"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" style="margin-top:2%;" id="packageDiv">
+                                                Packages *
+                                                @if (Model.Packages.Count() > 0)
+                                                {
+
+                                                    <div class=" table-responsive table-desi scrollable">
+                                                        <table class="all-cars-table table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="sticky-col first-col"><input type="checkbox" id="all" /></th>
+                                                                    <th class="sticky-col second-col">Vehicle</th>
+                                                                    <th class="sticky-col third-col">RentalType</th>
+                                                                    <th>PackageType</th>
+                                                                    <th>Fare</th>
+                                                                    <th>MinKm</th>
+                                                                    <th>MinHrs</th>
+                                                                    <th>ExtraPerHour</th>
+                                                                    <th>ExtraPerKm</th>
+                                                                    <th>NightCharges</th>
+                                                                    @*<th>Interstate Charges</th>*@
+                                                                    <th>Outstation TA/Day</th>
+                                                                    <th>Pickup loc.</th>
+                                                                    <th>Drop loc.</th>
+                                                                    <th>Days(For Monthly)</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @for (int i = 0; i < Model.Packages.Count(); i++)
+                                                                {
+
+                                                                    <tr>
+                                                                        <td class="sticky-col first-col">@Html.CheckBoxFor(a => a.Packages[i].IsChecked, new { @class = "chkAvail" })</td>
+                                                                        <td class="sticky-col second-col">
+                                                                            @Html.HiddenFor(a => a.Packages[i].CorporatePackage_Id)
+                                                                            @Html.HiddenFor(a => a.Packages[i].RentalType_Id)
+                                                                            @Html.HiddenFor(a => a.Packages[i].VehicleModel_Id)
+
+                                                                            @Model.Packages[i].ModelName
+                                                                        </td>
+                                                                        <td class="sticky-col third-col">
+                                                                            <span>@Model.Packages[i].RentalTypeName</span>
+                                                                            @*@Html.TextBoxFor(a => a.Packages[i].RentalTypeName, new { @class = "form-control", Value = Model.Packages[i].RentalTypeName, disabled = "disabled" })*@
+                                                                        </td>
+                                                                        <td>
+                                                                            @Model.Packages[i].PackageTypeName
+                                                                        </td>
+
+
+                                                                        <td>
+                                                                            @Html.TextBoxFor(a => a.Packages[i].Fare, new { @class = "form-control", Value = Model.Packages[i].Fare, required = "required" })
+                                                                        </td>
+                                                                        @*<td><input type="text" class="form-control" name="Packages[@i].Fare" value="@Model.Packages[i].Fare" required /></td>*@
+                                                                        <td>@Html.TextBoxFor(a => a.Packages[i].MinKm, new { @class = "form-control", Value = Model.Packages[i].MinKm, required = "required" })</td>
+                                                                        <td>@Html.TextBoxFor(a => a.Packages[i].MinHrs, new { @class = "form-control", Value = Model.Packages[i].MinHrs, required = "required" })</td>
+                                                                        <td>@Html.TextBoxFor(a => a.Packages[i].ExtraPerHour, new { @class = "form-control", Value = Model.Packages[i].ExtraPerHour, required = "required" })</td>
+                                                                        <td>@Html.TextBoxFor(a => a.Packages[i].ExtraPerKm, new { @class = "form-control", Value = Model.Packages[i].ExtraPerKm, required = "required" })</td>
+                                                                        <td>@Html.TextBoxFor(a => a.Packages[i].NightCharges, new { @class = "form-control", Value = Model.Packages[i].NightCharges, required = "required" })</td>
+                                                                        @* <td>@Html.TextBoxFor(a => a.Packages[i].InterStateCharge, new { @class = "form-control", Value = Model.Packages[i].InterStateCharge, required = "required" })</td>*@
+                                                                        <td>@Html.TextBoxFor(a => a.Packages[i].OutStationCharge, new { @class = "form-control", Value = Model.Packages[i].OutStationCharge, required = "required" })</td>
+                                                                        <td>@Html.TextBoxFor(a => a.Packages[i].PickupLocation, new { @class = "form-control", Value = Model.Packages[i].PickupLocation })</td>
+                                                                        <td>@Html.TextBoxFor(a => a.Packages[i].DropLocation, new { @class = "form-control", Value = Model.Packages[i].DropLocation })</td>
+                                                                        <td>@Html.TextBoxFor(a => a.Packages[i].NoOfDays, new { @class = "form-control", Value = Model.Packages[i].NoOfDays })</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+
+
+                                                }
+                                            </div>
+                                        <div class="card-footer text-end">
+                                            <input type="submit" class="btn btn-primary" value="Save" />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- Page body end -->
             </div>
         </div>
     </div>
-}
+</div>
+ 
 
 <script>
     $("#all").click(function () {

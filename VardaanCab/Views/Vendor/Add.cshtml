@@ -1,7 +1,7 @@
 ﻿@model VardaanCab.Domain.DTO.VendorDTO
 @{
     ViewBag.Title = "Create Vendor";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 <link href="/css/fixtable.css" rel="stylesheet" />
 
@@ -66,272 +66,275 @@
             margin-left: 10px; /* Adds space between the file input and the button */
         }
 </style>
+<div class="pcoded-content" id="pcoded-content">
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card bread">
+                    <div class="card-body">
+                        <h5>Create Vendor</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Registration</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Add Driver</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>Add Driver</h5>
 
-<div class="container-fluid">
-    <div class="row">
+                                    <!-- Import and Export Section -->
+                                    <div class="d-flex align-items-center">
+                                        <!-- Export Section -->
+                                        <b class="mr-2">Import To Excel Format:</b>
+                                        <a href="@Url.Action("ExportToExcel", "Vendor")" class="btn btn-link">
+                                            <img src="~/files/assets/images/Export-Image.png" alt="Export" class="img-fluid" style="height: 42px; width: 108px;" />
+                                        </a>
 
-        <div class="col-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <!--driver detail start-->
-                    <div class="card">
-
-                        <div class="card-header card-header--2">
-                            <div>
-                                <h5>Create Vendor</h5>
-                            </div>
-                            <div>
-                                <div class="import-row">
-                                    <!-- First Section: Excel Export -->
-                                    <div class="col-md-12">
-                                        <h5>
-                                            Import to Excel Format :
-                                            <a href="@Url.Action("ExportToExcel", "Vendor")">
-                                                <img src="~/adminassets/images/icon/Export-Image.png" alt="Export" class="img-fluid" />
-                                            </a>
-                                        </h5>
-                                    </div>
-
-                                    <!-- Second Section: File Import and Button -->
-                                    <div class="col-md-12">
+                                        <!-- Import Form -->
                                         @using (Html.BeginForm("ImportVendorData", "Vendor", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                         {
-                                            <div class="import-form-container">
-                                                <div class="col-md-7">
-                                                    <input type="file" class="form-control" name="file" required />
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="submit" class="btn btn-primary">Import</button>
-                                                </div>
+                                            <div class="d-flex align-items-center ml-3">
+                                                <input type="file" class="form-control" name="file" required style="width: 200px;" />
+                                                <button type="submit" class="btn btn-primary btn-sm" id="BtnImport">Import</button>
                                             </div>
                                         }
                                     </div>
                                 </div>
+
+                                <div class="card-block">
+                                    <input type="hidden" name="MenuId" value="@ViewBag.menuId" />
+                                    @*<div class="row r">
+            <div class="col-md-12">
+                <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
+
+                <a href="/Vendor/All?menuId=@ViewBag.menuId" class="btn btn-info">Show all</a>
+            </div>
+        </div>*@
+
+                                    @using (Html.BeginForm("Add", "Vendor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        if (TempData["msg"] != null)
+                                        {
+                                            <div class="row r">
+                                                <div class="col-md-12">
+                                                    <div class="alert alert-info">
+                                                        @TempData["msg"]
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        <div class="row r">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        Company Name <span style="color:red;">*</span>
+                                                        @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.CompanyName)
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        Contact Person Name <span style="color:red;">*</span>
+
+                                                        @Html.TextBoxFor(a => a.VendorName, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.VendorName)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        Email
+                                                        @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.Email)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        Mobile Number
+                                                        @Html.TextBoxFor(a => a.MobileNumber, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.MobileNumber)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        Alternate mobile no.
+                                                        @Html.TextBoxFor(a => a.AlernateMobile, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.AlernateMobile)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        GSTIN
+                                                        @Html.TextBoxFor(a => a.GSTIN, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.GSTIN)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        Parent Vendor
+                                                        @Html.DropDownListFor(a => a.ParentVendor_Id, Model.Vendors, "Select", new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.ParentVendor_Id)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        State <span style="color:red;">*</span>
+                                                        @Html.DropDownListFor(a => a.StateMaster_Id, Model.States, "Select", new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.StateMaster_Id)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        City <span style="color:red;">*</span>
+                                                        @Html.DropDownListFor(a => a.CityMaster_Id, Enumerable.Empty<SelectListItem>(), "Select City", new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.CityMaster_Id)
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        Full Address <span style="color:red;">*</span>
+                                                        @Html.TextAreaFor(a => a.FullAddress, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.FullAddress)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        PAN Number
+                                                        @Html.TextBoxFor(a => a.PAN, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PAN)
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        PAN Document image
+                                                        @Html.TextBoxFor(a => a.PanFile, new { type = "file", @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.PanFile)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        CIN Number
+                                                        @Html.TextBoxFor(a => a.CIN, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.CIN)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <h4>Packages</h4>
+
+                                                <div class="table-responsive table-desi">
+                                                    <table class="datatable user-table table table-striped">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="sticky-col first-col" style="background-color: #4aa4d9; z-index:1" nowrap>Vehicle</th>
+                                                                <th class="sticky-col second-col" style="background-color: #4aa4d9; z-index: 1 ">PackageType</th>
+                                                                <th class="sticky-col third-col" style="background-color: #4aa4d9; z-index: 1 ">RentalType</th>
+                                                                <th>Fare</th>
+                                                                <th>MinKm</th>
+                                                                <th>MinHrs</th>
+                                                                <th>ExtraPerHour</th>
+                                                                <th>ExtraPerKm</th>
+                                                                <th>NightCharges</th>
+                                                                <th>Interstate Charges</th>
+                                                                <th>Outstation Charges</th>
+                                                                <th>Pickup loc.</th>
+                                                                <th>Drop loc.</th>
+                                                                <th>Days</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @for (int i = 0; i < Model.Packages.Count(); i++)
+                                                            {
+                                                                <tr>
+                                                                    <td class="sticky-col first-col" style="background-color:white;" nowrap>
+                                                                        @Html.HiddenFor(a => a.Packages[i].VendorPackage_Id)
+                                                                        @Html.HiddenFor(a => a.Packages[i].RentalType_Id)
+                                                                        @Html.HiddenFor(a => a.Packages[i].VehicleModel_Id)
+
+                                                                        @Model.Packages[i].ModelName
+                                                                    </td>
+                                                                    <td class="sticky-col second-col" style="background-color:white;">
+                                                                        @Model.Packages[i].PackageTypeName
+                                                                    </td>
+                                                                    <td class="sticky-col third-col" style="background-color:white;">
+                                                                        @Model.Packages[i].RentalTypeName
+                                                                    </td>
+
+                                                                    <td>
+                                                                        @Html.TextBoxFor(a => a.Packages[i].Fare, new { @class = "form-control", Value = Model.Packages[i].Fare, required = "required" })
+                                                                    </td>
+                                                                    @*<td><input type="text" class="form-control" name="Packages[@i].Fare" value="@Model.Packages[i].Fare" required /></td>*@
+                                                                    <td>@Html.TextBoxFor(a => a.Packages[i].MinKm, new { @class = "form-control", Value = Model.Packages[i].MinKm, required = "required" })</td>
+                                                                    <td>@Html.TextBoxFor(a => a.Packages[i].MinHrs, new { @class = "form-control", Value = Model.Packages[i].MinHrs, required = "required" })</td>
+                                                                    <td>@Html.TextBoxFor(a => a.Packages[i].ExtraPerHour, new { @class = "form-control", Value = Model.Packages[i].ExtraPerHour, required = "required" })</td>
+                                                                    <td>@Html.TextBoxFor(a => a.Packages[i].ExtraPerKm, new { @class = "form-control", Value = Model.Packages[i].ExtraPerKm, required = "required" })</td>
+                                                                    <td>@Html.TextBoxFor(a => a.Packages[i].NightCharges, new { @class = "form-control", Value = Model.Packages[i].NightCharges, required = "required" })</td>
+                                                                    <td>@Html.TextBoxFor(a => a.Packages[i].InterStateCharge, new { @class = "form-control", Value = Model.Packages[i].InterStateCharge, required = "required" })</td>
+                                                                    <td>@Html.TextBoxFor(a => a.Packages[i].OutStationCharge, new { @class = "form-control", Value = Model.Packages[i].OutStationCharge, required = "required" })</td>
+                                                                    <td>@Html.TextBoxFor(a => a.Packages[i].PickupLocation, new { @class = "form-control", Value = Model.Packages[i].PickupLocation })</td>
+                                                                    <td>@Html.TextBoxFor(a => a.Packages[i].DropLocation, new { @class = "form-control", Value = Model.Packages[i].DropLocation })</td>
+                                                                    <td>@Html.TextBoxFor(a => a.Packages[i].NoOfDays, new { @class = "form-control", Value = Model.Packages[i].NoOfDays })</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="card-footer text-end">
+                                                    <input type="submit" class="btn btn-primary" value="Save" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
                             </div>
                         </div>
 
-                        <div style="margin-left:90%;margin-top:10px;">
-                            <a href="/Vendor/All?menuId=@ViewBag.menuId" class="btn btn-primary">Show all</a>
-                        </div>
-                        <div class="card-body">
-                            <input type="hidden" name="MenuId" value="@ViewBag.menuId" />
-                            @*<div class="row r">
-                                    <div class="col-md-12">
-                                        <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
 
-                                        <a href="/Vendor/All?menuId=@ViewBag.menuId" class="btn btn-info">Show all</a>
-                                    </div>
-                                </div>*@
-
-                            @using (Html.BeginForm("Add", "Vendor", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                            {
-                                if (TempData["msg"] != null)
-                                {
-                                    <div class="row r">
-                                        <div class="col-md-12">
-                                            <div class="alert alert-info">
-                                                @TempData["msg"]
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-
-                                <div class="row r">
-                                    <div class="col-md-12">
-
-
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Company Name <span style="color:red;">*</span>
-                                                @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.CompanyName)
-                                                </span>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Contact Person Name <span style="color:red;">*</span>
-
-                                                @Html.TextBoxFor(a => a.VendorName, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.VendorName)
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Email
-                                                @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.Email)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                Mobile Number
-                                                @Html.TextBoxFor(a => a.MobileNumber, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.MobileNumber)
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Alternate mobile no.
-                                                @Html.TextBoxFor(a => a.AlernateMobile, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.AlernateMobile)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                GSTIN
-                                                @Html.TextBoxFor(a => a.GSTIN, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.GSTIN)
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Parent Vendor
-                                                @Html.DropDownListFor(a => a.ParentVendor_Id, Model.Vendors, "Select", new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.ParentVendor_Id)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                State <span style="color:red;">*</span>
-                                                @Html.DropDownListFor(a => a.StateMaster_Id, Model.States, "Select", new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.StateMaster_Id)
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                City <span style="color:red;">*</span>
-                                                @Html.DropDownListFor(a => a.CityMaster_Id, Enumerable.Empty<SelectListItem>(), "Select City", new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.CityMaster_Id)
-                                                </span>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Full Address <span style="color:red;">*</span>
-                                                @Html.TextAreaFor(a => a.FullAddress, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.FullAddress)
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                PAN Number
-                                                @Html.TextBoxFor(a => a.PAN, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.PAN)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                PAN Document image
-                                                @Html.TextBoxFor(a => a.PanFile, new { type = "file", @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.PanFile)
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                CIN Number
-                                                @Html.TextBoxFor(a => a.CIN, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.CIN)
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <h4>Packages</h4>
-
-                                        <div class="table-responsive table-desi">
-                                            <table class="datatable user-table table table-striped">
-
-                                                <thead>
-                                                    <tr>
-                                                        <th class="sticky-col first-col" style="background-color: #4aa4d9; z-index:1" nowrap>Vehicle</th>
-                                                        <th class="sticky-col second-col" style="background-color: #4aa4d9; z-index: 1 ">PackageType</th>
-                                                        <th class="sticky-col third-col" style="background-color: #4aa4d9; z-index: 1 ">RentalType</th>
-                                                        <th>Fare</th>
-                                                        <th>MinKm</th>
-                                                        <th>MinHrs</th>
-                                                        <th>ExtraPerHour</th>
-                                                        <th>ExtraPerKm</th>
-                                                        <th>NightCharges</th>
-                                                        <th>Interstate Charges</th>
-                                                        <th>Outstation Charges</th>
-                                                        <th>Pickup loc.</th>
-                                                        <th>Drop loc.</th>
-                                                        <th>Days</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @for (int i = 0; i < Model.Packages.Count(); i++)
-                                                    {
-                                                        <tr>
-                                                            <td class="sticky-col first-col" style="background-color:white;" nowrap>
-                                                                @Html.HiddenFor(a => a.Packages[i].VendorPackage_Id)
-                                                                @Html.HiddenFor(a => a.Packages[i].RentalType_Id)
-                                                                @Html.HiddenFor(a => a.Packages[i].VehicleModel_Id)
-
-                                                                @Model.Packages[i].ModelName
-                                                            </td>
-                                                            <td class="sticky-col second-col" style="background-color:white;">
-                                                                @Model.Packages[i].PackageTypeName
-                                                            </td>
-                                                            <td class="sticky-col third-col" style="background-color:white;">
-                                                                @Model.Packages[i].RentalTypeName
-                                                            </td>
-
-                                                            <td>
-                                                                @Html.TextBoxFor(a => a.Packages[i].Fare, new { @class = "form-control", Value = Model.Packages[i].Fare, required = "required" })
-                                                            </td>
-                                                            @*<td><input type="text" class="form-control" name="Packages[@i].Fare" value="@Model.Packages[i].Fare" required /></td>*@
-                                                            <td>@Html.TextBoxFor(a => a.Packages[i].MinKm, new { @class = "form-control", Value = Model.Packages[i].MinKm, required = "required" })</td>
-                                                            <td>@Html.TextBoxFor(a => a.Packages[i].MinHrs, new { @class = "form-control", Value = Model.Packages[i].MinHrs, required = "required" })</td>
-                                                            <td>@Html.TextBoxFor(a => a.Packages[i].ExtraPerHour, new { @class = "form-control", Value = Model.Packages[i].ExtraPerHour, required = "required" })</td>
-                                                            <td>@Html.TextBoxFor(a => a.Packages[i].ExtraPerKm, new { @class = "form-control", Value = Model.Packages[i].ExtraPerKm, required = "required" })</td>
-                                                            <td>@Html.TextBoxFor(a => a.Packages[i].NightCharges, new { @class = "form-control", Value = Model.Packages[i].NightCharges, required = "required" })</td>
-                                                            <td>@Html.TextBoxFor(a => a.Packages[i].InterStateCharge, new { @class = "form-control", Value = Model.Packages[i].InterStateCharge, required = "required" })</td>
-                                                            <td>@Html.TextBoxFor(a => a.Packages[i].OutStationCharge, new { @class = "form-control", Value = Model.Packages[i].OutStationCharge, required = "required" })</td>
-                                                            <td>@Html.TextBoxFor(a => a.Packages[i].PickupLocation, new { @class = "form-control", Value = Model.Packages[i].PickupLocation })</td>
-                                                            <td>@Html.TextBoxFor(a => a.Packages[i].DropLocation, new { @class = "form-control", Value = Model.Packages[i].DropLocation })</td>
-                                                            <td>@Html.TextBoxFor(a => a.Packages[i].NoOfDays, new { @class = "form-control", Value = Model.Packages[i].NoOfDays })</td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-
-
-                                        <div class="card-footer text-end">
-                                            <input type="submit" class="btn btn-primary" value="Save" />
-                                        </div>
-
-                                    </div>
-                                </div>
-                            }
-                        </div>
-
-                        @*<div class="card-footer text-end">
-                                <input type="submit" class="btn btn-primary" value="Save" />
-                            </div>*@
                     </div>
                 </div>
+                <!-- Page body end -->
             </div>
         </div>
     </div>
 </div>
+ 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
