@@ -14,7 +14,7 @@ namespace VardaanCab.Domain.DTO
         public DateTime EndDate { get; set; } 
         public DateTime ShiftDate { get; set; } 
         public int Company_Id { get; set; } 
-        public int Vehicle_Type { get; set; } 
+        public int[] Vehicle_Type { get; set; } 
         public string Routing_Type { get; set; } 
         public int Routing_Options { get; set; } 
         public int WhereTripStartAndEnd { get; set; } 
@@ -28,6 +28,8 @@ namespace VardaanCab.Domain.DTO
         public string IsVendorAllocation { get; set; } 
         public bool Assign_Cab_by_Route { get; set; } 
         public int Zone_Id { get; set; }
+        public int[] PickupShiftid { get; set; }
+        public int[] DropShiftid { get; set; }
         public SelectList Customers { get; set; }
         public SelectList TripTypes { get; set; }
         public SelectList PickUpshiftTimes { get; set; }

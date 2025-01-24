@@ -219,7 +219,8 @@
         const groupData = data[group];
         const groupZoneWise = groupData[0].ZoneWise;
         const routeId = groupData[0].Group ?? 'N/A'; // Example: Replace with actual property
-        const availableSeats = groupData[0].AvailableSeats ?? 'N/A'; // Example
+        const availableSeats = groupData[0].groupMemberCount ?? 'N/A'; // Example
+        const CabNumber = groupData[0].CabNumber ?? 'N/A'; // Example
 
         // Add the group to the uniqueGroups set (this will ensure each group is counted only once)
         uniqueGroups.add(group);
@@ -239,6 +240,7 @@
                 <span>Route Name: ${groupZoneWise}</span>
                 <span>Route ID: ${routeId}</span>
                 <span>Available Seats: ${availableSeats}</span>
+                <span>${CabNumber}</span>
             </div>
             <div class="actions">
                 <button class="btn btn-sm btn-primary">Leave</button>

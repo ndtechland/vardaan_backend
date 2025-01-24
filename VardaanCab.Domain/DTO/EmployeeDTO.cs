@@ -121,10 +121,12 @@ namespace VardaanCab.Domain.DTO
         public double Longitude { get; set; }
         
         public string Group { get; set; }
+        public int groupMemberCount { get; set; }
         public string ZoneWise { get; set; }
         public string ZoneHomeWise { get; set; }
         public string DestinationAreaWise { get; set; }
         public string PickupandDropAddress { get; set; }
         public string Status { get; set; }
+        public string CabNumber { get; set; }
     }
 }
