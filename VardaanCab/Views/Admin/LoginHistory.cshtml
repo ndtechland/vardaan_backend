@@ -2,16 +2,11 @@
 @model VardaanCab.Domain.ViewModels.LoginHistoryViewModel
 @{
     ViewBag.Title = "Login History";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
     int sn = Model.SrNo;
 }
 <link href="~/css/fixtable.css" rel="stylesheet" />
-<style>
-    #main {
-        margin: auto;
-        width: 100%;
-    }
-</style>
+ 
 <style>
 
 
@@ -79,139 +74,147 @@
         border-right: none;
     }
 </style>
-<div class="container-fluid">
-    <div class="row">
+<div class="pcoded-content">
 
-        <div class="col-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <!--driver detail start-->
-                    <div class="card">
-                        <div class="card-header  card-header--2">
-
-                            <div>
-                                <h5>Login History</h5>
-                            </div>
-
-                            <form class="d-inline-flex">
-                                <a class="btn btn-primary" href="/Admin/LoginHistory?menuId=@ViewBag.menuId">Show all</a>
-
-                            </form>
-
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card bread">
+                    <div class="card-body">
+                        <h5>
+                            Login History
+                        </h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Update</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        Login History
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="card-body">
-                            @*<h2>Login History</h2>
-            <div class="row">
-                <a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>
-            </div>*@
-                            @using (Html.BeginForm())
-                            {
-                                <input type="hidden" name="menuId" value="@ViewBag.menuId" />
-                                <div class="row r">
-                                    <div class="col-md-3">
-                                        <input type="text" placeholder="Search by Name" class="form-control" name="term" />
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="text" placeholder="YYYY/MM/DD" class="form-control sdp" name="sDate" />
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="text" placeholder="YYYY/MM/DD" class="form-control sdp" name="eDate" />
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="submit" class="btn btn-primary" value="Find" />
+                    </div>
+                </div>
+                <!-- Page-body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>
+                                        Login History
+                                    </h5>
+
+                                    <!-- Import and Export Section -->
+                                    <div class="d-flex align-items-center">
+                                       
                                         @*<a class="btn btn-info" href="/Admin/LoginHistory?menuId=@ViewBag.menuId">Show all</a>*@
 
                                     </div>
                                 </div>
-                            }
+                                <div class="card-block">
+                                    @using (Html.BeginForm())
+                                    {
+                                        <input type="hidden" name="menuId" value="@ViewBag.menuId" />
+                                        <div class="row r">
+                                            <div class="col-md-3">
+                                                <input type="text" placeholder="Search by Name" class="form-control" name="term" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" placeholder="YYYY/MM/DD" class="form-control sdp" name="sDate" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" placeholder="YYYY/MM/DD" class="form-control sdp" name="eDate" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="submit" class="btn btn-primary" value="Find" />
+                                                <a class="btn btn-info" href="/Admin/LoginHistory?menuId=@ViewBag.menuId">Show all</a>
 
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="order-table" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No.</th>
+                                                    <th>Name</th>
+                                                    <th>Ip Address</th>
+                                                    <th>Update Date</th>
 
-
-                            <div class="table-responsive table-desi scrollable">
-                                <table class="user-table table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>S.No.</th>
-                                            <th>Name</th>
-                                            <th>Ip Address</th>
-                                            <th>Update Date</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.History)
-                                        {
-                                            <tr>
-                                                <td>@(++sn)</td>
-                                                <td>@item.UserName</td>
-                                                <td>@item.Ip_Address</td>
-                                                <td>@item.UpdateDate</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.History)
+                                                {
+                                                    <tr>
+                                                        <td>@(++sn)</td>
+                                                        <td>@item.UserName</td>
+                                                        <td>@item.Ip_Address</td>
+                                                        <td>@item.UpdateDate</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
 
-
-                            @*<div class="pagination-box">
-                <div class="col-md-12">
-                    <ul class="pagination pagination-primary">
-                        @for (int i = 1; i <= Model.NumberOfPages; i++)
-                        {
-                            <li class="@if (i == Model.Page) {<text>active</text> }">
-                                <a href="/Admin/LoginHistory?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>*@
-
                         </div>
-                        <div class="pagination-box">
-                            <nav class="ms-auto me-auto" aria-label="...">
-                                <ul class="pagination pagination-primary">
-                                    <!-- Previous Button -->
-                                    <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
-                                        <a class="page-link" href="/Admin/LoginHistory?term=@Model.Term&page=@(Model.Page - 1)&menuId=@ViewBag.menuId" tabindex="-1">Previous</a>
-                                    </li>
-
-                                    <!-- Page Number Buttons -->
-                                    @{
-                                        int startPage = Math.Max(1, Model.Page - 1);
-                                        int endPage = Math.Min(Model.NumberOfPages, Model.Page + 1);
-
-                                        // Adjust to always show exactly 3 pages if possible
-                                        if (Model.Page == 1)
-                                        {
-                                            endPage = Math.Min(3, Model.NumberOfPages);
-                                        }
-                                        else if (Model.Page == Model.NumberOfPages)
-                                        {
-                                            startPage = Math.Max(1, Model.NumberOfPages - 2);
-                                        }
-                                    }
-                                    @for (int i = startPage; i <= endPage; i++)
-                                    {
-                                        <li class="page-item @(i == Model.Page ? "active" : "")">
-                                            <a class="page-link" href="/Admin/LoginHistory?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
-                                        </li>
-                                    }
-
-                                    <!-- Next Button -->
-                                    <li class="page-item @(Model.Page == Model.NumberOfPages ? "disabled" : "")">
-                                        <a class="page-link" href="/Admin/LoginHistory?term=@Model.Term&page=@(Model.Page + 1)&menuId=@ViewBag.menuId">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-
-
-                    </div>
                     </div>
                 </div>
+                <!-- Page-body end -->
             </div>
         </div>
     </div>
+</div>
+@*<div class="pagination-box">
+    <nav class="ms-auto me-auto" aria-label="...">
+        <ul class="pagination pagination-primary">
+           
+            <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                <a class="page-link" href="/Admin/LoginHistory?term=@Model.Term&page=@(Model.Page - 1)&menuId=@ViewBag.menuId" tabindex="-1">Previous</a>
+            </li>
+
+          
+            @{
+                int startPage = Math.Max(1, Model.Page - 1);
+                int endPage = Math.Min(Model.NumberOfPages, Model.Page + 1);
+
+                
+                if (Model.Page == 1)
+                {
+                    endPage = Math.Min(3, Model.NumberOfPages);
+                }
+                else if (Model.Page == Model.NumberOfPages)
+                {
+                    startPage = Math.Max(1, Model.NumberOfPages - 2);
+                }
+            }
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == Model.Page ? "active" : "")">
+                    <a class="page-link" href="/Admin/LoginHistory?term=@Model.Term&page=@i&menuId=@ViewBag.menuId">@i</a>
+                </li>
+            }
+
+            
+            <li class="page-item @(Model.Page == Model.NumberOfPages ? "disabled" : "")">
+                <a class="page-link" href="/Admin/LoginHistory?term=@Model.Term&page=@(Model.Page + 1)&menuId=@ViewBag.menuId">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>*@
 
 
 

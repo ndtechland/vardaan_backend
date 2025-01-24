@@ -1,99 +1,113 @@
 ﻿@model VardaanCab.Domain.DTO.DriverLeaveDTO
 @{
     ViewBag.Title = "Assign Leave";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 
-<style>
-    .row {
-        margin-top: 1% !important;
-    }
-</style>
-<div class="container-fluid">
-    <div class="row">
+<div class="pcoded-content">
 
-        <div class="col-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <!--driver detail start-->
-                    <div class="card">
-                        <div class="card-header  card-header--2">
-
-                            <div>
-                                <h5>Assign Leave</h5>
-                            </div>
-
-                            <form class="d-inline-flex">
-                                <a href="/DriverLeave/DriverLeaves?menuId=@ViewBag.menuId" class="btn btn-primary">All Data</a>
-                            </form>
-
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card bread">
+                    <div class="card-body">
+                        <h5>
+                            Assign Leave
+                        </h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Package</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        Assign Leave
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        @using (Html.BeginForm())
-                        {
-                            <div class="card-body">
-
-
-
-                                @if (TempData["msg"] != null)
-                                {
-                                    <div class="row r">
-                                        <div class="col-md-12">
-                                            <div class="alert alert-info">
-                                                @TempData["msg"]
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                                <div class="row">
-                                    @*<a href="/Admin/SubMenu?menuId=@ViewBag.menuId" class="btn btn-info" style="margin-left:2%">Back</a>*@
-
-
-                                </div>
-                                 
-                                @Html.HiddenFor(a => a.MenuId)
-
-                                <div class="form-group">
-                                    Driver *   @Html.DropDownListFor(a => a.Driver_Id, Model.Drivers, "Select", new { @class = "form-control", required = "required" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.Driver_Id)
-                                    </span>
-                                </div>
-
-                                <div class="form-group">
-                                    Date From *
-                                    @Html.TextBoxFor(a => a.DateFrom, new { @class = "form-control dp" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.DateFrom)
-                                    </span>
-                                </div>
-
-                                <div class="form-group">
-                                    Date To *
-                                    @Html.TextBoxFor(a => a.DateTo, new { @class = "form-control dp" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.DateTo)
-                                    </span>
-                                </div>
-                                <div class="form-group">
-                                    Leave Description
-                                    @Html.TextAreaFor(a => a.Description, new { @class = "form-control" })
-                                    <span class="text-danger">
-                                        @Html.ValidationMessageFor(a => a.Description)
-                                    </span>
-                                </div>
-
-                            </div>
-                            <div class="card-footer text-end">
-                                <input type="submit" class="btn btn-primary" value="Submit" />
-                            </div>
-                        }
-                    </div>
                     </div>
                 </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>Assign Leave</h5>
+
+                                    <!-- Import and Export Section -->
+                                    <div class="d-flex align-items-center">
+                                        <a href="/DriverLeave/DriverLeaves?menuId=@ViewBag.menuId" class="btn btn-primary btn-sm">
+                                            Show All
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    @using (Html.BeginForm())
+                                    {
+                                        @Html.HiddenFor(a => a.MenuId)
+                                        if (TempData["msg"] != null)
+                                        {
+                                            <div class="mb-3">
+                                                <div class="alert alert-success border-success">
+                                                    @TempData["msg"]
+                                                </div>
+                                            </div>
+                                        }
+
+
+                                        <div class="form-group">
+                                            Driver *   @Html.DropDownListFor(a => a.Driver_Id, Model.Drivers, "Select", new { @class = "form-control", required = "required" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.Driver_Id)
+                                            </span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            Date From *
+                                            @Html.TextBoxFor(a => a.DateFrom, new { @class = "form-control dp" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.DateFrom)
+                                            </span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            Date To *
+                                            @Html.TextBoxFor(a => a.DateTo, new { @class = "form-control dp" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.DateTo)
+                                            </span>
+                                        </div>
+                                        <div class="form-group">
+                                            Leave Description
+                                            @Html.TextAreaFor(a => a.Description, new { @class = "form-control" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.Description)
+                                            </span>
+                                        </div>
+
+                                        <div class="card-footer text-end">
+                                            <input type="submit" class="btn btn-primary" value="Save" />
+
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Page body end -->
             </div>
         </div>
     </div>
-
-
-
-
+</div>

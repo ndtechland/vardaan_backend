@@ -1,55 +1,70 @@
 ﻿@model VardaanCab.Domain.DTO.CityMasterDTO
 @{
     ViewBag.Title = "Add City";
-    Layout = "~/Views/Shared/Master/_NewAdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 
-<style>
-    .row{
-        margin-top:1% !important;
-    }
-</style>
+<div class="pcoded-content">
 
-<div class="container-fluid">
-    <div class="row">
-
-        <div class="col-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <!--driver detail start-->
-                    <div class="card">
-                        <div class="card-header  card-header--2">
-
-                            <div>
-                                <h5>Add City</h5>
-                            </div>
-                            <form class="d-inline-flex">
-                                <a href="/City/All" class="btn btn-primary">Show all</a>
-
-                            </form>
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card bread">
+                    <div class="card-body">
+                        <h5>Add City</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Master Enteries</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Add City</a>
+                                </li>
+                            </ul>
                         </div>
+                    </div>
+                </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>Add City</h5>
 
-                        @using (Html.BeginForm())
-                        {
-                            <div class="card-body">
 
-                                <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
-                                 
-                                @if (TempData["msg"] != null)
-                                {
-                                    <div class="row r">
-                                        <div class="col-md-12">
-                                            <div class="alert alert-info">
-                                                @TempData["msg"]
-                                            </div>
-                                        </div>
+                                    <div class="d-flex align-items-center">
+                                        <a href="/City/All" class="btn btn-primary btn-sm">
+                                            Show All
+                                        </a>
                                     </div>
-                                }
+                                </div>
+                                <div class="card-block">
+                                    @using (Html.BeginForm())
+                                    {
+                                        <input type="hidden" name="MenuId" value="@ViewBag.menuId" />
+
+                                        if (TempData["msg"] != null)
+                                        {
+                                            <div class="mb-3">
+                                                <div class="alert alert-success border-success">
+                                                    @TempData["msg"]
+                                                </div>
+                                            </div>
+                                        }
 
                                 <div class="row r">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            City Name *
+                                            City Name <span class="text-danger">*</span>
                                             @Html.TextBoxFor(a => a.CityName, new { @class = "form-control" })
                                             <span class="text-danger">
                                                 @Html.ValidationMessageFor(a => a.CityName)
@@ -57,26 +72,29 @@
                                         </div>
 
                                         <div class="form-group">
-                                            State *
+                                            State <span class="text-danger">*</span>
                                             @Html.DropDownListFor(a => a.StateMaster_Id, Model.States, "Select", new { @class = "form-control" })
                                             <span class="text-danger">
                                                 @Html.ValidationMessageFor(a => a.StateMaster_Id)
                                             </span>
                                         </div>
-                                        @*<div class="form-group">
-                                            <input type="submit" class="btn btn-info" value="Save" />
-                                        </div>*@
 
                                     </div>
                                 </div>
+                                        <div class="card-footer text-end">
+                                            <input type="submit" class="btn btn-primary" value="Save" />
+                                        </div>
+                                    }
+                                </div>
                             </div>
-                            <div class="card-footer text-end">
-                                <input type="submit" class="btn btn-primary" value="Save" />
-                            </div>
-                        }
-                    </div>
+                        </div>
+
                     </div>
                 </div>
+                <!-- Page body end -->
             </div>
         </div>
     </div>
+</div>
+
+ 

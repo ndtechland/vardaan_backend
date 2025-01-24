@@ -1,70 +1,99 @@
 ﻿@model VardaanCab.Domain.DTO.RentalTypeDTO
 @{
     ViewBag.Title = "Update Rental Types";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
 }
 
-<style>
-    .row {
-        margin-top: 1% !important;
-    }
-</style>
+<div class="pcoded-content">
 
-
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(a => a.Id)
-    @Html.HiddenFor(a=>a.MenuId)
-    <div style="width:50%">
-
-        <div class="row r">
-            <div class="col-md-12">
-                <a href="/RentalType/All" class="btn btn-info">Show all</a>
-            </div>
-        </div>
-
-        <div class="row r">
-            <div class="col-md-12">
-                <h2>Update Rental Types</h2>
-            </div>
-        </div>
-
-        @if (TempData["msg"] != null)
-        {
-            <div class="row r">
-                <div class="col-md-12">
-                    <div class="alert alert-info">
-                        @TempData["msg"]
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card bread">
+                    <div class="card-body">
+                        <h5>Update Rental Types</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Master Enteries</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Manage Rental Typesl</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-        <div class="row r">
-            <div class="col-md-12">
-               
-                 <div class="form-group">
-                    Rental Name *
-                    @Html.TextBoxFor(a => a.RentalTypeName , new { @class = "form-control" })
-                    <span class="text-danger">
-                        @Html.ValidationMessageFor(a => a.RentalTypeName)
-                    </span>
-                </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>Update Rental Types</h5>
 
-                <div class="form-group">
-                    Package Type *
-                    @Html.DropDownListFor(a => a.PackageType_Id, Model.PackageTypes, "Select Packages", new { @class = "form-control", required = "required" })
-                    <span class="text-danger">
-                        @Html.ValidationMessageFor(a => a.PackageType_Id)
-                    </span>
-                </div>
 
-                <div class="form-group">
-                    <input type="submit" class="btn btn-info" value="Save" />
-                </div>
+                                    <div class="d-flex align-items-center">
+                                        <a href="/RentalType/All" class="btn btn-primary btn-sm">
+                                            Show All
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    @using (Html.BeginForm())
+                                    {
+                                        @Html.HiddenFor(a => a.Id)
+                                        @Html.HiddenFor(a => a.MenuId)
+                                        if (TempData["msg"] != null)
+                                        {
+                                            <div class="mb-3">
+                                                <div class="alert alert-success border-success">
+                                                    @TempData["msg"]
+                                                </div>
+                                            </div>
+                                        }
 
+                                <div class="row r">
+                                    <div class="col-md-12">
+
+                                        <div class="form-group">
+                                            Rental Name <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(a => a.RentalTypeName, new { @class = "form-control" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.RentalTypeName)
+                                            </span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            Package Type <span class="text-danger">*</span>
+                                            @Html.DropDownListFor(a => a.PackageType_Id, Model.PackageTypes, "Select Packages", new { @class = "form-control", required = "required" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.PackageType_Id)
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                        <div class="card-footer text-end">
+                                            <input type="submit" class="btn btn-primary me-3" value="Save" />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Page body end -->
             </div>
         </div>
-
     </div>
-
-}
+</div>
