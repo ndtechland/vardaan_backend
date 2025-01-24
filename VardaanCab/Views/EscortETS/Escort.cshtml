@@ -107,12 +107,13 @@
             </div>
 
             <!-- Show All Button -->
-            <div class="text-end mt-3">
-                <a href="/EscortETS/EscortsList?menuId=@ViewBag.menuId" class="btn btn-primary">Show all</a>
-            </div>
+            
 
 
             <div class="card-block">
+                <div class="text-end mt-3" style="text-align:right;">
+                    <a href="/EscortETS/EscortsList?menuId=@ViewBag.menuId" class="btn btn-primary">Show all</a>
+                </div>
                 <form action="Escort" method="post" enctype="multipart/form-data" id="escortForm">
                     <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
                     <input name="Id" type="hidden" value="@Model.Id" />
