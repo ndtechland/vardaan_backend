@@ -28,8 +28,8 @@ namespace VardaanCab.Domain.DTO
         public string IsVendorAllocation { get; set; } 
         public bool Assign_Cab_by_Route { get; set; } 
         public int Zone_Id { get; set; }
-        public int[] PickupShiftid { get; set; }
-        public int[] DropShiftid { get; set; }
+        public List<int> PickupShiftid { get; set; }
+        public List<int> DropShiftid { get; set; }
         public SelectList Customers { get; set; }
         public SelectList TripTypes { get; set; }
         public SelectList PickUpshiftTimes { get; set; }

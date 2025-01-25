@@ -219,7 +219,7 @@
         const groupData = data[group];
         const groupZoneWise = groupData[0].ZoneWise;
         const routeId = groupData[0].Group ?? 'N/A'; // Example: Replace with actual property
-        const availableSeats = groupData[0].groupMemberCount ?? 'N/A'; // Example
+        const availableSeats = groupData[0].missingEmployees ?? 'N/A'; // Example
         const CabNumber = groupData[0].CabNumber ?? 'N/A'; // Example
 
         // Add the group to the uniqueGroups set (this will ensure each group is counted only once)
@@ -292,8 +292,8 @@
             // Update totals based on the employee data
             totalEmployees++;
             if (employee.EscortRequired) escortRequired++;
-            if (employee.Gender === 'Male') maleCount++;
-            if (employee.Gender === 'Female') femaleCount++;
+            if (employee.Gender === "male" || employee.Gender === "Male" || employee.Gender === "MALE")maleCount++;
+            if (employee.Gender === "female" || employee.Gender === "Female" || employee.Gender === "FEMALE")femaleCount++;
             if (employee.Status === 'OnBoard') totalOnBoard++;
             if (employee.Status === 'Yet To Board') yetToBoard++;
         });
