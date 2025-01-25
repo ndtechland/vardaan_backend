@@ -727,288 +727,129 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).OrderByDescending(a => a.Id).ToList(), "Id", "OrgName");
-                model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
-                model.ShiftTypes = new SelectList(ent.TripMasters.Where(x => x.Id == 1).ToList(), "Id", "TripName");
-                model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
-                model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
-                model.Zones = new SelectList(ent.CompanyZones.ToList(), "Id", "CompanyZone1");
+                // Initialize dropdowns for the UI
+                InitializeDropdowns(model);
 
                 if (model.StartDate != null && model.EndDate != null)
                 {
-                    var EmployeeReqList = (from empr in ent.EmployeeRequests
-                                           join emp in ent.Employees on empr.EmployeeId equals emp.Employee_Id
-                                           where empr.CompanyId == model.Company_Id && empr.TripType == model.Trip_Type
-                                           //&& empr.PickupShiftTimeId == model.PickupShiftid && empr.DropShiftTimeId == model.DropShiftid 
-                                           && empr.StartRequestDate <= model.StartDate && empr.EndRequestDate >= model.EndDate
-                                           select new
-                                           {
-                                               Employee = emp
-                                           }).ToList();
-                    var emplist = EmployeeReqList.Select(e => e.Employee).ToList();
-                    var employeelist = TransformData(emplist);
-                    double threshold = 0.1; // Approx. 100 meters in degrees
-                    int groupCounter = 0;
-                    int cabCounter = 1001;
+                    // Get the list of employees who match the criteria
+                    var employeeRequestList = GetEmployeeRequests(model);
 
-
-                    var groupMemberCount = new Dictionary<string, int>(); // Track the member count of each group
-
-                    foreach (var emp in employeelist)
+                    if (employeeRequestList.Count > 0)
                     {
-                        if (emp.Group == null) // Only group ungrouped employees
-                        {
-                            foreach (var other in employeelist)
-                            {
-                                if (other.Group == null && CalculateDistance(emp.Latitude, emp.Longitude, other.Latitude, other.Longitude) <= threshold)
-                                {
-                                    if (emp.Group == null)
-                                    {
-                                        groupCounter++;
-                                        emp.Group = groupCounter.ToString(); // Assign a numbered group
-                                        emp.CabNumber = $"Dummy10GB{cabCounter++}";
-                                        groupMemberCount[emp.Group] = 1; // Initialize group count for emp
-                                        emp.groupMemberCount = groupMemberCount[emp.Group];
-                                    }
+                        // Group employees by Zone and Area categories
+                        var employeeGroups = GroupEmployeesByZoneAndArea(employeeRequestList);
 
-                                    //changes
-                                    // Check if `other` is not already in the group and the group has space
-                                    if (other.Group == null && groupMemberCount[emp.Group] < 6)
-                                    {
-                                        other.Group = emp.Group; // Assign the same group
-                                        other.CabNumber = emp.CabNumber;
-                                        groupMemberCount[emp.Group]++; // Increment group count
-                                    }
-                                    else if (other.Group == null)
-                                    {
-                                        // Create a new group for the overflow member
-                                        groupCounter++;
-                                        other.Group = groupCounter.ToString();
-                                        other.CabNumber = $"Dummy10GB{cabCounter++}";
-                                        groupMemberCount[other.Group] = 1; // Initialize new group count
-                                    }
+                        // Convert grouped data into dictionary format for serialization
+                        var groupedData = employeeGroups.GroupBy(x => x.Group);
+                        var routeDictionary = groupedData.ToDictionary(group => group.Key, group => group.ToList());
 
-                                    // Update the group member count for all members of the group
-                                    foreach (var member in employeelist.Where(e => e.Group == emp.Group))
-                                    {
-                                        member.groupMemberCount = groupMemberCount[emp.Group];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (employeelist.Count > 0)
-                    {
-                        Dictionary<string, List<EmployeeGroup>> dict = new Dictionary<string, List<EmployeeGroup>>();
-                        var groupedData = employeelist.GroupBy(x => x.Group);
-                        foreach (var group in groupedData)
-                        {
-                            dict[group.Key] = group.ToList();
-                        }
-                        var JsonAllRoutes = new JavaScriptSerializer().Serialize(dict);
-                        Session["AllRoutes"] = JsonAllRoutes;
+                        // Serialize route information for further processing
+                        var jsonRoutes = new JavaScriptSerializer().Serialize(routeDictionary);
+                        Session["AllRoutes"] = jsonRoutes;
+
                         return RedirectToAction("RoutingList", "ETS");
                     }
                 }
 
-
-
-
-                #region no use
-                //if (EmployeeReqList != null && EmployeeReqList.Any())
-                //    {
-                // List<dynamic> AllRoutes = new List<dynamic>();
-                //        int cabCounter = 1001; // Initialize counter for unique cab numbers
-
-                // Define the proximity radius for 100 meters
-                //       double proximityRadiusLat = 100 / 111000.0; // ~0.0009 degrees for latitude
-
-                //foreach (var request in EmployeeReqList)
-                //{
-                //    var Emp = ent.Employees.FirstOrDefault(x => x.Employee_Id == request.EmployeeId);
-                //    var EmpCompany = ent.Customers.FirstOrDefault(x => x.Id == model.Company_Id);
-
-                //    if (Emp != null && EmpCompany != null)
-                //    {
-                //        // Employee latitude and longitude
-                //        double empLat = (double)Emp.Latitude;
-                //        double empLong = (double)Emp.Longitude;
-
-                //        // Adjust longitude proximity radius for employee's latitude
-                //        double proximityRadiusLong = 100 / (111000.0 * Math.Cos(DegreesToRadians(empLat)));
-
-                //        // Get matching routes
-                //        var MatchingRoutes = (from cz in ent.CompanyZones
-                //                              join chz in ent.CompanyZoneHomeRoutes on cz.Id equals chz.CompanyZoneId
-                //                              where cz.CompanyId == EmpCompany.Id &&
-                //                                    cz.Id == Emp.PrimaryFacilityZone
-                //                              select new
-                //                              {
-                //                                  RouteId = chz.Id.ToString(),
-                //                                  RouteName = chz.HomeRouteName,
-                //                                  Latitude = chz.Latitude,
-                //                                  Longitude = chz.Longitude
-                //                              }).ToList();
-
-                //        bool isAssigned = false;
-
-                //        if (MatchingRoutes.Any())
-                //        {
-                //            foreach (var route in MatchingRoutes)
-                //            {
-                //                double routeLat = (double)route.Latitude;
-                //                double routeLong = (double)route.Longitude;
-
-                //                // Check if the route is within the 100-meter proximity
-                //                if (Math.Abs(routeLat - empLat) <= proximityRadiusLat &&
-                //                    Math.Abs(routeLong - empLong) <= proximityRadiusLong)
-                //                {
-                //                    // Find or create a group for this route
-                //                    var CurrentGroup = AllRoutes
-                //                        .FirstOrDefault(r => r.RouteId == route.RouteId)?.Employees as List<dynamic>;
-
-                //                    if (CurrentGroup == null)
-                //                    {
-                //                        CurrentGroup = new List<dynamic>();
-                //                        AllRoutes.Add(new
-                //                        {
-                //                            RouteId = route.RouteId,
-                //                            RouteName = route.RouteName,
-                //                            Employees = CurrentGroup
-                //                        });
-                //                    }
-
-                //                    CurrentGroup.Add(new
-                //                    {
-                //                        EmployeeId = Emp.Employee_Id,
-                //                        EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
-                //                        Latitude = empLat,
-                //                        Longitude = empLong
-                //                    });
-
-                //                    // Assign cab type based on group size
-                //                    string cabNumber = $"Dummy10GB{cabCounter++}";
-                //                    if (CurrentGroup.Count <= 4)
-                //                    {
-                //                        CurrentGroup.ForEach(e => e.CabType = "Cab-4");
-                //                        CurrentGroup.ForEach(e => e.CabNumber = cabNumber);
-                //                    }
-                //                    else if (CurrentGroup.Count <= 6)
-                //                    {
-                //                        CurrentGroup.ForEach(e => e.CabType = "Cab-6");
-                //                        CurrentGroup.ForEach(e => e.CabNumber = cabNumber);
-                //                    }
-
-                //                    isAssigned = true;
-                //                    break;
-                //                }
-                //            }
-                //        }
-
-                //        // If no route matches, assign a new cab (4-seater) for the employee
-                //        if (!isAssigned)
-                //        {
-                //            string cabNumber = $"Dummy10GB{cabCounter++}";
-                //            AllRoutes.Add(new
-                //            {
-                //                RouteId = Guid.NewGuid().ToString(), // Use a unique identifier for this route
-                //                RouteName = $"Individual Route for {Emp.Employee_Id}",
-                //                Employees = new List<dynamic>
-                //{
-                //    new
-                //    {
-                //        EmployeeId = Emp.Employee_Id,
-                //        EmployeeName = $"{Emp.Employee_First_Name} {Emp.Employee_Middle_Name} {Emp.Employee_Last_Name}",
-                //        Latitude = empLat,
-                //        Longitude = empLong,
-                //        CabType = "Cab-4",
-                //        CabNumber = cabNumber
-                //    }
-                //}
-                //            });
-                //        }
-                //    }
-                //}
-
-                // Serialize all routes to JSON for further processing or saving
-                //var JsonAllRoutes = new JavaScriptSerializer().Serialize(AllRoutes);
-
-                // AllRoutes now contains the cab assignments.
-                // You can save these or process them further as needed.
-                //}
-                //}
-
-
-                #endregion
-
-
                 ViewBag.BtnTXT = "Create Routing";
-                TempData["errormsg"] = "Data not foud between these dates...!";
+                TempData["errormsg"] = "Data not found between these dates...!";
                 return View(model);
             }
             catch (Exception ex)
             {
-
-                throw new Exception("Server Error + " + ex.Message);
+                throw new Exception("Server Error: " + ex.Message);
             }
         }
-        public static double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
+
+        private void InitializeDropdowns(RoutingDTO model)
         {
-            const double R = 6371; // Radius of Earth in km
-            var dLat = DegreesToRadians(lat2 - lat1);
-            var dLon = DegreesToRadians(lon2 - lon1);
-            var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                    Math.Cos(DegreesToRadians(lat1)) * Math.Cos(DegreesToRadians(lat2)) *
-                    Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
-            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-            return R * c;
+            model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive)
+                .OrderByDescending(a => a.Id).ToList(), "Id", "OrgName");
+            model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
+            model.ShiftTypes = new SelectList(ent.TripMasters.Where(x => x.Id == 1).ToList(), "Id", "TripName");
+            model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
+            model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
+            model.Zones = new SelectList(ent.CompanyZones.ToList(), "Id", "CompanyZone1");
         }
 
-        private List<EmployeeGroup> TransformData(List<VardaanCab.DataAccessLayer.DataLayer.Employee> originalData)
+        private List<EmployeeGroup> GetEmployeeRequests(RoutingDTO model)
         {
-            return originalData.Select(c => new EmployeeGroup
+            var employeeRequests = (from empr in ent.EmployeeRequests
+                                    join emp in ent.Employees on empr.EmployeeId equals emp.Employee_Id
+                                    where empr.CompanyId == model.Company_Id &&
+                                          empr.TripType == model.Trip_Type &&
+                                          model.PickupShiftid.Contains((int)empr.PickupShiftTimeId) &&
+                                          model.DropShiftid.Contains((int)empr.DropShiftTimeId) &&
+                                          empr.StartRequestDate <= model.StartDate &&
+                                          empr.EndRequestDate >= model.EndDate
+                                    select emp).ToList();
+
+            return TransformData(employeeRequests);
+        }
+
+        private List<EmployeeGroup> GroupEmployeesByZoneAndArea(List<EmployeeGroup> employees)
+        {
+            int groupCounter = 0;
+            int cabCounter = 1001;
+            int maxGroupSize = 6;
+            var groupedEmployees = new List<EmployeeGroup>();
+
+            var groupedByZone = employees.GroupBy(emp => new
             {
-                Id = c.Id,
-                Employee_Id = c.Employee_Id,
-                Gender = c.Gender,
-                CompanyName = ent.Customers.Where(x => x.Id == c.Company_Id).FirstOrDefault().OrgName,
-                Latitude = (double)c.Latitude,
-                Longitude = (double)c.Longitude,
-                PickupandDropAddress = c.EmployeeGeoCode,
-                Name = $"{c.Employee_First_Name} {c.Employee_Middle_Name} {c.Employee_Last_Name}",
-                ZoneWise = ent.CompanyZones.Where(x => x.Id == c.PrimaryFacilityZone).FirstOrDefault().CompanyZone1,
-                ZoneHomeWise = ent.CompanyZoneHomeRoutes.Where(x => x.Id == c.HomeRouteName).FirstOrDefault().HomeRouteName,
-                DestinationAreaWise = ent.EmployeeDestinationAreas.Where(x => x.Id == c.EmployeeDestinationArea).FirstOrDefault().DestinationAreaName
+                emp.ZoneWise,
+                emp.ZoneHomeWise,
+                emp.DestinationAreaWise
+            });
+
+            foreach (var group in groupedByZone)
+            {
+                var groupQueue = group.ToList(); // Employees in this zone/area
+                var groupMemberCount = 0;
+
+                while (groupQueue.Any())
+                {
+                    groupCounter++; // Increment the group counter
+                    var cabNumber = $"DummyCab{cabCounter++}"; // Assign a unique cab number
+
+                    // Group members while adhering to the max size constraint
+                    var currentGroup = groupQueue.Take(maxGroupSize).ToList();
+                    groupMemberCount = currentGroup.Count;
+
+                    foreach (var emp in currentGroup)
+                    {
+                        emp.Group = groupCounter.ToString(); // Assign group ID
+                        emp.CabNumber = cabNumber; // Assign cab number
+                        emp.groupMemberCount = groupMemberCount;
+                        emp.missingEmployees = maxGroupSize - groupMemberCount; ;
+                        groupedEmployees.Add(emp);
+                    }
+
+                    // Remove the grouped employees from the queue
+                    groupQueue = groupQueue.Skip(maxGroupSize).ToList();
+                }
+            }
+
+            return groupedEmployees;
+        }
+
+        private List<EmployeeGroup> TransformData(List<Employee> originalData)
+        {
+            return originalData.Select(emp => new EmployeeGroup
+            {
+                Id = emp.Id,
+                Employee_Id = emp.Employee_Id,
+                Gender = emp.Gender,
+                CompanyName = ent.Customers.FirstOrDefault(c => c.Id == emp.Company_Id)?.OrgName,
+                Latitude = (double)emp.Latitude,
+                Longitude = (double)emp.Longitude,
+                PickupandDropAddress = emp.EmployeeGeoCode,
+                Name = $"{emp.Employee_First_Name} {emp.Employee_Middle_Name} {emp.Employee_Last_Name}",
+                ZoneWise = ent.CompanyZones.FirstOrDefault(z => z.Id == emp.PrimaryFacilityZone)?.CompanyZone1,
+                ZoneHomeWise = ent.CompanyZoneHomeRoutes.FirstOrDefault(z => z.Id == emp.HomeRouteName)?.HomeRouteName,
+                DestinationAreaWise = ent.EmployeeDestinationAreas.FirstOrDefault(z => z.Id == emp.EmployeeDestinationArea)?.DestinationAreaName
             }).ToList();
         }
-        static double GetDistance(double lat1, double lon1, double lat2, double lon2)
-        {
-            // Radius of the Earth in kilometers
-            const double R = 6371;
 
-            // Convert degrees to radians
-            lat1 = DegreesToRadians(lat1);
-            lon1 = DegreesToRadians(lon1);
-            lat2 = DegreesToRadians(lat2);
-            lon2 = DegreesToRadians(lon2);
-
-            // Haversine formula
-            double dlat = lat2 - lat1;
-            double dlon = lon2 - lon1;
-            double a = Math.Sin(dlat / 2) * Math.Sin(dlat / 2) +
-                       Math.Cos(lat1) * Math.Cos(lat2) *
-                       Math.Sin(dlon / 2) * Math.Sin(dlon / 2);
-            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-
-            // Distance in kilometers
-            double distance = R * c;
-
-            // Convert distance to meters
-            return distance * 1000;
-        }
-        static double DegreesToRadians(double degrees)
-        {
-            return degrees * Math.PI / 180.0;
-        }
     }
 }

@@ -122,6 +122,7 @@ namespace VardaanCab.Domain.DTO
         
         public string Group { get; set; }
         public int groupMemberCount { get; set; }
+        public int missingEmployees { get; set; }
         public string ZoneWise { get; set; }
         public string ZoneHomeWise { get; set; }
         public string DestinationAreaWise { get; set; }
