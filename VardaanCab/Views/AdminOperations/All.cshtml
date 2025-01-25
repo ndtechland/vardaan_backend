@@ -89,7 +89,7 @@
                                                         <td>
                                                             @if (links.Contains("Edit User Detail"))
                                                             {
-                                                                <a href="/AdminOperations/Edit?Id=@item.Id&menuId=@ViewBag.menuId" class="btn btn-primary">Edit</a>
+                                                                <a href="/AdminOperations/Edit?Id=@item.Id&menuId=@ViewBag.menuId" class="btn btn-outline-info">Edit</a>
                                                                 @*@Html.ActionLink("Edit", "Edit", new { id = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-primary" })*@
                                                             }
                                                             @*@if (links.Contains("Delete User Detail"))
@@ -109,9 +109,9 @@
                                                             }
                                                             @if (links.Contains("View Rights"))
                                                             {
-                                                                @Html.ActionLink("View Rights", "UserRights", new { userId = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-primary" })
+                                                                @Html.ActionLink("View Rights", "UserRights", new { userId = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-outline-success" })
                                                             }
-                                                            @Html.ActionLink("Customer", "CustomerUserMapping", new { userId = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-primary" })
+                                                            @Html.ActionLink("Customer", "CustomerUserMapping", new { userId = item.Id, menuId = @ViewBag.menuId }, new { @class = "btn btn-outline-primary" })
                                                         </td>
                                                     </tr>
                                                 }
