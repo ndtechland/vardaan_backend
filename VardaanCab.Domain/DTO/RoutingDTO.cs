@@ -16,7 +16,7 @@ namespace VardaanCab.Domain.DTO
         public int Company_Id { get; set; } 
         public int[] Vehicle_Type { get; set; } 
         public string Routing_Type { get; set; } 
-        public int Routing_Options { get; set; } 
+        public string Routing_Options { get; set; } 
         public int WhereTripStartAndEnd { get; set; } 
         public int Trip_Type { get; set; } 
         public int Shift_Time { get; set; } 

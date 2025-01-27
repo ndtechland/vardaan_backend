@@ -46,7 +46,7 @@
                                         @if (TempData["msg"] != null)
                                         {
                                             <div class="mb-3">
-                                                <div class="alert alert-info">
+                                                <div class="alert alert-success border-success">
                                                     @TempData["msg"]
                                                 </div>
                                             </div>
@@ -54,7 +54,7 @@
                                         @if (TempData["errormsg"] != null)
                                         {
                                             <div class="mb-3">
-                                                <div class="alert alert-danger">
+                                                <div class="alert alert-danger border-danger">
                                                     @TempData["errormsg"]
                                                 </div>
                                             </div>
@@ -72,12 +72,12 @@
                                                         @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                                                         @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    @*<div class="col-md-6">
                                                         <label class="form-label-title">Select Facility For Routing</label>
                                                         @Html.DropDownListFor(model => model.Company_Id, Model.Customers, "Select Company", new { @class = "form-control" })
                                                         @Html.ValidationMessageFor(model => model.Company_Id, "", new { @class = "text-danger" })
 
-                                                    </div>
+                                                    </div>*@
 
                                                     <div class="col-md-6">
                                                         <label class="form-label-title">Select Vehicle Type</label>
@@ -113,8 +113,8 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label-title">Trip complete Facilty For PickUp</label>
-                                                        @Html.DropDownListFor(model => model.WhereTripStartAndEnd, Model.Customers, "Select Company", new { @class = "form-control" })
-                                                        @Html.ValidationMessageFor(model => model.WhereTripStartAndEnd, "", new { @class = "text-danger" })
+                                                        @Html.DropDownListFor(model => model.Company_Id, Model.Customers, "Select Company", new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(model => model.Company_Id, "", new { @class = "text-danger" })
 
                                                     </div>
 
@@ -146,7 +146,7 @@
 
                                                     <div class="col-md-6">
                                                         <label class="form-label-title">
-                                                            <input class="form-check-input" type="radio" name="ShiftOption" id="selectAdhocShiftTime" value="adhoc" />
+                                                            <input class="form-check-input" type="radio" id="selectAdhocShiftTime" value="adhoc" />
                                                             Select Adhoc Shift Time
                                                         </label>
                                                         @Html.EditorFor(model => model.Adhoc_Shift_Time, new { htmlAttributes = new { @class = "form-control", @type = "time", id = "adhocshifttime", disabled = "disabled" } })
@@ -251,7 +251,6 @@
 
                                                     <div class="row conditionalFields">
                                                         <div class="text-end" style="margin-top:10px;">
-                                                            @*<button class="btn btn-primary me-3">View Previous Routes</button>*@
                                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                                 View Previous Routes
                                                             </button>

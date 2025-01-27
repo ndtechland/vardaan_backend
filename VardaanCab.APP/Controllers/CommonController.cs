@@ -26,7 +26,7 @@ namespace VardaanCab.APP.Controllers
             _common = common;
         }
         [HttpGet]
-        [Route("GetBanner/{role}")]
+        [Route("GetBanner")]
         public async Task<IHttpActionResult> GetBanner(string role)
         {
             var response = new Response<List<BannerMaster>>();

@@ -429,9 +429,7 @@ namespace VardaanCab.Controllers
                 return Content("Server error");
             }
         }
-
         
-
         public ActionResult ExportToExcel()
         {
             DataTable dt = new DataTable();
@@ -556,7 +554,6 @@ namespace VardaanCab.Controllers
                 }
             }
         }
-
 
         [HttpPost]
         public ActionResult ImportCabData(HttpPostedFileBase file)
@@ -759,6 +756,5 @@ namespace VardaanCab.Controllers
                 return View();
             }
         }
-
     }
 }

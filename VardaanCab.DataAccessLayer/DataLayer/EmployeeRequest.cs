@@ -39,5 +39,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> PickupShiftTimeId { get; set; }
         public Nullable<int> DropShiftTimeId { get; set; }
+        public Nullable<bool> IsRouting { get; set; }
     }
 }
