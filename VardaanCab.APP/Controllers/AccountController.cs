@@ -415,7 +415,7 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpPost]
         [Route("api/Account/DriverLoginWithDriverIdVehNo")]
-        
+
         public IHttpActionResult DriverLoginWithDriverIdVehNo(DriverLoginHistory model)
         {
             try
@@ -423,8 +423,27 @@ namespace VardaanCab.APP.Controllers
                 var response = new Response<DriverLoginHistory>();
 
                 if (!string.IsNullOrEmpty(model.VehicleNumber) || model.DriverId > 0)
-                {                    
+                {
+                    var driverinfo = ent.Drivers.Find(model.DriverId);
+
                     var cab = ent.Cabs.FirstOrDefault(x => x.VehicleNumber == model.VehicleNumber);
+                    if (driverinfo == null)
+                    {
+                        response.Succeeded = false;
+                        response.Status = "Failed";
+                        response.StatusCode = StatusCodes.Status400BadRequest;
+                        response.Message = "Login failed. Invalid driver id";
+                        return Content(HttpStatusCode.BadRequest, response);
+                    }
+                    if (cab == null)
+                    {
+                        response.Succeeded = false;
+                        response.Status = "Failed";
+                        response.StatusCode = StatusCodes.Status400BadRequest;
+                        response.Message = "Login failed. Invalid Vehicle number";
+                        return Content(HttpStatusCode.BadRequest, response);
+                    }
+                    
 
                     if (cab != null && !(bool)cab.IsLogin)
                     {
@@ -435,7 +454,7 @@ namespace VardaanCab.APP.Controllers
                         return Content(HttpStatusCode.BadRequest, response);
                     }
 
-                    
+
                     var activeHistories = ent.DriverLoginHistories.Where(x => x.DriverId == model.DriverId && x.IsActive == true).ToList();
 
                     foreach (var history in activeHistories)
@@ -476,7 +495,7 @@ namespace VardaanCab.APP.Controllers
                 }
             }
             catch (Exception ex)
-            {               
+            {
                 var response = new Response<DriverLoginHistory>
                 {
                     Succeeded = false,

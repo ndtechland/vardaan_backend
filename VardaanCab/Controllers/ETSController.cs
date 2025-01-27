@@ -707,7 +707,17 @@ namespace VardaanCab.Controllers
             try
             {
                 var model = new RoutingDTO();
-                model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).OrderByDescending(a => a.Id).ToList(), "Id", "OrgName");
+                model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).OrderByDescending(a => a.Id)
+        .Select(a => new
+        {
+            Id = a.Id,
+            DisplayName = a.CompanyName + " (" + a.OrgName + ")"
+        })
+        .ToList(),
+    "Id",
+    "DisplayName");
+
+                //model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).OrderByDescending(a => a.Id).ToList(), "Id", "OrgName");
                 model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
                 model.ShiftTypes = new SelectList(ent.TripMasters.Where(x => x.Id == 1).ToList(), "Id", "TripName");
                 model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
@@ -734,9 +744,38 @@ namespace VardaanCab.Controllers
                 {
                     // Get the list of employees who match the criteria
                     var employeeRequestList = GetEmployeeRequests(model);
+                    var employeeRequestList1 = ent.EmployeeRequests.Where(e =>e.IsRouting == false && e.CompanyId==model.Company_Id &&
+                                          e.TripType == model.Trip_Type &&
+                                          model.PickupShiftid.Contains((int)e.PickupShiftTimeId) &&
+                                          model.DropShiftid.Contains((int)e.DropShiftTimeId) &&
+                                          e.StartRequestDate <= model.StartDate &&
+                                          e.EndRequestDate >= model.EndDate).ToList();
 
+                    foreach (var empreqs in employeeRequestList1)
+                    {
+                        empreqs.IsRouting = true;
+                    }
+                    ent.SaveChanges();
                     if (employeeRequestList.Count > 0)
                     {
+                        string combinedString = string.Join(",", model.PickupShiftid);
+                        string DropcombinedString = string.Join(",", model.DropShiftid);
+                        string VehicleTypecombinedString = string.Join(",", model.Vehicle_Type);
+                        var data = new Routing()
+                        {
+                            RouteStartDate = model.StartDate,
+                            RouteEndDate = model.EndDate,
+                            Company_Id = model.Company_Id,
+                            TripType = model.Trip_Type,
+                            PickupShiftTime= combinedString ?? null,
+                            DropShiftTime= DropcombinedString ?? null,
+                            AdhocShiftTime = model.Adhoc_Shift_Time,
+                            VehicleType = VehicleTypecombinedString ?? null,
+                            Routingtype=model.Routing_Type,
+                            RoutingOption=model.Routing_Options
+                        };
+                        ent.Routings.Add(data);
+                        ent.SaveChanges();
                         // Group employees by Zone and Area categories
                         var employeeGroups = GroupEmployeesByZoneAndArea(employeeRequestList);
 
@@ -783,6 +822,7 @@ namespace VardaanCab.Controllers
                                           model.DropShiftid.Contains((int)empr.DropShiftTimeId) &&
                                           empr.StartRequestDate <= model.StartDate &&
                                           empr.EndRequestDate >= model.EndDate
+                                          where empr.IsRouting == false
                                     select emp).ToList();
 
             return TransformData(employeeRequests);
@@ -852,6 +892,5 @@ namespace VardaanCab.Controllers
                 DestinationAreaWise = ent.EmployeeDestinationAreas.FirstOrDefault(z => z.Id == emp.EmployeeDestinationArea)?.DestinationAreaName
             }).ToList();
         }
-
     }
 }

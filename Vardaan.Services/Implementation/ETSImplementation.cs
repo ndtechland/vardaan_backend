@@ -41,6 +41,7 @@ namespace Vardaan.Services.Implementation
                         SMSTriggeredLocation = model.SMSTriggeredLocation,
                         PickupShiftTimeId = model.PickupShiftTimeId,
                         DropShiftTimeId = model.DropShiftTimeId,
+                        IsRouting = false,
                         CreatedDate = DateTime.Now
 
                     };
@@ -89,6 +90,7 @@ namespace Vardaan.Services.Implementation
                             join c in ent.Customers on er.CompanyId equals c.Id
                             join tt in ent.TripTypes on er.TripType equals tt.Id
                             join st in ent.TripMasters on er.ShiftType equals st.Id
+                            where er.IsRouting==false
                             orderby er.Id descending
                             select new EmployeeRequests
                             {

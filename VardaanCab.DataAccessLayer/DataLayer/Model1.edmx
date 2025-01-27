@@ -1259,6 +1259,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="PickupShiftTimeId" Type="int" />
           <Property Name="DropShiftTimeId" Type="int" />
+          <Property Name="IsRouting" Type="bit" />
         </EntityType>
         <EntityType Name="Escort">
           <Key>
@@ -4540,6 +4541,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="PickupShiftTimeId" Type="Int32" />
           <Property Name="DropShiftTimeId" Type="Int32" />
+          <Property Name="IsRouting" Type="Boolean" />
         </EntityType>
         <EntityType Name="DepartmentMaster">
           <Key>
@@ -6986,6 +6988,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="EmployeeRequests">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.EmployeeRequest">
               <MappingFragment StoreEntitySet="EmployeeRequest">
+                <ScalarProperty Name="IsRouting" ColumnName="IsRouting" />
                 <ScalarProperty Name="DropShiftTimeId" ColumnName="DropShiftTimeId" />
                 <ScalarProperty Name="PickupShiftTimeId" ColumnName="PickupShiftTimeId" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
