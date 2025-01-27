@@ -125,7 +125,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row r">
+                                        <div class="row">
                                             <div class="col-md-6">
                                                 Vehicle Number <span class="text-danger">*</span>
                                                 @Html.TextBoxFor(a => a.VehicleNumber, new { @class = "form-control", @maxlength = "10", @style = "text-transform:uppercase" })
@@ -155,7 +155,7 @@
 
                                             <div class="col-md-6">
                                                 FitnessValidity <span class="text-danger">*</span>
-                                                @Html.TextBoxFor(a => a.FitnessVality, new { @class = "form-control sdp" })
+                                                @Html.TextBoxFor(a => a.FitnessVality, new { @class = "form-control",type="date" })
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.FitnessVality)
                                                 </span>
@@ -165,7 +165,7 @@
                                         <div class="row r">
                                             <div class="col-md-6">
                                                 InsurranceValidity <span class="text-danger">*</span>
-                                                @Html.TextBoxFor(a => a.InsurranceValidity, new { @class = "form-control sdp" })
+                                                @Html.TextBoxFor(a => a.InsurranceValidity, new { @class = "form-control",type="date" })
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.InsurranceValidity)
                                                 </span>
@@ -173,7 +173,7 @@
 
                                             <div class="col-md-6">
                                                 PolutionValidity <span class="text-danger">*</span>
-                                                @Html.TextBoxFor(a => a.PolutionValidity, new { @class = "form-control sdp" })
+                                                @Html.TextBoxFor(a => a.PolutionValidity, new { @class = "form-control",type="date" })
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.PolutionValidity)
                                                 </span>
@@ -220,7 +220,7 @@
                                         <div class="row r">
                                             <div class="col-md-6">
                                                 RC Issue Date
-                                                @Html.TextBoxFor(a => a.RcIssueDate, new { @class = "form-control sdp" })
+                                                @Html.TextBoxFor(a => a.RcIssueDate, new { @class = "form-control",type="date" })
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.RcIssueDate)
                                                 </span>
@@ -228,7 +228,7 @@
 
                                             <div class="col-md-6">
                                                 RC Validity
-                                                @Html.TextBoxFor(a => a.RcValidity, new { @class = "form-control sdp" })
+                                                @Html.TextBoxFor(a => a.RcValidity, new { @class = "form-control",type="date" })
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.RcValidity)
                                                 </span>
@@ -263,7 +263,7 @@
 
                                             <div class="col-md-6">
                                                 Permit Validity <span class="text-danger">*</span>
-                                                @Html.TextBoxFor(a => a.PermitValidity, new { @class = "form-control sdp" })
+                                                @Html.TextBoxFor(a => a.PermitValidity, new { @class = "form-control",type="date" })
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.PermitValidity)
                                                 </span>
