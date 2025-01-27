@@ -137,6 +137,9 @@
     <Compile Include="DataLayer\DriverLeave.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataLayer\DriverLoginHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer\Employee.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

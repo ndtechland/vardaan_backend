@@ -84,6 +84,7 @@
           <Property Name="RcValidity" Type="datetime" />
           <Property Name="RcIssueDate" Type="datetime" />
           <Property Name="IsOutsider" Type="bit" Nullable="false" />
+          <Property Name="IsLogin" Type="bit" />
         </EntityType>
         <EntityType Name="CabCategory">
           <Key>
@@ -1154,6 +1155,16 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsActive" Type="bit" />
           <Property Name="Created" Type="datetime" />
         </EntityType>
+        <EntityType Name="DriverLoginHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DriverId" Type="int" />
+          <Property Name="VehicleNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="LoginDate" Type="date" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="Id" />
@@ -1778,6 +1789,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="CompanyZones" EntityType="Self.CompanyZones" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DaysName" EntityType="Self.DaysName" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DepartmentMaster" EntityType="Self.DepartmentMaster" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="DriverLoginHistory" EntityType="Self.DriverLoginHistory" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeDestinationArea" EntityType="Self.EmployeeDestinationArea" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeMobileAppSettings" EntityType="Self.EmployeeMobileAppSettings" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -2022,6 +2034,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="RcValidity" Type="DateTime" Precision="3" />
           <Property Name="RcIssueDate" Type="DateTime" Precision="3" />
           <Property Name="IsOutsider" Type="Boolean" Nullable="false" />
+          <Property Name="IsLogin" Type="Boolean" />
         </EntityType>
         <EntityType Name="CabCategory">
           <Key>
@@ -3410,6 +3423,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="Employees" EntityType="Vardaan_AdminModel.Employee" />
           <EntitySet Name="AllRoutes" EntityType="Vardaan_AdminModel.AllRoute" />
           <EntitySet Name="Routings" EntityType="Vardaan_AdminModel.Routing" />
+          <EntitySet Name="DriverLoginHistories" EntityType="Vardaan_AdminModel.DriverLoginHistory" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4710,6 +4724,16 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Routingtype" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="RoutingOption" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="DriverLoginHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DriverId" Type="Int32" />
+          <Property Name="VehicleNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LoginDate" Type="DateTime" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4772,6 +4796,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Cabs">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Cab">
               <MappingFragment StoreEntitySet="Cab">
+                <ScalarProperty Name="IsLogin" ColumnName="IsLogin" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
                 <ScalarProperty Name="Company" ColumnName="Company" />
@@ -7181,6 +7206,17 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="RouteEndDate" ColumnName="RouteEndDate" />
                 <ScalarProperty Name="RouteStartDate" ColumnName="RouteStartDate" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DriverLoginHistories">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.DriverLoginHistory">
+              <MappingFragment StoreEntitySet="DriverLoginHistory">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
+                <ScalarProperty Name="VehicleNumber" ColumnName="VehicleNumber" />
+                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

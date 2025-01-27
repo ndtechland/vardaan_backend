@@ -78,6 +78,7 @@
         <EntityTypeShape EntityType="Vardaan_AdminModel.Employee" Width="1.5" PointX="11.375" PointY="26.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.AllRoute" Width="1.5" PointX="27.375" PointY="0.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.Routing" Width="1.5" PointX="27.375" PointY="3.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.DriverLoginHistory" Width="1.5" PointX="27.375" PointY="7.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
