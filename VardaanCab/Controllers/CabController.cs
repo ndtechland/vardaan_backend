@@ -405,14 +405,14 @@ namespace VardaanCab.Controllers
                 var data = Mapper.Map<Cab>(model);
                 ent.Entry(data).State=System.Data.Entity.EntityState.Modified;
                 ent.SaveChanges();
-                TempData["msg"] = "Record has saved.";
-            
+                TempData["msg"] = "Updated Successfully.";
             }
             catch (Exception ex)
             {
                 TempData["msg"] = "Server error";
             }
-            return RedirectToAction("Edit", new { id = model.Id,menuId=model.MenuId });
+            return Redirect("/Cab/Edit?id=" + model.Id + "&menuId=" + model.MenuId);
+
         }
 
         public ActionResult Delete(int id)

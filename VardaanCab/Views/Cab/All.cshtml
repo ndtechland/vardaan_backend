@@ -53,6 +53,16 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
+                                    @if (TempData["msg"] != null)
+                                    {
+                                    <div class="row r">
+                                        <div class="col-md-12">
+                                            <div class="alert alert-success border-success">
+                                                @TempData["msg"]
+                                            </div>
+                                        </div>
+                                    </div>
+                                    }
                                     <div class="dt-responsive table-responsive">
                                         <table id="order-table" class="table table-striped table-bordered nowrap">
                                             <thead>
