@@ -37,5 +37,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<System.DateTime> RcValidity { get; set; }
         public Nullable<System.DateTime> RcIssueDate { get; set; }
         public bool IsOutsider { get; set; }
+        public Nullable<bool> IsLogin { get; set; }
     }
 }

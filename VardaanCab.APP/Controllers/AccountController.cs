@@ -413,5 +413,80 @@ namespace VardaanCab.APP.Controllers
                 throw new Exception("Server Error : " + ex.Message);
             }
         }
+        [HttpPost]
+        [Route("api/Account/DriverLoginWithDriverIdVehNo")]
+        
+        public IHttpActionResult DriverLoginWithDriverIdVehNo(DriverLoginHistory model)
+        {
+            try
+            {
+                var response = new Response<DriverLoginHistory>();
+
+                if (!string.IsNullOrEmpty(model.VehicleNumber) || model.DriverId > 0)
+                {                    
+                    var cab = ent.Cabs.FirstOrDefault(x => x.VehicleNumber == model.VehicleNumber);
+
+                    if (cab != null && !(bool)cab.IsLogin)
+                    {
+                        response.Succeeded = false;
+                        response.Status = "Failed";
+                        response.StatusCode = StatusCodes.Status400BadRequest;
+                        response.Message = "Login failed. The cab is already in use.";
+                        return Content(HttpStatusCode.BadRequest, response);
+                    }
+
+                    
+                    var activeHistories = ent.DriverLoginHistories.Where(x => x.DriverId == model.DriverId && x.IsActive == true).ToList();
+
+                    foreach (var history in activeHistories)
+                    {
+                        history.IsActive = false;
+                    }
+                    ent.SaveChanges();
+
+                    if (cab != null)
+                    {
+                        cab.IsLogin = false;
+                        ent.SaveChanges();
+                    }
+
+                    var data = new DriverLoginHistory()
+                    {
+                        VehicleNumber = model.VehicleNumber,
+                        DriverId = model.DriverId,
+                        IsActive = true,
+                        LoginDate = DateTime.Now
+                    };
+                    ent.DriverLoginHistories.Add(data);
+                    ent.SaveChanges();
+
+                    response.Succeeded = true;
+                    response.Status = "Success";
+                    response.StatusCode = StatusCodes.Status200OK;
+                    response.Message = "Logged in successfully.";
+                    return Content(HttpStatusCode.OK, response);
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.Status = "Failed";
+                    response.StatusCode = StatusCodes.Status400BadRequest;
+                    response.Message = "Login failed. Please provide a valid Vehicle Number or Driver ID.";
+                    return Content(HttpStatusCode.BadRequest, response);
+                }
+            }
+            catch (Exception ex)
+            {               
+                var response = new Response<DriverLoginHistory>
+                {
+                    Succeeded = false,
+                    Status = "Failed",
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = "An error occurred during login."
+                };
+                return Content(HttpStatusCode.InternalServerError, response);
+            }
+        }
+
     }
 }
