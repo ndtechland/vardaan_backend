@@ -119,7 +119,8 @@ namespace VardaanCab.Domain.DTO
         public string Name { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        
+        public double ComLatitude { get; set; }
+        public double ComLongitude { get; set; }
         public string Group { get; set; }
         public int groupMemberCount { get; set; }
         public int missingEmployees { get; set; }
