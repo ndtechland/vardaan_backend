@@ -196,7 +196,349 @@
         </div>
     </div>
 </div>
+<!-- Modal Structure -->
+<!-- Modal Structure -->
+<div id="mapModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h4>Route Map</h4>
+        <div id="map" style="height: 400px; width: 100%; border-radius: 10px;"></div>
+    </div>
+</div>
 
+
+<!-- CSS for Modal -->
+<style>
+    .modal {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none; /* Hidden by default */
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 50%;
+        position: relative;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        color: #aaa;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .close-btn:hover {
+            color: red;
+        }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrbWFXlOYpaq51wteSyFS2UjdMPOWBlQw"></script>
+@*<script>
+        let map;
+
+        function initMap(comlat, comlong, employeeDataList) {
+            // Initialize the map
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: comlat, lng: comlong }, // Default center: Delhi
+                zoom: 10,
+            });
+
+            // Company location (final destination)
+            const companyLocation = { lat:comlat, lng: comlong }; // Example: Delhi
+
+            // Employee locations (pick-up points)
+            const employeeLocations = employeeDataList.map(emp => ({
+                lat: emp.employeeLatitude,
+                lng: emp.employeeLongitude
+            }));
+
+
+            // Draw the route from employees to the company
+            displayRoute(employeeLocations, companyLocation);
+        }
+
+        function displayRoute(employeeLocations, companyLocation) {
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+                polylineOptions: {
+                    strokeColor: "#4285F4", // Google blue for the route
+                },
+            });
+
+            // Convert employee locations to waypoints
+            const waypoints = employeeLocations.map((location) => ({
+                location: location,
+                stopover: true, // Each location is a stopover point
+            }));
+
+            // Calculate the route
+            directionsService.route(
+                {
+                    origin: waypoints[0].location, // First employee as the starting point
+                    destination: companyLocation, // Company as the destination
+                    waypoints: waypoints.slice(1), // Remaining employees as waypoints
+                    travelMode: google.maps.TravelMode.DRIVING, // Mode of travel
+                    optimizeWaypoints: true, // Optimize route for shortest travel time
+                },
+                (response, status) => {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(response);
+
+                        // Display total distance and time
+                        const route = response.routes[0];
+                        const summary = route.legs.reduce(
+                            (acc, leg) => {
+                                acc.distance += leg.distance.value;
+                                acc.duration += leg.duration.value;
+                                return acc;
+                            },
+                            { distance: 0, duration: 0 }
+                        );
+            //            console.log(
+            //                Total Distance: ${(summary.distance / 1000).toFixed(2)} km);
+            //console.log(
+            //    Total Duration: ${(summary.duration / 60).toFixed(2)} mins
+            //                );
+            //            } else {
+            //console.error("Directions request failed due to " + status);
+        }
+                    }
+                );
+            }
+    </script>*@
+<script>
+    let map;
+
+    function initMap(comlat, comlong, employeeDataList) {
+        // Initialize the map
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: comlat, lng: comlong },
+            zoom: 10,
+        });
+
+        // Company location (final destination)
+        const companyLocation = { lat: comlat, lng: comlong };
+
+        // Employee locations (pick-up points)
+        const employeeLocations = employeeDataList.map(emp => ({
+            lat: emp.employeeLatitude,
+            lng: emp.employeeLongitude
+        }));
+
+        // Add the company marker with a car icon
+        const companyMarker = new google.maps.Marker({
+            position: companyLocation,
+            map: map,
+            title: 'Company Location',
+            icon: {
+                url: 'https://maps.google.com/mapfiles/ms/micons/cabs.png', // URL to car icon
+                scaledSize: new google.maps.Size(32, 32), // Adjust the size of the icon
+            }
+        });
+
+        // Draw the route from employees to the company
+        displayRoute(employeeLocations, companyLocation);
+
+        // Add employee markers with user icon
+        employeeDataList.forEach(emp => {
+            new google.maps.Marker({
+                position: { lat: emp.employeeLatitude, lng: emp.employeeLongitude },
+                map: map,
+                title: emp.employeeName,
+                icon: {
+                    url: 'https://maps.google.com/mapfiles/ms/micons/man.png', // URL to user icon
+                    scaledSize: new google.maps.Size(32, 32), // Adjust the size of the icon
+                }
+            });
+        });
+    }
+
+    function displayRoute(employeeLocations, companyLocation) {
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer({
+            map: map,
+            polylineOptions: {
+                strokeColor: "#4285F4", // Google blue for the route
+            },
+        });
+
+        // Convert employee locations to waypoints
+        const waypoints = employeeLocations.map((location) => ({
+            location: location,
+            stopover: true, // Each location is a stopover point
+        }));
+
+        // Calculate the route
+        directionsService.route(
+            {
+                origin: waypoints[0].location, // First employee as the starting point
+                destination: companyLocation, // Company as the destination
+                waypoints: waypoints.slice(1), // Remaining employees as waypoints
+                travelMode: google.maps.TravelMode.DRIVING, // Mode of travel
+                optimizeWaypoints: true, // Optimize route for shortest travel time
+            },
+            (response, status) => {
+                if (status === "OK") {
+                    directionsRenderer.setDirections(response);
+
+                    // Display total distance and time
+                    const route = response.routes[0];
+                    const summary = route.legs.reduce(
+                        (acc, leg) => {
+                            acc.distance += leg.distance.value;
+                            acc.duration += leg.duration.value;
+                            return acc;
+                        },
+                        { distance: 0, duration: 0 }
+                    );
+                    // Optionally, log the total distance and duration
+                    // console.log(
+                    //     `Total Distance: ${(summary.distance / 1000).toFixed(2)} km`
+                    // );
+                    // console.log(
+                    //     `Total Duration: ${(summary.duration / 60).toFixed(2)} mins`
+                    // );
+                } else {
+                    console.error("Directions request failed due to " + status);
+                }
+            }
+        );
+    }
+</script>
+
+<!-- JavaScript for Modal -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('mapModal');
+        const closeBtn = modal.querySelector('.close-btn');
+        let map; // Declare map variable outside the function scope
+        let markers = []; // Store map markers for clearing later
+        let directionsService;
+        let directionsRenderer;
+
+        // Function to clear all markers
+        function clearMarkers() {
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+        }
+
+        function initializeMap(startLat, startLng, employees) {
+            // Initialize the map centered at the start location (company coordinates)
+            map = new google.maps.Map(modal.querySelector('#map'), {
+                center: { lat: startLat, lng: startLng },
+                zoom: 12,
+            });
+
+            // Create a marker for the company location
+            const companyMarker = new google.maps.Marker({
+                position: { lat: startLat, lng: startLng },
+                map: map,
+                title: 'Company Location',
+            });
+
+            // Place a marker for each employee's location
+            employees.forEach(employee => {
+                const employeeMarker = new google.maps.Marker({
+                    position: { lat: employee.employeeLatitude, lng: employee.employeeLongitude },
+                    map: map,
+                    title: employee.employeeName,
+                });
+            });
+
+            // Initialize the Directions Service and Renderer
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+            });
+
+            // Request for directions from each employee to the company
+            employees.forEach(employee => {
+                const request = {
+                    origin: { lat: employee.employeeLatitude, lng: employee.employeeLongitude }, // Employee's location is the origin
+                    destination: { lat: startLat, lng: startLng }, // Company location is the destination
+                    travelMode: google.maps.TravelMode.DRIVING, // You can change this to WALKING, BICYCLING, etc.
+                };
+
+                // Call the directions service to get a route
+                directionsService.route(request, (response, status) => {
+                    if (status === google.maps.DirectionsStatus.OK) {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        alert('Directions request failed due to ' + status);
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('fa-map-marker')) {
+                const group = e.target.getAttribute('data-group');
+                for (const key in data) {
+                    if (key === group) {
+                        const matchingGroupData = data[key];
+
+                        const companyLatitude = matchingGroupData[0].ComLatitude;
+                        const companyLongitude = matchingGroupData[0].ComLongitude;
+
+                        const employeeDataList = matchingGroupData.map(emp => {
+                            const CompanyLat = companyLatitude;
+                            const CompanyLong = companyLongitude;
+                            const EmpLat = parseFloat(emp.Latitude);
+                            const EmpLng = parseFloat(emp.Longitude);
+
+                            return {
+                                employeeId: emp.Id,
+                                employeeName: emp.Name,
+                                companyLatitude: CompanyLat,
+                                companyLongitude: CompanyLong,
+                                employeeLatitude: EmpLat,
+                                employeeLongitude: EmpLng
+                            };
+                        });
+
+                        // Now you have a list of employee data
+                        console.log(employeeDataList);
+
+                        // Initialize the map with the company location and the employee list
+                        //initializeMap(companyLatitude, companyLongitude, employeeDataList);
+                        initMap(companyLatitude, companyLongitude, employeeDataList)
+                        break;
+                    }
+                }
+
+                // Show the modal
+                modal.style.display = 'block';
+            }
+        });
+
+        // Close modal on close button click
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            clearMarkers(); // Clear markers when modal is closed
+        });
+
+        // Close modal when clicking outside the modal content
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                clearMarkers(); // Clear markers when modal is closed
+            }
+        });
+    });
+</script>
 <script>
     // Embed the JSON data into the script
     const data = @Html.Raw(jsonData);
@@ -238,7 +580,8 @@
                     <input type="checkbox" id="select-all-${group}" />
                 </label>
                 <span>Route Name: ${groupZoneWise}</span>
-                <span>Route ID: ${routeId}</span>
+                Route ID: ${routeId}
+                <i class="fa fa-map-marker" aria-hidden="true" data-group="${group}" style="cursor: pointer;"></i></span>
                 <span>Available Seats: ${availableSeats}</span>
                 <span>${CabNumber}</span>
             </div>

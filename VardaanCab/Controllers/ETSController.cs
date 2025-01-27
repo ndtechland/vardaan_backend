@@ -841,6 +841,8 @@ namespace VardaanCab.Controllers
                 Employee_Id = emp.Employee_Id,
                 Gender = emp.Gender,
                 CompanyName = ent.Customers.FirstOrDefault(c => c.Id == emp.Company_Id)?.OrgName,
+                ComLatitude = (double)ent.Customers.FirstOrDefault(c => c.Id == emp.Company_Id)?.Latitude,
+                ComLongitude = (double)ent.Customers.FirstOrDefault(c => c.Id == emp.Company_Id)?.Longitude,
                 Latitude = (double)emp.Latitude,
                 Longitude = (double)emp.Longitude,
                 PickupandDropAddress = emp.EmployeeGeoCode,
