@@ -675,6 +675,16 @@ namespace VardaanCab.Controllers
         {
             try
             {
+                ViewBag.DriverItems = ent.Drivers.Where(x => x.IsActive == true).Select(x => new SelectListItem
+                {
+                    Text = x.DriverName,
+                    Value = x.Id.ToString()
+                }).ToList();
+                ViewBag.VehicleNumItems = ent.Cabs.Where(x => x.IsActive == true).Select(x => new SelectListItem
+                {
+                    Text = x.VehicleNumber,
+                    Value = x.Id.ToString()
+                }).ToList();
                 //List<EmployeeGroup> employeelist = new List<EmployeeGroup>();
                 Dictionary<string, List<EmployeeGroup>> dict = new Dictionary<string, List<EmployeeGroup>>();
 

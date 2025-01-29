@@ -196,20 +196,73 @@
         </div>
     </div>
 </div>
-<!-- Modal Structure -->
-<!-- Modal Structure -->
-<div id="mapModal" class="modal" style="display: none;">
-    <div class="modal-content">
+
+<!-- Location Modal Structure -->
+<div id="mapModal" class="modal1" style="display: none;">
+    <div class="modal-content1">
         <span class="close-btn">&times;</span>
         <h4>Route Map</h4>
         <div id="map" style="height: 400px; width: 100%; border-radius: 10px;"></div>
     </div>
-</div>
 
+</div>
+<!--Edit modal-->
+<div class="modal fade" id="default-Modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Bucket</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label-title ">Select Company</label>
+                        <select name="DriverId" id="room-type-edit" class="form-control" required>
+                            <option value="0">--Select Driver--</option>
+                            @foreach (var item in @ViewBag.DriverItems)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label-title ">Vehicle Number</label>
+                        <select name="VehicleNumber" id="room-type-edit" class="form-control" required>
+                            <option value="0">--Select--</option>
+                            @foreach (var item in @ViewBag.VehicleNumItems)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label-title ">Device Id</label>
+                        <select name="DeviceId" id="unit" class="form-control">
+                            <option value="">Select Device</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="1">3</option>
+                            <option value="1">4</option>
+                            <option value="1">5</option>
+                            <option value="1">6</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary waves-effect waves-light ">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- CSS for Modal -->
 <style>
-    .modal {
+    .modal1 {
         position: fixed;
         z-index: 1000;
         left: 0;
@@ -221,7 +274,7 @@
         display: none; /* Hidden by default */
     }
 
-    .modal-content {
+    .modal-content1 {
         background-color: #fefefe;
         margin: 15% auto;
         padding: 20px;
@@ -513,9 +566,11 @@
                 <i class="fa fa-map-marker" aria-hidden="true" data-group="${group}" style="cursor: pointer;"></i></span>
                 <span>Available Seats: ${availableSeats}</span>
                 <span>${CabNumber}</span>
+                <button class="btn btn-sm btn-warning">Leave</button>
             </div>
             <div class="actions">
-                <button class="btn btn-sm btn-primary">Leave</button>
+                                                                <button type="button" class="btn btn-default waves-effect" data-toggle="modal" data-target="#default-Modal"><i class="fa fa-edit"></i></button>
+                
             </div>
         `;
 

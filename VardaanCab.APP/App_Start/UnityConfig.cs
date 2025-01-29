@@ -18,6 +18,8 @@ namespace VardaanCab.APP
              container.RegisterType<ICommon, CommonImplementation>();
              container.RegisterType<IDriver, DriverImplementation>();
              container.RegisterType<IEmployee, EmployeeImplementation>();
+             container.RegisterType<IAdminAccount, AdminAccountImplementation>();
+             container.RegisterType<IAdmin, AdminImplementation>();
             
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
