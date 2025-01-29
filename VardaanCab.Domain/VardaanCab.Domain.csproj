@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOAPI\AdminLoginDTO.cs" />
     <Compile Include="DTOAPI\ChangePasswordDTO.cs" />
     <Compile Include="DTOAPI\DriverProfileDTO.cs" />
     <Compile Include="DTOAPI\EmployeeProfileDTO.cs" />

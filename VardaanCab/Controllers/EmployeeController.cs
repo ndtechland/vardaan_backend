@@ -718,7 +718,7 @@ namespace VardaanCab.Controllers
 
                                 IsActive = true,
                                 CreatedDate = DateTime.Now,
-                                IsFirst = false,
+                                IsFirst = true,
                                 Latitude = latitude,
                                 Longitude = longitude,
                                 //Password = RandomPassword,

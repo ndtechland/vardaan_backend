@@ -49,9 +49,9 @@
                                         </a>
                                     </div>
                                 </div>
-                            <div class="card-block">
-                                @using (Html.BeginForm())
-                                {
+                                <div class="card-block">
+                                    @using (Html.BeginForm())
+                                    {
                                         <input name="MenuId" type="hidden" value="@ViewBag.menuId" />
                                         <input name="Id" type="hidden" value="@Model.Id" />
                                         if (TempData["msg"] != null)
@@ -63,13 +63,7 @@
                                             </div>
                                         }
 
-                                        <div class="mb-3">
-                                            <label class="form-label-title ">Area Name <span class="text-danger">*</span></label>
-                                            @Html.TextBoxFor(a => a.AreaName, new { @class = "form-control", @required = "required" })
-                                            <span class="text-danger">
-                                                @Html.ValidationMessageFor(a => a.AreaName)
-                                            </span>
-                                        </div>
+
                                         <div class="mb-3">
                                             <label class="form-label-title ">State <span class="text-danger">*</span></label>
                                             @Html.DropDownListFor(a => a.StateMaster_Id, Model.States, "Select State", new { @class = "form-control", @required = "required" })
@@ -86,12 +80,19 @@
                                                 @Html.ValidationMessageFor(a => a.CityMaster_Id)
                                             </span>
                                         </div>
-                                    <div class="card-footer text-end">
-                                        <input type="submit" class="btn btn-primary" value="@ViewBag.BtnTXT" />
-                                        <a href="/Area/All" class="btn btn-outline-primary">Cancel</a>
-                                    </div>
-                                }
-                            </div>
+                                        <div class="mb-3">
+                                            <label class="form-label-title ">Area Name <span class="text-danger">*</span></label>
+                                            @Html.TextBoxFor(a => a.AreaName, new { @class = "form-control", @required = "required" })
+                                            <span class="text-danger">
+                                                @Html.ValidationMessageFor(a => a.AreaName)
+                                            </span>
+                                        </div>
+                                        <div class="card-footer text-end">
+                                            <input type="submit" class="btn btn-primary" value="@ViewBag.BtnTXT" />
+                                            <a href="/Area/All" class="btn btn-outline-primary">Cancel</a>
+                                        </div>
+                                    }
+                                </div>
                             </div>
                         </div>
 
