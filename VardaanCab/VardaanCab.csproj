@@ -4590,6 +4590,7 @@
     <Content Include="Views\Shared\New_Master\Nav_One.cshtml" />
     <Content Include="Views\EmployeeMobAppSettings\DayEntry.cshtml" />
     <Content Include="Views\ETS\RoutingList.cshtml" />
+    <Content Include="Views\ETS\AvailableDrivers.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

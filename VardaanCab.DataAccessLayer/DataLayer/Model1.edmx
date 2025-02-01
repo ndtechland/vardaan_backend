@@ -85,6 +85,9 @@
           <Property Name="RcIssueDate" Type="datetime" />
           <Property Name="IsOutsider" Type="bit" Nullable="false" />
           <Property Name="IsLogin" Type="bit" />
+          <Property Name="VehicleMake" Type="nvarchar" MaxLength="200" />
+          <Property Name="VehicleCapacity_Id" Type="int" />
+          <Property Name="StickerNumber" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="CabCategory">
           <Key>
@@ -342,7 +345,8 @@
           <Property Name="OTP" Type="int" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
           <Property Name="IsOnline" Type="bit" />
-          <Property Name="DeviceId" Type="nvarchar(max)" />
+          <Property Name="DeviceId" Type="int" />
+          <Property Name="Vendor_Id" Type="int" />
         </EntityType>
         <EntityType Name="DriverLeave">
           <Key>
@@ -732,6 +736,7 @@
           <Property Name="CIN" Type="nvarchar" MaxLength="100" />
           <Property Name="PanImage" Type="nvarchar" MaxLength="200" />
           <Property Name="IsOutsider" Type="bit" Nullable="false" />
+          <Property Name="Company_Id" Type="int" />
         </EntityType>
         <EntityType Name="VendorBill">
           <Key>
@@ -1155,6 +1160,14 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsActive" Type="bit" />
           <Property Name="Created" Type="datetime" />
         </EntityType>
+        <EntityType Name="DriverDeviceId">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Driver_Id" Type="int" />
+          <Property Name="DeviceId" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="DriverLoginHistory">
           <Key>
             <PropertyRef Name="Id" />
@@ -1376,6 +1389,13 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsSubWriteChecked" Type="nvarchar(max)" />
           <Property Name="IsAllRead" Type="bit" />
           <Property Name="IsAllWrite" Type="bit" />
+        </EntityType>
+        <EntityType Name="VehicleCapacity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Capacity" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <Function Name="checkOneCompanyBookingSelected" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="isNrg" Type="bit" Mode="In" />
@@ -1790,6 +1810,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="CompanyZones" EntityType="Self.CompanyZones" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DaysName" EntityType="Self.DaysName" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DepartmentMaster" EntityType="Self.DepartmentMaster" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="DriverDeviceId" EntityType="Self.DriverDeviceId" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DriverLoginHistory" EntityType="Self.DriverLoginHistory" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="EmployeeDestinationArea" EntityType="Self.EmployeeDestinationArea" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -1805,6 +1826,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="TripMaster" EntityType="Self.TripMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="TripType" EntityType="Self.TripType" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="VehicleCapacity" EntityType="Self.VehicleCapacity" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="booking_backup11feb" EntityType="Self.booking_backup11feb" store:Type="Tables" store:Schema="newVardaan">
             <DefiningQuery>SELECT 
     [booking_backup11feb].[Id] AS [Id], 
@@ -2036,6 +2058,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="RcIssueDate" Type="DateTime" Precision="3" />
           <Property Name="IsOutsider" Type="Boolean" Nullable="false" />
           <Property Name="IsLogin" Type="Boolean" />
+          <Property Name="VehicleMake" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleCapacity_Id" Type="Int32" />
+          <Property Name="StickerNumber" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CabCategory">
           <Key>
@@ -2260,40 +2285,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="CustomerId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Driver">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DriverName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DlNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DlImage" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
-          <Property Name="AadharNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AadharImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="DriverImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="MobileNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="IsAvailable" Type="Boolean" Nullable="false" />
-          <Property Name="DriverAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PoliceVerificationNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LicenceExpDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PolVerifImg" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="FatherName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AlternateNo1" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="AlternateNo2" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="LocalAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PermanentAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PanImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PanNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsOutsider" Type="Boolean" Nullable="false" />
-          <Property Name="IsFirst" Type="Boolean" />
-          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="OTP" Type="Int32" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="IsOnline" Type="Boolean" />
-          <Property Name="DeviceId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DriverLeave">
           <Key>
@@ -2683,6 +2674,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CIN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PanImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="IsOutsider" Type="Boolean" Nullable="false" />
+          <Property Name="Company_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="VendorBill">
           <Key>
@@ -3021,7 +3013,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="CorporatePackages" EntityType="Self.CorporatePackage" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
           <EntitySet Name="CustomerUserMappings" EntityType="Self.CustomerUserMapping" />
-          <EntitySet Name="Drivers" EntityType="Self.Driver" />
           <EntitySet Name="DriverLeaves" EntityType="Self.DriverLeave" />
           <EntitySet Name="LoginHistories" EntityType="Self.LoginHistory" />
           <EntitySet Name="Logs" EntityType="Self.Log" />
@@ -3425,6 +3416,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="AllRoutes" EntityType="Vardaan_AdminModel.AllRoute" />
           <EntitySet Name="Routings" EntityType="Vardaan_AdminModel.Routing" />
           <EntitySet Name="DriverLoginHistories" EntityType="Vardaan_AdminModel.DriverLoginHistory" />
+          <EntitySet Name="DriverDeviceIds" EntityType="Vardaan_AdminModel.DriverDeviceId" />
+          <EntitySet Name="Drivers" EntityType="Vardaan_AdminModel.Driver" />
+          <EntitySet Name="VehicleCapacities" EntityType="Vardaan_AdminModel.VehicleCapacity" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4736,6 +4730,56 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="LoginDate" Type="DateTime" Precision="0" />
           <Property Name="IsActive" Type="Boolean" />
         </EntityType>
+        <EntityType Name="DriverDeviceId">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Driver_Id" Type="Int32" />
+          <Property Name="DeviceId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DriverName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DlNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DlImage" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="AadharNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AadharImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DriverImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="MobileNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IsAvailable" Type="Boolean" Nullable="false" />
+          <Property Name="DriverAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PoliceVerificationNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LicenceExpDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PolVerifImg" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="FatherName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AlternateNo1" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="AlternateNo2" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="LocalAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PermanentAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PanImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PanNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsOutsider" Type="Boolean" Nullable="false" />
+          <Property Name="IsFirst" Type="Boolean" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="OTP" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsOnline" Type="Boolean" />
+          <Property Name="DeviceId" Type="Int32" />
+          <Property Name="Vendor_Id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="VehicleCapacity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Capacity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4798,6 +4842,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Cabs">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Cab">
               <MappingFragment StoreEntitySet="Cab">
+                <ScalarProperty Name="StickerNumber" ColumnName="StickerNumber" />
+                <ScalarProperty Name="VehicleCapacity_Id" ColumnName="VehicleCapacity_Id" />
+                <ScalarProperty Name="VehicleMake" ColumnName="VehicleMake" />
                 <ScalarProperty Name="IsLogin" ColumnName="IsLogin" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
@@ -5059,41 +5106,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Drivers">
-            <EntityTypeMapping TypeName="Vardaan_AdminModel.Driver">
-              <MappingFragment StoreEntitySet="Driver">
-                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
-                <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="OTP" ColumnName="OTP" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="IsFirst" ColumnName="IsFirst" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="DriverName" ColumnName="DriverName" />
-                <ScalarProperty Name="DlNumber" ColumnName="DlNumber" />
-                <ScalarProperty Name="DlImage" ColumnName="DlImage" />
-                <ScalarProperty Name="AadharNo" ColumnName="AadharNo" />
-                <ScalarProperty Name="AadharImage" ColumnName="AadharImage" />
-                <ScalarProperty Name="DriverImage" ColumnName="DriverImage" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
-                <ScalarProperty Name="IsAvailable" ColumnName="IsAvailable" />
-                <ScalarProperty Name="DriverAddress" ColumnName="DriverAddress" />
-                <ScalarProperty Name="PoliceVerificationNo" ColumnName="PoliceVerificationNo" />
-                <ScalarProperty Name="LicenceExpDate" ColumnName="LicenceExpDate" />
-                <ScalarProperty Name="PolVerifImg" ColumnName="PolVerifImg" />
-                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
-                <ScalarProperty Name="AlternateNo1" ColumnName="AlternateNo1" />
-                <ScalarProperty Name="AlternateNo2" ColumnName="AlternateNo2" />
-                <ScalarProperty Name="LocalAddress" ColumnName="LocalAddress" />
-                <ScalarProperty Name="PermanentAddress" ColumnName="PermanentAddress" />
-                <ScalarProperty Name="PanImage" ColumnName="PanImage" />
-                <ScalarProperty Name="PanNumber" ColumnName="PanNumber" />
-                <ScalarProperty Name="IsOutsider" ColumnName="IsOutsider" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5492,6 +5504,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Vendors">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Vendor">
               <MappingFragment StoreEntitySet="Vendor">
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="VendorName" ColumnName="VendorName" />
                 <ScalarProperty Name="CityMaster_Id" ColumnName="CityMaster_Id" />
@@ -7219,6 +7232,59 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
                 <ScalarProperty Name="VehicleNumber" ColumnName="VehicleNumber" />
                 <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DriverDeviceIds">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.DriverDeviceId">
+              <MappingFragment StoreEntitySet="DriverDeviceId">
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="Driver_Id" ColumnName="Driver_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Drivers">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.Driver">
+              <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsFirst" ColumnName="IsFirst" />
+                <ScalarProperty Name="IsOutsider" ColumnName="IsOutsider" />
+                <ScalarProperty Name="PanNumber" ColumnName="PanNumber" />
+                <ScalarProperty Name="PanImage" ColumnName="PanImage" />
+                <ScalarProperty Name="PermanentAddress" ColumnName="PermanentAddress" />
+                <ScalarProperty Name="LocalAddress" ColumnName="LocalAddress" />
+                <ScalarProperty Name="AlternateNo2" ColumnName="AlternateNo2" />
+                <ScalarProperty Name="AlternateNo1" ColumnName="AlternateNo1" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="PolVerifImg" ColumnName="PolVerifImg" />
+                <ScalarProperty Name="LicenceExpDate" ColumnName="LicenceExpDate" />
+                <ScalarProperty Name="PoliceVerificationNo" ColumnName="PoliceVerificationNo" />
+                <ScalarProperty Name="DriverAddress" ColumnName="DriverAddress" />
+                <ScalarProperty Name="IsAvailable" ColumnName="IsAvailable" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DriverImage" ColumnName="DriverImage" />
+                <ScalarProperty Name="AadharImage" ColumnName="AadharImage" />
+                <ScalarProperty Name="AadharNo" ColumnName="AadharNo" />
+                <ScalarProperty Name="DlImage" ColumnName="DlImage" />
+                <ScalarProperty Name="DlNumber" ColumnName="DlNumber" />
+                <ScalarProperty Name="DriverName" ColumnName="DriverName" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehicleCapacities">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.VehicleCapacity">
+              <MappingFragment StoreEntitySet="VehicleCapacity">
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

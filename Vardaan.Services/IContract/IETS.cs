@@ -12,5 +12,6 @@ namespace Vardaan.Services.IContract
         Task<bool> AddUpdateRequest(CreateRequestDTO model);
         Task<List<EmployeeRequests>> GetEmployeerequests();
         Task<bool> DeleteRequest(int id);
+        Task<List<AvailableDriverDTO>> GetAvailableDrivers();
     }
 }

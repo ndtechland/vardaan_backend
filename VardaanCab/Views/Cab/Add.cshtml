@@ -108,24 +108,38 @@
                                             </div>
                                         }
 
-                                        <div class="row r">
-                                            <div class="col-md-6">
-                                                Vehicle Model <span class="text-danger">*</span>
-                                                @Html.DropDownListFor(a => a.VehicleModel_Id, Model.VehicleModels, "Select", new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.VehicleModel_Id)
-                                                </span>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Vehicle Company Name <span class="text-danger">*</span>
-                                                @Html.TextBoxFor(a => a.Company, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.Company)
-                                                </span>
-                                            </div>
-                                        </div>
+                                <div class="row r">
+                                    <div class="col-md-6">
+                                        Vehicle Make <span class="text-danger">*</span>
+                                        @Html.TextBoxFor(a => a.VehicleMake, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.VehicleMake)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Vehicle Capacity <span class="text-danger">*</span>
+                                        @Html.DropDownListFor(a => a.VehicleCapacity_Id, Model.VehicleCapacity, "Select", new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.VehicleCapacity_Id)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Vehicle Model <span class="text-danger">*</span>
+                                        @Html.DropDownListFor(a => a.VehicleModel_Id, Model.VehicleModels, "Select", new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.VehicleModel_Id)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Vehicle Company Name <span class="text-danger">*</span>
+                                        @Html.TextBoxFor(a => a.Company, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.Company)
+                                        </span>
+                                    </div>
+                                </div>
 
-                                        <div class="row">
+                                       
                                             <div class="col-md-6">
                                                 Vehicle Number <span class="text-danger">*</span>
                                                 @Html.TextBoxFor(a => a.VehicleNumber, new { @class = "form-control", @maxlength = "10", @style = "text-transform:uppercase" })
@@ -141,15 +155,22 @@
                                                     @Html.ValidationMessageFor(a => a.FuelEfficiency)
                                                 </span>
                                             </div>
-                                        </div>
+                                        
 
-                                        <div class="row r">
+                                        
                                             <div class="col-md-6">
                                                 Vendor
                                                 @Html.HiddenFor(a => a.Vendor_Id)
                                                 @Html.TextBox("vendorName", null, new { @class = "form-control" })
                                                 <span class="text-danger">
                                                     @Html.ValidationMessageFor(a => a.Vendor_Id)
+                                                </span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                Sticker Number
+                                                @Html.TextBoxFor(a => a.StickerNumber, new { @class = "form-control" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.StickerNumber)
                                                 </span>
                                             </div>
 
@@ -160,9 +181,9 @@
                                                     @Html.ValidationMessageFor(a => a.FitnessVality)
                                                 </span>
                                             </div>
-                                        </div>
+                                        
 
-                                        <div class="row r">
+                                        
                                             <div class="col-md-6">
                                                 InsurranceValidity <span class="text-danger">*</span>
                                                 @Html.TextBoxFor(a => a.InsurranceValidity, new { @class = "form-control",type="date" })
@@ -178,8 +199,7 @@
                                                     @Html.ValidationMessageFor(a => a.PolutionValidity)
                                                 </span>
                                             </div>
-                                        </div>
-
+                                        
 
 
                                         <div class="row r">

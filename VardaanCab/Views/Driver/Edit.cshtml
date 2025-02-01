@@ -79,6 +79,14 @@
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="col-md-6">
+                                                        Vendor
+                                                        @Html.HiddenFor(a => a.Vendor_Id)
+                                                        @Html.TextBox("vendorName", null, new { @class = "form-control" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.Vendor_Id)
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-6">
                                                         Driver Name <span class="text-danger">*</span>
                                                         @Html.TextBoxFor(a => a.DriverName, new { @class = "form-control", @style = "text-transform:uppercase" })
                                                         <span class="text-danger">
@@ -148,12 +156,12 @@
                                                     </div>
 
                                                     @*<div class="col-md-6">
-                            Address *
-                            @Html.TextAreaFor(a => a.DriverAddress, new { @class = "form-control" })
-                            <span class="text-danger">
-                                @Html.ValidationMessageFor(a => a.DriverAddress)
-                            </span>
-                        </div>*@
+                                                            Address *
+                                                            @Html.TextAreaFor(a => a.DriverAddress, new { @class = "form-control" })
+                                                            <span class="text-danger">
+                                                                @Html.ValidationMessageFor(a => a.DriverAddress)
+                                                            </span>
+                                                        </div>*@
 
                                                     <div class="col-md-6">
                                                         DL No.
@@ -265,4 +273,42 @@
         </div>
     </div>
 </div>
- 
+<link href="/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<script src="/js/jquery2.0.3.min.js"></script>
+<script src="/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script>
+    $("#vendorName").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/Cab/GetVendorList',
+                data: { term: request.term },
+                type: 'GET',
+                success: function (data) {
+                    if (!data.length) {
+                        var result = [
+                         {
+                             label: 'No data found',
+                             value: response.term
+                         }
+                        ];
+                        response(result);
+                    }
+                    else {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.CompanyName,
+                                value: item.Id
+
+                            };
+                        }));
+                    }
+                }
+            });
+        },
+        select: function (event, ui) {
+            $('#Vendor_Id').val(ui.item.value);
+            $('#vendorName').val(ui.item.label);
+            return false;
+        }
+    });
+</script>

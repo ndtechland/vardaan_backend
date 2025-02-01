@@ -38,11 +38,8 @@
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <!-- Heading -->
                                     <h5>Banner List</h5>
-
                                     <!-- Import and Export Section -->
                                     <div class="d-flex align-items-center">
-                                        
-                                        
                                         <a href="/Employee/Add?menuId=@ViewBag.menuId" class="btn btn-primary btn-sm">
                                             <i class="fa fa-plus-square"></i>Add New
                                         </a>
@@ -78,7 +75,7 @@
                                                         <td>@count</td>
                                                         <td>
                                                             <span>
-                                                                <a href="/images/@item.BannerImage">
+                                                                <a href="/images/@item.BannerImage" style="width:100px;">
                                                                     <img src="~/images/@item.BannerImage"
                                                                          alt="users">
                                                                 </a>

@@ -39,7 +39,9 @@ namespace VardaanCab.Domain.DTO
         public HttpPostedFileBase InsuranceDocFile { get; set; }
         public HttpPostedFileBase RCDocFile { get; set; }
         public SelectList VehicleModels { get; set; }
+        public SelectList VehicleCapacity { get; set; }
         public string VendorName { get; set; }
+        public string VehicleMake { get; set; }
         public string CompanyName { get; set; }
         public string ModelName { get; set; }
         public bool IsAvailable { get; set; }
@@ -52,5 +54,8 @@ namespace VardaanCab.Domain.DTO
         public System.DateTime? RcValidity { get; set; }
         public System.DateTime? RcIssueDate { get; set; }
         public int MenuId { get; set; }
+        [Required]
+        public int VehicleCapacity_Id { get; set; }
+        public string StickerNumber { get; set; }
     }
 }

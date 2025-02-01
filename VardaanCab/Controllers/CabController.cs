@@ -163,6 +163,7 @@ namespace VardaanCab.Controllers
         {
             var model = new CabDTO();
             model.VehicleModels = new SelectList(ent.VehicleModels.ToList(), "Id", "ModelName");
+            model.VehicleCapacity = new SelectList(ent.VehicleCapacities.ToList(), "Id", "Capacity");
             ViewBag.menuId = menuId;
             return View(model);
         }
@@ -171,6 +172,7 @@ namespace VardaanCab.Controllers
         public ActionResult Add(CabDTO model)
         {
             model.VehicleModels = new SelectList(ent.VehicleModels.ToList(), "Id", "ModelName");
+            model.VehicleCapacity = new SelectList(ent.VehicleCapacities.ToList(), "Id", "Capacity");
 
 
             try
@@ -284,6 +286,8 @@ namespace VardaanCab.Controllers
             var data = ent.Cabs.Find(id);
             var model = Mapper.Map<CabDTO>(data);
             model.VehicleModels = new SelectList(ent.VehicleModels.ToList(), "Id", "ModelName",data.VehicleModel_Id);
+            model.VehicleCapacity = new SelectList(ent.VehicleCapacities.ToList(), "Id", "Capacity",data.VehicleCapacity_Id);
+
             var vendor = ent.Vendors.Find(data.Vendor_Id);
             if(vendor !=null)
             {
@@ -297,6 +301,7 @@ namespace VardaanCab.Controllers
         public ActionResult Edit(CabDTO model)
         {
             model.VehicleModels = new SelectList(ent.VehicleModels.ToList(), "Id", "ModelName", model.VehicleModel_Id);
+            model.VehicleCapacity = new SelectList(ent.VehicleCapacities.ToList(), "Id", "Capacity",model.VehicleCapacity_Id);
 
             try
             {

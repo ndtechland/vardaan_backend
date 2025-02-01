@@ -20,7 +20,6 @@
         <EntityTypeShape EntityType="Vardaan_AdminModel.CorporatePackage" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.Customer" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.CustomerUserMapping" Width="1.5" PointX="0.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Vardaan_AdminModel.Driver" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.DriverLeave" Width="1.5" PointX="12.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.LoginHistory" Width="1.5" PointX="12.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.Log" Width="1.5" PointX="2.75" PointY="13.75" IsExpanded="true" />
@@ -79,6 +78,9 @@
         <EntityTypeShape EntityType="Vardaan_AdminModel.AllRoute" Width="1.5" PointX="27.375" PointY="0.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.Routing" Width="1.5" PointX="27.375" PointY="3.75" />
         <EntityTypeShape EntityType="Vardaan_AdminModel.DriverLoginHistory" Width="1.5" PointX="27.375" PointY="7.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.DriverDeviceId" Width="1.5" PointX="27.375" PointY="10.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.Driver" Width="1.5" PointX="27.375" PointY="13.75" />
+        <EntityTypeShape EntityType="Vardaan_AdminModel.VehicleCapacity" Width="1.5" PointX="27.375" PointY="21.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

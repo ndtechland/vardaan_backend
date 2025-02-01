@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -144,6 +145,42 @@ namespace Vardaan.Services.Implementation
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+        public async Task<List<AvailableDriverDTO>> GetAvailableDrivers()
+        {
+            try
+            {
+                var driver = await (from d in ent.Drivers
+                                    join dl in ent.DriverLoginHistories on d.Id equals dl.DriverId
+                                    join di in ent.DriverDeviceIds on d.Id equals di.Driver_Id
+                                    join c in ent.Cabs on dl.VehicleNumber equals c.VehicleNumber
+                                    join cm in ent.VehicleModels on c.VehicleModel_Id equals cm.Id
+                                    join v in ent.Vendors on d.Vendor_Id equals v.Id
+                                    join com in ent.Customers on v.Company_Id equals com.Id
+                                    join cap in ent.VehicleCapacities on c.VehicleCapacity_Id equals cap.Id
+                                    where dl.IsActive == true
+                                    select new AvailableDriverDTO
+                                    {
+                                        CheckinId = dl.Id,
+                                        DriverId = d.Id,
+                                        DeviceId = di.Id,
+                                        DriverName = d.DriverName,
+                                        MobileNumber = d.MobileNumber,
+                                        VehicleNumber = c.VehicleNumber,
+                                        VehicleModel = cm.ModelName,
+                                        VendorName = v.CompanyName,
+                                        VehicleMake = c.VehicleMake,
+                                        Capacity = cap.Capacity,
+                                        CompanyName = com.OrgName,
+                                    }).ToListAsync();
+
+                return driver;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GetAvailableDrivers: {ex.Message}");
                 throw;
             }
         }
