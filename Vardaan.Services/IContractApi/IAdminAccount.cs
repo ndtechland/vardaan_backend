@@ -10,5 +10,6 @@ namespace Vardaan.Services.IContractApi
     public interface IAdminAccount
     {
         Task<AdminLoginDTO> AdminLogin(AdminLoginDTO model);
+        Task<AdminLoginDTO> AdminLoginWithMobandPass(AdminLoginDTO model);
     }
 }

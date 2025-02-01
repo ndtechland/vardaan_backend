@@ -42,7 +42,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<CorporatePackage> CorporatePackages { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerUserMapping> CustomerUserMappings { get; set; }
-        public virtual DbSet<Driver> Drivers { get; set; }
         public virtual DbSet<DriverLeave> DriverLeaves { get; set; }
         public virtual DbSet<LoginHistory> LoginHistories { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
@@ -101,6 +100,9 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<AllRoute> AllRoutes { get; set; }
         public virtual DbSet<Routing> Routings { get; set; }
         public virtual DbSet<DriverLoginHistory> DriverLoginHistories { get; set; }
+        public virtual DbSet<DriverDeviceId> DriverDeviceIds { get; set; }
+        public virtual DbSet<Driver> Drivers { get; set; }
+        public virtual DbSet<VehicleCapacity> VehicleCapacities { get; set; }
     
         public virtual ObjectResult<Nullable<int>> checkOneCompanyBookingSelected(Nullable<bool> isNrg, string term, Nullable<System.DateTime> sDate, Nullable<System.DateTime> eDate, Nullable<int> cityId, Nullable<int> routeNo)
         {

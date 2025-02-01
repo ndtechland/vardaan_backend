@@ -147,6 +147,15 @@
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="col-md-6">
+                                                        <label for="menu-type" class="form-label-title ">
+                                                            Select Company<span class="text-danger">*</span>
+                                                        </label>
+                                                        @Html.DropDownListFor(a => a.Company_Id, Model.CustomerList, "Select Company", new { @class = "form-control", @required = "required" })
+                                                        <span class="text-danger">
+                                                            @Html.ValidationMessageFor(a => a.Company_Id)
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-6">
                                                         Company Name <span style="color:red;">*</span>
                                                         @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
                                                         <span class="text-danger">

@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOAPI\AdminLoginDTO.cs" />
+    <Compile Include="DTOAPI\AvailableDriverDTO.cs" />
     <Compile Include="DTOAPI\ChangePasswordDTO.cs" />
     <Compile Include="DTOAPI\DriverProfileDTO.cs" />
     <Compile Include="DTOAPI\EmployeeProfileDTO.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="DTO\AccessAssignDTO.cs" />
     <Compile Include="DTO\AreaMasterDTO.cs" />
     <Compile Include="DTO\AssignCabModel.cs" />
+    <Compile Include="DTO\AvailableDriverDTO.cs" />
     <Compile Include="DTO\BannerDTO.cs" />
     <Compile Include="DTO\BookingDTO.cs" />
     <Compile Include="DTO\CabCategoryDTO.cs" />

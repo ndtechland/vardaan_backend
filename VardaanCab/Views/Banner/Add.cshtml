@@ -46,8 +46,6 @@
 
                                     <!-- Import and Export Section -->
                                     <div class="d-flex align-items-center">
-
-
                                         <a href="/Banner/All" class="btn btn-primary btn-sm">
                                             Show All
                                         </a>
@@ -79,6 +77,11 @@
                                                     <input type="radio" id="driver" name="role" value="Driver"
                                                            @(Model.Role == "Driver" ? "checked" : "") required>
                                                     <label for="driver" class="form-check-label">Driver</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="radio" id="admin" name="role" value="Admin"
+                                                           @(Model.Role == "Admin" ? "checked" : "") required>
+                                                    <label for="admmin" class="form-check-label">Admin</label>
                                                 </div>
                                             </div>
                                         </div>

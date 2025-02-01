@@ -15,5 +15,6 @@ namespace VardaanCab.Domain.DTOAPI
         public string Address { get; set; }
         public string UserRole { get; set; }
         public string EmployeeName { get; set; }
+        public string Password { get; set; }
     }
 }

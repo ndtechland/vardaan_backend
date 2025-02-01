@@ -426,7 +426,7 @@ namespace VardaanCab.APP.Controllers
                 {
                     var driverinfo = ent.Drivers.Find(model.DriverId);
 
-                    var cab = ent.Cabs.FirstOrDefault(x => x.VehicleNumber == model.VehicleNumber);
+                    var cab = ent.Cabs.FirstOrDefault(x => x.VehicleNumber == model.VehicleNumber && x.IsActive==true);
                     if (driverinfo == null)
                     {
                         response.Succeeded = false;
@@ -445,7 +445,7 @@ namespace VardaanCab.APP.Controllers
                     }
                     
 
-                    if (cab != null && !(bool)cab.IsLogin)
+                    if (cab != null && (bool)cab.IsLogin)
                     {
                         response.Succeeded = false;
                         response.Status = "Failed";
@@ -465,7 +465,7 @@ namespace VardaanCab.APP.Controllers
 
                     if (cab != null)
                     {
-                        cab.IsLogin = false;
+                        cab.IsLogin = true;
                         ent.SaveChanges();
                     }
 

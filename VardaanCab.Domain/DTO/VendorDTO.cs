@@ -43,8 +43,10 @@ namespace VardaanCab.Domain.DTO
         public string PAN { get; set; }
         public string CIN { get; set; }
         public string PanImage { get; set; }
+        public int Company_Id { get; set; }
         public HttpPostedFileBase PanFile { get; set; }
         public List<VendorPersonalPackageDTO> Packages { get; set; }
+        public SelectList CustomerList { get; set; }
 
         public int MenuId { get; set; }
 

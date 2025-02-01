@@ -31,5 +31,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string CIN { get; set; }
         public string PanImage { get; set; }
         public bool IsOutsider { get; set; }
+        public Nullable<int> Company_Id { get; set; }
     }
 }

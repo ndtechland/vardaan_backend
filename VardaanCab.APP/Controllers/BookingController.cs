@@ -20,7 +20,7 @@ namespace VardaanCab.APP.Controllers
         {
             try
             {
-                DateTime currentDate = DateTime.Now;
+                DateTime currentDate = DateTime.Now.Date;
 
                 DateTime lastDayOfMonth = new DateTime(
                     currentDate.Year,
@@ -33,8 +33,11 @@ namespace VardaanCab.APP.Controllers
                 var empinfo = ent.Employees.Where(e => e.Employee_Id == model.EmployeeId).FirstOrDefault();
                 if(empinfo!=null)
                 {
-                    var Getcabreqday = ent.EmployeeMobileAppSettings.Where(x => x.CompanyId == empinfo.Company_Id && x.IsActive==true).FirstOrDefault().CabRequestDays;
-                    if(Getcabreqday== daysDifference)
+                    var Getcabreqday = ent.EmployeeMobileAppSettings
+                        .Where(x => x.CompanyId == empinfo.Company_Id && x.IsActive == true)
+                        .Select(x => x.CabRequestDays)
+                        .FirstOrDefault() ?? 0;
+                    if (Getcabreqday>= daysDifference)
                     {
                         var data = new EmployeeRequest()
                         {
@@ -57,7 +60,7 @@ namespace VardaanCab.APP.Controllers
                     {
                         response.Succeeded = false;
                         response.StatusCode = StatusCodes.Status400BadRequest;
-                        response.Message = $"Booking request cannot be processed. The expected booking day is: {Getcabreqday}, but the provided day is: {daysDifference}.";
+                        response.Message = $"Your booking request exceeds the allowed timeframe. You requested {Getcabreqday} days in advance, but {daysDifference} days remain in the current month.";
                         return Content(HttpStatusCode.BadRequest, response);
                     }
                     

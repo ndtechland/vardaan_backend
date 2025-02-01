@@ -70,117 +70,126 @@
                                         @Html.HiddenFor(a => a.MenuId)
 
 
-                                        <div class="row r">
-                                                <div class="col-md-6">
-                                                    Company Name <span class="text-danger">*</span>
-                                                    @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.CompanyName)
-                                                    </span>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    Contact Person Name <span class="text-danger">*</span>
-                                                    @Html.TextBoxFor(a => a.VendorName, new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.VendorName)
-                                                    </span>
-                                                </div>
+                                <div class="row r">
+                                    <div class="col-md-6">
+                                        <label for="menu-type" class="form-label-title ">
+                                            Select Company<span class="text-danger">*</span>
+                                        </label>
+                                        @Html.DropDownListFor(a => a.Company_Id, Model.CustomerList, "Select Company", new { @class = "form-control", @required = "required" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.Company_Id)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Company Name <span class="text-danger">*</span>
+                                        @Html.TextBoxFor(a => a.CompanyName, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.CompanyName)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Contact Person Name <span class="text-danger">*</span>
+                                        @Html.TextBoxFor(a => a.VendorName, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.VendorName)
+                                        </span>
+                                    </div>
 
-                                                <div class="col-md-6">
-                                                    Email
-                                                    @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.Email)
-                                                    </span>
-                                                </div>
+                                    <div class="col-md-6">
+                                        Email
+                                        @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.Email)
+                                        </span>
+                                    </div>
 
-                                                <div class="col-md-6">
-                                                    Mobile Number
-                                                    @Html.TextBoxFor(a => a.MobileNumber, new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.MobileNumber)
-                                                    </span>
-                                                </div>
+                                    <div class="col-md-6">
+                                        Mobile Number
+                                        @Html.TextBoxFor(a => a.MobileNumber, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.MobileNumber)
+                                        </span>
+                                    </div>
 
-                                                <div class="col-md-6">
-                                                    Alternate mobile no.
-                                                    @Html.TextBoxFor(a => a.AlernateMobile, new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.AlernateMobile)
-                                                    </span>
-                                                </div>
+                                    <div class="col-md-6">
+                                        Alternate mobile no.
+                                        @Html.TextBoxFor(a => a.AlernateMobile, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.AlernateMobile)
+                                        </span>
+                                    </div>
 
-                                                <div class="col-md-6">
-                                                    GSTIN
-                                                    @Html.TextBoxFor(a => a.GSTIN, new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.GSTIN)
-                                                    </span>
-                                                </div>
+                                    <div class="col-md-6">
+                                        GSTIN
+                                        @Html.TextBoxFor(a => a.GSTIN, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.GSTIN)
+                                        </span>
+                                    </div>
 
-                                                <div class="col-md-6">
-                                                    PAN Number
-                                                    @Html.TextBoxFor(a => a.PAN, new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.PAN)
-                                                    </span>
-                                                </div>
+                                    <div class="col-md-6">
+                                        PAN Number
+                                        @Html.TextBoxFor(a => a.PAN, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.PAN)
+                                        </span>
+                                    </div>
 
-                                                <div class="col-md-6">
-                                                    PAN Document image
-                                                    @if (!string.IsNullOrEmpty(Model.PanImage))
-                                                    {
-                                                        <img class="thumb" src="/Images/@Model.PanImage" />
-                                                    }
-                                                    @Html.TextBoxFor(a => a.PanFile, new { type = "file", @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.PanFile)
-                                                    </span>
-                                                </div>
+                                    <div class="col-md-6">
+                                        PAN Document image
+                                        @if (!string.IsNullOrEmpty(Model.PanImage))
+                                        {
+                                            <img class="thumb" src="/Images/@Model.PanImage" />
+                                        }
+                                        @Html.TextBoxFor(a => a.PanFile, new { type = "file", @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.PanFile)
+                                        </span>
+                                    </div>
 
 
-                                                <div class="col-md-6">
-                                                    CIN Number
-                                                    @Html.TextBoxFor(a => a.CIN, new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.CIN)
-                                                    </span>
-                                                </div>
+                                    <div class="col-md-6">
+                                        CIN Number
+                                        @Html.TextBoxFor(a => a.CIN, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.CIN)
+                                        </span>
+                                    </div>
 
-                                                <div class="col-md-6">
-                                                    Parent Vendor
-                                                    @Html.DropDownListFor(a => a.ParentVendor_Id, Model.Vendors, "Select", new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.ParentVendor_Id)
-                                                    </span>
-                                                </div>
+                                    <div class="col-md-6">
+                                        Parent Vendor
+                                        @Html.DropDownListFor(a => a.ParentVendor_Id, Model.Vendors, "Select", new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.ParentVendor_Id)
+                                        </span>
+                                    </div>
 
-                                                <div class="col-md-6">
-                                                    State <span class="text-danger">*</span>
-                                                    @Html.DropDownListFor(a => a.StateMaster_Id, Model.States, "Select", new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.StateMaster_Id)
-                                                    </span>
-                                                </div>
+                                    <div class="col-md-6">
+                                        State <span class="text-danger">*</span>
+                                        @Html.DropDownListFor(a => a.StateMaster_Id, Model.States, "Select", new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.StateMaster_Id)
+                                        </span>
+                                    </div>
 
-                                                <div class="col-md-6">
-                                                    City <span class="text-danger">*</span>
-                                                    @Html.DropDownListFor(a => a.CityMaster_Id, Model.Cities, "Select City", new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.CityMaster_Id)
-                                                    </span>
-                                                </div>
-                                             
-                                                <div class="col-md-6">
-                                                    Full Address <span class="text-danger">*</span>
-                                                    @Html.TextAreaFor(a => a.FullAddress, new { @class = "form-control" })
-                                                    <span class="text-danger">
-                                                        @Html.ValidationMessageFor(a => a.FullAddress)
-                                                    </span>
-                                                </div>
+                                    <div class="col-md-6">
+                                        City <span class="text-danger">*</span>
+                                        @Html.DropDownListFor(a => a.CityMaster_Id, Model.Cities, "Select City", new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.CityMaster_Id)
+                                        </span>
+                                    </div>
 
-                                            
-                                        </div>
+                                    <div class="col-md-6">
+                                        Full Address <span class="text-danger">*</span>
+                                        @Html.TextAreaFor(a => a.FullAddress, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.FullAddress)
+                                        </span>
+                                    </div>
+
+
+                                </div>
 
                                         <div class="card-footer text-end">
                                             <input type="submit" class="btn btn-info" value="Save" />

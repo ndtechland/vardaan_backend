@@ -33,6 +33,8 @@ namespace VardaanCab.Controllers
         public ActionResult Add(int menuId = 0)
         {
             var model = new VendorDTO();
+            model.CustomerList = new SelectList(ent.Customers.Where(c => c.IsActive).ToList(), "Id", "OrgName");
+
             model.States = new SelectList(ent.StateMasters.ToList(), "Id", "StateName");
             model.Vendors = new SelectList(ent.Vendors.Where(a => a.IsActive).ToList(), "Id", "CompanyName");
             model.Packages = commonRepo.GetAllVendorPackages().ToList();
@@ -43,6 +45,8 @@ namespace VardaanCab.Controllers
         [HttpPost]
         public ActionResult Add(VendorDTO model)
         {
+            model.CustomerList = new SelectList(ent.Customers.Where(c => c.IsActive).ToList(), "Id", "OrgName");
+
             model.States = new SelectList(ent.StateMasters.ToList(), "Id", "StateName");
             model.Vendors = new SelectList(ent.Vendors.Where(a => a.IsActive).ToList(), "Id", "CompanyName");
             model.Packages = commonRepo.GetAllVendorPackages().ToList();
@@ -75,6 +79,7 @@ namespace VardaanCab.Controllers
                     var vendor = Mapper.Map<Vendor>(model);
                     vendor.CreateDate = DateTime.Now;
                     vendor.IsActive = true;
+                    vendor.Company_Id = model.Company_Id;
                     ent.Vendors.Add(vendor);
                     ent.SaveChanges();
                     if (model.Packages.Count > 0)
@@ -218,6 +223,8 @@ namespace VardaanCab.Controllers
         {
             var data = ent.Vendors.Find(id);
             var model = Mapper.Map<VendorDTO>(data);
+
+            model.CustomerList = new SelectList(ent.Customers.AsNoTracking().ToList(), "Id", "OrgName", data.Company_Id);
             model.States = new SelectList(ent.StateMasters.AsNoTracking().ToList(), "Id", "StateName", data.StateMaster_Id);
             model.Vendors = new SelectList(ent.Vendors.AsNoTracking().Where(a => a.IsActive).ToList(), "Id", "CompanyName", data.ParentVendor_Id);
             model.Cities = new SelectList(ent.CityMasters.AsNoTracking().ToList(), "Id", "CityName", data.CityMaster_Id);
@@ -229,6 +236,8 @@ namespace VardaanCab.Controllers
         public ActionResult Edit(VendorDTO model)
         {
             ModelState.Remove("PanFile");
+            model.CustomerList = new SelectList(ent.Customers.AsNoTracking().ToList(), "Id", "OrgName", model.Company_Id);
+
             model.States = new SelectList(ent.StateMasters.AsNoTracking().ToList(), "Id", "StateName", model.StateMaster_Id);
             model.Vendors = new SelectList(ent.Vendors.AsNoTracking().Where(a => a.IsActive).ToList(), "Id", "CompanyName", model.ParentVendor_Id);
             model.Cities = new SelectList(ent.CityMasters.AsNoTracking().ToList(), "Id", "CityName", model.CityMaster_Id);
@@ -257,6 +266,8 @@ namespace VardaanCab.Controllers
                     model.PanImage = result;
                 }
                 var vendor = Mapper.Map<Vendor>(model);
+                vendor.Company_Id = model.Company_Id;
+
                 ent.Entry(vendor).State = System.Data.Entity.EntityState.Modified;
                 ent.SaveChanges();
                 TempData["msg"] = "Vendor has updated successfully";

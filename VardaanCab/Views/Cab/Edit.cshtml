@@ -77,15 +77,28 @@
                                         <div class="row r">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    Company Name *
+                                                    Company Name <span class="text-danger">*</span>
                                                     @Html.TextBoxFor(a => a.Company, new { @class = "form-control" })
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.Company)
                                                     </span>
                                                 </div>
-
                                                 <div class="form-group">
-                                                    Model *
+                                                    Vehicle Make <span class="text-danger">*</span>
+                                                    @Html.TextBoxFor(a => a.VehicleMake, new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.VehicleMake)
+                                                    </span>
+                                                </div>
+                                                <div class="form-group">
+                                                    Vehicle Capacity <span class="text-danger">*</span>
+                                                    @Html.DropDownListFor(a => a.VehicleCapacity_Id, Model.VehicleCapacity, "Select", new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.VehicleCapacity_Id)
+                                                    </span>
+                                                </div>
+                                                <div class="form-group">
+                                                    Model <span class="text-danger">*</span>
                                                     @Html.DropDownListFor(a => a.VehicleModel_Id, Model.VehicleModels, "Select", new { @class = "form-control" })
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.VehicleModel_Id)
@@ -93,7 +106,7 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    VehicleNumber *
+                                                    VehicleNumber <span class="text-danger">*</span>
                                                     @Html.TextBoxFor(a => a.VehicleNumber, new { @class = "form-control", @maxlength = "10", @style = "text-transform:uppercase" })
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.VehicleNumber)
@@ -116,9 +129,15 @@
                                                         @Html.ValidationMessageFor(a => a.Vendor_Id)
                                                     </span>
                                                 </div>
-
                                                 <div class="form-group">
-                                                    FitnessVality *
+                                                    Sticker Number
+                                                    @Html.TextBoxFor(a => a.StickerNumber, new { @class = "form-control" })
+                                                    <span class="text-danger">
+                                                        @Html.ValidationMessageFor(a => a.StickerNumber)
+                                                    </span>
+                                                </div>
+                                                <div class="form-group">
+                                                    FitnessVality <span class="text-danger">*</span>
                                                     @Html.TextBoxFor(a => a.FitnessVality, new { @class = "form-control sdp" })
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.FitnessVality)
@@ -126,7 +145,7 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    InsurranceValidity *
+                                                    InsurranceValidity <span class="text-danger">*</span>
                                                     @Html.TextBoxFor(a => a.InsurranceValidity, new { @class = "form-control sdp" })
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.InsurranceValidity)
@@ -134,7 +153,7 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    PolutionValidity *
+                                                    PolutionValidity <span class="text-danger">*</span>
                                                     @Html.TextBoxFor(a => a.PolutionValidity, new { @class = "form-control sdp" })
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.PolutionValidity)
@@ -149,10 +168,10 @@
                                                     @{Html.EnableClientValidation(false);
                                                     }
                                                     @*@if (!string.IsNullOrEmpty(Model.FitnessDoc))
-                        {
-                            <br/>
-                            <a href="/images/@Model.FitnessDoc"><img src="/images/@Model.FitnessDoc" class="thumb"/></a>
-                        }*@
+            {
+                <br/>
+                <a href="/images/@Model.FitnessDoc"><img src="/images/@Model.FitnessDoc" class="thumb"/></a>
+            }*@
 
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.FitnessDocFile)
@@ -167,11 +186,11 @@
                                                     @Html.TextBoxFor(a => a.PolutionDocFile, new { @class = "form-control", type = "file" })
                                                     @{Html.EnableClientValidation(false);}
                                                     @*@if (!string.IsNullOrEmpty(Model.PolutionDoc))
-                        {
-                          <br />
-                          <a href="/images/@Model.PolutionDoc"><img src="/images/@Model.PolutionDoc" class="thumb" /></a>
-                            Html.EnableClientValidation(false);
-                        }*@
+            {
+              <br />
+              <a href="/images/@Model.PolutionDoc"><img src="/images/@Model.PolutionDoc" class="thumb" /></a>
+                Html.EnableClientValidation(false);
+            }*@
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.PolutionDocFile)
                                                     </span>
@@ -182,11 +201,11 @@
                                                     Insurance Doc
                                                     @{Html.EnableClientValidation(false);}
                                                     @*@if (!string.IsNullOrEmpty(Model.InsuranceDoc))
-                        {
-                            <br />
-                            <a href="/images/@Model.InsuranceDoc"><img src="/images/@Model.InsuranceDoc" class="thumb" /></a>
-                            Html.EnableClientValidation(false);
-                        }*@
+            {
+                <br />
+                <a href="/images/@Model.InsuranceDoc"><img src="/images/@Model.InsuranceDoc" class="thumb" /></a>
+                Html.EnableClientValidation(false);
+            }*@
                                                     @Html.TextBoxFor(a => a.InsuranceDocFile, new { @class = "form-control", type = "file" })
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.InsuranceDocFile)
@@ -219,10 +238,10 @@
                                                 <div class="form-group">
                                                     RC Doc
                                                     @*@if (!string.IsNullOrEmpty(Model.RCDoc))
-                        {
-                            <br />
-                            <a href="/images/@Model.RCDoc"><img src="/images/@Model.RCDoc" class="thumb" /></a>
-                        }*@
+            {
+                <br />
+                <a href="/images/@Model.RCDoc"><img src="/images/@Model.RCDoc" class="thumb" /></a>
+            }*@
                                                     @Html.TextBoxFor(a => a.RCDocFile, new { @class = "form-control", type = "file" })
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.RCDocFile)
@@ -241,11 +260,11 @@
                                                     Permit Doc
                                                     @{Html.EnableClientValidation(false);}
                                                     @*@if (!string.IsNullOrEmpty(Model.PermitDoc))
-                        {
-                            <br />
-                            <a href="/images/@Model.PermitDoc"><img src="/images/@Model.PermitDoc" class="thumb" /></a>
-                            Html.EnableClientValidation(false);
-                        }*@
+            {
+                <br />
+                <a href="/images/@Model.PermitDoc"><img src="/images/@Model.PermitDoc" class="thumb" /></a>
+                Html.EnableClientValidation(false);
+            }*@
                                                     @Html.TextBoxFor(a => a.PermitDocFile, new { @class = "form-control", type = "file" })
                                                     <span class="text-danger">
                                                         @Html.ValidationMessageFor(a => a.PermitDocFile)
@@ -266,7 +285,7 @@
                                                         @Html.ValidationMessageFor(a => a.IsAvailable)
                                                     </span>
                                                 </dv>
-                                                
+
                                             </div>
                                         </div>
                                         <div class="card-footer text-end">

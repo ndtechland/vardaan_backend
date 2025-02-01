@@ -227,7 +227,7 @@ namespace VardaanCab.Controllers
                 if (!ModelState.IsValid)
                     return View(model);
 
-                if (ent.Drivers.Any(a =>a.Id!=model.Id && a.DriverName.ToLower().Equals(model.DriverName.ToLower())))
+                if (ent.Drivers.Any(a =>a.Id!=model.Id && a.DriverName.ToLower().Equals(model.DriverName.ToLower()) && a.IsActive == true))
                 {
                     TempData["msg"] = "Driver name already exist in our database";
                     return View(model);
@@ -622,9 +622,6 @@ namespace VardaanCab.Controllers
                 });
             }
         }
-
-
-
 
     }
 }

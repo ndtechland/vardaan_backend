@@ -60,5 +60,51 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+        [HttpPost]
+        [Route("AdminLoginWithMobPass")]
+        public async Task<IHttpActionResult> AdminLoginWithMobPass(AdminLoginDTO model)
+        {
+            try
+            {
+                var response = new Response<bool>();
+                var compinfo = ent.Customers.Where(c => c.OrgName == model.TransportCode).FirstOrDefault();
+                var empinfo = ent.Employees.Where(x => x.MobileNumber == model.MobileNumber).FirstOrDefault();
+                if(empinfo==null||empinfo.Password!=model.Password)
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Invalid mobile number or password.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+                if (compinfo != null)
+                {
+                    var data = await _adminaccount.AdminLoginWithMobandPass(model);
+                    if (data != null)
+                    {
+                        return Ok(new { Succeeded = true, StatusCode = 200, Message = "Logged In successfully.", Data = data });
+                    }
+                    else
+                    {
+                        response.Succeeded = false;
+                        response.StatusCode = StatusCodes.Status404NotFound;
+                        response.Message = "No access assigned.";
+                        return Content(HttpStatusCode.NotFound, response);
+                    }
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Please provide valid transport code.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

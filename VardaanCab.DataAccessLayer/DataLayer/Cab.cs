@@ -38,5 +38,8 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<System.DateTime> RcIssueDate { get; set; }
         public bool IsOutsider { get; set; }
         public Nullable<bool> IsLogin { get; set; }
+        public string VehicleMake { get; set; }
+        public Nullable<int> VehicleCapacity_Id { get; set; }
+        public string StickerNumber { get; set; }
     }
 }

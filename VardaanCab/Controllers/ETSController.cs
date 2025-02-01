@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Vardaan.Services.IContract;
+using Vardaan.Services.IContractApi;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
@@ -675,16 +676,41 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                ViewBag.DriverItems = ent.Drivers.Where(x => x.IsActive == true).Select(x => new SelectListItem
-                {
-                    Text = x.DriverName,
-                    Value = x.Id.ToString()
-                }).ToList();
-                ViewBag.VehicleNumItems = ent.Cabs.Where(x => x.IsActive == true).Select(x => new SelectListItem
-                {
-                    Text = x.VehicleNumber,
-                    Value = x.Id.ToString()
-                }).ToList();
+                //ViewBag.DriverItems = ent.Drivers.Where(x => x.IsActive == true).Select(x => new SelectListItem
+                //{
+                //    Text = x.DriverName,
+                //    Value = x.Id.ToString()
+                //}).ToList();
+                ViewBag.DriverItems = (from d in ent.Drivers
+                                       join dl in ent.DriverLoginHistories on d.Id equals dl.DriverId
+                                       where dl.IsActive == true
+                                       orderby dl.Id descending
+                                       select new SelectListItem
+                                       {
+                                           Text = d.DriverName,
+                                           Value = d.Id.ToString()
+                                       }
+                                       ).ToList();
+                ViewBag.VehicleNumItems = (from c in ent.Cabs
+                                           join dl in ent.DriverLoginHistories on c.VehicleNumber equals dl.VehicleNumber
+                                           where dl.IsActive == true && c.IsLogin==true
+                                           orderby dl.Id descending
+                                           select new SelectListItem
+                                           {
+                                               Text = c.VehicleNumber,
+                                               Value = c.Id.ToString()
+                                           }
+                                       ).ToList();
+                ViewBag.DeviceIdItems = (from di in ent.DriverDeviceIds
+                                           join dl in ent.DriverLoginHistories on di.Driver_Id equals dl.DriverId
+                                           where dl.IsActive == true
+                                           orderby dl.Id descending
+                                           select new SelectListItem
+                                           {
+                                               Text = di.Id.ToString(),
+                                               Value = di.Id.ToString()
+                                           }
+                                       ).ToList();
                 //List<EmployeeGroup> employeelist = new List<EmployeeGroup>();
                 Dictionary<string, List<EmployeeGroup>> dict = new Dictionary<string, List<EmployeeGroup>>();
 
@@ -901,6 +927,126 @@ namespace VardaanCab.Controllers
                 ZoneHomeWise = ent.CompanyZoneHomeRoutes.FirstOrDefault(z => z.Id == emp.HomeRouteName)?.HomeRouteName,
                 DestinationAreaWise = ent.EmployeeDestinationAreas.FirstOrDefault(z => z.Id == emp.EmployeeDestinationArea)?.DestinationAreaName
             }).ToList();
+        }
+        [HttpGet]
+        public ActionResult GetVehicleByDriver(int driverId)
+        {
+            var vehicle = (from c in ent.Cabs
+                           join dl in ent.DriverLoginHistories on c.VehicleNumber equals dl.VehicleNumber
+                           where dl.IsActive == true && c.IsLogin == true && dl.DriverId == driverId
+                           select new
+                           {
+                               Id = c.Id
+                           }
+                           ).FirstOrDefault();
+            if (vehicle != null)
+            {
+                return Json(new { vehicleId = vehicle.Id }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { vehicleId = 0 }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult GetVehicleByDeviceId(int deviceId)
+        {
+            var vehicle = (from c in ent.Cabs
+                           join dl in ent.DriverLoginHistories on c.VehicleNumber equals dl.VehicleNumber
+                           join d in ent.Drivers on dl.DriverId equals d.Id
+                           join di in ent.DriverDeviceIds on d.DeviceId equals di.Id
+                           where dl.IsActive == true && c.IsLogin == true && di.Id == deviceId
+                           select new
+                           {
+                               Id = c.Id
+                           }
+                           ).FirstOrDefault();
+            if (vehicle != null)
+            {
+                return Json(new { vehicleId = vehicle.Id }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { vehicleId = 0 }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult GetDriverDeviceIdByDriver(int driverId)
+        {
+            var device = (from di in ent.DriverDeviceIds
+                           join dl in ent.DriverLoginHistories on di.Driver_Id equals dl.DriverId
+                           where dl.IsActive == true && dl.DriverId == driverId
+                           select new
+                           {
+                               Id = di.Id
+                           }
+                           ).FirstOrDefault();
+            if (device != null)
+            {
+                return Json(new { deviceId = device.Id }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { deviceId = 0 }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult GetDriverDeviceIdByVehicle(int vehicleId)
+        {
+            var vehicleno = ent.Cabs.Where(c => c.Id == vehicleId).FirstOrDefault().VehicleNumber;
+            var device = (from d in ent.Drivers
+                          join dl in ent.DriverLoginHistories on d.Id equals dl.DriverId
+                          join di in ent.DriverDeviceIds on dl.DriverId equals di.Driver_Id
+                          where dl.IsActive == true && dl.VehicleNumber == vehicleno
+                          select new
+                          {
+                              Id = di.Id
+                          }).FirstOrDefault();
+            if (device != null)
+            {
+                return Json(new { deviceId = device.Id }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { deviceId = 0 }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult GetDriverByVehicle(int vehicleId)
+        {
+            var vehicleno = ent.Cabs.Where(c => c.Id == vehicleId).FirstOrDefault().VehicleNumber;
+            var driver = (from d in ent.Drivers
+                          join dl in ent.DriverLoginHistories on d.Id equals dl.DriverId
+                          where dl.IsActive == true && dl.VehicleNumber == vehicleno
+                          select new
+                          {
+                              Id = d.Id
+                          }).FirstOrDefault();
+            if (driver != null)
+            {
+                return Json(new { driverId = driver.Id }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { driverId = 0 }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult GetDriverByDeviceId(int deviceId)
+        {
+            var driver = (from di in ent.DriverDeviceIds
+                          join d in ent.Drivers on di.Id equals d.DeviceId
+                          where d.IsActive == true && di.Id == deviceId
+                          select new
+                          {
+                              Id = d.Id
+                          }).FirstOrDefault();
+            if (driver != null)
+            {
+                return Json(new { driverId = driver.Id }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { driverId = 0 }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public async Task<ActionResult> AvailableDrivers()
+        {
+            try
+            {
+                var model = new AvailableDriverDTO();
+                model.AvailableDrivers = await _ets.GetAvailableDrivers();
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
         }
     }
 }

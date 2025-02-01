@@ -138,17 +138,28 @@ namespace Vardaan.Services.ImplementationApi
                 }
                 else
                 {
-                    var data = ent.Drivers.Find(model.Id);
-                    if (data != null)
+                    var data = ent.DriverDeviceIds.FirstOrDefault(d => d.Driver_Id == model.Id);
+
+                    if (data == null)
                     {
-                        data.DeviceId = model.DeviceId;
+                        data = new DriverDeviceId
+                        {
+                            Driver_Id = model.Id,
+                            DeviceId = model.DeviceId
+                        };
+                        ent.DriverDeviceIds.Add(data);
+                        var driver = ent.Drivers.Find(model.Id);
                         ent.SaveChanges();
-                        return true;
+                        driver.DeviceId = data.Id;
                     }
                     else
                     {
-                        return false;
+                        data.DeviceId = model.DeviceId;
                     }
+
+                    ent.SaveChanges();
+                    return true;
+
                 }
             }
             catch (Exception)
