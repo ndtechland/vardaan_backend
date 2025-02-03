@@ -48,7 +48,7 @@ namespace Vardaan.Services.ImplementationApi
                 throw;
             }
         }
-        public async Task<List<AvailableDriverDTO>> GetAvailableDrivers(string Transpostcode, int VendorId)
+        public async Task<(List<AvailableDriverDTO> AvailableDriversList, string VendorName)> GetAvailableDrivers(string Transpostcode, int VendorId)
         {
             try
             {
@@ -57,23 +57,68 @@ namespace Vardaan.Services.ImplementationApi
                                     join c in ent.Cabs on dl.VehicleNumber equals c.VehicleNumber
                                     join cm in ent.VehicleModels on c.VehicleModel_Id equals cm.Id
                                     join v in ent.Vendors on d.Vendor_Id equals v.Id
+                                    join di in ent.DriverDeviceIds on d.DeviceId equals di.Id
                                     join com in ent.Customers on v.Company_Id equals com.Id
                                     where dl.IsActive == true && com.OrgName == Transpostcode && v.Id== VendorId
                                     select new AvailableDriverDTO
                                     {
-                                        Id = dl.Id,
+                                        CheckInId = dl.Id,
                                         DriverId = d.Id,
+                                        DeviceId = d.DeviceId,
                                         DriverName = d.DriverName,
                                         MobileNumber = d.MobileNumber,
                                         VehicleNumber = c.VehicleNumber,
                                         VehicleModel = cm.ModelName,
                                     }).ToListAsync();
 
-                return driver; 
+                 
+                 // Fetch vendor name
+                var vendorName = await ent.Vendors
+                                          .Where(v => v.Id == VendorId && v.IsActive == true)
+                                          .Select(v => v.CompanyName)
+                                          .FirstOrDefaultAsync();
+
+                return (driver, vendorName);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error in GetAvailableDrivers: {ex.Message}");
+                throw;
+            }
+        }
+        public async Task<(List<AvailableDriverDTO> CheckInDriversList, string VendorName)> GetCheckInDrivers(string Transpostcode, int VendorId)
+        {
+            try
+            {
+                var driver = await (from d in ent.Drivers
+                                    join dl in ent.DriverLoginHistories on d.Id equals dl.DriverId
+                                    join c in ent.Cabs on dl.VehicleNumber equals c.VehicleNumber
+                                    join cm in ent.VehicleModels on c.VehicleModel_Id equals cm.Id
+                                    join v in ent.Vendors on d.Vendor_Id equals v.Id
+                                    join di in ent.DriverDeviceIds on d.DeviceId equals di.Id
+                                    join com in ent.Customers on v.Company_Id equals com.Id
+                                    where dl.IsActive == true && com.OrgName == Transpostcode && v.Id == VendorId
+                                    select new AvailableDriverDTO
+                                    {
+                                        CheckInId = dl.Id,
+                                        DriverId = d.Id,
+                                        DeviceId=d.DeviceId,
+                                        DriverName = d.DriverName,
+                                        MobileNumber = d.MobileNumber,
+                                        VehicleNumber = c.VehicleNumber,
+                                    }).ToListAsync();
+                // Fetch vendor name
+                var vendorName = await ent.Vendors
+                                          .Where(v => v.Id == VendorId && v.IsActive == true)
+                                          .Select(v => v.CompanyName)
+                                          .FirstOrDefaultAsync();
+
+                return (driver, vendorName);
+                 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GetCheckinDrivers: {ex.Message}");
                 throw;
             }
         }
