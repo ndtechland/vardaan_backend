@@ -53,18 +53,52 @@ namespace VardaanCab.APP.Controllers
             try
             {
                 var response = new Response<AdminLoginDTO>();
-                var data = await _admin.GetAvailableDrivers(Transpostcode, VendorId);
-                if (data != null)
+                var (availebledriversList, vendorName) = await _admin.GetAvailableDrivers(Transpostcode, VendorId);
+
+                if (availebledriversList != null && availebledriversList.Any())
                 {
-                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Available drivers retrieved successfully.", Data = data });
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Available Drivers retrieved successfully.", VendorName = vendorName, Data = availebledriversList });
+
                 }
                 else
                 {
                     response.Succeeded = false;
                     response.StatusCode = StatusCodes.Status404NotFound;
-                    response.Message = "Data not found.";
+                    response.Message = "No drivers found.";
                     return Content(HttpStatusCode.NotFound, response);
+
                 }
+                
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("CheckInDrivers")]
+        public async Task<IHttpActionResult> CheckInDrivers(string Transpostcode, int VendorId)
+        {
+            try
+            {
+                var response = new Response<AdminLoginDTO>();
+                var (checkindriversList, vendorName) = await _admin.GetCheckInDrivers(Transpostcode, VendorId);
+
+                if (checkindriversList != null && checkindriversList.Any())
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Check In Drivers retrieved successfully.", VendorName = vendorName, Data = checkindriversList });
+
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "No drivers found.";
+                    return Content(HttpStatusCode.NotFound, response);
+
+                }
+
             }
             catch (Exception)
             {

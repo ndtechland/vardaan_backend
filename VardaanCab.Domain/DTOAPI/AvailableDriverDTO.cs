@@ -8,11 +8,12 @@ namespace VardaanCab.Domain.DTOAPI
 {
     public class AvailableDriverDTO
     {
-        public int Id { get; set; }
+        public int CheckInId { get; set; }
         public string DriverName { get; set; }
         public string VehicleNumber { get; set; }
         public string VehicleModel { get; set; }
         public int DriverId { get; set; }
+        public int? DeviceId { get; set; }
         public string MobileNumber { get; set; }
     }
     public class VendorList

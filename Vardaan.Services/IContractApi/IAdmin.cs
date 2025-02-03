@@ -10,7 +10,8 @@ namespace Vardaan.Services.IContractApi
     public interface IAdmin
     {
         Task<AdminLoginDTO> GetProfile(int Id);
-        Task<List<AvailableDriverDTO>> GetAvailableDrivers(string Transpostcode, int VendorId);
+        Task<(List<AvailableDriverDTO> AvailableDriversList, string VendorName)> GetAvailableDrivers(string Transpostcode, int VendorId);
+        Task<(List<AvailableDriverDTO> CheckInDriversList, string VendorName)> GetCheckInDrivers(string Transpostcode, int VendorId);
         Task<List<VendorList>> GetVendorByCompany(string TransportCode);
         Task<(List<Drivers> DriversList, string VendorName)> GetDriverByTransportCodeVendorId(string TransportCode, int VendorId);
 
