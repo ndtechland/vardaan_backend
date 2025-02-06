@@ -579,7 +579,7 @@ namespace VardaanCab.Controllers
                             //string CompanyName = row.Cell(1).GetValue<string>();
                             string StateName = row.Cell(9).GetValue<string>();
 
-                            if (!ent.CompanyZones.Any(e => e.CompanyZone1.ToLower() == StateName.ToLower()))
+                            if (!ent.StateMasters.Any(e => e.StateName.ToLower() == StateName.ToLower()))
                             {
                                 excelErrorModels.Add(new ExcelErrorModel
                                 {
@@ -590,7 +590,7 @@ namespace VardaanCab.Controllers
                             }
 
                             string CityName = row.Cell(10).GetValue<string>();
-                            if (!ent.CompanyZoneHomeRoutes.Any(e => e.HomeRouteName.ToLower() == CityName.ToLower()))
+                            if (!ent.CityMasters.Any(e => e.CityName.ToLower() == CityName.ToLower()))
                             {
                                 excelErrorModels.Add(new ExcelErrorModel
                                 {
