@@ -34,6 +34,7 @@ namespace VardaanCab.Domain.DTO
         public string InsuranceDoc { get; set; }
         public string RCDoc { get; set; }
         public bool IsActive { get; set; }
+        public bool IsLogin { get; set; }
         public HttpPostedFileBase FitnessDocFile { get; set; }
         public HttpPostedFileBase PolutionDocFile { get; set; }
         public HttpPostedFileBase InsuranceDocFile { get; set; }

@@ -184,5 +184,67 @@ namespace Vardaan.Services.Implementation
                 throw;
             }
         }
+        public async Task<List<Escorts>> GetChechinEscort()
+        {
+            try
+            {
+                var data = await (from e in ent.Escorts
+                            join c in ent.Customers on e.CompanyId equals c.Id
+                            where e.IsActive == true && e.IsCheckin==false || e.IsCheckin==null
+                            select new Escorts
+                            {
+                                Id= e.Id,
+                                EscortName= e.EscortName,
+                                EscortMobileNumber= e.EscortMobileNumber,
+                                EscortAddress= e.EscortAddress,
+                                CompanyName= c.OrgName,
+                            }
+                            ).ToListAsync();
+
+                if (data.Count > 0)
+                {
+                    return data;
+                }
+                return null;
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GetChechinEscort: {ex.Message}");
+                throw;
+            }
+        }
+        public async Task<List<Escorts>> GetEscortAvailable()
+        {
+            try
+            {
+                var data = await (from e in ent.Escorts
+                                  join c in ent.Customers on e.CompanyId equals c.Id
+                                  where e.IsActive == true && e.IsCheckin==true
+                                  select new Escorts
+                                  {
+                                      Id = e.Id,
+                                      EscortName = e.EscortName,
+                                      EscortMobileNumber = e.EscortMobileNumber,
+                                      EscortAddress = e.EscortAddress,
+                                      CompanyName = c.OrgName,
+                                  }
+                            ).ToListAsync();
+
+                if (data.Count > 0)
+                {
+                    return data;
+                }
+                return null;
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GetChechinEscort: {ex.Message}");
+                throw;
+            }
+        }
     }
 }

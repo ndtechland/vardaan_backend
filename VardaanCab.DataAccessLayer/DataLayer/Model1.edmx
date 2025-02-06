@@ -1292,6 +1292,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="EscortAddress" Type="nvarchar(max)" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="IsCheckin" Type="bit" />
         </EntityType>
         <EntityType Name="FeedBackEmployee">
           <Key>
@@ -3398,7 +3399,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="EmployeeDestinationAreas" EntityType="Vardaan_AdminModel.EmployeeDestinationArea" />
           <EntitySet Name="EmployeeRegistrationTypes" EntityType="Vardaan_AdminModel.EmployeeRegistrationType" />
           <EntitySet Name="CompanyZoneHomeRoutes" EntityType="Vardaan_AdminModel.CompanyZoneHomeRoute" />
-          <EntitySet Name="CompanyZones" EntityType="Vardaan_AdminModel.CompanyZone" />
           <EntitySet Name="ShiftMasters" EntityType="Vardaan_AdminModel.ShiftMaster" />
           <EntitySet Name="TripMasters" EntityType="Vardaan_AdminModel.TripMaster" />
           <EntitySet Name="TripTypes" EntityType="Vardaan_AdminModel.TripType" />
@@ -3419,6 +3419,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="DriverDeviceIds" EntityType="Vardaan_AdminModel.DriverDeviceId" />
           <EntitySet Name="Drivers" EntityType="Vardaan_AdminModel.Driver" />
           <EntitySet Name="VehicleCapacities" EntityType="Vardaan_AdminModel.VehicleCapacity" />
+          <EntitySet Name="CompanyZones" EntityType="Vardaan_AdminModel.CompanyZone" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4469,16 +4470,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Latitude" Type="Double" />
           <Property Name="Longitude" Type="Double" />
         </EntityType>
-        <EntityType Name="CompanyZone">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int32" />
-          <Property Name="CompanyZone1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="Zonelatlong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="ShiftMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -4603,6 +4594,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="EscortAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsCheckin" Type="Boolean" />
         </EntityType>
         <EntityType Name="EmployeeMobileAppSetting">
           <Key>
@@ -4779,6 +4771,16 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Capacity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CompanyZone">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="CompanyZone1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Zonelatlong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6957,17 +6959,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CompanyZones">
-            <EntityTypeMapping TypeName="Vardaan_AdminModel.CompanyZone">
-              <MappingFragment StoreEntitySet="CompanyZones">
-                <ScalarProperty Name="Zonelatlong" ColumnName="Zonelatlong" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CompanyZone1" ColumnName="CompanyZone" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ShiftMasters">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.ShiftMaster">
               <MappingFragment StoreEntitySet="ShiftMaster">
@@ -7085,6 +7076,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Escorts">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Escort">
               <MappingFragment StoreEntitySet="Escort">
+                <ScalarProperty Name="IsCheckin" ColumnName="IsCheckin" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="EscortAddress" ColumnName="EscortAddress" />
@@ -7285,6 +7277,17 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <EntityTypeMapping TypeName="Vardaan_AdminModel.VehicleCapacity">
               <MappingFragment StoreEntitySet="VehicleCapacity">
                 <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyZones">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.CompanyZone">
+              <MappingFragment StoreEntitySet="CompanyZones">
+                <ScalarProperty Name="Zonelatlong" ColumnName="Zonelatlong" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CompanyZone1" ColumnName="CompanyZone" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

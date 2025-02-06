@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
 using NPOI.SS.Formula.Functions;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +16,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Vardaan.Services.IContract;
-using Vardaan.Services.IContractApi;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
@@ -711,6 +711,11 @@ namespace VardaanCab.Controllers
                                                Value = di.Id.ToString()
                                            }
                                        ).ToList();
+                ViewBag.EscortItems = ent.Escorts.Where(x => x.IsActive == true).Select(x => new SelectListItem
+                {
+                    Text = x.EscortName,
+                    Value = x.Id.ToString()
+                }).ToList();
                 //List<EmployeeGroup> employeelist = new List<EmployeeGroup>();
                 Dictionary<string, List<EmployeeGroup>> dict = new Dictionary<string, List<EmployeeGroup>>();
 
@@ -1039,6 +1044,62 @@ namespace VardaanCab.Controllers
             {
                 var model = new AvailableDriverDTO();
                 model.AvailableDrivers = await _ets.GetAvailableDrivers();
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> CheckInDrivers()
+        {
+            try
+            {
+                var model = new AvailableDriverDTO();
+                model.AvailableDrivers = await _ets.GetAvailableDrivers();
+                
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> EscortCheckIn()
+        {
+            try
+            {
+                var model=new EscortDTO();
+                model.EscortList = await _ets.GetChechinEscort();
+                if(model.EscortList != null)
+                {
+                    ViewBag.Total = model.EscortList.Count();
+                }
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> EscortAvailable()
+        {
+            try
+            {
+                var model = new EscortDTO();
+                model.EscortList = await _ets.GetEscortAvailable();
+                if (model.EscortList != null)
+                {
+                    ViewBag.Total = model.EscortList.Count();
+                }
 
                 return View(model);
             }

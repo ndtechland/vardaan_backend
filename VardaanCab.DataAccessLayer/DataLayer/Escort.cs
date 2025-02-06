@@ -28,5 +28,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string EscortAddress { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<bool> IsCheckin { get; set; }
     }
 }

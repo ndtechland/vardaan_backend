@@ -188,5 +188,121 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+        [HttpGet]
+        [Route("DriverMobNumbers")]
+        public async Task<IHttpActionResult> DriverMobNumbers()
+        {
+            try
+            {
+                var response = new Response<GetMobileNumbers>();
+                var mob = await _admin.GetDriverMobNo();
+
+                if (mob != null && mob.Any())
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = mob });
+
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "No data found.";
+                    return Content(HttpStatusCode.NotFound, response);
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("DriverByMobNumber")]
+        public async Task<IHttpActionResult> DriverByMobNumber(string MobileNumber)
+        {
+            try
+            {
+                var response = new Response<GetDriverName>();
+                var name = await _admin.GetDriverNameByMobile(MobileNumber);
+
+                if (name != null)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = name });
+
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "No data found.";
+                    return Content(HttpStatusCode.NotFound, response);
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("CheckInDriverDetail")]
+        public async Task<IHttpActionResult> CheckInDriverDetail(int Id)
+        {
+            try
+            {
+                var response = new Response<AvailableDriverDTO>();
+                var data = await _admin.GetCheckInDriverDetail(Id);
+                if (data != null)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Data not found.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("VehicleNumbers")]
+        public async Task<IHttpActionResult> VehicleNumbers()
+        {
+            try
+            {
+                var response = new Response<VehicleNumbers>();
+                var vehicleno = await _admin.GetVehicleNo();
+
+                if (vehicleno != null && vehicleno.Any())
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = vehicleno });
+
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "No data found.";
+                    return Content(HttpStatusCode.NotFound, response);
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
