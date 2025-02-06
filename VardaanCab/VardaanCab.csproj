@@ -4591,6 +4591,9 @@
     <Content Include="Views\EmployeeMobAppSettings\DayEntry.cshtml" />
     <Content Include="Views\ETS\RoutingList.cshtml" />
     <Content Include="Views\ETS\AvailableDrivers.cshtml" />
+    <Content Include="Views\ETS\CheckInDrivers.cshtml" />
+    <Content Include="Views\ETS\EscortCheckIn.cshtml" />
+    <Content Include="Views\ETS\EscortAvailable.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

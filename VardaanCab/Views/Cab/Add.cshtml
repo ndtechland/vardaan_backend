@@ -137,161 +137,144 @@
                                             @Html.ValidationMessageFor(a => a.Company)
                                         </span>
                                     </div>
+                                    <div class="col-md-6">
+                                        Vehicle Number <span class="text-danger">*</span>
+                                        @Html.TextBoxFor(a => a.VehicleNumber, new { @class = "form-control", @maxlength = "10", @style = "text-transform:uppercase" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.VehicleNumber)
+                                        </span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        Fuel Efficiancy
+                                        @Html.TextBoxFor(a => a.FuelEfficiency, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.FuelEfficiency)
+                                        </span>
+                                    </div>
+
+
+
+                                    <div class="col-md-6">
+                                        Vendor
+                                        @Html.HiddenFor(a => a.Vendor_Id)
+                                        @Html.TextBox("vendorName", null, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.Vendor_Id)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Sticker Number
+                                        @Html.TextBoxFor(a => a.StickerNumber, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.StickerNumber)
+                                        </span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        FitnessValidity <span class="text-danger">*</span>
+                                        @Html.TextBoxFor(a => a.FitnessVality, new { @class = "form-control", type = "date" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.FitnessVality)
+                                        </span>
+                                    </div>
+
+
+
+                                    <div class="col-md-6">
+                                        InsurranceValidity <span class="text-danger">*</span>
+                                        @Html.TextBoxFor(a => a.InsurranceValidity, new { @class = "form-control", type = "date" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.InsurranceValidity)
+                                        </span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        PolutionValidity <span class="text-danger">*</span>
+                                        @Html.TextBoxFor(a => a.PolutionValidity, new { @class = "form-control", type = "date" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.PolutionValidity)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Fitness Doc
+                                        @Html.TextBoxFor(a => a.FitnessDocFile, new { @class = "form-control", type = "file" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.FitnessDocFile)
+                                        </span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        Polution Doc
+                                        @Html.TextBoxFor(a => a.PolutionDocFile, new { @class = "form-control", type = "file" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.PolutionDocFile)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Insurance Doc
+                                        @Html.TextBoxFor(a => a.InsuranceDocFile, new { @class = "form-control", type = "file" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.InsuranceDocFile)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        RC No
+                                        @Html.TextBoxFor(a => a.RcNumber, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.RcNumber)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        RC Issue Date
+                                        @Html.TextBoxFor(a => a.RcIssueDate, new { @class = "form-control", type = "date" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.RcIssueDate)
+                                        </span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        RC Validity
+                                        @Html.TextBoxFor(a => a.RcValidity, new { @class = "form-control", type = "date" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.RcValidity)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        RC Doc
+                                        @Html.TextBoxFor(a => a.RCDocFile, new { @class = "form-control", type = "file" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.RCDocFile)
+                                        </span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        Permit No
+                                        @Html.TextBoxFor(a => a.PermitNo, new { @class = "form-control" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.PermitNo)
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Permit Doc
+                                        @Html.TextBoxFor(a => a.PermitDocFile, new { @class = "form-control", type = "file" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.PermitDocFile)
+                                        </span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        Permit Validity <span class="text-danger">*</span>
+                                        @Html.TextBoxFor(a => a.PermitValidity, new { @class = "form-control", type = "date" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.PermitValidity)
+                                        </span>
+                                    </div>
                                 </div>
-
-                                       
-                                            <div class="col-md-6">
-                                                Vehicle Number <span class="text-danger">*</span>
-                                                @Html.TextBoxFor(a => a.VehicleNumber, new { @class = "form-control", @maxlength = "10", @style = "text-transform:uppercase" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.VehicleNumber)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                Fuel Efficiancy
-                                                @Html.TextBoxFor(a => a.FuelEfficiency, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.FuelEfficiency)
-                                                </span>
-                                            </div>
+                                <div class="card-footer text-end">
+                                    <button type="submit" class="btn btn-primary me-3">Save</button>
+                                </div>
                                         
-
-                                        
-                                            <div class="col-md-6">
-                                                Vendor
-                                                @Html.HiddenFor(a => a.Vendor_Id)
-                                                @Html.TextBox("vendorName", null, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.Vendor_Id)
-                                                </span>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Sticker Number
-                                                @Html.TextBoxFor(a => a.StickerNumber, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.StickerNumber)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                FitnessValidity <span class="text-danger">*</span>
-                                                @Html.TextBoxFor(a => a.FitnessVality, new { @class = "form-control",type="date" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.FitnessVality)
-                                                </span>
-                                            </div>
-                                        
-
-                                        
-                                            <div class="col-md-6">
-                                                InsurranceValidity <span class="text-danger">*</span>
-                                                @Html.TextBoxFor(a => a.InsurranceValidity, new { @class = "form-control",type="date" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.InsurranceValidity)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                PolutionValidity <span class="text-danger">*</span>
-                                                @Html.TextBoxFor(a => a.PolutionValidity, new { @class = "form-control",type="date" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.PolutionValidity)
-                                                </span>
-                                            </div>
-                                        
-
-
-                                        <div class="row r">
-                                            <div class="col-md-6">
-                                                Fitness Doc
-                                                @Html.TextBoxFor(a => a.FitnessDocFile, new { @class = "form-control", type = "file" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.FitnessDocFile)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                Polution Doc
-                                                @Html.TextBoxFor(a => a.PolutionDocFile, new { @class = "form-control", type = "file" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.PolutionDocFile)
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row r">
-                                            <div class="col-md-6">
-                                                Insurance Doc
-                                                @Html.TextBoxFor(a => a.InsuranceDocFile, new { @class = "form-control", type = "file" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.InsuranceDocFile)
-                                                </span>
-                                            </div>
-                                            <div class="col-md-6">
-                                                RC No
-                                                @Html.TextBoxFor(a => a.RcNumber, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.RcNumber)
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row r">
-                                            <div class="col-md-6">
-                                                RC Issue Date
-                                                @Html.TextBoxFor(a => a.RcIssueDate, new { @class = "form-control",type="date" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.RcIssueDate)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                RC Validity
-                                                @Html.TextBoxFor(a => a.RcValidity, new { @class = "form-control",type="date" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.RcValidity)
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="row r">
-                                            <div class="col-md-6">
-                                                RC Doc
-                                                @Html.TextBoxFor(a => a.RCDocFile, new { @class = "form-control", type = "file" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.RCDocFile)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                Permit No
-                                                @Html.TextBoxFor(a => a.PermitNo, new { @class = "form-control" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.PermitNo)
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row r">
-                                            <div class="col-md-6">
-                                                Permit Doc
-                                                @Html.TextBoxFor(a => a.PermitDocFile, new { @class = "form-control", type = "file" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.PermitDocFile)
-                                                </span>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                Permit Validity <span class="text-danger">*</span>
-                                                @Html.TextBoxFor(a => a.PermitValidity, new { @class = "form-control",type="date" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.PermitValidity)
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer text-end">
-                                            <button type="submit" class="btn btn-primary me-3">Save</button>
-                                        </div>
                                     }
                                 </div>
                             </div>

@@ -204,7 +204,97 @@ namespace Vardaan.Services.ImplementationApi
                 throw new Exception("An error occurred while retrieving vehicles and vendor name.", ex);
             }
         }
+        public async Task<List<GetMobileNumbers>> GetDriverMobNo()
+        {
+            try
+            {
+                return await ent.Drivers.Where(x => x.IsActive)
+                    .Select(x => new GetMobileNumbers
+                    {
+                        MobileNumber = x.MobileNumber
+                    })
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<GetDriverName> GetDriverNameByMobile(string MobileNumber)
+        {
+            try
+            {
+                var data = ent.Drivers.Where(x => x.IsActive && x.MobileNumber == MobileNumber).Select(x => new GetDriverName
+                {
+                    Id = x.Id,
+                    DriverName = x.DriverName
+                }).FirstOrDefault();
+
+                if (data!=null)
+                {
+                    return data;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<AvailableDriverDTO> GetCheckInDriverDetail(int id)
+        {
+            try
+            {
+                var driver = await (from d in ent.Drivers
+                                    join dl in ent.DriverLoginHistories on d.Id equals dl.DriverId
+                                    join c in ent.Cabs on dl.VehicleNumber equals c.VehicleNumber
+                                    join cm in ent.VehicleModels on c.VehicleModel_Id equals cm.Id
+                                    join v in ent.Vendors on d.Vendor_Id equals v.Id
+                                    join di in ent.DriverDeviceIds on d.DeviceId equals di.Id
+                                    join com in ent.Customers on v.Company_Id equals com.Id
+                                    where dl.IsActive == true && dl.Id == id
+                                    select new AvailableDriverDTO
+                                    {
+                                        CheckInId = dl.Id,
+                                        DriverId = d.Id,
+                                        DeviceId = d.DeviceId,
+                                        DriverName = d.DriverName,
+                                        MobileNumber = d.MobileNumber,
+                                        VehicleNumber = c.VehicleNumber,
+                                    }).FirstOrDefaultAsync();
 
 
+                return driver;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GetCheckinDrivers: {ex.Message}");
+                throw;
+            }
+        }
+        public async Task<List<VehicleNumbers>> GetVehicleNo()
+        {
+            try
+            {
+                return await ent.Cabs.Where(x => x.IsActive)
+                    .Select(x => new VehicleNumbers
+                    {
+                        VehicleNumber = x.VehicleNumber
+                    })
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
+        }
     }
 }

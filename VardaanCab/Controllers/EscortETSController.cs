@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
 using NPOI.SS.Formula.Functions;
+using Org.BouncyCastle.Asn1.Ess;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -579,6 +580,53 @@ ORDER BY er.Id DESC;";
                 // Log the exception or handle other errors
                 ViewBag.Message = $"An error occurred: {ex.Message}";
                 return View();
+            }
+        }
+        [HttpPost]
+        public ActionResult UpdateCheckInEscorts(CheckInRequestModel request)
+        {
+            try
+            {
+                if (request.EscortIds == null || request.EscortIds.Count == 0)
+                {
+                    return Json(new { success = false, message = "No Escorts selected." });
+                }
+
+                foreach (var escortId in request.EscortIds)
+                {
+                    var escort = ent.Escorts.FirstOrDefault(e => e.Id == escortId);
+                    if (escort != null)
+                    {
+
+                        escort.IsCheckin = !escort.IsCheckin;
+                        ent.SaveChanges();
+                    }
+                }
+
+                return Json(new { success = true });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public ActionResult UpdateSingleCheckInEscort(int Id)
+        {
+            try
+            {
+                var escort = ent.Escorts.FirstOrDefault(e => e.Id == Id);
+                if (escort != null)
+                {
+                    escort.IsCheckin = false;
+                    ent.SaveChanges();
+                }
+                return RedirectToAction("EscortAvailable", "ETS");
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }

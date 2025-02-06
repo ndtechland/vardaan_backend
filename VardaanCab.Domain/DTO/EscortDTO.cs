@@ -50,4 +50,8 @@ namespace VardaanCab.Domain.DTO
         public Nullable<bool> IsActive { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
     }
+    public class CheckInRequestModel
+    {
+        public List<int> EscortIds { get; set; }
+    }
 }

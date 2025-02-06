@@ -283,15 +283,16 @@
                                 <option value="@item.Value">@item.Text</option>
                             }
                         </select>
-                        @*<select name="DeviceId" id="unit" class="form-control">
-                                <option value="">Select Device</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                            </select>*@
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label-title">Escort</label>
+                        <select name="VehicleNumber" id="escort-dropdown" class="form-control" required>
+                            <option value="0">--Select--</option>
+                            @foreach (var item in @ViewBag.EscortItems)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
                     </div>
                 </div>
             </div>
@@ -306,72 +307,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
-@*<script>
-        $(document).ready(function () {
-            $("#driver-dropdown").change(function () {
-                var driverId = $(this).val();
-                if (driverId != "0") {
-                    $.ajax({
-                        url: '/ETS/GetVehicleByDriver',
-                        type: 'GET',
-                        data: { driverId: driverId },
-                        success: function (response) {
-                            if (response.vehicleId !== 0) {
-                                $("#vehicle-dropdown").val(response.vehicleId);
-                            } else {
-                                $("#vehicle-dropdown").val("0");
-                            }
-                        }
-                    });
-                }
-            });
-
-
-            $("#vehicle-dropdown").change(function () {
-                var vehicleId = $(this).val();
-                if (vehicleId != "0") {
-                    $.ajax({
-                        url: '/ETS/GetDriverByVehicle',
-                        type: 'GET',
-                        data: { vehicleId: vehicleId },
-                        success: function (response) {
-                            if (response.driverId !== 0) {
-                                $("#driver-dropdown").val(response.driverId);
-                            } else {
-                                $("#driver-dropdown").val("0"); // Reset if no driver found
-                            }
-                        }
-                    });
-                }
-            });
-
-            $("#device-dropdown").change(function () {
-                var deviceId = $(this).val();
-                if (deviceId != "0") {
-                    $.ajax({
-                        url: '/ETS/GetDriverDeviceIdByDriver',
-                        type: 'GET',
-                        data: { deviceId: deviceId },
-                        success: function (response) {
-                            if (response.deviceId !== 0) {
-                                $("#driver-dropdown").val(response.deviceId);
-                            } else {
-                                $("#driver-dropdown").val("0"); // Reset if no driver found
-                            }
-                        }
-                    });
-                }
-            });
-
-            // Reset dropdowns when modal is closed
-            $("#default-Modal").on("hidden.bs.modal", function () {
-                $("#driver-dropdown").val("0");
-                $("#vehicle-dropdown").val("0");
-            });
-        });
-
-    </script>*@
 <script>
     $(document).ready(function () {
         // When driver is selected, auto-select vehicle and device
