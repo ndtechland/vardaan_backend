@@ -17,8 +17,9 @@ namespace Vardaan.Services.IContractApi
 
         Task<(List<Vehicles> VehiclesList, string VendorName)> GetVehiclesByTransportCodeVendorId(string TransportCode, int VendorId);
         Task<List<GetMobileNumbers>> GetDriverMobNo();
-        Task<GetDriverName> GetDriverNameByMobile(string MobileNumber);
+        Task<GetDriverName> GetDriverNameByDriverId(int Driverid);
         Task<AvailableDriverDTO> GetCheckInDriverDetail(int id);
         Task<List<VehicleNumbers>> GetVehicleNo();
+        Task<List<DeviceIds>> GetDeviceId();
     }
 }

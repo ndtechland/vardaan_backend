@@ -211,6 +211,7 @@ namespace Vardaan.Services.ImplementationApi
                 return await ent.Drivers.Where(x => x.IsActive)
                     .Select(x => new GetMobileNumbers
                     {
+                        Driver_Id = x.Id,
                         MobileNumber = x.MobileNumber
                     })
                     .ToListAsync();
@@ -222,13 +223,13 @@ namespace Vardaan.Services.ImplementationApi
             }
         }
 
-        public async Task<GetDriverName> GetDriverNameByMobile(string MobileNumber)
+        public async Task<GetDriverName> GetDriverNameByDriverId(int Driverid)
         {
             try
             {
-                var data = ent.Drivers.Where(x => x.IsActive && x.MobileNumber == MobileNumber).Select(x => new GetDriverName
+                var data = ent.Drivers.Where(x => x.IsActive && x.Id == Driverid).Select(x => new GetDriverName
                 {
-                    Id = x.Id,
+                    Driver_Id = x.Id,
                     DriverName = x.DriverName
                 }).FirstOrDefault();
 
@@ -286,7 +287,24 @@ namespace Vardaan.Services.ImplementationApi
                 return await ent.Cabs.Where(x => x.IsActive)
                     .Select(x => new VehicleNumbers
                     {
+                        Vehicle_Id = x.Id,
                         VehicleNumber = x.VehicleNumber
+                    })
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
+        }
+        public async Task<List<DeviceIds>> GetDeviceId()
+        {
+            try
+            {
+                return await ent.DriverDeviceIds.Select(x => new DeviceIds
+                    {
+                        Device_Id = x.Id
                     })
                     .ToListAsync();
             }

@@ -215,6 +215,7 @@ namespace VardaanCab.Controllers
             dt.Columns.Add("EmployeeDestinationArea");
             dt.Columns.Add("EmployeeRegistrationType");
             dt.Columns.Add("Gender");
+            dt.Columns.Add("ReportingManagerEmployeeId");
             //dt.Columns.Add("AlternateNumber");
 
             // Add dummy data
@@ -247,6 +248,7 @@ namespace VardaanCab.Controllers
     { "EmployeeDestinationArea", "Destination Area" },
     { "EmployeeRegistrationType", "Registration Type" },
     { "Gender", "Gender" },
+    { "ReportingManagerEmployeeId", "Reporting Manager EmployeeId" },
     //{ "AlternateNumber", "Alternate Contact" }
 };
 
@@ -578,8 +580,8 @@ namespace VardaanCab.Controllers
 
                             //string CompanyName = row.Cell(1).GetValue<string>();
                             string StateName = row.Cell(9).GetValue<string>();
-
-                            if (!ent.StateMasters.Any(e => e.StateName.ToLower() == StateName.ToLower()))
+                            var stateid = ent.StateMasters.Where(x => x.StateName.ToLower() == StateName.ToLower()).Select(x => x.Id).FirstOrDefault();
+                            if (stateid==null)
                             {
                                 excelErrorModels.Add(new ExcelErrorModel
                                 {
@@ -590,17 +592,21 @@ namespace VardaanCab.Controllers
                             }
 
                             string CityName = row.Cell(10).GetValue<string>();
-                            if (!ent.CityMasters.Any(e => e.CityName.ToLower() == CityName.ToLower()))
+                            
+                            if (!ent.CityMasters.Any(e => e.CityName.ToLower() == CityName.ToLower() && e.StateMaster_Id == stateid))
                             {
                                 excelErrorModels.Add(new ExcelErrorModel
                                 {
                                     ErrorType = "City Name",
                                     AffectedRow = count,
-                                    Description = $"City name {CityName} does not exists."
+                                    Description = $"City name {CityName} does not exist for the {StateName}."
                                 });
                             }
+                            
 
                             string CompanyZoneName = row.Cell(20).GetValue<string>();
+                            var Zoneid = ent.CompanyZones.Where(x => x.CompanyZone1.ToLower() == CompanyZoneName.ToLower()).Select(x => x.Id).FirstOrDefault();
+
                             if (!ent.CompanyZones.Any(e => e.CompanyZone1.ToLower() == CompanyZoneName.ToLower()))
                             {
                                 excelErrorModels.Add(new ExcelErrorModel
@@ -611,24 +617,26 @@ namespace VardaanCab.Controllers
                                 });
                             }
                             string HomeRouteName = row.Cell(21).GetValue<string>();
-                            if (!ent.CompanyZoneHomeRoutes.Any(e => e.HomeRouteName.ToLower() == HomeRouteName.ToLower()))
+                            if (!ent.CompanyZoneHomeRoutes.Any(e => e.HomeRouteName.ToLower() == HomeRouteName.ToLower() && e.CompanyZoneId== Zoneid))
                             {
                                 excelErrorModels.Add(new ExcelErrorModel
                                 {
                                     ErrorType = "Zone Home Route Name",
                                     AffectedRow = count,
-                                    Description = $"Zone Home Route Name {HomeRouteName} does not exists."
+                                    Description = $"Zone Home Route Name {HomeRouteName} does not exists for the {CompanyZoneName}."
                                 });
                             }
 
                             string DestinationAreaName = row.Cell(22).GetValue<string>();
-                            if (!ent.EmployeeDestinationAreas.Any(e => e.DestinationAreaName.ToLower() == DestinationAreaName.ToLower()))
+                            var HomeRouteid = ent.CompanyZoneHomeRoutes.Where(x => x.HomeRouteName.ToLower() == HomeRouteName.ToLower()).Select(x => x.Id).FirstOrDefault();
+
+                            if (!ent.EmployeeDestinationAreas.Any(e => e.DestinationAreaName.ToLower() == DestinationAreaName.ToLower() && e.CompanyZoneHomeRouteId== HomeRouteid))
                             {
                                 excelErrorModels.Add(new ExcelErrorModel
                                 {
                                     ErrorType = "Destination Area Name",
                                     AffectedRow = count,
-                                    Description = $"Destination Area Name {DestinationAreaName} does not exists."
+                                    Description = $"Destination Area Name {DestinationAreaName} does not exists for the {HomeRouteName}."
                                 });
                             }
                             string WeekOffDays = row.Cell(14).GetValue<string>() ?? string.Empty;
@@ -670,7 +678,6 @@ namespace VardaanCab.Controllers
                             Employee employee = new Employee
                             {
                                 Company_Id = companyId,
-
                                 Company_location = row.Cell(2).GetValue<string>() ?? string.Empty,
                                 Employee_Id = row.Cell(3).GetValue<string>() ?? string.Empty,
                                 Employee_First_Name = row.Cell(4).GetValue<string>() ?? string.Empty,
@@ -715,7 +722,7 @@ namespace VardaanCab.Controllers
                                 EmployeeRegistrationType = string.IsNullOrEmpty(RegistrationTypeName) ? 0 :
                                     ent.EmployeeRegistrationTypes.Where(x => x.TypeName.ToLower() == RegistrationTypeName.ToLower())
                                         .FirstOrDefault()?.Id ?? 0,
-
+                                ReportingManagerEmployeeId = row.Cell(25).GetValue<string>() ?? string.Empty,
                                 IsActive = true,
                                 CreatedDate = DateTime.Now,
                                 IsFirst = true,
@@ -809,6 +816,5 @@ namespace VardaanCab.Controllers
         }
         return string.Empty;
         }
-
     }
 }

@@ -1216,6 +1216,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="DeviceId" Type="nvarchar(max)" />
           <Property Name="Latitude" Type="float" />
           <Property Name="Longitude" Type="float" />
+          <Property Name="ReportingManagerEmployeeId" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="EmployeeDestinationArea">
           <Key>
@@ -4686,6 +4687,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="DeviceId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Latitude" Type="Double" />
           <Property Name="Longitude" Type="Double" />
+          <Property Name="ReportingManagerEmployeeId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AllRoute">
           <Key>
@@ -7153,6 +7155,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="ReportingManagerEmployeeId" ColumnName="ReportingManagerEmployeeId" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />

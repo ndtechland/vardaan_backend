@@ -48,5 +48,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string DeviceId { get; set; }
         public Nullable<double> Latitude { get; set; }
         public Nullable<double> Longitude { get; set; }
+        public string ReportingManagerEmployeeId { get; set; }
     }
 }
