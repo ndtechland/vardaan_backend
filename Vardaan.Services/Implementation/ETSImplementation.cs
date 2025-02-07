@@ -232,12 +232,7 @@ namespace Vardaan.Services.Implementation
                                   }
                             ).ToListAsync();
 
-                if (data.Count > 0)
-                {
-                    return data;
-                }
-                return null;
-
+                return data;
 
             }
             catch (Exception ex)

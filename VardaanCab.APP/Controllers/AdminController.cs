@@ -219,13 +219,13 @@ namespace VardaanCab.APP.Controllers
             }
         }
         [HttpGet]
-        [Route("DriverByMobNumber")]
-        public async Task<IHttpActionResult> DriverByMobNumber(string MobileNumber)
+        [Route("DriverByDriverId")]
+        public async Task<IHttpActionResult> DriverByDriverId(int Driverid)
         {
             try
             {
                 var response = new Response<GetDriverName>();
-                var name = await _admin.GetDriverNameByMobile(MobileNumber);
+                var name = await _admin.GetDriverNameByDriverId(Driverid);
 
                 if (name != null)
                 {
@@ -286,6 +286,36 @@ namespace VardaanCab.APP.Controllers
                 if (vehicleno != null && vehicleno.Any())
                 {
                     return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = vehicleno });
+
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "No data found.";
+                    return Content(HttpStatusCode.NotFound, response);
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("DriverDeviceIds")]
+        public async Task<IHttpActionResult> DriverDeviceIds()
+        {
+            try
+            {
+                var response = new Response<VehicleNumbers>();
+                var DeviceIds = await _admin.GetDeviceId();
+
+                if (DeviceIds != null && DeviceIds.Any())
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = DeviceIds });
 
                 }
                 else

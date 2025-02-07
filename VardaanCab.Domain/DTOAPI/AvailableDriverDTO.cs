@@ -36,17 +36,22 @@ namespace VardaanCab.Domain.DTOAPI
     }
     public class GetMobileNumbers
     {
-        public int Id { get; set; }
+        public int Driver_Id { get; set; }
         public string MobileNumber { get; set; }
     }
     public class GetDriverName
     {
-        public int Id { get; set; }
+        public int Driver_Id { get; set; }
         public string DriverName { get; set; }
     }
     public class VehicleNumbers
     {
-        public int Id { get; set; }
+        public int Vehicle_Id { get; set; }
         public string VehicleNumber { get; set; }
     }
+    public class DeviceIds
+    {
+        public int Device_Id { get; set; }
+    }
+
 }
