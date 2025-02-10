@@ -453,6 +453,14 @@ namespace VardaanCab.APP.Controllers
                         response.Message = "Login failed. The cab is already in use.";
                         return Content(HttpStatusCode.BadRequest, response);
                     }
+                    if (driverinfo != null && (bool)driverinfo.IsLogin)
+                    {
+                        response.Succeeded = false;
+                        response.Status = "Failed";
+                        response.StatusCode = StatusCodes.Status400BadRequest;
+                        response.Message = "Login failed. The driver is already logged in.";
+                        return Content(HttpStatusCode.BadRequest, response);
+                    }
 
 
                     var activeHistories = ent.DriverLoginHistories.Where(x => x.DriverId == model.DriverId && x.IsActive == true).ToList();
@@ -464,6 +472,11 @@ namespace VardaanCab.APP.Controllers
                     ent.SaveChanges();
 
                     if (cab != null)
+                    {
+                        cab.IsLogin = true;
+                        ent.SaveChanges();
+                    }
+                    if (driverinfo != null)
                     {
                         cab.IsLogin = true;
                         ent.SaveChanges();

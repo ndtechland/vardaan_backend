@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Vardaan.Services.IContractApi;
 using VardaanCab.APP.Utilities;
+using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTOAPI;
 
 namespace VardaanCab.APP.Controllers
@@ -16,6 +17,7 @@ namespace VardaanCab.APP.Controllers
     public class AdminController : ApiController
     {
         private readonly IAdmin _admin;
+        Vardaan_AdminEntities ent =new Vardaan_AdminEntities();
         public AdminController(IAdmin admin)
         {
             _admin = admin;
@@ -48,7 +50,7 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpGet]
         [Route("AvailableDrivers")]
-        public async Task<IHttpActionResult> AvailableDrivers(string Transpostcode,int VendorId)
+        public async Task<IHttpActionResult> AvailableDrivers(string Transpostcode, int VendorId)
         {
             try
             {
@@ -68,7 +70,7 @@ namespace VardaanCab.APP.Controllers
                     return Content(HttpStatusCode.NotFound, response);
 
                 }
-                
+
             }
             catch (Exception)
             {
@@ -83,11 +85,11 @@ namespace VardaanCab.APP.Controllers
             try
             {
                 var response = new Response<AdminLoginDTO>();
-                var (checkindriversList, vendorName) = await _admin.GetCheckInDrivers(Transpostcode, VendorId);
+                var (checkindriversList, vendorName,vendor_Id) = await _admin.GetCheckInDrivers(Transpostcode, VendorId);
 
                 if (checkindriversList != null && checkindriversList.Any())
                 {
-                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Check In Drivers retrieved successfully.", VendorName = vendorName, Data = checkindriversList });
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Check In Drivers retrieved successfully.", VendorName = vendorName, vendor_Id, Data = checkindriversList });
 
                 }
                 else
@@ -170,8 +172,8 @@ namespace VardaanCab.APP.Controllers
 
                 if (vehiclesList != null && vehiclesList.Any())
                 {
-                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Vehicles retrieved successfully.", VendorName= vendorName, Data = vehiclesList });
-                     
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Vehicles retrieved successfully.", VendorName = vendorName, Data = vehiclesList });
+
                 }
                 else
                 {
@@ -179,7 +181,7 @@ namespace VardaanCab.APP.Controllers
                     response.StatusCode = StatusCodes.Status404NotFound;
                     response.Message = "No vehicles found for the provided transport code and vendor ID.";
                     return Content(HttpStatusCode.NotFound, response);
-                     
+
                 }
             }
             catch (Exception)
@@ -190,12 +192,12 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpGet]
         [Route("DriverMobNumbers")]
-        public async Task<IHttpActionResult> DriverMobNumbers()
+        public async Task<IHttpActionResult> DriverMobNumbers(int VendorId)
         {
             try
             {
                 var response = new Response<GetMobileNumbers>();
-                var mob = await _admin.GetDriverMobNo();
+                var mob = await _admin.GetDriverMobNo(VendorId);
 
                 if (mob != null && mob.Any())
                 {
@@ -276,12 +278,12 @@ namespace VardaanCab.APP.Controllers
         }
         [HttpGet]
         [Route("VehicleNumbers")]
-        public async Task<IHttpActionResult> VehicleNumbers()
+        public async Task<IHttpActionResult> VehicleNumbers(int VendorId)
         {
             try
             {
                 var response = new Response<VehicleNumbers>();
-                var vehicleno = await _admin.GetVehicleNo();
+                var vehicleno = await _admin.GetVehicleNo(VendorId);
 
                 if (vehicleno != null && vehicleno.Any())
                 {
@@ -334,5 +336,136 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+        [HttpPost]
+        [Route("AddRemark")]
+        public async Task<IHttpActionResult> AddRemark(DriverCheckoutRemarkModel model)
+        {
+            try
+            {
+                var response = new Response<DriverCheckoutRemarkModel>();
+                bool isCreated = await _admin.AddDriverCheckoutRemark(model);
+                if(isCreated)
+                {
+                    response.Succeeded = true;
+                    response.StatusCode = StatusCodes.Status200OK;
+                    response.Message = "Remark added successfully.";
+                    return Content(HttpStatusCode.OK, response);
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status400BadRequest;
+                    response.Message = "Failed to add remark.";
+                    return Content(HttpStatusCode.BadRequest, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPut]
+        [Route("UpdateCheckinDriverEntity")]
+        public async Task<IHttpActionResult> UpdateCheckinDriverEntity(AvailableDriverDTO model)
+        {
+            try
+            {
+                var response = new Response<AvailableDriverDTO>();
+                var vehicleinfo= ent.Cabs.Where(x=>x.VehicleNumber==model.VehicleNumber).FirstOrDefault();
+                if(vehicleinfo==null)
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Invalid vehicle number.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+                bool isCreated = await _admin.UpdateCheckinDriver(model);
+                if (isCreated)
+                {
+                    response.Succeeded = true;
+                    response.StatusCode = StatusCodes.Status200OK;
+                    response.Message = "Updated successfully.";
+                    return Content(HttpStatusCode.OK, response);
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status400BadRequest;
+                    response.Message = "Failed to update.";
+                    return Content(HttpStatusCode.BadRequest, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPost]
+        [Route("CheckInDriverVehicle")]
+        public async Task<IHttpActionResult> CheckInDriverVehicle(AvailableDriverDTO model)
+        {
+            var response = new Response<AvailableDriverDTO>();
+
+            try
+            {
+                if (string.IsNullOrEmpty(model.VehicleNumber) || model.DriverId <= 0)
+                {
+                    response.Succeeded = false;
+                    response.Status = "Failed";
+                    response.StatusCode = StatusCodes.Status400BadRequest;
+                    response.Message = "Failed to check in. Please provide both a valid Vehicle Number and Driver ID.";
+                    return Content(HttpStatusCode.BadRequest, response);
+                }
+
+                var driverinfo = ent.Drivers.FirstOrDefault(d => d.Id == model.DriverId);
+                if (driverinfo == null)
+                {
+                    response.Succeeded = false;
+                    response.Status = "Failed";
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Failed to check in. Invalid driver.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+
+                var cab = ent.Cabs.FirstOrDefault(x => x.VehicleNumber == model.VehicleNumber && x.IsActive);
+                if (cab == null)
+                {
+                    response.Succeeded = false;
+                    response.Status = "Failed";
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Failed to check in. Invalid Vehicle number.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+
+                bool isCheckIn = await _admin.AddCheckinDriverVehicle(model);
+                if (isCheckIn)
+                {
+                    response.Succeeded = true;
+                    response.Status = "Success";
+                    response.StatusCode = StatusCodes.Status200OK;
+                    response.Message = "Check in successfully.";
+                    return Content(HttpStatusCode.OK, response);
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.Status = "Failed";
+                    response.StatusCode = StatusCodes.Status400BadRequest;
+                    response.Message = "Failed to check in Driver & Vehicle.";
+                    return Content(HttpStatusCode.BadRequest, response);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Succeeded = false;
+                response.Status = "Failed";
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+                response.Message = "An error occurred during login.";
+                return Content(HttpStatusCode.InternalServerError, response);
+            }
+        }
+
     }
 }

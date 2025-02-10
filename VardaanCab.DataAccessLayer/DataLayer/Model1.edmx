@@ -347,6 +347,7 @@
           <Property Name="IsOnline" Type="bit" />
           <Property Name="DeviceId" Type="int" />
           <Property Name="Vendor_Id" Type="int" />
+          <Property Name="IsLogin" Type="bit" />
         </EntityType>
         <EntityType Name="DriverLeave">
           <Key>
@@ -1160,6 +1161,15 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsActive" Type="bit" />
           <Property Name="Created" Type="datetime" />
         </EntityType>
+        <EntityType Name="DriverCheckoutRemark">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Driver_Id" Type="int" />
+          <Property Name="Remark" Type="nvarchar(max)" />
+          <Property Name="RemarkDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="DriverDeviceId">
           <Key>
             <PropertyRef Name="Id" />
@@ -1812,6 +1822,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="CompanyZones" EntityType="Self.CompanyZones" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DaysName" EntityType="Self.DaysName" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DepartmentMaster" EntityType="Self.DepartmentMaster" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="DriverCheckoutRemark" EntityType="Self.DriverCheckoutRemark" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DriverDeviceId" EntityType="Self.DriverDeviceId" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DriverLoginHistory" EntityType="Self.DriverLoginHistory" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -3421,6 +3432,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="Drivers" EntityType="Vardaan_AdminModel.Driver" />
           <EntitySet Name="VehicleCapacities" EntityType="Vardaan_AdminModel.VehicleCapacity" />
           <EntitySet Name="CompanyZones" EntityType="Vardaan_AdminModel.CompanyZone" />
+          <EntitySet Name="DriverCheckoutRemarks" EntityType="Vardaan_AdminModel.DriverCheckoutRemark" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4766,6 +4778,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsOnline" Type="Boolean" />
           <Property Name="DeviceId" Type="Int32" />
           <Property Name="Vendor_Id" Type="Int32" />
+          <Property Name="IsLogin" Type="Boolean" />
         </EntityType>
         <EntityType Name="VehicleCapacity">
           <Key>
@@ -4783,6 +4796,15 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyZone1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="Zonelatlong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DriverCheckoutRemark">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Driver_Id" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RemarkDate" Type="DateTime" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7243,6 +7265,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="Drivers">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.Driver">
               <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="IsLogin" ColumnName="IsLogin" />
                 <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
                 <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
                 <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
@@ -7291,6 +7314,16 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="CompanyZone1" ColumnName="CompanyZone" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DriverCheckoutRemarks">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.DriverCheckoutRemark">
+              <MappingFragment StoreEntitySet="DriverCheckoutRemark">
+                <ScalarProperty Name="RemarkDate" ColumnName="RemarkDate" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Driver_Id" ColumnName="Driver_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

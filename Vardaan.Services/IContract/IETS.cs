@@ -16,5 +16,6 @@ namespace Vardaan.Services.IContract
         Task<List<AvailableDriverDTO>> GetAvailableDrivers();
         Task<List<Escorts>> GetChechinEscort();
         Task<List<Escorts>> GetEscortAvailable();
+        Task<bool> AddDriverCheckoutRemark(DriverCheckoutRemarkModel model);
     }
 }

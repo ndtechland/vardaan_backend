@@ -241,5 +241,25 @@ namespace Vardaan.Services.Implementation
                 throw;
             }
         }
+        public async Task<bool> AddDriverCheckoutRemark(DriverCheckoutRemarkModel model)
+        {
+            try
+            {
+                var data = new DriverCheckoutRemark()
+                {
+                    Driver_Id= model.DriverId,
+                    Remark= model.Remark,
+                    RemarkDate= DateTime.Now
+                };
+                ent.DriverCheckoutRemarks.Add(data);
+                ent.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

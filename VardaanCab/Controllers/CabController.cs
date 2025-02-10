@@ -28,7 +28,6 @@ namespace VardaanCab.Controllers
             var data = ent.Vendors.Where(a => a.IsActive && a.CompanyName.ToLower().Contains(term.ToLower())).ToList();
             return Json(data,JsonRequestBehavior.AllowGet);
         }
-
         public ActionResult ChangeStatus(int id,int menuId=0)
         {
             string query = @"update cab set IsActive= case when isactive=1 then 0 else 1 end where id=" + id;
@@ -43,7 +42,6 @@ namespace VardaanCab.Controllers
             }
             return RedirectToAction("All",new { menuId=menuId});
         }
-
         public ActionResult ChangeAvailStatus (int id, int menuId = 0)
         {
             string query = @"update cab set IsAvailable= case when isactive=1 then 0 else 1 end where id=" + id;
@@ -58,7 +56,6 @@ namespace VardaanCab.Controllers
             }
             return RedirectToAction("All",new { menuId=menuId});
         }
-
         public ActionResult All(string term = "", int page = 1,bool export=false, int menuId=0)
         {
             var model = new CabListVm();
@@ -158,7 +155,6 @@ namespace VardaanCab.Controllers
             ViewBag.menuId = menuId;
             return View(model);
         }
-
         public ActionResult Add(int menuId = 0)
         {
             var model = new CabDTO();
@@ -167,7 +163,6 @@ namespace VardaanCab.Controllers
             ViewBag.menuId = menuId;
             return View(model);
         }
-
         [HttpPost]
         public ActionResult Add(CabDTO model)
         {
@@ -179,7 +174,13 @@ namespace VardaanCab.Controllers
             {
                 if (!ModelState.IsValid)
                     return View(model);
-                if(ent.Cabs.Any(a=>a.VehicleNumber.ToLower().Equals(model.VehicleNumber.ToUpper())))
+                var cabinfo = ent.Cabs.FirstOrDefault(a => a.StickerNumber.ToLower().Equals(model.StickerNumber.ToLower()));
+                if (cabinfo!=null)
+                {
+                    TempData["msg"] = $"Sticker number exist with active vehicle number :{cabinfo.VehicleNumber}.";
+                    return View(model);
+                }
+                if (ent.Cabs.Any(a=>a.VehicleNumber.ToLower().Equals(model.VehicleNumber.ToUpper())))
                 {
                     TempData["msg"] = "Vehicle number already exist in our database";
                     return View(model);
@@ -280,7 +281,6 @@ namespace VardaanCab.Controllers
 
             return RedirectToAction("Add", new {menuId=model.MenuId});
         }
-
         public ActionResult Edit(int id,int menuId=0)
         {
             var data = ent.Cabs.Find(id);
@@ -296,7 +296,6 @@ namespace VardaanCab.Controllers
             model.MenuId = menuId;
             return View(model);
         }
-
         [HttpPost]
         public ActionResult Edit(CabDTO model)
         {
@@ -419,7 +418,6 @@ namespace VardaanCab.Controllers
             return Redirect("/Cab/Edit?id=" + model.Id + "&menuId=" + model.MenuId);
 
         }
-
         public ActionResult Delete(int id)
         {
             try
@@ -434,7 +432,6 @@ namespace VardaanCab.Controllers
                 return Content("Server error");
             }
         }
-        
         public ActionResult ExportToExcel()
         {
             DataTable dt = new DataTable();
@@ -559,7 +556,6 @@ namespace VardaanCab.Controllers
                 }
             }
         }
-
         [HttpPost]
         public ActionResult ImportCabData(HttpPostedFileBase file)
         {

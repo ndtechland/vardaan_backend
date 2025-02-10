@@ -29,4 +29,10 @@ namespace VardaanCab.Domain.DTO
         public string CompanyName { get; set; }
         public string VendorName { get; set; }
     }
+    public class DriverCheckoutRemarkModel
+    {
+        public int Id { get; set; }
+        public int DriverId { get; set; }
+        public string Remark { get; set; }
+    }
 }

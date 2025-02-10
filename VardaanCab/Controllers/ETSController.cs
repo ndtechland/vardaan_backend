@@ -1060,13 +1060,10 @@ namespace VardaanCab.Controllers
             {
                 var model = new AvailableDriverDTO();
                 model.AvailableDrivers = await _ets.GetAvailableDrivers();
-                
-
                 return View(model);
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Server Error : " + ex.Message);
             }
         }
@@ -1107,6 +1104,39 @@ namespace VardaanCab.Controllers
             {
 
                 throw new Exception("Server Error : " + ex.Message);
+            }
+        }
+        [HttpPost]
+        public async Task<JsonResult> DriverCheckoutRemark(DriverCheckoutRemarkModel model)
+        {
+            try
+            {
+                bool isCreated = await _ets.AddDriverCheckoutRemark(model);
+
+                if (isCreated)
+                {
+                    return Json(new { success = true, message = "Remark added successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to add remark." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
+        }
+        public ActionResult VehicleInspection()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
