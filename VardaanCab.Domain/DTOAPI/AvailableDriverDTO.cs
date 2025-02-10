@@ -53,5 +53,10 @@ namespace VardaanCab.Domain.DTOAPI
     {
         public int Device_Id { get; set; }
     }
-
+    public class DriverCheckoutRemarkModel
+    {
+        public int Id { get; set; }
+        public int DriverId { get; set; }
+        public string Remark { get; set; }
+    }
 }

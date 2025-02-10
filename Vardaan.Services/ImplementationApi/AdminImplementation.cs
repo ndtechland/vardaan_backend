@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,7 +87,27 @@ namespace Vardaan.Services.ImplementationApi
                 throw;
             }
         }
-        public async Task<(List<AvailableDriverDTO> CheckInDriversList, string VendorName)> GetCheckInDrivers(string Transpostcode, int VendorId)
+        public async Task<bool> AddDriverCheckoutRemark(DriverCheckoutRemarkModel model)
+        {
+            try
+            {
+                var data = new DriverCheckoutRemark()
+                {
+                    Driver_Id = model.DriverId,
+                    Remark = model.Remark,
+                    RemarkDate = DateTime.Now
+                };
+                ent.DriverCheckoutRemarks.Add(data);
+                ent.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<(List<AvailableDriverDTO> CheckInDriversList, string VendorName,int Vendor_Id)> GetCheckInDrivers(string Transpostcode, int VendorId)
         {
             try
             {
@@ -108,12 +129,17 @@ namespace Vardaan.Services.ImplementationApi
                                         VehicleNumber = c.VehicleNumber,
                                     }).ToListAsync();
                 // Fetch vendor name
-                var vendorName = await ent.Vendors
-                                          .Where(v => v.Id == VendorId && v.IsActive == true)
-                                          .Select(v => v.CompanyName)
-                                          .FirstOrDefaultAsync();
+                
+                var vendor = await ent.Vendors
+                      .Where(v => v.Id == VendorId && v.IsActive)
+                      .Select(v => new
+                      {
+                          v.Id,
+                          v.CompanyName
+                      })
+                      .FirstOrDefaultAsync();
 
-                return (driver, vendorName);
+                return (driver, vendor.CompanyName, vendor.Id);
                  
             }
             catch (Exception ex)
@@ -143,8 +169,7 @@ namespace Vardaan.Services.ImplementationApi
 
                 throw;
             }
-        }
-       
+        }       
         public async Task<(List<Drivers> DriversList, string VendorName)> GetDriverByTransportCodeVendorId(string TransportCode, int VendorId)
         {
             try
@@ -204,11 +229,11 @@ namespace Vardaan.Services.ImplementationApi
                 throw new Exception("An error occurred while retrieving vehicles and vendor name.", ex);
             }
         }
-        public async Task<List<GetMobileNumbers>> GetDriverMobNo()
+        public async Task<List<GetMobileNumbers>> GetDriverMobNo(int VendorId)
         {
             try
-            {
-                return await ent.Drivers.Where(x => x.IsActive)
+            {                 
+                return await ent.Drivers.Where(x => x.IsActive && x.Vendor_Id== VendorId && (x.IsLogin==false || x.IsLogin==null))
                     .Select(x => new GetMobileNumbers
                     {
                         Driver_Id = x.Id,
@@ -222,7 +247,6 @@ namespace Vardaan.Services.ImplementationApi
                 throw;
             }
         }
-
         public async Task<GetDriverName> GetDriverNameByDriverId(int Driverid)
         {
             try
@@ -280,11 +304,11 @@ namespace Vardaan.Services.ImplementationApi
                 throw;
             }
         }
-        public async Task<List<VehicleNumbers>> GetVehicleNo()
+        public async Task<List<VehicleNumbers>> GetVehicleNo(int VendorId)
         {
             try
             {
-                return await ent.Cabs.Where(x => x.IsActive)
+                return await ent.Cabs.Where(x => x.IsActive && x.Vendor_Id==VendorId && (x.IsLogin == false || x.IsLogin == null))
                     .Select(x => new VehicleNumbers
                     {
                         Vehicle_Id = x.Id,
@@ -314,5 +338,98 @@ namespace Vardaan.Services.ImplementationApi
                 throw;
             }
         }
+        public async Task<bool> UpdateCheckinDriver(AvailableDriverDTO model)
+        {
+            try
+            {
+                var checkininfo = ent.DriverLoginHistories.FirstOrDefault(x => x.Id == model.CheckInId);
+                if (checkininfo == null)
+                {
+                    return false;
+                }
+
+                // Set previous cab's login status to false
+                var oldCab = ent.Cabs.FirstOrDefault(x => x.VehicleNumber == checkininfo.VehicleNumber);
+                if (oldCab != null)
+                {
+                    oldCab.IsLogin = false;
+                }
+
+                // Set previous driver's login status to false
+                var oldDriver = ent.Drivers.FirstOrDefault(x => x.Id == checkininfo.DriverId);
+                if (oldDriver != null)
+                {
+                    oldDriver.IsLogin = false;
+                }
+
+                // Update check-in details with new vehicle and driver
+                checkininfo.DriverId = model.DriverId;
+                checkininfo.VehicleNumber = model.VehicleNumber;
+
+                // Set new cab's login status to true
+                var newCab = ent.Cabs.FirstOrDefault(x => x.VehicleNumber == model.VehicleNumber);
+                if (newCab != null)
+                {
+                    newCab.IsLogin = true;
+                }
+
+                // Set new driver's login status to true
+                var newDriver = ent.Drivers.FirstOrDefault(x => x.Id == model.DriverId);
+                if (newDriver != null)
+                {
+                    newDriver.IsLogin = true;
+                }
+
+                await ent.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public async Task<bool> AddCheckinDriverVehicle(AvailableDriverDTO model)
+        {
+            try
+            {
+                var driverinfo = ent.Drivers.Find(model.DriverId);
+
+                var cab = ent.Cabs.FirstOrDefault(x => x.VehicleNumber == model.VehicleNumber && x.IsActive == true);
+                var activeHistories = ent.DriverLoginHistories.Where(x => x.DriverId == model.DriverId && x.IsActive == true).ToList();
+
+                foreach (var history in activeHistories)
+                {
+                    history.IsActive = false;
+                }
+                ent.SaveChanges();
+
+                if (cab != null)
+                {
+                    cab.IsLogin = true;
+                    ent.SaveChanges();
+                }
+                if (driverinfo != null)
+                {
+                    cab.IsLogin = true;
+                    ent.SaveChanges();
+                }
+
+                var data = new DriverLoginHistory()
+                {
+                    VehicleNumber = model.VehicleNumber,
+                    DriverId = model.DriverId,
+                    IsActive = true,
+                    LoginDate = DateTime.Now
+                };
+                ent.DriverLoginHistories.Add(data);
+                ent.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }        
     }
 }
