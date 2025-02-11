@@ -1163,10 +1163,36 @@ namespace VardaanCab.Controllers
                 throw new Exception("Server Error: " + ex.Message);
             }
         }
-        public ActionResult GetVehicleNumbers(string term)
+        public ActionResult GetVehicleNumbers(string term, int vendorId)
         {
-            var data = ent.Cabs.Where(a => a.IsActive && a.VehicleNumber.ToLower().Contains(term.ToLower())).ToList();
+            var data = ent.Cabs
+                .Where(a => a.IsActive
+                    && a.Vendor_Id == vendorId
+                    && a.VehicleNumber.ToLower().Contains(term.ToLower()))
+                .Select(a => new { a.Id, a.VehicleNumber }) 
+                .ToList();
+
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult GetVehicleModel(int vehicleId)
+        {
+            var vehicle = (from c in ent.Cabs
+                           join vm in ent.VehicleModels on c.VehicleModel_Id equals vm.Id
+                           where c.Id == vehicleId   
+                           select new { vm.ModelName })  
+                           .FirstOrDefault();
+
+            if (vehicle != null)
+            {
+                return Json(new { vehicleModel = vehicle.ModelName }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { vehicleModel = "Unknown Model" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
     }
 }

@@ -60,237 +60,243 @@
                                                 </div>
                                             </div>
                                         }
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                @Html.DropDownListFor(a => a.Vendor_Id, Model.Companies, "Select Company", new { @class = "form-control", required = "required" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.Vendor_Id)
-                                                </span>
-                                            </div>
-                                            <div class="col-md-2">
-                                                @Html.HiddenFor(a => a.Vendor_Id)
-                                                @Html.TextBox("vendorName", null, new { @class = "form-control" })
-                                                @*<input type="text" class="form-control">*@
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="date" class="form-control">
-                                            </div>
-                                            <div class="col-md-1">
-                                                <input type="button" class="btn btn-primary" value="Submit">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="text" class="form-control" value="UP16FT0308">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-primary btn-xs" id="checkAll">Check All</button>
-                                                    <button type="button" class="btn btn-warning btn-xs" id="uncheckAll">Uncheck All</button>
-                                                    <button type="button" class="btn btn-danger btn-xs" id="reset">Reset</button>
-                                                </div>
-                                            </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(a => a.Vendor_Id, Model.Companies, "Select Company", new { @class = "form-control", required = "required", id = "vendorDropdown" })
+                                        <span class="text-danger">
+                                            @Html.ValidationMessageFor(a => a.Vendor_Id)
+                                        </span>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        @Html.HiddenFor(a => a.Vehicle_Id, new { id = "vehicle_Id" }) <!-- Vehicle ID hidden field -->
+                                        @Html.TextBox("vehicleNumber", null, new { @class = "form-control", id = "vehicleNumber", disabled = "disabled" })
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <input type="date" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <input type="button" class="btn btn-primary" id="submitBtn" value="Submit">
+                                    </div>
+
+                                    <div class="col-md-2" id="vehicleDetailsContainer" style="display: none;">
+                                        <input type="text" class="form-control" id="selectedVehicleDetails" readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary btn-xs" id="checkAll">Check All</button>
+                                            <button type="button" class="btn btn-warning btn-xs" id="uncheckAll">Uncheck All</button>
+                                            <button type="button" class="btn btn-danger btn-xs" id="reset">Reset</button>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="AC_Working" class="check-item">AC Working
-                                                @Html.TextBoxFor(a => a.AC_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="UnderInfluence" class="check-item"> Found under influence of liquor/drugs
-                                                @Html.TextBoxFor(a => a.UnderInfluence_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Wiper_Seasonal" class="check-item"> Wiper (Seasonal)
-                                                @Html.TextBoxFor(a => a.Wiper_Seasonal, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="National_Permit" class="check-item"> National Permit
-                                                @Html.TextBoxFor(a => a.NationalPermit_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Windshield_Broken" class="check-item"> Windshield Broken
-                                                @Html.TextBoxFor(a => a.Windshield_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                Trip Type
-                                                @*@Html.DropDownListFor(a => a.Trip_Type, Model.TripTypes, "Select Company", new { @class = "form-control", id = "tripType" })*@
-                                                <select id="tripType" name="Trip_Type" class="form-control" required="required">
-                                                    <option value="1" @(ViewBag.TripTypeId == 1 ? "selected" : "")>PICKUP</option>
-                                                    <option value="2" @(ViewBag.TripTypeId == 2 ? "selected" : "")>DROP</option>
-                                                </select>
-                                                <hr>
-                                            </div>
+                                    </div>
+                                </div>
+                                <div id="extraFieldsRow" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="AC_Working" class="check-item">AC Working
+                                            @Html.TextBoxFor(a => a.AC_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="UnderInfluence" class="check-item"> Found under influence of liquor/drugs
+                                            @Html.TextBoxFor(a => a.UnderInfluence_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Wiper_Seasonal" class="check-item"> Wiper (Seasonal)
+                                            @Html.TextBoxFor(a => a.Wiper_Seasonal, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="National_Permit" class="check-item"> National Permit
+                                            @Html.TextBoxFor(a => a.NationalPermit_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Windshield_Broken" class="check-item"> Windshield Broken
+                                            @Html.TextBoxFor(a => a.Windshield_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            Trip Type
+                                            @*@Html.DropDownListFor(a => a.Trip_Type, Model.TripTypes, "Select Company", new { @class = "form-control", id = "tripType" })*@
+                                            <select id="tripType" name="Trip_Type" class="form-control" required="required">
+                                                <option value="1" @(ViewBag.TripTypeId == 1 ? "selected" : "")>PICKUP</option>
+                                                <option value="2" @(ViewBag.TripTypeId == 2 ? "selected" : "")>DROP</option>
+                                            </select>
+                                            <hr>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Visible_Body_Dent" class="check-item">  Visible Body Paint & Major Dent
+                                            @Html.TextBoxFor(a => a.BodyDent_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Seat_Belts_Working" class="check-item"> All Seat Belts Working
+                                            @Html.TextBoxFor(a => a.SeatBelts_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="GPS_Not_Available" class="check-item"> GPS Not available/ Not working
+                                            @Html.TextBoxFor(a => a.GPS_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="State_Permit" class="check-item"> State Permit
+                                            @Html.TextBoxFor(a => a.StatePermit_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Unregistered_Drivers" class="check-item"> Plying of unregistered drivers
+                                            @Html.TextBoxFor(a => a.UnregisteredDrivers_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            Shift Time
+                                            @Html.DropDownListFor(a => a.Shift_Time, Model.PickUpshiftTimes, "Select Shift Time", new { @class = "form-control", id = "pickupShift" })
+
+                                            @Html.DropDownListFor(a => a.Shift_Time, Model.DropshiftTimes, "Select Shift Time", new { @class = "form-control", id = "dropShift" })
+
+                                            <hr>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Dirty_Unclean_Vehicle" class="check-item"> Dirty Unclean Vehicle
+                                            @Html.TextBoxFor(a => a.UncleanVehicle_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Seat_Cover" class="check-item"> Seat Cover
+                                            @Html.TextBoxFor(a => a.SeatCover_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Headlights_Indicators" class="check-item"> Working Headlights/Indicators
+                                            @Html.TextBoxFor(a => a.Headlights_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Insurance" class="check-item"> Insurance
+                                            @Html.TextBoxFor(a => a.Insurance_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Unregistered_Cab" class="check-item"> Plying of unregistered cab
+                                            @Html.TextBoxFor(a => a.UnregisteredCab_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            City Name
+                                            @Html.TextBoxFor(a => a.City_Name, new { @class = "form-control mt-2", placeholder = "Enter Remarks", disabled = "disabled" })
+
+                                            <hr>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Driver_Uniform" class="check-item"> Driver Uniform
+                                            @Html.TextBoxFor(a => a.DriverUniform_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Spare_Wheel" class="check-item"> Spare Wheel
+                                            @Html.TextBoxFor(a => a.SpareWheel_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="RC_Book" class="check-item"> RC Book
+                                            @Html.TextBoxFor(a => a.RCBook_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Pollution" class="check-item"> Pollution
+                                            @Html.TextBoxFor(a => a.Pollution_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            Penalty Amount
+                                            @Html.TextBoxFor(a => a.Penalty_Amount, new { @class = "form-control mt-2", placeholder = "Enter Remarks", disabled = "disabled" })
+
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            Feedback
+                                            @Html.TextAreaFor(a => a.Feedback, new { @class = "form-control", placeholder = "Feedback" })
+                                            <hr>
                                         </div>
 
-                                        <div class="row mt-3">
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Visible_Body_Dent" class="check-item">  Visible Body Paint & Major Dent
-                                                @Html.TextBoxFor(a => a.BodyDent_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Seat_Belts_Working" class="check-item"> All Seat Belts Working
-                                                @Html.TextBoxFor(a => a.SeatBelts_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="GPS_Not_Available" class="check-item"> GPS Not available/ Not working
-                                                @Html.TextBoxFor(a => a.GPS_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="State_Permit" class="check-item"> State Permit
-                                                @Html.TextBoxFor(a => a.StatePermit_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Unregistered_Drivers" class="check-item"> Plying of unregistered drivers
-                                                @Html.TextBoxFor(a => a.UnregisteredDrivers_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                Shift Time
-                                                @Html.DropDownListFor(a => a.Shift_Time, Model.PickUpshiftTimes, "Select Shift Time", new { @class = "form-control", id = "pickupShift" })
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Fire_Extinguisher" class="check-item"> Fire Extinguisher
+                                            @Html.TextBoxFor(a => a.FireExtinguisher_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
 
-                                                @Html.DropDownListFor(a => a.Shift_Time, Model.DropshiftTimes, "Select Shift Time", new { @class = "form-control", id = "dropShift" })
-
-                                                <hr>
-                                            </div>
+                                            <hr>
                                         </div>
-
-                                        <div class="row mt-3">
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Dirty_Unclean_Vehicle" class="check-item"> Dirty Unclean Vehicle
-                                                @Html.TextBoxFor(a => a.UncleanVehicle_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Seat_Cover" class="check-item"> Seat Cover
-                                                @Html.TextBoxFor(a => a.SeatCover_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Headlights_Indicators" class="check-item"> Working Headlights/Indicators
-                                                @Html.TextBoxFor(a => a.Headlights_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Insurance" class="check-item"> Insurance
-                                                @Html.TextBoxFor(a => a.Insurance_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Unregistered_Cab" class="check-item"> Plying of unregistered cab
-                                                @Html.TextBoxFor(a => a.UnregisteredCab_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                City Name
-                                                @Html.TextBoxFor(a => a.City_Name, new { @class = "form-control mt-2", placeholder = "Enter Remarks", disabled = "disabled" })
-
-                                                <hr>
-                                            </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Tool_Kit" class="check-item"> Tool Kit
+                                            @Html.TextBoxFor(a => a.ToolKit_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
                                         </div>
-
-                                        <div class="row mt-3">
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Driver_Uniform" class="check-item"> Driver Uniform
-                                                @Html.TextBoxFor(a => a.DriverUniform_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Spare_Wheel" class="check-item"> Spare Wheel
-                                                @Html.TextBoxFor(a => a.SpareWheel_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="RC_Book" class="check-item"> RC Book
-                                                @Html.TextBoxFor(a => a.RCBook_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Pollution" class="check-item"> Pollution
-                                                @Html.TextBoxFor(a => a.Pollution_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                Penalty Amount
-                                                @Html.TextBoxFor(a => a.Penalty_Amount, new { @class = "form-control mt-2", placeholder = "Enter Remarks", disabled = "disabled" })
-
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                Feedback
-                                                @Html.TextAreaFor(a => a.Feedback, new { @class = "form-control", placeholder = "Feedback" })
-                                                <hr>
-                                            </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Fitness" class="check-item"> Fitness
+                                            @Html.TextBoxFor(a => a.Fitness_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Commercial_License" class="check-item"> Commercial License
+                                            @Html.TextBoxFor(a => a.CommercialLicense_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
 
                                         </div>
-                                        <div class="row mt-3">
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Fire_Extinguisher" class="check-item"> Fire Extinguisher
-                                                @Html.TextBoxFor(a => a.FireExtinguisher_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Tool_Kit" class="check-item"> Tool Kit
-                                                @Html.TextBoxFor(a => a.ToolKit_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Fitness" class="check-item"> Fitness
-                                                @Html.TextBoxFor(a => a.Fitness_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Commercial_License" class="check-item"> Commercial License
-                                                @Html.TextBoxFor(a => a.CommercialLicense_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-
-                                            </div>
-                                            <div class="col-md-2">
-                                                Penalty Description
-                                                @Html.TextBoxFor(a => a.Penalty_Description, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
+                                        <div class="col-md-2">
+                                            Penalty Description
+                                            @Html.TextBoxFor(a => a.Penalty_Description, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
                                         </div>
-                                        <div class="row mt-3">
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="First_Aid_Box" class="check-item"> First Aid Box
-                                                @Html.TextBoxFor(a => a.FirstAidBox_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Fog_Lamp" class="check-item"> Fog Lamp (Seasonal)
-                                                @Html.TextBoxFor(a => a.FogLamp_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Passenger_Tax" class="check-item"> Passenger Tax
-                                                @Html.TextBoxFor(a => a.PassengerTax_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="checkbox" name="Vehicle_Model_Over_5_Years" class="check-item"> Vehicle Model over 5 years
-                                                @Html.TextBoxFor(a => a.VehicleModel_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-2">
-                                                Total count of NCs
-                                                @Html.TextBoxFor(a => a.Total_NC_Count, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
-                                                <hr>
-                                            </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="First_Aid_Box" class="check-item"> First Aid Box
+                                            @Html.TextBoxFor(a => a.FirstAidBox_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
                                         </div>
-                                        <div class="row mt-3 pull-right">
-                                            <div class="col text-end">
-                                                <button class="btn btn-success">Submit Inspection</button>
-                                            </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Fog_Lamp" class="check-item"> Fog Lamp (Seasonal)
+                                            @Html.TextBoxFor(a => a.FogLamp_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
                                         </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Passenger_Tax" class="check-item"> Passenger Tax
+                                            @Html.TextBoxFor(a => a.PassengerTax_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="Vehicle_Model_Over_5_Years" class="check-item"> Vehicle Model over 5 years
+                                            @Html.TextBoxFor(a => a.VehicleModel_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-2">
+                                            Total count of NCs
+                                            @Html.TextBoxFor(a => a.Total_NC_Count, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3 pull-right">
+                                        <div class="col text-end">
+                                            <button class="btn btn-success">Submit Inspection</button>
+                                        </div>
+                                    </div>
+                                </div>
                                     }
                                 </div>
                             </div>
@@ -377,38 +383,80 @@
 <script src="/js/jquery2.0.3.min.js"></script>
 <script src="/Scripts/jquery-ui-1.12.1.min.js"></script>
 <script>
-    $("#vehicleNumber").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: '/ETS/GetVehicleNumbers',
-                data: { term: request.term },
-                type: 'GET',
-                success: function (data) {
-                    if (!data.length) {
-                        var result = [
-                            {
-                                label: 'No data found',
-                                value: response.term
-                            }
-                        ];
-                        response(result);
-                    }
-                    else {
-                        response($.map(data, function (item) {
-                            return {
-                                label: item.VehicleNumber,
-                                value: item.Id
-
-                            };
-                        }));
-                    }
+    $(document).ready(function () {
+        $("#vehicleNumber").autocomplete({
+            source: function (request, response) {
+                var vendorId = $("#vendorDropdown").val(); // Get selected Vendor ID
+                if (!vendorId) {
+                    response([{ label: 'Please select a vendor first', value: '' }]);
+                    return;
                 }
-            });
-        },
-        select: function (event, ui) {
-            $('#Vendor_Id').val(ui.item.value);
-            $('#vendorName').val(ui.item.label);
-            return false;
-        }
+
+                $.ajax({
+                    url: '/ETS/GetVehicleNumbers',
+                    data: { term: request.term, vendorId: vendorId },
+                    type: 'GET',
+                    success: function (data) {
+                        if (!data.length) {
+                            response([{ label: 'No data found', value: '' }]);
+                        } else {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.VehicleNumber,
+                                    value: item.Id
+                                };
+                            }));
+                        }
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $('#vehicle_Id').val(ui.item.value);
+                $('#vehicleNumber').val(ui.item.label);
+                return false;
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        // Enable vehicle number input when a vendor is selected
+        $("#vendorDropdown").change(function () {
+            if ($(this).val()) {
+                $("#vehicleNumber").prop("disabled", false);
+            } else {
+                $("#vehicleNumber").prop("disabled", true);
+            }
+        });
+
+        // On Submit, get vehicle model name and show details
+        $("#submitBtn").click(function () {
+            var vendorName = $("#vendorDropdown option:selected").text();
+            var vehicleNumber = $("#vehicleNumber").val();
+            var vehicleId = $("#vehicle_Id").val(); // Get hidden vehicle ID
+
+            if (vehicleNumber) {
+                // Make AJAX request to get the vehicle model name from the backend
+                $.ajax({
+                    url: '/ETS/GetVehicleModel',  // Backend API to fetch model name
+                    type: 'GET',
+                    data: { vehicleId: vehicleId },
+                    success: function (response) {
+                        var vehicleModel = response.vehicleModel; // Extract model name from response
+
+                        // Show vehicle details with model name
+                        $("#selectedVehicleDetails").val(vehicleNumber + " - " + vehicleModel);
+                        $("#vehicleDetailsContainer").show(); // Show the field after submission
+                        // Show the predefined extra fields row
+                        $("#extraFieldsRow").show();
+                    },
+                    error: function () {
+                        alert("Error fetching vehicle model. Please try again.");
+                    }
+                });
+            } else {
+                alert("Please enter a vehicle number.");
+            }
+        });
     });
 </script>
