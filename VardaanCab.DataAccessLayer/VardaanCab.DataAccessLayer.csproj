@@ -347,6 +347,9 @@
     <Compile Include="DataLayer\VehicleCapacity.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataLayer\VehicleInspection.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer\VehicleModel.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

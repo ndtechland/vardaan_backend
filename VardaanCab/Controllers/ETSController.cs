@@ -16,6 +16,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Vardaan.Services.IContract;
+using Vardaan.Services.IContractApi;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
@@ -1131,13 +1132,41 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                return View();
+                var model=new VehicleInspectionDTO();
+                model.Companies = new SelectList(ent.Vendors.Where(c=>c.IsActive).ToList(), "Id", "CompanyName");
+                model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
+                model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
+                model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
+
+                return View(model);
             }
             catch (Exception)
             {
 
                 throw;
             }
+        }
+        [HttpPost]
+        public async Task<ActionResult> VehicleInspection(VehicleInspectionDTO model)
+        {
+            try
+            {
+                string isCreated = await _ets.AddVehicleInspection(model);
+                if (isCreated != null)
+                {
+                    TempData["msg"] = isCreated;
+                }
+                return RedirectToAction("VehicleInspection");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Server Error: " + ex.Message);
+            }
+        }
+        public ActionResult GetVehicleNumbers(string term)
+        {
+            var data = ent.Cabs.Where(a => a.IsActive && a.VehicleNumber.ToLower().Contains(term.ToLower())).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
     }
 }
