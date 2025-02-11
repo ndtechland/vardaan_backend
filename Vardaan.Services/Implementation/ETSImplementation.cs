@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.EntityClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -254,6 +257,103 @@ namespace Vardaan.Services.Implementation
                 ent.DriverCheckoutRemarks.Add(data);
                 ent.SaveChanges();
                 return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<string> AddVehicleInspection(VehicleInspectionDTO model)
+        {
+            try
+            {
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+               
+                using (var entityConnection = new EntityConnection(entityConnectionString))
+                {
+                    entityConnection.Open();
+                    using (var command = entityConnection.CreateCommand())
+                    {
+                        command.CommandText = "Vardaan_AdminEntities.ManageVehicleInspection";
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new EntityParameter("Vendor_Id", DbType.Int32) { Value = model.Vendor_Id });
+                        command.Parameters.Add(new EntityParameter("Vehicle_Id", DbType.Int32) { Value = model.Vehicle_Id });
+                        command.Parameters.Add(new EntityParameter("InspectionDate", DbType.DateTime) { Value = model.InspectionDate });
+                        command.Parameters.Add(new EntityParameter("AC_Working", DbType.String) { Value = model.AC_Working });
+                        command.Parameters.Add(new EntityParameter("AC_Remarks", DbType.String) { Value = model.AC_Remarks ?? (object)DBNull.Value });
+                        command.Parameters.Add(new EntityParameter("UnderInfluence", DbType.String) { Value = model.UnderInfluence });
+                        command.Parameters.Add(new EntityParameter("UnderInfluence_Remarks", DbType.String) { Value = model.UnderInfluence_Remarks });
+                        command.Parameters.Add(new EntityParameter("Wiper_Seasonal", DbType.String) { Value = model.Wiper_Seasonal });
+                        command.Parameters.Add(new EntityParameter("Wiper_Remarks", DbType.String) { Value = model.Wiper_Remarks });
+                        command.Parameters.Add(new EntityParameter("National_Permit", DbType.String) { Value = model.National_Permit });
+                        command.Parameters.Add(new EntityParameter("NationalPermit_Remarks", DbType.Int32) { Value = model.NationalPermit_Remarks });
+                        command.Parameters.Add(new EntityParameter("Windshield_Broken", DbType.Int32) { Value = model.Windshield_Broken });
+                        command.Parameters.Add(new EntityParameter("Windshield_Remarks", DbType.String) { Value = model.Windshield_Remarks });
+                        command.Parameters.Add(new EntityParameter("Trip_Type", DbType.String) { Value = model.Trip_Type });
+                        command.Parameters.Add(new EntityParameter("Visible_Body_Dent", DbType.String) { Value = model.Visible_Body_Dent });
+                        command.Parameters.Add(new EntityParameter("BodyDent_Remarks", DbType.String) { Value = model.BodyDent_Remarks });
+                        command.Parameters.Add(new EntityParameter("Seat_Belts_Working", DbType.String) { Value = model.Seat_Belts_Working });
+                        command.Parameters.Add(new EntityParameter("SeatBelts_Remarks", DbType.String) { Value = model.SeatBelts_Remarks });
+                        command.Parameters.Add(new EntityParameter("GPS_Not_Available", DbType.String) { Value = model.GPS_Not_Available });
+                        command.Parameters.Add(new EntityParameter("GPS_Remarks", DbType.String) { Value = model.GPS_Remarks ?? (object)DBNull.Value });
+                        command.Parameters.Add(new EntityParameter("State_Permit", DbType.String) { Value = model.State_Permit });
+                        command.Parameters.Add(new EntityParameter("StatePermit_Remarks", DbType.String) { Value = model.StatePermit_Remarks });
+                        command.Parameters.Add(new EntityParameter("Unregistered_Drivers", DbType.String) { Value = model.Unregistered_Drivers });
+                        command.Parameters.Add(new EntityParameter("UnregisteredDrivers_Remarks", DbType.String) { Value = model.UnregisteredDrivers_Remarks });
+                        command.Parameters.Add(new EntityParameter("Shift_Time", DbType.String) { Value = model.Shift_Time });
+                        command.Parameters.Add(new EntityParameter("Dirty_Unclean_Vehicle", DbType.String) { Value = model.Dirty_Unclean_Vehicle });
+                        command.Parameters.Add(new EntityParameter("UncleanVehicle_Remarks", DbType.String) { Value = model.UncleanVehicle_Remarks });
+                        command.Parameters.Add(new EntityParameter("Seat_Cover", DbType.String) { Value = model.Seat_Cover });
+                        command.Parameters.Add(new EntityParameter("SeatCover_Remarks", DbType.String) { Value = model.SeatCover_Remarks });
+                        command.Parameters.Add(new EntityParameter("Headlights_Indicators", DbType.String) { Value = model.Headlights_Indicators });
+                        command.Parameters.Add(new EntityParameter("Headlights_Remarks", DbType.String) { Value = model.Headlights_Remarks });
+                        command.Parameters.Add(new EntityParameter("Insurance", DbType.String) { Value = model.Insurance });
+                        command.Parameters.Add(new EntityParameter("Insurance_Remarks", DbType.String) { Value = model.Insurance_Remarks });
+                        command.Parameters.Add(new EntityParameter("Unregistered_Cab", DbType.String) { Value = model.Unregistered_Cab });
+                        command.Parameters.Add(new EntityParameter("UnregisteredCab_Remarks", DbType.String) { Value = model.UnregisteredCab_Remarks });
+                        command.Parameters.Add(new EntityParameter("City_Name", DbType.String) { Value = model.City_Name });
+                        command.Parameters.Add(new EntityParameter("Driver_Uniform", DbType.String) { Value = model.Driver_Uniform });
+                        command.Parameters.Add(new EntityParameter("DriverUniform_Remarks", DbType.String) { Value = model.DriverUniform_Remarks });
+                        command.Parameters.Add(new EntityParameter("Spare_Wheel", DbType.String) { Value = model.Spare_Wheel });
+                        command.Parameters.Add(new EntityParameter("SpareWheel_Remarks", DbType.String) { Value = model.SpareWheel_Remarks });
+                        command.Parameters.Add(new EntityParameter("RC_Book", DbType.String) { Value = model.RC_Book });
+                        command.Parameters.Add(new EntityParameter("RCBook_Remarks", DbType.String) { Value = model.RCBook_Remarks });
+                        command.Parameters.Add(new EntityParameter("Pollution", DbType.String) { Value = model.Pollution });
+                        command.Parameters.Add(new EntityParameter("Pollution_Remarks", DbType.String) { Value = model.Pollution_Remarks });
+                        command.Parameters.Add(new EntityParameter("Penalty_Amount", DbType.String) { Value = model.Penalty_Amount });
+                        command.Parameters.Add(new EntityParameter("Feedback", DbType.String) { Value = model.Feedback });
+                        command.Parameters.Add(new EntityParameter("Fire_Extinguisher", DbType.String) { Value = model.Fire_Extinguisher });
+                        command.Parameters.Add(new EntityParameter("FireExtinguisher_Remarks", DbType.String) { Value = model.FireExtinguisher_Remarks });
+                        command.Parameters.Add(new EntityParameter("Tool_Kit", DbType.String) { Value = model.Tool_Kit });
+                        command.Parameters.Add(new EntityParameter("ToolKit_Remarks", DbType.String) { Value = model.ToolKit_Remarks });
+                        command.Parameters.Add(new EntityParameter("Fitness", DbType.String) { Value = model.Fitness });
+                        command.Parameters.Add(new EntityParameter("Fitness_Remarks", DbType.String) { Value = model.Fitness_Remarks });
+                        command.Parameters.Add(new EntityParameter("Commercial_License", DbType.String) { Value = model.Commercial_License });
+                        command.Parameters.Add(new EntityParameter("CommercialLicense_Remarks", DbType.String) { Value = model.CommercialLicense_Remarks });
+                        command.Parameters.Add(new EntityParameter("Penalty_Description", DbType.String) { Value = model.Penalty_Description });
+                        command.Parameters.Add(new EntityParameter("First_Aid_Box", DbType.String) { Value = model.First_Aid_Box });
+                        command.Parameters.Add(new EntityParameter("FirstAidBox_Remarks", DbType.String) { Value = model.FirstAidBox_Remarks });
+                        command.Parameters.Add(new EntityParameter("Fog_Lamp", DbType.String) { Value = model.Fog_Lamp });
+                        command.Parameters.Add(new EntityParameter("FogLamp_Remarks", DbType.String) { Value = model.FogLamp_Remarks });
+                        command.Parameters.Add(new EntityParameter("Passenger_Tax", DbType.String) { Value = model.Passenger_Tax });
+                        command.Parameters.Add(new EntityParameter("PassengerTax_Remarks", DbType.String) { Value = model.PassengerTax_Remarks });
+                        command.Parameters.Add(new EntityParameter("Vehicle_Model_Over_5_Years", DbType.String) { Value = model.Vehicle_Model_Over_5_Years });
+                        command.Parameters.Add(new EntityParameter("VehicleModel_Remarks", DbType.String) { Value = model.VehicleModel_Remarks });
+                        command.Parameters.Add(new EntityParameter("Total_NC_Count", DbType.String) { Value = model.Total_NC_Count });
+                        command.Parameters.Add(new EntityParameter("IsActive", DbType.Boolean) { Value = true });
+                        command.Parameters.Add(new EntityParameter("InspectionByEmployeeId", DbType.String) { Value = model.InspectionByEmployeeId });
+
+                        var responseMessageParam = new EntityParameter("ResponseMessage", DbType.String) { Direction = ParameterDirection.Output, Size = 255 };
+                        command.Parameters.Add(responseMessageParam);
+
+                        command.ExecuteNonQuery();
+
+                        string responseMessage = responseMessageParam.Value.ToString();
+
+                        return responseMessage;
+                    }
+                }
             }
             catch (Exception)
             {

@@ -126,6 +126,7 @@
     <Compile Include="DTO\StatusBooking.cs" />
     <Compile Include="DTO\UserLoginDTO.cs" />
     <Compile Include="DTO\UserRoleDTO.cs" />
+    <Compile Include="DTO\VehicleInspectionDTO.cs" />
     <Compile Include="DTO\VehicleModelDTO.cs" />
     <Compile Include="DTO\VendorDTO.cs" />
     <Compile Include="DTO\VendorPackageDTO.cs" />

@@ -1409,6 +1409,78 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Capacity" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="VehicleInspection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Vendor_Id" Type="int" />
+          <Property Name="Vehicle_Id" Type="int" />
+          <Property Name="InspectionDate" Type="datetime" />
+          <Property Name="AC_Working" Type="bit" />
+          <Property Name="AC_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="UnderInfluence" Type="bit" />
+          <Property Name="UnderInfluence_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Wiper_Seasonal" Type="bit" />
+          <Property Name="Wiper_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="National_Permit" Type="bit" />
+          <Property Name="NationalPermit_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Windshield_Broken" Type="bit" />
+          <Property Name="Windshield_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Trip_Type" Type="nvarchar" MaxLength="100" />
+          <Property Name="Visible_Body_Dent" Type="bit" />
+          <Property Name="BodyDent_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Seat_Belts_Working" Type="bit" />
+          <Property Name="SeatBelts_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="GPS_Not_Available" Type="bit" />
+          <Property Name="GPS_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="State_Permit" Type="bit" />
+          <Property Name="StatePermit_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Unregistered_Drivers" Type="bit" />
+          <Property Name="UnregisteredDrivers_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Shift_Time" Type="nvarchar" MaxLength="100" />
+          <Property Name="Dirty_Unclean_Vehicle" Type="bit" />
+          <Property Name="UncleanVehicle_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Seat_Cover" Type="bit" />
+          <Property Name="SeatCover_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Headlights_Indicators" Type="bit" />
+          <Property Name="Headlights_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Insurance" Type="bit" />
+          <Property Name="Insurance_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Unregistered_Cab" Type="bit" />
+          <Property Name="UnregisteredCab_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="City_Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Driver_Uniform" Type="bit" />
+          <Property Name="DriverUniform_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Spare_Wheel" Type="bit" />
+          <Property Name="SpareWheel_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="RC_Book" Type="bit" />
+          <Property Name="RCBook_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Pollution" Type="bit" />
+          <Property Name="Pollution_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Penalty_Amount" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Feedback" Type="nvarchar(max)" />
+          <Property Name="Fire_Extinguisher" Type="bit" />
+          <Property Name="FireExtinguisher_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Tool_Kit" Type="bit" />
+          <Property Name="ToolKit_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Fitness" Type="bit" />
+          <Property Name="Fitness_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Commercial_License" Type="bit" />
+          <Property Name="CommercialLicense_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Penalty_Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="First_Aid_Box" Type="bit" />
+          <Property Name="FirstAidBox_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Fog_Lamp" Type="bit" />
+          <Property Name="FogLamp_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Passenger_Tax" Type="bit" />
+          <Property Name="PassengerTax_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Vehicle_Model_Over_5_Years" Type="bit" />
+          <Property Name="VehicleModel_Remarks" Type="nvarchar" MaxLength="255" />
+          <Property Name="Total_NC_Count" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="InspectionByEmployeeId" Type="int" />
+        </EntityType>
         <Function Name="checkOneCompanyBookingSelected" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="isNrg" Type="bit" Mode="In" />
           <Parameter Name="term" Type="nvarchar" Mode="In" />
@@ -1767,6 +1839,75 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="Longitude" Type="float" Mode="In" />
           <Parameter Name="ResponseMessage" Type="nvarchar" Mode="InOut" />
         </Function>
+        <Function Name="ManageVehicleInspection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
+          <Parameter Name="Vendor_Id" Type="int" Mode="In" />
+          <Parameter Name="Vehicle_Id" Type="int" Mode="In" />
+          <Parameter Name="InspectionDate" Type="datetime" Mode="In" />
+          <Parameter Name="AC_Working" Type="bit" Mode="In" />
+          <Parameter Name="AC_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="UnderInfluence" Type="bit" Mode="In" />
+          <Parameter Name="UnderInfluence_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Wiper_Seasonal" Type="bit" Mode="In" />
+          <Parameter Name="Wiper_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="National_Permit" Type="bit" Mode="In" />
+          <Parameter Name="NationalPermit_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Windshield_Broken" Type="bit" Mode="In" />
+          <Parameter Name="Windshield_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Trip_Type" Type="nvarchar" Mode="In" />
+          <Parameter Name="Visible_Body_Dent" Type="bit" Mode="In" />
+          <Parameter Name="BodyDent_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Seat_Belts_Working" Type="bit" Mode="In" />
+          <Parameter Name="SeatBelts_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="GPS_Not_Available" Type="bit" Mode="In" />
+          <Parameter Name="GPS_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="State_Permit" Type="bit" Mode="In" />
+          <Parameter Name="StatePermit_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Unregistered_Drivers" Type="bit" Mode="In" />
+          <Parameter Name="UnregisteredDrivers_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Shift_Time" Type="nvarchar" Mode="In" />
+          <Parameter Name="Dirty_Unclean_Vehicle" Type="bit" Mode="In" />
+          <Parameter Name="UncleanVehicle_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Seat_Cover" Type="bit" Mode="In" />
+          <Parameter Name="SeatCover_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Headlights_Indicators" Type="bit" Mode="In" />
+          <Parameter Name="Headlights_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Insurance" Type="bit" Mode="In" />
+          <Parameter Name="Insurance_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Unregistered_Cab" Type="bit" Mode="In" />
+          <Parameter Name="UnregisteredCab_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="City_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Driver_Uniform" Type="bit" Mode="In" />
+          <Parameter Name="DriverUniform_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Spare_Wheel" Type="bit" Mode="In" />
+          <Parameter Name="SpareWheel_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="RC_Book" Type="bit" Mode="In" />
+          <Parameter Name="RCBook_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Pollution" Type="bit" Mode="In" />
+          <Parameter Name="Pollution_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Penalty_Amount" Type="decimal" Mode="In" />
+          <Parameter Name="Feedback" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Fire_Extinguisher" Type="bit" Mode="In" />
+          <Parameter Name="FireExtinguisher_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Tool_Kit" Type="bit" Mode="In" />
+          <Parameter Name="ToolKit_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Fitness" Type="bit" Mode="In" />
+          <Parameter Name="Fitness_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Commercial_License" Type="bit" Mode="In" />
+          <Parameter Name="CommercialLicense_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Penalty_Description" Type="nvarchar" Mode="In" />
+          <Parameter Name="First_Aid_Box" Type="bit" Mode="In" />
+          <Parameter Name="FirstAidBox_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Fog_Lamp" Type="bit" Mode="In" />
+          <Parameter Name="FogLamp_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Passenger_Tax" Type="bit" Mode="In" />
+          <Parameter Name="PassengerTax_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Vehicle_Model_Over_5_Years" Type="bit" Mode="In" />
+          <Parameter Name="VehicleModel_Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="Total_NC_Count" Type="int" Mode="In" />
+          <Parameter Name="IsActive" Type="bit" Mode="In" />
+          <Parameter Name="InspectionByEmployeeId" Type="int" Mode="In" />
+          <Parameter Name="ResponseMessage" Type="nvarchar" Mode="InOut" />
+        </Function>
         <EntityContainer Name="Vardaan_AdminModelStoreContainer">
           <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cab" EntityType="Self.Cab" Schema="dbo" store:Type="Tables" />
@@ -1840,6 +1981,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="TripType" EntityType="Self.TripType" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="VehicleCapacity" EntityType="Self.VehicleCapacity" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="VehicleInspection" EntityType="Self.VehicleInspection" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="booking_backup11feb" EntityType="Self.booking_backup11feb" store:Type="Tables" store:Schema="newVardaan">
             <DefiningQuery>SELECT 
     [booking_backup11feb].[Id] AS [Id], 
@@ -3433,6 +3575,76 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="VehicleCapacities" EntityType="Vardaan_AdminModel.VehicleCapacity" />
           <EntitySet Name="CompanyZones" EntityType="Vardaan_AdminModel.CompanyZone" />
           <EntitySet Name="DriverCheckoutRemarks" EntityType="Vardaan_AdminModel.DriverCheckoutRemark" />
+          <EntitySet Name="VehicleInspections" EntityType="Vardaan_AdminModel.VehicleInspection" />
+          <FunctionImport Name="ManageVehicleInspection">
+            <Parameter Name="Vendor_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Vehicle_Id" Mode="In" Type="Int32" />
+            <Parameter Name="InspectionDate" Mode="In" Type="DateTime" />
+            <Parameter Name="AC_Working" Mode="In" Type="Boolean" />
+            <Parameter Name="AC_Remarks" Mode="In" Type="String" />
+            <Parameter Name="UnderInfluence" Mode="In" Type="Boolean" />
+            <Parameter Name="UnderInfluence_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Wiper_Seasonal" Mode="In" Type="Boolean" />
+            <Parameter Name="Wiper_Remarks" Mode="In" Type="String" />
+            <Parameter Name="National_Permit" Mode="In" Type="Boolean" />
+            <Parameter Name="NationalPermit_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Windshield_Broken" Mode="In" Type="Boolean" />
+            <Parameter Name="Windshield_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Trip_Type" Mode="In" Type="String" />
+            <Parameter Name="Visible_Body_Dent" Mode="In" Type="Boolean" />
+            <Parameter Name="BodyDent_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Seat_Belts_Working" Mode="In" Type="Boolean" />
+            <Parameter Name="SeatBelts_Remarks" Mode="In" Type="String" />
+            <Parameter Name="GPS_Not_Available" Mode="In" Type="Boolean" />
+            <Parameter Name="GPS_Remarks" Mode="In" Type="String" />
+            <Parameter Name="State_Permit" Mode="In" Type="Boolean" />
+            <Parameter Name="StatePermit_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Unregistered_Drivers" Mode="In" Type="Boolean" />
+            <Parameter Name="UnregisteredDrivers_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Shift_Time" Mode="In" Type="String" />
+            <Parameter Name="Dirty_Unclean_Vehicle" Mode="In" Type="Boolean" />
+            <Parameter Name="UncleanVehicle_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Seat_Cover" Mode="In" Type="Boolean" />
+            <Parameter Name="SeatCover_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Headlights_Indicators" Mode="In" Type="Boolean" />
+            <Parameter Name="Headlights_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Insurance" Mode="In" Type="Boolean" />
+            <Parameter Name="Insurance_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Unregistered_Cab" Mode="In" Type="Boolean" />
+            <Parameter Name="UnregisteredCab_Remarks" Mode="In" Type="String" />
+            <Parameter Name="City_Name" Mode="In" Type="String" />
+            <Parameter Name="Driver_Uniform" Mode="In" Type="Boolean" />
+            <Parameter Name="DriverUniform_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Spare_Wheel" Mode="In" Type="Boolean" />
+            <Parameter Name="SpareWheel_Remarks" Mode="In" Type="String" />
+            <Parameter Name="RC_Book" Mode="In" Type="Boolean" />
+            <Parameter Name="RCBook_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Pollution" Mode="In" Type="Boolean" />
+            <Parameter Name="Pollution_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Penalty_Amount" Mode="In" Type="Decimal" />
+            <Parameter Name="Feedback" Mode="In" Type="String" />
+            <Parameter Name="Fire_Extinguisher" Mode="In" Type="Boolean" />
+            <Parameter Name="FireExtinguisher_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Tool_Kit" Mode="In" Type="Boolean" />
+            <Parameter Name="ToolKit_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Fitness" Mode="In" Type="Boolean" />
+            <Parameter Name="Fitness_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Commercial_License" Mode="In" Type="Boolean" />
+            <Parameter Name="CommercialLicense_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Penalty_Description" Mode="In" Type="String" />
+            <Parameter Name="First_Aid_Box" Mode="In" Type="Boolean" />
+            <Parameter Name="FirstAidBox_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Fog_Lamp" Mode="In" Type="Boolean" />
+            <Parameter Name="FogLamp_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Passenger_Tax" Mode="In" Type="Boolean" />
+            <Parameter Name="PassengerTax_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Vehicle_Model_Over_5_Years" Mode="In" Type="Boolean" />
+            <Parameter Name="VehicleModel_Remarks" Mode="In" Type="String" />
+            <Parameter Name="Total_NC_Count" Mode="In" Type="Int32" />
+            <Parameter Name="IsActive" Mode="In" Type="Boolean" />
+            <Parameter Name="InspectionByEmployeeId" Mode="In" Type="Int32" />
+            <Parameter Name="ResponseMessage" Mode="InOut" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -4805,6 +5017,78 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Driver_Id" Type="Int32" />
           <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RemarkDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="VehicleInspection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Vendor_Id" Type="Int32" />
+          <Property Name="Vehicle_Id" Type="Int32" />
+          <Property Name="InspectionDate" Type="DateTime" Precision="3" />
+          <Property Name="AC_Working" Type="Boolean" />
+          <Property Name="AC_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UnderInfluence" Type="Boolean" />
+          <Property Name="UnderInfluence_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Wiper_Seasonal" Type="Boolean" />
+          <Property Name="Wiper_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="National_Permit" Type="Boolean" />
+          <Property Name="NationalPermit_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Windshield_Broken" Type="Boolean" />
+          <Property Name="Windshield_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Trip_Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Visible_Body_Dent" Type="Boolean" />
+          <Property Name="BodyDent_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Seat_Belts_Working" Type="Boolean" />
+          <Property Name="SeatBelts_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GPS_Not_Available" Type="Boolean" />
+          <Property Name="GPS_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="State_Permit" Type="Boolean" />
+          <Property Name="StatePermit_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Unregistered_Drivers" Type="Boolean" />
+          <Property Name="UnregisteredDrivers_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Shift_Time" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Dirty_Unclean_Vehicle" Type="Boolean" />
+          <Property Name="UncleanVehicle_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Seat_Cover" Type="Boolean" />
+          <Property Name="SeatCover_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Headlights_Indicators" Type="Boolean" />
+          <Property Name="Headlights_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Insurance" Type="Boolean" />
+          <Property Name="Insurance_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Unregistered_Cab" Type="Boolean" />
+          <Property Name="UnregisteredCab_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="City_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Driver_Uniform" Type="Boolean" />
+          <Property Name="DriverUniform_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Spare_Wheel" Type="Boolean" />
+          <Property Name="SpareWheel_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RC_Book" Type="Boolean" />
+          <Property Name="RCBook_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Pollution" Type="Boolean" />
+          <Property Name="Pollution_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Penalty_Amount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Feedback" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Fire_Extinguisher" Type="Boolean" />
+          <Property Name="FireExtinguisher_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Tool_Kit" Type="Boolean" />
+          <Property Name="ToolKit_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Fitness" Type="Boolean" />
+          <Property Name="Fitness_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Commercial_License" Type="Boolean" />
+          <Property Name="CommercialLicense_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Penalty_Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="First_Aid_Box" Type="Boolean" />
+          <Property Name="FirstAidBox_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Fog_Lamp" Type="Boolean" />
+          <Property Name="FogLamp_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Passenger_Tax" Type="Boolean" />
+          <Property Name="PassengerTax_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Vehicle_Model_Over_5_Years" Type="Boolean" />
+          <Property Name="VehicleModel_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Total_NC_Count" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="InspectionByEmployeeId" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7328,6 +7612,80 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="VehicleInspections">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.VehicleInspection">
+              <MappingFragment StoreEntitySet="VehicleInspection">
+                <ScalarProperty Name="InspectionByEmployeeId" ColumnName="InspectionByEmployeeId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Total_NC_Count" ColumnName="Total_NC_Count" />
+                <ScalarProperty Name="VehicleModel_Remarks" ColumnName="VehicleModel_Remarks" />
+                <ScalarProperty Name="Vehicle_Model_Over_5_Years" ColumnName="Vehicle_Model_Over_5_Years" />
+                <ScalarProperty Name="PassengerTax_Remarks" ColumnName="PassengerTax_Remarks" />
+                <ScalarProperty Name="Passenger_Tax" ColumnName="Passenger_Tax" />
+                <ScalarProperty Name="FogLamp_Remarks" ColumnName="FogLamp_Remarks" />
+                <ScalarProperty Name="Fog_Lamp" ColumnName="Fog_Lamp" />
+                <ScalarProperty Name="FirstAidBox_Remarks" ColumnName="FirstAidBox_Remarks" />
+                <ScalarProperty Name="First_Aid_Box" ColumnName="First_Aid_Box" />
+                <ScalarProperty Name="Penalty_Description" ColumnName="Penalty_Description" />
+                <ScalarProperty Name="CommercialLicense_Remarks" ColumnName="CommercialLicense_Remarks" />
+                <ScalarProperty Name="Commercial_License" ColumnName="Commercial_License" />
+                <ScalarProperty Name="Fitness_Remarks" ColumnName="Fitness_Remarks" />
+                <ScalarProperty Name="Fitness" ColumnName="Fitness" />
+                <ScalarProperty Name="ToolKit_Remarks" ColumnName="ToolKit_Remarks" />
+                <ScalarProperty Name="Tool_Kit" ColumnName="Tool_Kit" />
+                <ScalarProperty Name="FireExtinguisher_Remarks" ColumnName="FireExtinguisher_Remarks" />
+                <ScalarProperty Name="Fire_Extinguisher" ColumnName="Fire_Extinguisher" />
+                <ScalarProperty Name="Feedback" ColumnName="Feedback" />
+                <ScalarProperty Name="Penalty_Amount" ColumnName="Penalty_Amount" />
+                <ScalarProperty Name="Pollution_Remarks" ColumnName="Pollution_Remarks" />
+                <ScalarProperty Name="Pollution" ColumnName="Pollution" />
+                <ScalarProperty Name="RCBook_Remarks" ColumnName="RCBook_Remarks" />
+                <ScalarProperty Name="RC_Book" ColumnName="RC_Book" />
+                <ScalarProperty Name="SpareWheel_Remarks" ColumnName="SpareWheel_Remarks" />
+                <ScalarProperty Name="Spare_Wheel" ColumnName="Spare_Wheel" />
+                <ScalarProperty Name="DriverUniform_Remarks" ColumnName="DriverUniform_Remarks" />
+                <ScalarProperty Name="Driver_Uniform" ColumnName="Driver_Uniform" />
+                <ScalarProperty Name="City_Name" ColumnName="City_Name" />
+                <ScalarProperty Name="UnregisteredCab_Remarks" ColumnName="UnregisteredCab_Remarks" />
+                <ScalarProperty Name="Unregistered_Cab" ColumnName="Unregistered_Cab" />
+                <ScalarProperty Name="Insurance_Remarks" ColumnName="Insurance_Remarks" />
+                <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+                <ScalarProperty Name="Headlights_Remarks" ColumnName="Headlights_Remarks" />
+                <ScalarProperty Name="Headlights_Indicators" ColumnName="Headlights_Indicators" />
+                <ScalarProperty Name="SeatCover_Remarks" ColumnName="SeatCover_Remarks" />
+                <ScalarProperty Name="Seat_Cover" ColumnName="Seat_Cover" />
+                <ScalarProperty Name="UncleanVehicle_Remarks" ColumnName="UncleanVehicle_Remarks" />
+                <ScalarProperty Name="Dirty_Unclean_Vehicle" ColumnName="Dirty_Unclean_Vehicle" />
+                <ScalarProperty Name="Shift_Time" ColumnName="Shift_Time" />
+                <ScalarProperty Name="UnregisteredDrivers_Remarks" ColumnName="UnregisteredDrivers_Remarks" />
+                <ScalarProperty Name="Unregistered_Drivers" ColumnName="Unregistered_Drivers" />
+                <ScalarProperty Name="StatePermit_Remarks" ColumnName="StatePermit_Remarks" />
+                <ScalarProperty Name="State_Permit" ColumnName="State_Permit" />
+                <ScalarProperty Name="GPS_Remarks" ColumnName="GPS_Remarks" />
+                <ScalarProperty Name="GPS_Not_Available" ColumnName="GPS_Not_Available" />
+                <ScalarProperty Name="SeatBelts_Remarks" ColumnName="SeatBelts_Remarks" />
+                <ScalarProperty Name="Seat_Belts_Working" ColumnName="Seat_Belts_Working" />
+                <ScalarProperty Name="BodyDent_Remarks" ColumnName="BodyDent_Remarks" />
+                <ScalarProperty Name="Visible_Body_Dent" ColumnName="Visible_Body_Dent" />
+                <ScalarProperty Name="Trip_Type" ColumnName="Trip_Type" />
+                <ScalarProperty Name="Windshield_Remarks" ColumnName="Windshield_Remarks" />
+                <ScalarProperty Name="Windshield_Broken" ColumnName="Windshield_Broken" />
+                <ScalarProperty Name="NationalPermit_Remarks" ColumnName="NationalPermit_Remarks" />
+                <ScalarProperty Name="National_Permit" ColumnName="National_Permit" />
+                <ScalarProperty Name="Wiper_Remarks" ColumnName="Wiper_Remarks" />
+                <ScalarProperty Name="Wiper_Seasonal" ColumnName="Wiper_Seasonal" />
+                <ScalarProperty Name="UnderInfluence_Remarks" ColumnName="UnderInfluence_Remarks" />
+                <ScalarProperty Name="UnderInfluence" ColumnName="UnderInfluence" />
+                <ScalarProperty Name="AC_Remarks" ColumnName="AC_Remarks" />
+                <ScalarProperty Name="AC_Working" ColumnName="AC_Working" />
+                <ScalarProperty Name="InspectionDate" ColumnName="InspectionDate" />
+                <ScalarProperty Name="Vehicle_Id" ColumnName="Vehicle_Id" />
+                <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ManageVehicleInspection" FunctionName="Vardaan_AdminModel.Store.ManageVehicleInspection" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

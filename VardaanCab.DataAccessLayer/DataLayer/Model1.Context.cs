@@ -104,6 +104,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<VehicleCapacity> VehicleCapacities { get; set; }
         public virtual DbSet<CompanyZone> CompanyZones { get; set; }
         public virtual DbSet<DriverCheckoutRemark> DriverCheckoutRemarks { get; set; }
+        public virtual DbSet<VehicleInspection> VehicleInspections { get; set; }
     
         public virtual ObjectResult<Nullable<int>> checkOneCompanyBookingSelected(Nullable<bool> isNrg, string term, Nullable<System.DateTime> sDate, Nullable<System.DateTime> eDate, Nullable<int> cityId, Nullable<int> routeNo)
         {
@@ -1372,6 +1373,275 @@ namespace VardaanCab.DataAccessLayer.DataLayer
                 new ObjectParameter("Longitude", typeof(double));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ManageEmployee", actionParameter, idParameter, company_IdParameter, company_locationParameter, employee_IdParameter, employee_First_NameParameter, employee_Middle_NameParameter, employee_Last_NameParameter, genderParameter, mobileNumberParameter, alternateNumberParameter, emailParameter, stateIdParameter, cityIdParameter, pincodeParameter, employeeCurrentAddressParameter, loginUserNameParameter, weekOffParameter, employeeGeoCodeParameter, employeeBusinessUnitParameter, employeeDepartmentParameter, employeeProjectNameParameter, reportingManagerParameter, primaryFacilityZoneParameter, homeRouteNameParameter, employeeDestinationAreaParameter, employeeRegistrationTypeParameter, isActiveParameter, isFirstParameter, latitudeParameter, longitudeParameter, responseMessage);
+        }
+    
+        public virtual int ManageVehicleInspection(Nullable<int> vendor_Id, Nullable<int> vehicle_Id, Nullable<System.DateTime> inspectionDate, Nullable<bool> aC_Working, string aC_Remarks, Nullable<bool> underInfluence, string underInfluence_Remarks, Nullable<bool> wiper_Seasonal, string wiper_Remarks, Nullable<bool> national_Permit, string nationalPermit_Remarks, Nullable<bool> windshield_Broken, string windshield_Remarks, string trip_Type, Nullable<bool> visible_Body_Dent, string bodyDent_Remarks, Nullable<bool> seat_Belts_Working, string seatBelts_Remarks, Nullable<bool> gPS_Not_Available, string gPS_Remarks, Nullable<bool> state_Permit, string statePermit_Remarks, Nullable<bool> unregistered_Drivers, string unregisteredDrivers_Remarks, string shift_Time, Nullable<bool> dirty_Unclean_Vehicle, string uncleanVehicle_Remarks, Nullable<bool> seat_Cover, string seatCover_Remarks, Nullable<bool> headlights_Indicators, string headlights_Remarks, Nullable<bool> insurance, string insurance_Remarks, Nullable<bool> unregistered_Cab, string unregisteredCab_Remarks, string city_Name, Nullable<bool> driver_Uniform, string driverUniform_Remarks, Nullable<bool> spare_Wheel, string spareWheel_Remarks, Nullable<bool> rC_Book, string rCBook_Remarks, Nullable<bool> pollution, string pollution_Remarks, Nullable<decimal> penalty_Amount, string feedback, Nullable<bool> fire_Extinguisher, string fireExtinguisher_Remarks, Nullable<bool> tool_Kit, string toolKit_Remarks, Nullable<bool> fitness, string fitness_Remarks, Nullable<bool> commercial_License, string commercialLicense_Remarks, string penalty_Description, Nullable<bool> first_Aid_Box, string firstAidBox_Remarks, Nullable<bool> fog_Lamp, string fogLamp_Remarks, Nullable<bool> passenger_Tax, string passengerTax_Remarks, Nullable<bool> vehicle_Model_Over_5_Years, string vehicleModel_Remarks, Nullable<int> total_NC_Count, Nullable<bool> isActive, Nullable<int> inspectionByEmployeeId, ObjectParameter responseMessage)
+        {
+            var vendor_IdParameter = vendor_Id.HasValue ?
+                new ObjectParameter("Vendor_Id", vendor_Id) :
+                new ObjectParameter("Vendor_Id", typeof(int));
+    
+            var vehicle_IdParameter = vehicle_Id.HasValue ?
+                new ObjectParameter("Vehicle_Id", vehicle_Id) :
+                new ObjectParameter("Vehicle_Id", typeof(int));
+    
+            var inspectionDateParameter = inspectionDate.HasValue ?
+                new ObjectParameter("InspectionDate", inspectionDate) :
+                new ObjectParameter("InspectionDate", typeof(System.DateTime));
+    
+            var aC_WorkingParameter = aC_Working.HasValue ?
+                new ObjectParameter("AC_Working", aC_Working) :
+                new ObjectParameter("AC_Working", typeof(bool));
+    
+            var aC_RemarksParameter = aC_Remarks != null ?
+                new ObjectParameter("AC_Remarks", aC_Remarks) :
+                new ObjectParameter("AC_Remarks", typeof(string));
+    
+            var underInfluenceParameter = underInfluence.HasValue ?
+                new ObjectParameter("UnderInfluence", underInfluence) :
+                new ObjectParameter("UnderInfluence", typeof(bool));
+    
+            var underInfluence_RemarksParameter = underInfluence_Remarks != null ?
+                new ObjectParameter("UnderInfluence_Remarks", underInfluence_Remarks) :
+                new ObjectParameter("UnderInfluence_Remarks", typeof(string));
+    
+            var wiper_SeasonalParameter = wiper_Seasonal.HasValue ?
+                new ObjectParameter("Wiper_Seasonal", wiper_Seasonal) :
+                new ObjectParameter("Wiper_Seasonal", typeof(bool));
+    
+            var wiper_RemarksParameter = wiper_Remarks != null ?
+                new ObjectParameter("Wiper_Remarks", wiper_Remarks) :
+                new ObjectParameter("Wiper_Remarks", typeof(string));
+    
+            var national_PermitParameter = national_Permit.HasValue ?
+                new ObjectParameter("National_Permit", national_Permit) :
+                new ObjectParameter("National_Permit", typeof(bool));
+    
+            var nationalPermit_RemarksParameter = nationalPermit_Remarks != null ?
+                new ObjectParameter("NationalPermit_Remarks", nationalPermit_Remarks) :
+                new ObjectParameter("NationalPermit_Remarks", typeof(string));
+    
+            var windshield_BrokenParameter = windshield_Broken.HasValue ?
+                new ObjectParameter("Windshield_Broken", windshield_Broken) :
+                new ObjectParameter("Windshield_Broken", typeof(bool));
+    
+            var windshield_RemarksParameter = windshield_Remarks != null ?
+                new ObjectParameter("Windshield_Remarks", windshield_Remarks) :
+                new ObjectParameter("Windshield_Remarks", typeof(string));
+    
+            var trip_TypeParameter = trip_Type != null ?
+                new ObjectParameter("Trip_Type", trip_Type) :
+                new ObjectParameter("Trip_Type", typeof(string));
+    
+            var visible_Body_DentParameter = visible_Body_Dent.HasValue ?
+                new ObjectParameter("Visible_Body_Dent", visible_Body_Dent) :
+                new ObjectParameter("Visible_Body_Dent", typeof(bool));
+    
+            var bodyDent_RemarksParameter = bodyDent_Remarks != null ?
+                new ObjectParameter("BodyDent_Remarks", bodyDent_Remarks) :
+                new ObjectParameter("BodyDent_Remarks", typeof(string));
+    
+            var seat_Belts_WorkingParameter = seat_Belts_Working.HasValue ?
+                new ObjectParameter("Seat_Belts_Working", seat_Belts_Working) :
+                new ObjectParameter("Seat_Belts_Working", typeof(bool));
+    
+            var seatBelts_RemarksParameter = seatBelts_Remarks != null ?
+                new ObjectParameter("SeatBelts_Remarks", seatBelts_Remarks) :
+                new ObjectParameter("SeatBelts_Remarks", typeof(string));
+    
+            var gPS_Not_AvailableParameter = gPS_Not_Available.HasValue ?
+                new ObjectParameter("GPS_Not_Available", gPS_Not_Available) :
+                new ObjectParameter("GPS_Not_Available", typeof(bool));
+    
+            var gPS_RemarksParameter = gPS_Remarks != null ?
+                new ObjectParameter("GPS_Remarks", gPS_Remarks) :
+                new ObjectParameter("GPS_Remarks", typeof(string));
+    
+            var state_PermitParameter = state_Permit.HasValue ?
+                new ObjectParameter("State_Permit", state_Permit) :
+                new ObjectParameter("State_Permit", typeof(bool));
+    
+            var statePermit_RemarksParameter = statePermit_Remarks != null ?
+                new ObjectParameter("StatePermit_Remarks", statePermit_Remarks) :
+                new ObjectParameter("StatePermit_Remarks", typeof(string));
+    
+            var unregistered_DriversParameter = unregistered_Drivers.HasValue ?
+                new ObjectParameter("Unregistered_Drivers", unregistered_Drivers) :
+                new ObjectParameter("Unregistered_Drivers", typeof(bool));
+    
+            var unregisteredDrivers_RemarksParameter = unregisteredDrivers_Remarks != null ?
+                new ObjectParameter("UnregisteredDrivers_Remarks", unregisteredDrivers_Remarks) :
+                new ObjectParameter("UnregisteredDrivers_Remarks", typeof(string));
+    
+            var shift_TimeParameter = shift_Time != null ?
+                new ObjectParameter("Shift_Time", shift_Time) :
+                new ObjectParameter("Shift_Time", typeof(string));
+    
+            var dirty_Unclean_VehicleParameter = dirty_Unclean_Vehicle.HasValue ?
+                new ObjectParameter("Dirty_Unclean_Vehicle", dirty_Unclean_Vehicle) :
+                new ObjectParameter("Dirty_Unclean_Vehicle", typeof(bool));
+    
+            var uncleanVehicle_RemarksParameter = uncleanVehicle_Remarks != null ?
+                new ObjectParameter("UncleanVehicle_Remarks", uncleanVehicle_Remarks) :
+                new ObjectParameter("UncleanVehicle_Remarks", typeof(string));
+    
+            var seat_CoverParameter = seat_Cover.HasValue ?
+                new ObjectParameter("Seat_Cover", seat_Cover) :
+                new ObjectParameter("Seat_Cover", typeof(bool));
+    
+            var seatCover_RemarksParameter = seatCover_Remarks != null ?
+                new ObjectParameter("SeatCover_Remarks", seatCover_Remarks) :
+                new ObjectParameter("SeatCover_Remarks", typeof(string));
+    
+            var headlights_IndicatorsParameter = headlights_Indicators.HasValue ?
+                new ObjectParameter("Headlights_Indicators", headlights_Indicators) :
+                new ObjectParameter("Headlights_Indicators", typeof(bool));
+    
+            var headlights_RemarksParameter = headlights_Remarks != null ?
+                new ObjectParameter("Headlights_Remarks", headlights_Remarks) :
+                new ObjectParameter("Headlights_Remarks", typeof(string));
+    
+            var insuranceParameter = insurance.HasValue ?
+                new ObjectParameter("Insurance", insurance) :
+                new ObjectParameter("Insurance", typeof(bool));
+    
+            var insurance_RemarksParameter = insurance_Remarks != null ?
+                new ObjectParameter("Insurance_Remarks", insurance_Remarks) :
+                new ObjectParameter("Insurance_Remarks", typeof(string));
+    
+            var unregistered_CabParameter = unregistered_Cab.HasValue ?
+                new ObjectParameter("Unregistered_Cab", unregistered_Cab) :
+                new ObjectParameter("Unregistered_Cab", typeof(bool));
+    
+            var unregisteredCab_RemarksParameter = unregisteredCab_Remarks != null ?
+                new ObjectParameter("UnregisteredCab_Remarks", unregisteredCab_Remarks) :
+                new ObjectParameter("UnregisteredCab_Remarks", typeof(string));
+    
+            var city_NameParameter = city_Name != null ?
+                new ObjectParameter("City_Name", city_Name) :
+                new ObjectParameter("City_Name", typeof(string));
+    
+            var driver_UniformParameter = driver_Uniform.HasValue ?
+                new ObjectParameter("Driver_Uniform", driver_Uniform) :
+                new ObjectParameter("Driver_Uniform", typeof(bool));
+    
+            var driverUniform_RemarksParameter = driverUniform_Remarks != null ?
+                new ObjectParameter("DriverUniform_Remarks", driverUniform_Remarks) :
+                new ObjectParameter("DriverUniform_Remarks", typeof(string));
+    
+            var spare_WheelParameter = spare_Wheel.HasValue ?
+                new ObjectParameter("Spare_Wheel", spare_Wheel) :
+                new ObjectParameter("Spare_Wheel", typeof(bool));
+    
+            var spareWheel_RemarksParameter = spareWheel_Remarks != null ?
+                new ObjectParameter("SpareWheel_Remarks", spareWheel_Remarks) :
+                new ObjectParameter("SpareWheel_Remarks", typeof(string));
+    
+            var rC_BookParameter = rC_Book.HasValue ?
+                new ObjectParameter("RC_Book", rC_Book) :
+                new ObjectParameter("RC_Book", typeof(bool));
+    
+            var rCBook_RemarksParameter = rCBook_Remarks != null ?
+                new ObjectParameter("RCBook_Remarks", rCBook_Remarks) :
+                new ObjectParameter("RCBook_Remarks", typeof(string));
+    
+            var pollutionParameter = pollution.HasValue ?
+                new ObjectParameter("Pollution", pollution) :
+                new ObjectParameter("Pollution", typeof(bool));
+    
+            var pollution_RemarksParameter = pollution_Remarks != null ?
+                new ObjectParameter("Pollution_Remarks", pollution_Remarks) :
+                new ObjectParameter("Pollution_Remarks", typeof(string));
+    
+            var penalty_AmountParameter = penalty_Amount.HasValue ?
+                new ObjectParameter("Penalty_Amount", penalty_Amount) :
+                new ObjectParameter("Penalty_Amount", typeof(decimal));
+    
+            var feedbackParameter = feedback != null ?
+                new ObjectParameter("Feedback", feedback) :
+                new ObjectParameter("Feedback", typeof(string));
+    
+            var fire_ExtinguisherParameter = fire_Extinguisher.HasValue ?
+                new ObjectParameter("Fire_Extinguisher", fire_Extinguisher) :
+                new ObjectParameter("Fire_Extinguisher", typeof(bool));
+    
+            var fireExtinguisher_RemarksParameter = fireExtinguisher_Remarks != null ?
+                new ObjectParameter("FireExtinguisher_Remarks", fireExtinguisher_Remarks) :
+                new ObjectParameter("FireExtinguisher_Remarks", typeof(string));
+    
+            var tool_KitParameter = tool_Kit.HasValue ?
+                new ObjectParameter("Tool_Kit", tool_Kit) :
+                new ObjectParameter("Tool_Kit", typeof(bool));
+    
+            var toolKit_RemarksParameter = toolKit_Remarks != null ?
+                new ObjectParameter("ToolKit_Remarks", toolKit_Remarks) :
+                new ObjectParameter("ToolKit_Remarks", typeof(string));
+    
+            var fitnessParameter = fitness.HasValue ?
+                new ObjectParameter("Fitness", fitness) :
+                new ObjectParameter("Fitness", typeof(bool));
+    
+            var fitness_RemarksParameter = fitness_Remarks != null ?
+                new ObjectParameter("Fitness_Remarks", fitness_Remarks) :
+                new ObjectParameter("Fitness_Remarks", typeof(string));
+    
+            var commercial_LicenseParameter = commercial_License.HasValue ?
+                new ObjectParameter("Commercial_License", commercial_License) :
+                new ObjectParameter("Commercial_License", typeof(bool));
+    
+            var commercialLicense_RemarksParameter = commercialLicense_Remarks != null ?
+                new ObjectParameter("CommercialLicense_Remarks", commercialLicense_Remarks) :
+                new ObjectParameter("CommercialLicense_Remarks", typeof(string));
+    
+            var penalty_DescriptionParameter = penalty_Description != null ?
+                new ObjectParameter("Penalty_Description", penalty_Description) :
+                new ObjectParameter("Penalty_Description", typeof(string));
+    
+            var first_Aid_BoxParameter = first_Aid_Box.HasValue ?
+                new ObjectParameter("First_Aid_Box", first_Aid_Box) :
+                new ObjectParameter("First_Aid_Box", typeof(bool));
+    
+            var firstAidBox_RemarksParameter = firstAidBox_Remarks != null ?
+                new ObjectParameter("FirstAidBox_Remarks", firstAidBox_Remarks) :
+                new ObjectParameter("FirstAidBox_Remarks", typeof(string));
+    
+            var fog_LampParameter = fog_Lamp.HasValue ?
+                new ObjectParameter("Fog_Lamp", fog_Lamp) :
+                new ObjectParameter("Fog_Lamp", typeof(bool));
+    
+            var fogLamp_RemarksParameter = fogLamp_Remarks != null ?
+                new ObjectParameter("FogLamp_Remarks", fogLamp_Remarks) :
+                new ObjectParameter("FogLamp_Remarks", typeof(string));
+    
+            var passenger_TaxParameter = passenger_Tax.HasValue ?
+                new ObjectParameter("Passenger_Tax", passenger_Tax) :
+                new ObjectParameter("Passenger_Tax", typeof(bool));
+    
+            var passengerTax_RemarksParameter = passengerTax_Remarks != null ?
+                new ObjectParameter("PassengerTax_Remarks", passengerTax_Remarks) :
+                new ObjectParameter("PassengerTax_Remarks", typeof(string));
+    
+            var vehicle_Model_Over_5_YearsParameter = vehicle_Model_Over_5_Years.HasValue ?
+                new ObjectParameter("Vehicle_Model_Over_5_Years", vehicle_Model_Over_5_Years) :
+                new ObjectParameter("Vehicle_Model_Over_5_Years", typeof(bool));
+    
+            var vehicleModel_RemarksParameter = vehicleModel_Remarks != null ?
+                new ObjectParameter("VehicleModel_Remarks", vehicleModel_Remarks) :
+                new ObjectParameter("VehicleModel_Remarks", typeof(string));
+    
+            var total_NC_CountParameter = total_NC_Count.HasValue ?
+                new ObjectParameter("Total_NC_Count", total_NC_Count) :
+                new ObjectParameter("Total_NC_Count", typeof(int));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            var inspectionByEmployeeIdParameter = inspectionByEmployeeId.HasValue ?
+                new ObjectParameter("InspectionByEmployeeId", inspectionByEmployeeId) :
+                new ObjectParameter("InspectionByEmployeeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ManageVehicleInspection", vendor_IdParameter, vehicle_IdParameter, inspectionDateParameter, aC_WorkingParameter, aC_RemarksParameter, underInfluenceParameter, underInfluence_RemarksParameter, wiper_SeasonalParameter, wiper_RemarksParameter, national_PermitParameter, nationalPermit_RemarksParameter, windshield_BrokenParameter, windshield_RemarksParameter, trip_TypeParameter, visible_Body_DentParameter, bodyDent_RemarksParameter, seat_Belts_WorkingParameter, seatBelts_RemarksParameter, gPS_Not_AvailableParameter, gPS_RemarksParameter, state_PermitParameter, statePermit_RemarksParameter, unregistered_DriversParameter, unregisteredDrivers_RemarksParameter, shift_TimeParameter, dirty_Unclean_VehicleParameter, uncleanVehicle_RemarksParameter, seat_CoverParameter, seatCover_RemarksParameter, headlights_IndicatorsParameter, headlights_RemarksParameter, insuranceParameter, insurance_RemarksParameter, unregistered_CabParameter, unregisteredCab_RemarksParameter, city_NameParameter, driver_UniformParameter, driverUniform_RemarksParameter, spare_WheelParameter, spareWheel_RemarksParameter, rC_BookParameter, rCBook_RemarksParameter, pollutionParameter, pollution_RemarksParameter, penalty_AmountParameter, feedbackParameter, fire_ExtinguisherParameter, fireExtinguisher_RemarksParameter, tool_KitParameter, toolKit_RemarksParameter, fitnessParameter, fitness_RemarksParameter, commercial_LicenseParameter, commercialLicense_RemarksParameter, penalty_DescriptionParameter, first_Aid_BoxParameter, firstAidBox_RemarksParameter, fog_LampParameter, fogLamp_RemarksParameter, passenger_TaxParameter, passengerTax_RemarksParameter, vehicle_Model_Over_5_YearsParameter, vehicleModel_RemarksParameter, total_NC_CountParameter, isActiveParameter, inspectionByEmployeeIdParameter, responseMessage);
         }
     }
 }
