@@ -23,7 +23,7 @@ namespace VardaanCab.Domain.DTO
         public string NationalPermit_Remarks { get; set; }
         public bool Windshield_Broken { get; set; }
         public string Windshield_Remarks { get; set; }
-        public string Trip_Type { get; set; }
+        public int Trip_Type { get; set; }
         public bool Visible_Body_Dent { get; set; }
         public string BodyDent_Remarks { get; set; }
         public bool Seat_Belts_Working { get; set; }
@@ -34,7 +34,7 @@ namespace VardaanCab.Domain.DTO
         public string StatePermit_Remarks { get; set; }
         public bool Unregistered_Drivers { get; set; }
         public string UnregisteredDrivers_Remarks { get; set; }
-        public string Shift_Time { get; set; }
+        public int Shift_Time { get; set; }
         public bool Dirty_Unclean_Vehicle { get; set; }
         public string UncleanVehicle_Remarks { get; set; }
         public bool Seat_Cover { get; set; }

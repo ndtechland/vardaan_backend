@@ -28,7 +28,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string NationalPermit_Remarks { get; set; }
         public Nullable<bool> Windshield_Broken { get; set; }
         public string Windshield_Remarks { get; set; }
-        public string Trip_Type { get; set; }
+        public Nullable<int> Trip_Type { get; set; }
         public Nullable<bool> Visible_Body_Dent { get; set; }
         public string BodyDent_Remarks { get; set; }
         public Nullable<bool> Seat_Belts_Working { get; set; }
@@ -39,7 +39,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string StatePermit_Remarks { get; set; }
         public Nullable<bool> Unregistered_Drivers { get; set; }
         public string UnregisteredDrivers_Remarks { get; set; }
-        public string Shift_Time { get; set; }
+        public Nullable<int> Shift_Time { get; set; }
         public Nullable<bool> Dirty_Unclean_Vehicle { get; set; }
         public string UncleanVehicle_Remarks { get; set; }
         public Nullable<bool> Seat_Cover { get; set; }

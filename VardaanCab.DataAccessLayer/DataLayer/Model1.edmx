@@ -1427,7 +1427,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="NationalPermit_Remarks" Type="nvarchar" MaxLength="255" />
           <Property Name="Windshield_Broken" Type="bit" />
           <Property Name="Windshield_Remarks" Type="nvarchar" MaxLength="255" />
-          <Property Name="Trip_Type" Type="nvarchar" MaxLength="100" />
+          <Property Name="Trip_Type" Type="int" />
           <Property Name="Visible_Body_Dent" Type="bit" />
           <Property Name="BodyDent_Remarks" Type="nvarchar" MaxLength="255" />
           <Property Name="Seat_Belts_Working" Type="bit" />
@@ -1438,7 +1438,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="StatePermit_Remarks" Type="nvarchar" MaxLength="255" />
           <Property Name="Unregistered_Drivers" Type="bit" />
           <Property Name="UnregisteredDrivers_Remarks" Type="nvarchar" MaxLength="255" />
-          <Property Name="Shift_Time" Type="nvarchar" MaxLength="100" />
+          <Property Name="Shift_Time" Type="int" />
           <Property Name="Dirty_Unclean_Vehicle" Type="bit" />
           <Property Name="UncleanVehicle_Remarks" Type="nvarchar" MaxLength="255" />
           <Property Name="Seat_Cover" Type="bit" />
@@ -1853,7 +1853,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="NationalPermit_Remarks" Type="nvarchar" Mode="In" />
           <Parameter Name="Windshield_Broken" Type="bit" Mode="In" />
           <Parameter Name="Windshield_Remarks" Type="nvarchar" Mode="In" />
-          <Parameter Name="Trip_Type" Type="nvarchar" Mode="In" />
+          <Parameter Name="Trip_Type" Type="int" Mode="In" />
           <Parameter Name="Visible_Body_Dent" Type="bit" Mode="In" />
           <Parameter Name="BodyDent_Remarks" Type="nvarchar" Mode="In" />
           <Parameter Name="Seat_Belts_Working" Type="bit" Mode="In" />
@@ -1864,7 +1864,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="StatePermit_Remarks" Type="nvarchar" Mode="In" />
           <Parameter Name="Unregistered_Drivers" Type="bit" Mode="In" />
           <Parameter Name="UnregisteredDrivers_Remarks" Type="nvarchar" Mode="In" />
-          <Parameter Name="Shift_Time" Type="nvarchar" Mode="In" />
+          <Parameter Name="Shift_Time" Type="int" Mode="In" />
           <Parameter Name="Dirty_Unclean_Vehicle" Type="bit" Mode="In" />
           <Parameter Name="UncleanVehicle_Remarks" Type="nvarchar" Mode="In" />
           <Parameter Name="Seat_Cover" Type="bit" Mode="In" />
@@ -3575,7 +3575,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="VehicleCapacities" EntityType="Vardaan_AdminModel.VehicleCapacity" />
           <EntitySet Name="CompanyZones" EntityType="Vardaan_AdminModel.CompanyZone" />
           <EntitySet Name="DriverCheckoutRemarks" EntityType="Vardaan_AdminModel.DriverCheckoutRemark" />
-          <EntitySet Name="VehicleInspections" EntityType="Vardaan_AdminModel.VehicleInspection" />
           <FunctionImport Name="ManageVehicleInspection">
             <Parameter Name="Vendor_Id" Mode="In" Type="Int32" />
             <Parameter Name="Vehicle_Id" Mode="In" Type="Int32" />
@@ -3590,7 +3589,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="NationalPermit_Remarks" Mode="In" Type="String" />
             <Parameter Name="Windshield_Broken" Mode="In" Type="Boolean" />
             <Parameter Name="Windshield_Remarks" Mode="In" Type="String" />
-            <Parameter Name="Trip_Type" Mode="In" Type="String" />
+            <Parameter Name="Trip_Type" Mode="In" Type="Int32" />
             <Parameter Name="Visible_Body_Dent" Mode="In" Type="Boolean" />
             <Parameter Name="BodyDent_Remarks" Mode="In" Type="String" />
             <Parameter Name="Seat_Belts_Working" Mode="In" Type="Boolean" />
@@ -3601,7 +3600,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="StatePermit_Remarks" Mode="In" Type="String" />
             <Parameter Name="Unregistered_Drivers" Mode="In" Type="Boolean" />
             <Parameter Name="UnregisteredDrivers_Remarks" Mode="In" Type="String" />
-            <Parameter Name="Shift_Time" Mode="In" Type="String" />
+            <Parameter Name="Shift_Time" Mode="In" Type="Int32" />
             <Parameter Name="Dirty_Unclean_Vehicle" Mode="In" Type="Boolean" />
             <Parameter Name="UncleanVehicle_Remarks" Mode="In" Type="String" />
             <Parameter Name="Seat_Cover" Mode="In" Type="Boolean" />
@@ -3645,6 +3644,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="InspectionByEmployeeId" Mode="In" Type="Int32" />
             <Parameter Name="ResponseMessage" Mode="InOut" Type="String" />
           </FunctionImport>
+          <EntitySet Name="VehicleInspections" EntityType="Vardaan_AdminModel.VehicleInspection" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -5036,7 +5036,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="NationalPermit_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Windshield_Broken" Type="Boolean" />
           <Property Name="Windshield_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Trip_Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Trip_Type" Type="Int32" />
           <Property Name="Visible_Body_Dent" Type="Boolean" />
           <Property Name="BodyDent_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Seat_Belts_Working" Type="Boolean" />
@@ -5047,7 +5047,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="StatePermit_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Unregistered_Drivers" Type="Boolean" />
           <Property Name="UnregisteredDrivers_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Shift_Time" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Shift_Time" Type="Int32" />
           <Property Name="Dirty_Unclean_Vehicle" Type="Boolean" />
           <Property Name="UncleanVehicle_Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Seat_Cover" Type="Boolean" />
@@ -7612,6 +7612,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ManageVehicleInspection" FunctionName="Vardaan_AdminModel.Store.ManageVehicleInspection" />
           <EntitySetMapping Name="VehicleInspections">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.VehicleInspection">
               <MappingFragment StoreEntitySet="VehicleInspection">
@@ -7685,7 +7686,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="ManageVehicleInspection" FunctionName="Vardaan_AdminModel.Store.ManageVehicleInspection" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

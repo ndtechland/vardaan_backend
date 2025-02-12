@@ -74,7 +74,8 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <input type="date" class="form-control">
+                                        @Html.TextBoxFor(a => a.InspectionDate, new { @class = "form-control mt-2",type="date" })
+
                                     </div>
 
                                     <div class="col-md-1">
@@ -84,8 +85,7 @@
                                     <div class="col-md-2" id="vehicleDetailsContainer" style="display: none;">
                                         <input type="text" class="form-control" id="selectedVehicleDetails" readonly>
                                     </div>
-
-                                    <div class="col-md-3">
+                                    <div class="col-md-3" id="buttonFieldsRow" style="display:none;">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-primary btn-xs" id="checkAll">Check All</button>
                                             <button type="button" class="btn btn-warning btn-xs" id="uncheckAll">Uncheck All</button>
@@ -107,7 +107,7 @@
                                         </div>
                                         <div class="col-md-2">
                                             <input type="checkbox" name="Wiper_Seasonal" class="check-item"> Wiper (Seasonal)
-                                            @Html.TextBoxFor(a => a.Wiper_Seasonal, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
+                                            @Html.TextBoxFor(a => a.Wiper_Remarks, new { @class = "form-control mt-2", placeholder = "Enter Remarks" })
                                             <hr>
                                         </div>
                                         <div class="col-md-2">
@@ -449,6 +449,7 @@
                         $("#vehicleDetailsContainer").show(); // Show the field after submission
                         // Show the predefined extra fields row
                         $("#extraFieldsRow").show();
+                        $("#buttonFieldsRow").show();
                     },
                     error: function () {
                         alert("Error fetching vehicle model. Please try again.");

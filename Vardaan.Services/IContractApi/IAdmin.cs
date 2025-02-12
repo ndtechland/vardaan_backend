@@ -24,5 +24,6 @@ namespace Vardaan.Services.IContractApi
         Task<bool> AddDriverCheckoutRemark(DriverCheckoutRemarkModel model);
         Task<bool> UpdateCheckinDriver(AvailableDriverDTO model);
         Task<bool> AddCheckinDriverVehicle(AvailableDriverDTO model);
+        Task<string> AddVehicleInspection(VehicleInspectionDTO model);
     }
 }

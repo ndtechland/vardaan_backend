@@ -1192,7 +1192,5 @@ namespace VardaanCab.Controllers
                 return Json(new { vehicleModel = "Unknown Model" }, JsonRequestBehavior.AllowGet);
             }
         }
-
-
     }
 }
