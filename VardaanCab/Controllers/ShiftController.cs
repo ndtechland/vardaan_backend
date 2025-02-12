@@ -84,7 +84,6 @@ namespace VardaanCab.Controllers
             }
             catch (Exception ex)
             {
-               
                 TempData["msg"] = "A server error occurred:"+ ex;
 
                 return RedirectToAction("ShiftTime");
