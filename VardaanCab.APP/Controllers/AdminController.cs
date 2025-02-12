@@ -466,6 +466,41 @@ namespace VardaanCab.APP.Controllers
                 return Content(HttpStatusCode.InternalServerError, response);
             }
         }
+        [HttpPost]
+        [Route("VehicleInspection")]
+        public async Task<IHttpActionResult> VehicleInspection(VehicleInspectionDTO model)
+        {
+            var response = new Response<VehicleInspectionDTO>();
+
+            try
+            {
+                string isCreated = await _admin.AddVehicleInspection(model);
+                if (isCreated != null)
+                {
+                    response.Succeeded = true;
+                    response.Status = "Success";
+                    response.StatusCode = StatusCodes.Status200OK;
+                    response.Message = isCreated;
+                    return Content(HttpStatusCode.OK, response);
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.Status = "Failed";
+                    response.StatusCode = StatusCodes.Status400BadRequest;
+                    response.Message = "Failed to add vehicle inspection.";
+                    return Content(HttpStatusCode.BadRequest, response);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Succeeded = false;
+                response.Status = "Failed";
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+                response.Message = "An error occurred during login.";
+                return Content(HttpStatusCode.InternalServerError, response);
+            }
+        }
 
     }
 }

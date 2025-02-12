@@ -1375,7 +1375,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ManageEmployee", actionParameter, idParameter, company_IdParameter, company_locationParameter, employee_IdParameter, employee_First_NameParameter, employee_Middle_NameParameter, employee_Last_NameParameter, genderParameter, mobileNumberParameter, alternateNumberParameter, emailParameter, stateIdParameter, cityIdParameter, pincodeParameter, employeeCurrentAddressParameter, loginUserNameParameter, weekOffParameter, employeeGeoCodeParameter, employeeBusinessUnitParameter, employeeDepartmentParameter, employeeProjectNameParameter, reportingManagerParameter, primaryFacilityZoneParameter, homeRouteNameParameter, employeeDestinationAreaParameter, employeeRegistrationTypeParameter, isActiveParameter, isFirstParameter, latitudeParameter, longitudeParameter, responseMessage);
         }
     
-        public virtual int ManageVehicleInspection(Nullable<int> vendor_Id, Nullable<int> vehicle_Id, Nullable<System.DateTime> inspectionDate, Nullable<bool> aC_Working, string aC_Remarks, Nullable<bool> underInfluence, string underInfluence_Remarks, Nullable<bool> wiper_Seasonal, string wiper_Remarks, Nullable<bool> national_Permit, string nationalPermit_Remarks, Nullable<bool> windshield_Broken, string windshield_Remarks, string trip_Type, Nullable<bool> visible_Body_Dent, string bodyDent_Remarks, Nullable<bool> seat_Belts_Working, string seatBelts_Remarks, Nullable<bool> gPS_Not_Available, string gPS_Remarks, Nullable<bool> state_Permit, string statePermit_Remarks, Nullable<bool> unregistered_Drivers, string unregisteredDrivers_Remarks, string shift_Time, Nullable<bool> dirty_Unclean_Vehicle, string uncleanVehicle_Remarks, Nullable<bool> seat_Cover, string seatCover_Remarks, Nullable<bool> headlights_Indicators, string headlights_Remarks, Nullable<bool> insurance, string insurance_Remarks, Nullable<bool> unregistered_Cab, string unregisteredCab_Remarks, string city_Name, Nullable<bool> driver_Uniform, string driverUniform_Remarks, Nullable<bool> spare_Wheel, string spareWheel_Remarks, Nullable<bool> rC_Book, string rCBook_Remarks, Nullable<bool> pollution, string pollution_Remarks, Nullable<decimal> penalty_Amount, string feedback, Nullable<bool> fire_Extinguisher, string fireExtinguisher_Remarks, Nullable<bool> tool_Kit, string toolKit_Remarks, Nullable<bool> fitness, string fitness_Remarks, Nullable<bool> commercial_License, string commercialLicense_Remarks, string penalty_Description, Nullable<bool> first_Aid_Box, string firstAidBox_Remarks, Nullable<bool> fog_Lamp, string fogLamp_Remarks, Nullable<bool> passenger_Tax, string passengerTax_Remarks, Nullable<bool> vehicle_Model_Over_5_Years, string vehicleModel_Remarks, Nullable<int> total_NC_Count, Nullable<bool> isActive, Nullable<int> inspectionByEmployeeId, ObjectParameter responseMessage)
+        public virtual int ManageVehicleInspection(Nullable<int> vendor_Id, Nullable<int> vehicle_Id, Nullable<System.DateTime> inspectionDate, Nullable<bool> aC_Working, string aC_Remarks, Nullable<bool> underInfluence, string underInfluence_Remarks, Nullable<bool> wiper_Seasonal, string wiper_Remarks, Nullable<bool> national_Permit, string nationalPermit_Remarks, Nullable<bool> windshield_Broken, string windshield_Remarks, Nullable<int> trip_Type, Nullable<bool> visible_Body_Dent, string bodyDent_Remarks, Nullable<bool> seat_Belts_Working, string seatBelts_Remarks, Nullable<bool> gPS_Not_Available, string gPS_Remarks, Nullable<bool> state_Permit, string statePermit_Remarks, Nullable<bool> unregistered_Drivers, string unregisteredDrivers_Remarks, Nullable<int> shift_Time, Nullable<bool> dirty_Unclean_Vehicle, string uncleanVehicle_Remarks, Nullable<bool> seat_Cover, string seatCover_Remarks, Nullable<bool> headlights_Indicators, string headlights_Remarks, Nullable<bool> insurance, string insurance_Remarks, Nullable<bool> unregistered_Cab, string unregisteredCab_Remarks, string city_Name, Nullable<bool> driver_Uniform, string driverUniform_Remarks, Nullable<bool> spare_Wheel, string spareWheel_Remarks, Nullable<bool> rC_Book, string rCBook_Remarks, Nullable<bool> pollution, string pollution_Remarks, Nullable<decimal> penalty_Amount, string feedback, Nullable<bool> fire_Extinguisher, string fireExtinguisher_Remarks, Nullable<bool> tool_Kit, string toolKit_Remarks, Nullable<bool> fitness, string fitness_Remarks, Nullable<bool> commercial_License, string commercialLicense_Remarks, string penalty_Description, Nullable<bool> first_Aid_Box, string firstAidBox_Remarks, Nullable<bool> fog_Lamp, string fogLamp_Remarks, Nullable<bool> passenger_Tax, string passengerTax_Remarks, Nullable<bool> vehicle_Model_Over_5_Years, string vehicleModel_Remarks, Nullable<int> total_NC_Count, Nullable<bool> isActive, Nullable<int> inspectionByEmployeeId, ObjectParameter responseMessage)
         {
             var vendor_IdParameter = vendor_Id.HasValue ?
                 new ObjectParameter("Vendor_Id", vendor_Id) :
@@ -1429,9 +1429,9 @@ namespace VardaanCab.DataAccessLayer.DataLayer
                 new ObjectParameter("Windshield_Remarks", windshield_Remarks) :
                 new ObjectParameter("Windshield_Remarks", typeof(string));
     
-            var trip_TypeParameter = trip_Type != null ?
+            var trip_TypeParameter = trip_Type.HasValue ?
                 new ObjectParameter("Trip_Type", trip_Type) :
-                new ObjectParameter("Trip_Type", typeof(string));
+                new ObjectParameter("Trip_Type", typeof(int));
     
             var visible_Body_DentParameter = visible_Body_Dent.HasValue ?
                 new ObjectParameter("Visible_Body_Dent", visible_Body_Dent) :
@@ -1473,9 +1473,9 @@ namespace VardaanCab.DataAccessLayer.DataLayer
                 new ObjectParameter("UnregisteredDrivers_Remarks", unregisteredDrivers_Remarks) :
                 new ObjectParameter("UnregisteredDrivers_Remarks", typeof(string));
     
-            var shift_TimeParameter = shift_Time != null ?
+            var shift_TimeParameter = shift_Time.HasValue ?
                 new ObjectParameter("Shift_Time", shift_Time) :
-                new ObjectParameter("Shift_Time", typeof(string));
+                new ObjectParameter("Shift_Time", typeof(int));
     
             var dirty_Unclean_VehicleParameter = dirty_Unclean_Vehicle.HasValue ?
                 new ObjectParameter("Dirty_Unclean_Vehicle", dirty_Unclean_Vehicle) :
