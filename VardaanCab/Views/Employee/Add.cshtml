@@ -130,6 +130,21 @@
     .blurred {
         filter: blur(1px);
     }
+
+    #errorTable .modal-body {
+        max-height: 400px; /* Or whatever max height you prefer */
+        overflow-y: auto; /* Enable scrolling if content overflows */
+    }
+
+    #errorTable th, #errorTable td {
+        word-wrap: break-word; /* Prevent overflow */
+        white-space: normal; /* Allow text to break onto the next line */
+    }
+
+    #errorTable td {
+        max-width: 300px; /* Set a max width for the Description column */
+        word-break: break-word; /* Ensures long text breaks correctly */
+    }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
