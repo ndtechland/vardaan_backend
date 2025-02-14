@@ -264,7 +264,7 @@ namespace Vardaan.Services.Implementation
                 throw;
             }
         }
-        public async Task<string> AddVehicleInspection(VehicleInspectionDTO model)
+        public async Task<string> AddVehicleInspection(VehicleInspectionDTO model,int userId)
         {
             try
             {
@@ -342,7 +342,7 @@ namespace Vardaan.Services.Implementation
                         command.Parameters.Add(new EntityParameter("VehicleModel_Remarks", DbType.String) { Value = model.VehicleModel_Remarks });
                         command.Parameters.Add(new EntityParameter("Total_NC_Count", DbType.String) { Value = model.Total_NC_Count });
                         command.Parameters.Add(new EntityParameter("IsActive", DbType.Boolean) { Value = true });
-                        command.Parameters.Add(new EntityParameter("InspectionByEmployeeId", DbType.String) { Value = model.InspectionByEmployeeId });
+                        command.Parameters.Add(new EntityParameter("InspectionByEmployeeId", DbType.String) { Value = userId });
 
                         var responseMessageParam = new EntityParameter("ResponseMessage", DbType.String) { Direction = ParameterDirection.Output, Size = 255 };
                         command.Parameters.Add(responseMessageParam);
