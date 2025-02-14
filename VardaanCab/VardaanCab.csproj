@@ -4595,6 +4595,7 @@
     <Content Include="Views\ETS\EscortCheckIn.cshtml" />
     <Content Include="Views\ETS\EscortAvailable.cshtml" />
     <Content Include="Views\ETS\VehicleInspection.cshtml" />
+    <Content Include="Views\ETS\VehicleInspectionDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

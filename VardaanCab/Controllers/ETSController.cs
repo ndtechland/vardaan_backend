@@ -1151,7 +1151,27 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                string isCreated = await _ets.AddVehicleInspection(model);
+                var companyList = new List<Customer>();
+                int userId = int.Parse(User.Identity.Name);
+
+                //if (Session["IsAuth"] != null && Convert.ToBoolean(Session["IsAuth"]) == false)
+                //{
+                //    companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
+                //}
+                //else
+                //{
+                //    var empinfo = ent.Employees.FirstOrDefault(e => e.Id == userId);
+
+                //    if (empinfo != null)
+                //    {
+                //        companyList = ent.Customers.Where(x => x.IsActive == true && x.Id == empinfo.Company_Id).ToList();
+                //    }
+                //    else
+                //    {
+                //        companyList = new List<Customer>();
+                //    }
+                //}
+                string isCreated = await _ets.AddVehicleInspection(model, userId);
                 if (isCreated != null)
                 {
                     TempData["msg"] = isCreated;
@@ -1190,6 +1210,24 @@ namespace VardaanCab.Controllers
             else
             {
                 return Json(new { vehicleModel = "Unknown Model" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult VehicleInspectionDetail()
+        {
+            try
+            {
+                var model = new VehicleInspectionDTO();
+                model.Companies = new SelectList(ent.Vendors.Where(c => c.IsActive).ToList(), "Id", "CompanyName");
+                model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
+                model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
+                model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }

@@ -131,7 +131,7 @@ namespace Vardaan.Services.ImplementationApi
                                         MobileNumber = d.MobileNumber,
                                         VehicleNumber = c.VehicleNumber,
                                     }).ToListAsync();
-                // Fetch vendor name
+               
                 
                 var vendor = await ent.Vendors
                       .Where(v => v.Id == VendorId && v.IsActive)
@@ -526,6 +526,19 @@ namespace Vardaan.Services.ImplementationApi
                 }
             }
             catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public async Task<List<TripMaster>> GetTripTypeMaster()
+        {
+            try
+            {
+                var data = ent.TripMasters.ToListAsync();
+                return await data;
+            }
+            catch (Exception)
             {
 
                 throw;

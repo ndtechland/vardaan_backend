@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTOAPI;
 
 namespace Vardaan.Services.IContractApi
@@ -25,5 +26,6 @@ namespace Vardaan.Services.IContractApi
         Task<bool> UpdateCheckinDriver(AvailableDriverDTO model);
         Task<bool> AddCheckinDriverVehicle(AvailableDriverDTO model);
         Task<string> AddVehicleInspection(VehicleInspectionDTO model);
+        Task<List<TripMaster>> GetTripTypeMaster();
     }
 }

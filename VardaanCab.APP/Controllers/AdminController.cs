@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Vardaan.Services.IContractApi;
@@ -95,9 +96,9 @@ namespace VardaanCab.APP.Controllers
                 else
                 {
                     response.Succeeded = false;
-                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.StatusCode = StatusCodes.Status200OK;
                     response.Message = "No drivers found.";
-                    return Content(HttpStatusCode.NotFound, response);
+                    return Content(HttpStatusCode.OK, response);
 
                 }
 
@@ -499,6 +500,21 @@ namespace VardaanCab.APP.Controllers
                 response.StatusCode = StatusCodes.Status500InternalServerError;
                 response.Message = "An error occurred during login.";
                 return Content(HttpStatusCode.InternalServerError, response);
+            }
+        }
+        [HttpGet]
+        [Route("TripTypeMaster")]
+        public async Task<IHttpActionResult> TripTypeMaster()
+        {
+            try
+            {
+                var data = await _admin.GetTripTypeMaster();
+                return Ok(new { StatusCode = 200, Status = "Success", Message = "Trip type retrieved successfully.", data = data });
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 
