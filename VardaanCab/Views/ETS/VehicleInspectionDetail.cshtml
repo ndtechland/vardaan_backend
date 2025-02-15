@@ -69,454 +69,88 @@
                                                 </div>
                                             </div>
                                         }
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        @Html.DropDownListFor(a => a.Vendor_Id, Model.Companies, "Select Company", new { @class = "form-control", required = "required", id = "vendorDropdown" })
-                                        <span class="text-danger">
-                                            @Html.ValidationMessageFor(a => a.Vendor_Id)
-                                        </span>
-                                    </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.DropDownListFor(a => a.Vendor_Id, Model.Companies, "Select Company", new { @class = "form-control", required = "required", id = "vendorDropdown" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.Vendor_Id)
+                                                </span>
+                                            </div>
 
-                                    <div class="col-md-2">
-                                        @Html.HiddenFor(a => a.Vehicle_Id, new { id = "vehicle_Id" })
-                                        @Html.TextBox("vehicleNumber", null, new { @class = "form-control", id = "vehicleNumber", disabled = "disabled" })
-                                    </div>
+                                            <div class="col-md-2">
+                                                @Html.HiddenFor(a => a.Vehicle_Id, new { id = "vehicle_Id" })
+                                                @Html.TextBox("vehicleNumber", null, new { @class = "form-control", id = "vehicleNumber", disabled = "disabled" })
+                                            </div>
 
-                                    <div class="col-md-2">
-                                        <select class="form-control">
-                                            <option value="View">View</option>
-                                            <option value="CSV">CSV</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-
-                                    </div>
-                                    <div class="floatLeft col-md-4">
-                                        <div class="calenderMainDiv floatRight pointer ng-scope" popover-template="partials/popovers/calenderReport.jsp" popover-placement="bottom" popover-title="Get Report" popover-trigger="click">
-                                            <span>
-                                                <i class="fa fa-calendar"></i>
-                                            </span>
-                                            <span class="ng-binding">February 13, 2025 - February 14, 2025</span>
-                                            
-                                        </div><div class="popover bottom fade in" ng-class="{ in: isOpen(), fade: animation() }" popover-template-popup="" title="Get Report" content="partials/popovers/calenderReport.jsp" placement="bottom" animation="tt_animation" is-open="tt_isOpen" template="tt_template" style="top: 38.5625px; left: 341.242px; display: block;">
-                                            <div class="arrow"></div>
-
-                                            <div class="popover-inner">
-                                                <h3 class="popover-title ng-binding" ng-bind="title" ng-show="title">Get Report</h3>
-                                                <div class="popover-content">
-                                                    
-
-                                                    <div class="calenderReportPopoverTemp container-fluid ng-scope">
-                                                        <div class="row marginRow mainDiv">
-                                                            <div class="dateRangeDiv">
-                                                                <ul class="dateRange">
-                                                                    <li ng-click="updateDate('today',facilityData.listOfFacility)" class="pointer todayReport reportDateList" ng-class="{inActive: dates[0].isClicked}">Today</li>
-                                                                    <li ng-click="updateDate('yesturday',facilityData.listOfFacility)" class="pointer yesturdayReport reportDateList" ng-class="{inActive: dates[1].isClicked}">Yesterday</li>
-                                                                    <li ng-click="updateDate('last7',facilityData.listOfFacility)" class="pointer last7Report reportDateList" ng-class="{inActive: dates[2].isClicked}">Last 7 Days</li>
-                                                                    <li ng-click="updateDate('last30',facilityData.listOfFacility)" class="pointer last30Report reportDateList" ng-class="{inActive: dates[3].isClicked}">Last 30 Days</li>
-                                                                    <li ng-click="updateDate('thisMonth',facilityData.listOfFacility)" class="pointer thisMonth reportDateList" ng-class="{inActive: dates[4].isClicked}">This Month</li>
-                                                                    <li ng-click="updateDate('customDate',facilityData.listOfFacility)" class="pointer customRange reportDateList" ng-class="{customDivIsOpen: openCustomRange}">Custom Range</li>
-                                                                    <li class="customDateDiv ng-hide" ng-show="openCustomRange">
-                                                                        <form class="row ng-pristine ng-invalid ng-invalid-required" name="calender">
-                                                                            <div class="col-md-12 col-xs-12 customInput1">
-                                                                                <span>From</span><br>
-                                                                                <div class="input-group calendarInput calendarInput2">
-                                                                                    <input type="text" ng-model="from" id="from" class="form-control ng-isolate-scope ng-pristine ng-invalid ng-invalid-required ng-valid-date" name="fromDate" placeholder="" ng-change="checkDateRangeValidity(from, to)" datepicker-popup="dd-MM-yyyy" is-open="datePicker.fromDate" show-button-bar="false" datepicker-options="dateOptions" required="" ng-class="{error: calender.fromDate.$invalid &amp;&amp; !calender.fromDate.$pristine}"><ul class="dropdown-menu ng-pristine ng-valid ng-valid-date-disabled" ng-style="{display: (isOpen &amp;&amp; 'block') || 'none'}" ng-keydown="keydown($event)" datepicker-popup-wrap="" ng-model="date" ng-change="dateSelection()" style="display: none;">
-                                                                                        <li ng-transclude="">
-                                                                                            <div ng-switch="datepickerMode" role="application" ng-keydown="keydown($event)" datepicker="" format-year="yy" starting-day="1" show-weeks="false" class="ng-isolate-scope">
-                                                                                                <!-- ngSwitchWhen: day --><table role="grid" aria-labelledby="datepicker-0D0-1451-title" aria-activedescendant="datepicker-0D0-1451-17" ng-switch-when="day" tabindex="0" class="">
-                                                                                                    <thead>
-                                                                                                        <tr>
-                                                                                                            <th><button type="button" class="btn btn-default btn-sm pull-left" ng-click="move(-1)" tabindex="-1"><i class="glyphicon glyphicon-chevron-left"></i></button></th>
-                                                                                                            <th colspan="5"><button id="datepicker-0D0-1451-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-default btn-sm" ng-click="toggleMode()" tabindex="-1" style="width:100%;"><strong class="ng-binding">February 2025</strong></button></th>
-                                                                                                            <th><button type="button" class="btn btn-default btn-sm pull-right" ng-click="move(1)" tabindex="-1"><i class="glyphicon glyphicon-chevron-right"></i></button></th>
-                                                                                                        </tr>
-                                                                                                        <tr>
-                                                                                                            <th ng-show="showWeeks" class="text-center ng-hide"></th>
-                                                                                                            <!-- ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Monday" class="ng-binding">Mon</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Tuesday" class="ng-binding">Tue</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Wednesday" class="ng-binding">Wed</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Thursday" class="ng-binding">Thu</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Friday" class="ng-binding">Fri</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Saturday" class="ng-binding">Sat</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Sunday" class="ng-binding">Sun</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                        </tr>
-                                                                                                    </thead>
-                                                                                                    <tbody>
-                                                                                                        <!-- ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-0" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">27</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-1" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">28</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-2" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">29</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-3" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">30</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-4" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">31</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-5" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">01</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-6" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">02</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-7" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">03</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-8" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">04</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-9" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">05</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-10" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">06</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-11" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">07</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-12" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">08</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-13" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">09</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-14" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">10</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-15" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">11</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-16" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">12</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-17" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm active" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-info">13</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-18" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">14</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-19" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">15</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-20" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">16</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-21" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">17</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-22" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">18</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-23" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">19</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-24" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">20</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-25" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">21</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-26" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">22</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-27" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">23</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-28" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">24</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-29" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">25</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-30" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">26</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-31" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">27</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-32" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">28</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-33" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">01</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-34" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">02</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-35" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">03</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-36" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">04</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-37" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">05</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-38" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">06</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-39" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">07</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-40" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">08</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D0-1451-41" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">09</span></button>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                    </tbody>
-                                                                                                </table>
-                                                                                            </div>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                    <span class="input-group-btn">
-                                                                                        <button class="btn btn-default" ng-click="fromDateCal($event)">
-                                                                                            <i class="icon-calendar calInputIcon"></i>
-                                                                                        </button>
-                                                                                    </span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-12 col-xs-12 customInput2">
-                                                                                <span>To</span><br>
-                                                                                <div class="input-group calendarInput calendarInput2">
-                                                                                    <input type="text" ng-model="to" class="form-control ng-isolate-scope ng-pristine ng-invalid ng-invalid-required ng-valid-date" id="toDate" name="toDate" placeholder="" datepicker-popup="dd-MM-yyyy" min-date="from" is-open="datePicker.toDate" show-button-bar="false" datepicker-options="dateOptions" required="" ng-class="{error: calender.toDate.$invalid &amp;&amp; !calender.toDate.$pristine}"><ul class="dropdown-menu ng-pristine ng-valid ng-valid-date-disabled" ng-style="{display: (isOpen &amp;&amp; 'block') || 'none'}" ng-keydown="keydown($event)" datepicker-popup-wrap="" ng-model="date" ng-change="dateSelection()" style="display: none;">
-                                                                                        <li ng-transclude="">
-                                                                                            <div ng-switch="datepickerMode" role="application" ng-keydown="keydown($event)" datepicker="" format-year="yy" starting-day="1" show-weeks="false" min-date="minDate" class="ng-isolate-scope">
-                                                                                                <!-- ngSwitchWhen: day --><table role="grid" aria-labelledby="datepicker-0D2-8715-title" aria-activedescendant="datepicker-0D2-8715-17" ng-switch-when="day" tabindex="0" class="">
-                                                                                                    <thead>
-                                                                                                        <tr>
-                                                                                                            <th><button type="button" class="btn btn-default btn-sm pull-left" ng-click="move(-1)" tabindex="-1"><i class="glyphicon glyphicon-chevron-left"></i></button></th>
-                                                                                                            <th colspan="5"><button id="datepicker-0D2-8715-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-default btn-sm" ng-click="toggleMode()" tabindex="-1" style="width:100%;"><strong class="ng-binding">February 2025</strong></button></th>
-                                                                                                            <th><button type="button" class="btn btn-default btn-sm pull-right" ng-click="move(1)" tabindex="-1"><i class="glyphicon glyphicon-chevron-right"></i></button></th>
-                                                                                                        </tr>
-                                                                                                        <tr>
-                                                                                                            <th ng-show="showWeeks" class="text-center ng-hide"></th>
-                                                                                                            <!-- ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Monday" class="ng-binding">Mon</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Tuesday" class="ng-binding">Tue</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Wednesday" class="ng-binding">Wed</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Thursday" class="ng-binding">Thu</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Friday" class="ng-binding">Fri</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Saturday" class="ng-binding">Sat</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                            <th ng-repeat="label in labels track by $index" class="text-center ng-scope"><small aria-label="Sunday" class="ng-binding">Sun</small></th><!-- end ngRepeat: label in labels track by $index -->
-                                                                                                        </tr>
-                                                                                                    </thead>
-                                                                                                    <tbody>
-                                                                                                        <!-- ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-0" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">27</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-1" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">28</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-2" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">29</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-3" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">30</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-4" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">31</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-5" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">01</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-6" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">02</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-7" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">03</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-8" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">04</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-9" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">05</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-10" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">06</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-11" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">07</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-12" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">08</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-13" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">09</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-14" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">10</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-15" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">11</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-16" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">12</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-17" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm active" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-info">13</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-18" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">14</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-19" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">15</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-20" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">16</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-21" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">17</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-22" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">18</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-23" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">19</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-24" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">20</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-25" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">21</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-26" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">22</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-27" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">23</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-28" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">24</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-29" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">25</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-30" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">26</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-31" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">27</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-32" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding">28</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-33" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">01</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-34" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">02</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                        <tr ng-repeat="row in rows track by $index" class="ng-scope">
-                                                                                                            <td ng-show="showWeeks" class="text-center h6 ng-hide"><em class="ng-binding"></em></td>
-                                                                                                            <!-- ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-35" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">03</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-36" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">04</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-37" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">05</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-38" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">06</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-39" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">07</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-40" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">08</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                            <td ng-repeat="dt in row track by dt.date" class="text-center ng-scope" role="gridcell" id="datepicker-0D2-8715-41" aria-disabled="false">
-                                                                                                                <button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}" class="ng-binding text-muted">09</span></button>
-                                                                                                            </td><!-- end ngRepeat: dt in row track by dt.date -->
-                                                                                                        </tr><!-- end ngRepeat: row in rows track by $index -->
-                                                                                                    </tbody>
-                                                                                                </table>
-                                                                                                <!-- ngSwitchWhen: month -->
-                                                                                                <!-- ngSwitchWhen: year -->
-                                                                                            </div>
-                                                                                        </li>
-                                                                                        <!-- ngIf: showButtonBar -->
-                                                                                    </ul>
-                                                                                    <span class="input-group-btn">
-                                                                                        <button class="btn btn-default" ng-click="toDateCal($event)">
-                                                                                            <i class="icon-calendar calInputIcon"></i>
-                                                                                        </button>
-                                                                                    </span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <input class="col-md-12 col-xs-12 btn btn-success btn-xs showCustomReportButton" type="button" value="Show Report" ng-click="getReport(from, to,facilityData.listOfFacility, true)" ng-show="!dateRangeError" ng-disabled="calender.$invalid" disabled="disabled">
-                                                                            <input class="col-md-12 col-xs-12 btn btn-warning btn-xs showCustomReportButton ng-hide" type="button" value="In-valid Date Range" ng-click="getReport(from, to,facilityData.listOfFacility, true)" ng-show="dateRangeError">
-                                                                        </form>
-                                                                    </li>
-                                                                </ul>
+                                            <div class="col-md-2">
+                                                <select class="form-control">
+                                                    <option value="View">View</option>
+                                                    <option value="CSV">CSV</option>
+                                                </select>
+                                            </div>
+                                           
+                                            <div class="floatLeft col-sm-3">
+                                                <div class="calenderMainDiv">
+                                                    <span>
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <span class="ng-binding">February 13, 2025 - February 14, 2025</span>
+                                                </div>
+                                                <div class="popover" style="top: 38.5625px; left: 341.242px; display: block;">
+                                                    <div class="arrow"></div>
+                                                    <div class="popover-inner">
+                                                        <h3 class="popover-title">Get Report</h3>
+                                                        <div class="popover-content">
+                                                            <div class="calenderReportPopoverTemp container-fluid">
+                                                                <div class="row marginRow mainDiv">
+                                                                    <div class="dateRangeDiv">
+                                                                        <ul class="dateRange">
+                                                                            <li class="pointer todayReport reportDateList">Today</li>
+                                                                            <li class="pointer yesturdayReport reportDateList">Yesterday</li>
+                                                                            <li class="pointer last7Report reportDateList">Last 7 Days</li>
+                                                                            <li class="pointer last30Report reportDateList">Last 30 Days</li>
+                                                                            <li class="pointer thisMonth reportDateList">This Month</li>
+                                                                            <li class="pointer customRange reportDateList">Custom Range</li>
+                                                                            <li class="customDateDiv">
+                                                                                <form class="row" name="calender">
+                                                                                    <div class="col-md-12 col-xs-12 customInput1">
+                                                                                        <span>From</span><br>
+                                                                                        <div class="input-group calendarInput calendarInput2">
+                                                                                            <input type="text" id="from" class="form-control" name="fromDate" placeholder="">
+                                                                                            <span class="input-group-btn">
+                                                                                                <button class="btn btn-default">
+                                                                                                    <i class="icon-calendar calInputIcon"></i>
+                                                                                                </button>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-12 col-xs-12 customInput2">
+                                                                                        <span>To</span><br>
+                                                                                        <div class="input-group calendarInput calendarInput2">
+                                                                                            <input type="text" id="toDate" class="form-control" name="toDate" placeholder="">
+                                                                                            <span class="input-group-btn">
+                                                                                                <button class="btn btn-default">
+                                                                                                    <i class="icon-calendar calInputIcon"></i>
+                                                                                                </button>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <input class="col-md-12 col-xs-12 btn btn-success btn-xs showCustomReportButton" type="button" value="Show Report" disabled="disabled">
+                                                                                    <input class="col-md-12 col-xs-12 btn btn-warning btn-xs showCustomReportButton" type="button" value="In-valid Date Range">
+                                                                                </form>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-
-
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            @*<div class="col-md-4">
+                                                    <input type="text" class="form-control" id="calendarInput">
+                                                </div>*@
                                         </div>
-                                    </div>
-                                    @*<div class="col-md-4">
-            <input type="text" class="form-control" id="calendarInput">
-        </div>*@
-                                </div>
 
                                     }
                                 </div>
@@ -528,7 +162,6 @@
         </div>
     </div>
 </div>
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         $("#vehicleNumber").autocomplete({
@@ -577,5 +210,14 @@
         });
 
 
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".popover").hide();
+        $(".calenderMainDiv").click(function () {
+            $(".popover").toggle();
+        })
     });
 </script>
