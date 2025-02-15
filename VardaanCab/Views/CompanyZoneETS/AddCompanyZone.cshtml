@@ -65,6 +65,14 @@
                                                     </div>
                                                 </div>
                                             }
+                                            @if (TempData["errormsg"] != null)
+                                            {
+                                                <div class="mb-3">
+                                                    <div class="alert alert-danger border-danger">
+                                                        @TempData["errormsg"]
+                                                    </div>
+                                                </div>
+                                            }
                                             <div class="row">
 
                                                 <div class="col-md-6">
