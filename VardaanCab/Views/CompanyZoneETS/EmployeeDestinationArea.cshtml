@@ -40,10 +40,25 @@
 
                                     <!-- Import and Export Section -->
                                     <div class="d-flex align-items-center">
+                                        <!-- Export Section -->
                                         <a href="/CompanyZoneETS/AllEmployeeDestinationArea?menuId=@ViewBag.menuId" class="btn btn-primary btn-sm">
                                             Show All
                                         </a>
+                                        <b class="mr-2">Import To Excel Format:</b>
+                                        <a href="@Url.Action("DestinationAreaExportToExcel", "CompanyZoneETS")" class="btn btn-link">
+                                            <img src="~/files/assets/images/Export-Image.png" alt="Export" class="img-fluid" style="height: 42px; width: 108px;" />
+                                        </a>
+
+                                        <!-- Import Form -->
+                                        @using (Html.BeginForm("ImportDestinationAreaData", "CompanyZoneETS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="d-flex align-items-center ml-3">
+                                                <input type="file" class="form-control" name="file" required style="width: 200px;" />
+                                                <button type="submit" class="btn btn-primary btn-sm">Import</button>
+                                            </div>
+                                        }
                                     </div>
+                                  
                                 </div>
                                 <div class="card-block">
                                     <form class="theme-form mega-form" action="EmployeeDestinationArea" method="post" enctype="multipart/form-data">
@@ -58,15 +73,51 @@
                                                     </div>
                                                 </div>
                                             }
+                                            @if (TempData["errormsg"] != null)
+                                            {
+                                                <div class="mb-3">
+                                                    <div class="alert alert-danger border-danger">
+                                                        @TempData["errormsg"]
+                                                    </div>
+                                                </div>
+                                            }
                                         <div class="row">
+                                            @*<div class="col-md-6">
+            <label for="menu-type" class="form-label-title ">
+                Home Route<span class="text-danger">*</span>
+            </label>
+            @Html.DropDownListFor(a => a.HomeRouteId, Model.HomeRoutes, "Select Home Route", new { @class = "form-control", @required = "required" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(a => a.HomeRouteId)
+            </span>
+        </div>*@
+                                            <div class="col-md-6">
+                                                <label for="menu-type" class="form-label-title ">
+                                                    Select Company<span class="text-danger">*</span>
+                                                </label>
+                                                @Html.DropDownListFor(a => a.Company_Id, Model.Companies, "Select Company", new { @class = "form-control", required = "required" })
+                                                <span class="text-danger">
+                                                    @Html.ValidationMessageFor(a => a.Company_Id)
+                                                </span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="menu-type" class="form-label-title ">
+                                                    Select Zone<span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" id="CompanyZoneIdHidden" hidden value="@ViewBag.CompanyZoneId" />
+
+                                                @Html.DropDownListFor(model => model.CompanyZoneId, Enumerable.Empty<SelectListItem>(), "Select Company Zone", new { @class = "form-control", required = "required" })
+                                                @Html.ValidationMessageFor(model => model.CompanyZoneId, "", new { @class = "text-danger" })
+                                            </div>
                                             <div class="col-md-6">
                                                 <label for="menu-type" class="form-label-title ">
                                                     Home Route<span class="text-danger">*</span>
-                                                </label>
-                                                @Html.DropDownListFor(a => a.HomeRouteId, Model.HomeRoutes, "Select Home Route", new { @class = "form-control", @required = "required" })
-                                                <span class="text-danger">
-                                                    @Html.ValidationMessageFor(a => a.HomeRouteId)
-                                                </span>
+                                                </label>                                                <div class="form-group">
+                                                    <input type="text" id="HomeRouteIdHidden" hidden value="@ViewBag.HomeRouteId" />
+
+                                                    @Html.DropDownListFor(model => model.HomeRouteId, Enumerable.Empty<SelectListItem>(), "Select Home Route Name", new { @class = "form-control", required = "required" })
+                                                    @Html.ValidationMessageFor(model => model.HomeRouteId, "", new { @class = "text-danger" })
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-title">Destination Area Name<span class="text-danger">*</span></label>
@@ -76,8 +127,8 @@
                                                 </span>
                                             </div>
                                         </div>
-                                            
-                                            
+
+
                                         </div>
                                         <div class="card-footer text-end">
                                             <button type="submit" class="btn btn-primary me-3">@ViewBag.BtnTXT</button>
@@ -97,3 +148,149 @@
 </div>
 
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Errors in Uploaded Data</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="errorTable" class="datatable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Row</th>
+                            <th>Error Type</th>
+                            <th>Description</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Error rows will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const hasErrors = '@Session["HasErrors"]' === 'True';
+            if (hasErrors) {
+                const errorData = JSON.parse('@Html.Raw(Session["ExcelErrors"])');
+                const errorTable = document.getElementById("errorTable").querySelector("tbody");
+
+                // Populate the table with error data
+                errorData.forEach(error => {
+                    const row = errorTable.insertRow();
+                    const affectedRowCell = row.insertCell(0);
+                    const errorTypeCell = row.insertCell(1);
+                    const descriptionCell = row.insertCell(2);
+
+
+
+                    affectedRowCell.textContent = error.AffectedRow;
+                    errorTypeCell.textContent = error.ErrorType;
+                    descriptionCell.textContent = error.Description;
+
+                });
+
+                // Show the modal
+                const modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+                modal.show();
+            }
+        });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+
+        //Get Zone
+        $("#Company_Id").change(function () {
+            var id = $(this).val();
+            $.get('/Common/GetCompanyZonesByID?Customer_Id=' + id, function (r) {
+                var dd = $("#CompanyZoneId");
+                dd.empty();
+                dd.append('<option value="">Select Company Zone</option>');
+                $.each(r, function (k, v) {
+                    dd.append('<option value="' + v.Id + '">' + v.CompanyZone1 + '</option>');
+
+                })
+            })
+        });
+
+        $(document).ready(function () {
+            var id = $("#Company_Id").val();
+            $.get('/Common/GetCompanyZonesByID?Customer_Id=' + id, function (r) {
+                var dd = $("#CompanyZoneId");
+                dd.empty();
+                dd.append('<option value="">Select Company Zone</option>');
+                $.each(r, function (k, v) {
+                    dd.append('<option value="' + v.Id + '">' + v.CompanyZone1 + '</option>');
+
+                })
+                $("#CompanyZoneId").val($("#CompanyZoneIdHidden").val());
+            })
+        });
+
+        //Get Home Route
+        $("#CompanyZoneId").change(function () {
+            var id = $(this).val();
+            $.get('/Common/GetHomeRouteNameByID?CompanyZone_ID=' + id, function (r) {
+                var dd = $("#HomeRouteId");
+                dd.empty();
+                dd.append('<option value="">Select Home Route Name</option>');
+                $.each(r, function (k, v) {
+                    dd.append('<option value="' + v.Id + '">' + v.HomeRouteName + '</option>');
+
+                })
+            })
+        });
+
+        $(document).ready(function () {
+            var id = $("#CompanyZoneIdHidden").val();
+            $.get('/Common/GetHomeRouteNameByID?CompanyZone_ID=' + id, function (r) {
+                var dd = $("#HomeRouteId");
+                dd.empty();
+                dd.append('<option value="">Select Home Route Name</option>');
+                $.each(r, function (k, v) {
+                    dd.append('<option value="' + v.Id + '">' + v.HomeRouteName + '</option>');
+
+                })
+                $("#HomeRouteId").val($("#HomeRouteIdHidden").val());
+            })
+        });
+
+        //Get Destination Area
+        $("#HomeRouteName").change(function () {
+            var id = $(this).val();
+            $.get('/Common/GetDestinationAreaByID?DestinationArea_ID=' + id, function (r) {
+                var dd = $("#EmployeeDestinationArea");
+                dd.empty();
+                dd.append('<option value="">Select Destination Area</option>');
+                $.each(r, function (k, v) {
+                    dd.append('<option value="' + v.Id + '">' + v.DestinationAreaName + '</option>');
+
+                })
+            })
+        });
+
+        $(document).ready(function () {
+            var id = $("#HomeRouteNameHidden").val();
+            $.get('/Common/GetDestinationAreaByID?DestinationArea_ID=' + id, function (r) {
+                var dd = $("#EmployeeDestinationArea");
+                dd.empty();
+                dd.append('<option value="">Select Destination Area</option>');
+                $.each(r, function (k, v) {
+                    dd.append('<option value="' + v.Id + '">' + v.DestinationAreaName + '</option>');
+
+                })
+                $("#EmployeeDestinationArea").val($("#EmployeeDestinationAreaHidden").val());
+            })
+        });
+    });
+</script>

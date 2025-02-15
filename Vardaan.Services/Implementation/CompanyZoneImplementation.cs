@@ -102,6 +102,7 @@ namespace Vardaan.Services.Implementation
                         HomeRouteName = model.HomeRouteName,
                         Latitude = latitude,
                         Longitude = longitude,
+                        Company_Id = model.Company_Id,
                         CreatedDate = DateTime.Now
                     };
                     ent.CompanyZoneHomeRoutes.Add(zone);
@@ -111,6 +112,7 @@ namespace Vardaan.Services.Implementation
                     var data = ent.CompanyZoneHomeRoutes.Find(model.Id);
                     data.CompanyZoneId = model.CompanyZoneId;
                     data.HomeRouteName = model.HomeRouteName;
+                    data.Company_Id = model.Company_Id;
                     data.Latitude = latitude;
                     data.Longitude = longitude;
 
@@ -165,12 +167,14 @@ namespace Vardaan.Services.Implementation
             {
                 var data = (from hr in ent.CompanyZoneHomeRoutes
                             join cz in ent.CompanyZones on hr.CompanyZoneId equals cz.Id
+                            join c in ent.Customers on hr.Company_Id equals c.Id
                             orderby cz.Id descending
                             select new HomeRouteList
                             {
                                 Id = hr.Id,
                                 CompanyZone = cz.CompanyZone1,
                                 HomeRouteName = hr.HomeRouteName,
+                                CompanyName = c.OrgName,
                                 CreatedDate = hr.CreatedDate
                             }
                          ).ToList();
@@ -206,6 +210,8 @@ namespace Vardaan.Services.Implementation
                     var zone = new EmployeeDestinationArea()
                     {
                         CompanyZoneHomeRouteId = model.HomeRouteId,
+                        CompanyZoneId = model.CompanyZoneId,
+                        Company_Id = model.Company_Id,
                         DestinationAreaName = model.DestinationAreaName,
                         CreatedDate = DateTime.Now
                     };
@@ -214,6 +220,8 @@ namespace Vardaan.Services.Implementation
                 else
                 {
                     var data = ent.EmployeeDestinationAreas.Find(model.Id);
+                    data.Company_Id = model.Company_Id;
+                    data.CompanyZoneId = model.CompanyZoneId;
                     data.CompanyZoneHomeRouteId = model.HomeRouteId;
                     data.DestinationAreaName = model.DestinationAreaName;
 
@@ -232,13 +240,17 @@ namespace Vardaan.Services.Implementation
             try
             {
                 var data = (from da in ent.EmployeeDestinationAreas
-                            join c in ent.CompanyZoneHomeRoutes on da.CompanyZoneHomeRouteId equals c.Id
+                            join ch in ent.CompanyZoneHomeRoutes on da.CompanyZoneHomeRouteId equals ch.Id
+                            join cz in ent.CompanyZones on da.CompanyZoneId equals cz.Id
+                            join c in ent.Customers on da.Company_Id equals c.Id
                             orderby da.Id descending
                             select new DestinationAreaList
                             {
                                 Id = da.Id,
                                 DestinationAreaName = da.DestinationAreaName,
-                                HomeRouteName = c.HomeRouteName,
+                                HomeRouteName = ch.HomeRouteName,
+                                CompanyName = c.CompanyName,
+                                CompanyZoneName = cz.CompanyZone1,
                                 CreatedDate = da.CreatedDate
                             }
                          ).ToList();

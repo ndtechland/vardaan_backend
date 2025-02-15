@@ -20,5 +20,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<double> Latitude { get; set; }
         public Nullable<double> Longitude { get; set; }
+        public Nullable<int> Company_Id { get; set; }
     }
 }

@@ -1133,6 +1133,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="Latitude" Type="float" />
           <Property Name="Longitude" Type="float" />
+          <Property Name="Company_Id" Type="int" />
         </EntityType>
         <EntityType Name="CompanyZones">
           <Key>
@@ -1236,6 +1237,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyZoneHomeRouteId" Type="int" />
           <Property Name="DestinationAreaName" Type="nvarchar" MaxLength="400" />
           <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="Company_Id" Type="int" />
+          <Property Name="CompanyZoneId" Type="int" />
         </EntityType>
         <EntityType Name="EmployeeMobileAppSettings">
           <Key>
@@ -4676,6 +4679,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CompanyZoneHomeRouteId" Type="Int32" />
           <Property Name="DestinationAreaName" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Company_Id" Type="Int32" />
+          <Property Name="CompanyZoneId" Type="Int32" />
         </EntityType>
         <EntityType Name="EmployeeRegistrationType">
           <Key>
@@ -4694,6 +4699,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="Latitude" Type="Double" />
           <Property Name="Longitude" Type="Double" />
+          <Property Name="Company_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="ShiftMaster">
           <Key>
@@ -7240,6 +7246,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="EmployeeDestinationAreas">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.EmployeeDestinationArea">
               <MappingFragment StoreEntitySet="EmployeeDestinationArea">
+                <ScalarProperty Name="CompanyZoneId" ColumnName="CompanyZoneId" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="DestinationAreaName" ColumnName="DestinationAreaName" />
                 <ScalarProperty Name="CompanyZoneHomeRouteId" ColumnName="CompanyZoneHomeRouteId" />
@@ -7258,6 +7266,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="CompanyZoneHomeRoutes">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.CompanyZoneHomeRoute">
               <MappingFragment StoreEntitySet="CompanyZoneHomeRoute">
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
