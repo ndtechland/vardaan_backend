@@ -457,7 +457,7 @@ namespace VardaanCab.Controllers
                         var worksheet = workbook.Worksheet(1);
                         var rows = worksheet.RowsUsed().Skip(1);
                         List<Employee> employees = new List<Employee>();
-                        var count = 0;
+                        var count = 1;
                         List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
 
                         foreach (var row in rows)
@@ -630,7 +630,7 @@ namespace VardaanCab.Controllers
                             string DestinationAreaName = row.Cell(22).GetValue<string>();
                             var HomeRouteid = ent.CompanyZoneHomeRoutes.Where(x => x.HomeRouteName.ToLower() == HomeRouteName.ToLower()).Select(x => x.Id).FirstOrDefault();
 
-                            if (!ent.EmployeeDestinationAreas.Any(e => e.DestinationAreaName.ToLower() == DestinationAreaName.ToLower() && e.CompanyZoneHomeRouteId== HomeRouteid))
+                            if (!ent.EmployeeDestinationAreas.Any(e => e.DestinationAreaName.ToLower().Trim() == DestinationAreaName.ToLower().Trim() && e.CompanyZoneHomeRouteId == HomeRouteid))
                             {
                                 excelErrorModels.Add(new ExcelErrorModel
                                 {
