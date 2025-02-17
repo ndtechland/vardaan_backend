@@ -324,7 +324,7 @@ namespace VardaanCab.Controllers
                         var worksheet = workbook.Worksheet(1);
                         var rows = worksheet.RowsUsed().Skip(1);
                         List<CompanyZoneHomeRoute> Homeroutes = new List<CompanyZoneHomeRoute>();
-                        var count = 0;
+                        var count = 1;
                         List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
 
                         foreach (var row in rows)
@@ -460,7 +460,7 @@ namespace VardaanCab.Controllers
                         var worksheet = workbook.Worksheet(1);
                         var rows = worksheet.RowsUsed().Skip(1);
                         List<EmployeeDestinationArea> Homeroutes = new List<EmployeeDestinationArea>();
-                        var count = 0;
+                        var count = 1;
                         List<ExcelErrorModel> excelErrorModels = new List<ExcelErrorModel>();
 
                         foreach (var row in rows)

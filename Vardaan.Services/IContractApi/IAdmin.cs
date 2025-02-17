@@ -27,5 +27,7 @@ namespace Vardaan.Services.IContractApi
         Task<bool> AddCheckinDriverVehicle(AvailableDriverDTO model);
         Task<string> AddVehicleInspection(VehicleInspectionDTO model);
         Task<List<TripMaster>> GetTripTypeMaster();
+        Task<List<VehicleNumbers>> GetVehicleNoByVendor(int VendorId);
+        Task<GetDriverName> GetDriverNameByVehicleNumber(string VehicleNumber);
     }
 }
