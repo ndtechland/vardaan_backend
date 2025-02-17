@@ -574,19 +574,26 @@
         </div>
     </div>
 </div>
-
+    <div class="loader-block" id="loader-block">
+        <div class="preloader6">
+            <hr>
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
 <!--End new-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    $(document).on("click", "#BtnImport", function () {
-        document.getElementById('loader-block').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('pcoded-content').classList.add('blurred');
-    })
-    document.getElementById('loader-block').style.display = 'none';
-    document.getElementById('overlay').style.display = 'none';
-    document.getElementById('pcoded-content').classList.remove('blurred');
+    $(document).ready(function () {
+        $(document).on("click", "#BtnImport", function () {
+            document.getElementById('loader-block').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('pcoded-content').classList.add('blurred');
+        })
+        document.getElementById('loader-block').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('pcoded-content').classList.remove('blurred');
+    });
 </script>
 <script>
     $(document).ready(function () {
