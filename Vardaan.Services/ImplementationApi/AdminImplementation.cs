@@ -169,7 +169,6 @@ namespace Vardaan.Services.ImplementationApi
             }
             catch (Exception)
             {
-
                 throw;
             }
         }       
@@ -307,6 +306,7 @@ namespace Vardaan.Services.ImplementationApi
                 throw;
             }
         }
+       // get not checkin vehicle number based on vendor
         public async Task<List<VehicleNumbers>> GetVehicleNo(int VendorId)
         {
             try
@@ -537,6 +537,53 @@ namespace Vardaan.Services.ImplementationApi
             {
                 var data = ent.TripMasters.ToListAsync();
                 return await data;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<List<VehicleNumbers>> GetVehicleNoByVendor(int VendorId)
+        {
+            try
+            {
+                return await ent.Cabs.Where(x => x.IsActive && x.IsLogin==true && x.Vendor_Id == VendorId)
+                    .Select(x => new VehicleNumbers
+                    {
+                        Vehicle_Id = x.Id,
+                        VehicleNumber = x.VehicleNumber
+                    })
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
+        }
+        public async Task<GetDriverName> GetDriverNameByVehicleNumber(string VehicleNumber)
+        {
+            try
+            {
+                var data = (from d in ent.Drivers
+                          join dl in ent.DriverLoginHistories on d.Id equals dl.DriverId
+                          where d.IsActive && d.IsLogin==true && dl.IsActive==true && dl.VehicleNumber== VehicleNumber
+                            select new GetDriverName
+                          {
+                              DriverName=d.DriverName,
+                              Driver_Id=d.Id
+                          }
+                        ).FirstOrDefault();
+               
+                if (data != null)
+                {
+                    return data;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception)
             {

@@ -517,6 +517,62 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+        [HttpGet]
+        [Route("VehicleNumbersByVendor")]
+        public async Task<IHttpActionResult> VehicleNumbersByVendor(int VendorId)
+        {
+            try
+            {
+                var response = new Response<VehicleNumbers>();
+                var vehicleno = await _admin.GetVehicleNoByVendor(VendorId);
 
+                if (vehicleno != null && vehicleno.Any())
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = vehicleno });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "No data found.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("DriverNameByVehicle")]
+        public async Task<IHttpActionResult> DriverNameByVehicle(string VehicleNumber)
+        {
+            try
+            {
+                var response = new Response<GetDriverName>();
+                var name = await _admin.GetDriverNameByVehicleNumber(VehicleNumber);
+
+                if (name != null)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = name });
+
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "No data found.";
+                    return Content(HttpStatusCode.NotFound, response);
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
