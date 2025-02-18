@@ -496,10 +496,10 @@ namespace VardaanCab.Controllers
                                 {
                                     ErrorType = "Home Route",
                                     AffectedRow = count,
-                                    Description = $"Home Route {Zone} does not exist for the company zone {Zone} in master."
+                                    Description = $"Home Route {HomeRoute} does not exist for the company zone {Zone} in master."
                                 });
                             }
-                            if (ent.EmployeeDestinationAreas.Any(x => x.Company_Id == companyId && x.CompanyZoneHomeRouteId == HomeRouteId && x.DestinationAreaName.ToLower() == Area.ToLower()))
+                            if (ent.EmployeeDestinationAreas.Any(x => x.Company_Id == companyId && x.CompanyZoneHomeRouteId == HomeRouteId && x.CompanyZoneId==zoneId && x.DestinationAreaName.ToLower() == Area.ToLower()))
                             {
                                 excelErrorModels.Add(new ExcelErrorModel
                                 {
@@ -509,7 +509,7 @@ namespace VardaanCab.Controllers
                                 });
                             }
                             // Check if the Area already exists in the list being processed
-                            if (Homeroutes.Any(x => x.Company_Id == companyId && x.CompanyZoneHomeRouteId == HomeRouteId && x.DestinationAreaName.ToLower() == Area.ToLower()))
+                            if (Homeroutes.Any(x => x.Company_Id == companyId && x.CompanyZoneId==zoneId && x.CompanyZoneHomeRouteId == HomeRouteId && x.DestinationAreaName.ToLower() == Area.ToLower()))
                             {
                                 continue; // Skip duplicate entries within the same import
                             }

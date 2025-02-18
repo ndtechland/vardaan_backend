@@ -513,6 +513,8 @@ namespace Vardaan.Services.ImplementationApi
                         command.Parameters.Add(new EntityParameter("Total_NC_Count", DbType.String) { Value = model.Total_NC_Count });
                         command.Parameters.Add(new EntityParameter("IsActive", DbType.Boolean) { Value = true });
                         command.Parameters.Add(new EntityParameter("InspectionByEmployeeId", DbType.String) { Value = model.InspectionByEmployeeId });
+                        command.Parameters.Add(new EntityParameter("AdhocTime", DbType.String) { Value = model.AdhocTime });
+                        command.Parameters.Add(new EntityParameter("TripTypeMaster", DbType.String) { Value = model.TripTypeMaster });
 
                         var responseMessageParam = new EntityParameter("ResponseMessage", DbType.String) { Direction = ParameterDirection.Output, Size = 255 };
                         command.Parameters.Add(responseMessageParam);
@@ -589,6 +591,19 @@ namespace Vardaan.Services.ImplementationApi
             {
 
                 throw;
+            }
+        }
+        public async Task<List<TripType>> GetTriptype()
+        {
+            try
+            {
+                var data = ent.TripTypes.Where(x => x.TripMasterId == 1 && x.Id!=3).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
             }
         }
     }

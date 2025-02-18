@@ -11,6 +11,7 @@ using Vardaan.Services.IContractApi;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTOAPI;
+using static Azure.Core.HttpHeader;
 
 namespace VardaanCab.APP.Controllers
 {
@@ -552,10 +553,10 @@ namespace VardaanCab.APP.Controllers
             {
                 var response = new Response<GetDriverName>();
                 var name = await _admin.GetDriverNameByVehicleNumber(VehicleNumber);
-
+                var vehId = ent.Cabs.Where(x => x.VehicleNumber == VehicleNumber).FirstOrDefault()?.Id??0;
                 if (name != null)
                 {
-                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = name });
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = name,VehicleNo= VehicleNumber,VehicleId= vehId });
 
                 }
                 else
@@ -567,6 +568,32 @@ namespace VardaanCab.APP.Controllers
 
                 }
 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("GetTripTypes")]
+        public async Task<IHttpActionResult> GetTripTypes()
+        {
+            try
+            {
+                var response = new Response<TripType>();
+                var triptypes = await _admin.GetTriptype();
+                if (triptypes.Count > 0)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Trip types retrieved successfully.", data = triptypes });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Trip types not available.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
             }
             catch (Exception)
             {

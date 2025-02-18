@@ -465,9 +465,9 @@ namespace VardaanCab.Controllers
                             count++;
                             //ExcelErrorModel excelError = new ExcelErrorModel();
                             string[] splitParts = row.Cell(1).GetValue<string>().Split('-');
-                            string companyName = splitParts[0].Trim();
+                            string companyName = splitParts[1].Trim();
                             int companyId = ent.Customers
-                            .Where(x => x.CompanyName.ToLower() == companyName.ToLower())
+                            .Where(x => x.OrgName.ToLower() == companyName.ToLower())
                             .FirstOrDefault()?.Id ?? 0;
 
                             string RegistrationTypeName = row.Cell(23).GetValue<string>();
@@ -605,7 +605,7 @@ namespace VardaanCab.Controllers
                             
 
                             string CompanyZoneName = row.Cell(20).GetValue<string>();
-                            var Zoneid = ent.CompanyZones.Where(x => x.CompanyZone1.ToLower() == CompanyZoneName.ToLower()).Select(x => x.Id).FirstOrDefault();
+                            var Zoneid = ent.CompanyZones.Where(x => x.CompanyZone1.ToLower() == CompanyZoneName.ToLower() && x.CompanyId==companyId).Select(x => x.Id).FirstOrDefault();
 
                             if (!ent.CompanyZones.Any(e => e.CompanyZone1.ToLower() == CompanyZoneName.ToLower()))
                             {
@@ -613,7 +613,7 @@ namespace VardaanCab.Controllers
                                 {
                                     ErrorType = "Company Zone Name",
                                     AffectedRow = count,
-                                    Description = $"Company Zone Name {CompanyZoneName} does not exists."
+                                    Description = $"Company Zone Name {CompanyZoneName} does not exists for the company {companyName}."
                                 });
                             }
                             string HomeRouteName = row.Cell(21).GetValue<string>();
@@ -623,20 +623,21 @@ namespace VardaanCab.Controllers
                                 {
                                     ErrorType = "Zone Home Route Name",
                                     AffectedRow = count,
-                                    Description = $"Zone Home Route Name {HomeRouteName} does not exists for the {CompanyZoneName}."
+                                    Description = $"Zone Home Route Name {HomeRouteName} does not exists for the company zone {CompanyZoneName}."
                                 });
                             }
 
                             string DestinationAreaName = row.Cell(22).GetValue<string>();
-                            var HomeRouteid = ent.CompanyZoneHomeRoutes.Where(x => x.HomeRouteName.ToLower() == HomeRouteName.ToLower()).Select(x => x.Id).FirstOrDefault();
-
-                            if (!ent.EmployeeDestinationAreas.Any(e => e.DestinationAreaName.ToLower().Trim() == DestinationAreaName.ToLower().Trim() && e.CompanyZoneHomeRouteId == HomeRouteid))
+                            var HomeRouteid = ent.CompanyZoneHomeRoutes.Where(x => x.HomeRouteName.ToLower() == HomeRouteName.ToLower() && x.Company_Id==companyId && x.CompanyZoneId==Zoneid).Select(x => x.Id).FirstOrDefault();
+                            var dd = ent.EmployeeDestinationAreas.Where(e => e.DestinationAreaName.ToLower().Trim() == DestinationAreaName.ToLower().Trim()
+    && e.CompanyZoneHomeRouteId == HomeRouteid && e.Company_Id==companyId && e.CompanyZoneId==Zoneid).FirstOrDefault()?.Id??0;
+                            if (dd==0)
                             {
                                 excelErrorModels.Add(new ExcelErrorModel
                                 {
                                     ErrorType = "Destination Area Name",
                                     AffectedRow = count,
-                                    Description = $"Destination Area Name {DestinationAreaName} does not exists for the {HomeRouteName}."
+                                    Description = $"Destination Area Name {DestinationAreaName} does not exists for the home route {HomeRouteName}."
                                 });
                             }
                             string WeekOffDays = row.Cell(14).GetValue<string>() ?? string.Empty;
