@@ -16,7 +16,62 @@
         color: balck;
         z-index: 999;
     }
+
+
+    .popover {
+        display: block;
+        position: absolute;
+        top: 50px;
+        left: 100px;
+        width: 250px;
+        z-index: 1000;
+    }
+
+    .popover-title {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .popover-content {
+        padding: 10px;
+    }
+
+    .dateRange li {
+        padding: 4px;
+        cursor: pointer;
+        border-bottom: 1px solid #ddd;
+        width: 225px;
+    }
+
+        .dateRange li:hover {
+            background-color: #f1f1f1;
+        }
+
+    .customRange {
+        background-color: #ccc;
+    }
+
+    .customDateDiv {
+        padding: 10px;
+    }
+
+    .calendarInput {
+        display: flex;
+    }
+
+    .showCustomReportButton {
+        width: 100%;
+        margin-top: 10px;
+    }
+    .ui-front {
+        width: 259px;
+        background: white;
+    }
+
 </style>
+
 <div class="pcoded-content">
 
     <!-- Page-header end -->
@@ -88,15 +143,15 @@
                                                     <option value="CSV">CSV</option>
                                                 </select>
                                             </div>
-                                           
-                                            <div class="floatLeft col-sm-3">
+
+                                            <div class="col-sm-3" style="margin-left: auto;">
                                                 <div class="calenderMainDiv">
                                                     <span>
                                                         <i class="fa fa-calendar"></i>
                                                     </span>
                                                     <span class="ng-binding">February 13, 2025 - February 14, 2025</span>
                                                 </div>
-                                                <div class="popover" style="top: 38.5625px; left: 341.242px; display: block;">
+                                                <div class="popover" style="top: 43.5625px; left: 98.242px; display: block; ">
                                                     <div class="arrow"></div>
                                                     <div class="popover-inner">
                                                         <h3 class="popover-title">Get Report</h3>
@@ -116,27 +171,17 @@
                                                                                     <div class="col-md-12 col-xs-12 customInput1">
                                                                                         <span>From</span><br>
                                                                                         <div class="input-group calendarInput calendarInput2">
-                                                                                            <input type="text" id="from" class="form-control" name="fromDate" placeholder="">
-                                                                                            <span class="input-group-btn">
-                                                                                                <button class="btn btn-default">
-                                                                                                    <i class="icon-calendar calInputIcon"></i>
-                                                                                                </button>
-                                                                                            </span>
+                                                                                            <input type="date" id="from" class="form-control" name="fromDate" placeholder="">
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="col-md-12 col-xs-12 customInput2">
                                                                                         <span>To</span><br>
                                                                                         <div class="input-group calendarInput calendarInput2">
-                                                                                            <input type="text" id="toDate" class="form-control" name="toDate" placeholder="">
-                                                                                            <span class="input-group-btn">
-                                                                                                <button class="btn btn-default">
-                                                                                                    <i class="icon-calendar calInputIcon"></i>
-                                                                                                </button>
-                                                                                            </span>
+                                                                                            <input type="date" id="toDate" class="form-control" name="toDate" placeholder="">
                                                                                         </div>
                                                                                     </div>
                                                                                     <input class="col-md-12 col-xs-12 btn btn-success btn-xs showCustomReportButton" type="button" value="Show Report" disabled="disabled">
-                                                                                    <input class="col-md-12 col-xs-12 btn btn-warning btn-xs showCustomReportButton" type="button" value="In-valid Date Range">
+                                                                                    <input class="col-md-12 col-xs-12 btn btn-warning btn-xs showCustomReportButton" hidden type="button" value="In-valid Date Range">
                                                                                 </form>
                                                                             </li>
                                                                         </ul>
