@@ -81,5 +81,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<int> Total_NC_Count { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> InspectionByEmployeeId { get; set; }
+        public string AdhocTime { get; set; }
+        public string TripTypeMaster { get; set; }
     }
 }

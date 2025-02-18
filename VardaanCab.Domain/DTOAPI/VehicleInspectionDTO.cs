@@ -75,5 +75,7 @@ namespace VardaanCab.Domain.DTOAPI
         public Nullable<int> Total_NC_Count { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> InspectionByEmployeeId { get; set; }
+        public string TripTypeMaster { get; set; }
+        public string AdhocTime { get; set; }
     }
 }

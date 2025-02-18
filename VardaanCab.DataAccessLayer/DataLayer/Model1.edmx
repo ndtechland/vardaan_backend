@@ -1483,6 +1483,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Total_NC_Count" Type="int" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="InspectionByEmployeeId" Type="int" />
+          <Property Name="AdhocTime" Type="nvarchar" MaxLength="100" />
+          <Property Name="TripTypeMaster" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <Function Name="checkOneCompanyBookingSelected" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="isNrg" Type="bit" Mode="In" />
@@ -5095,6 +5097,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Total_NC_Count" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="InspectionByEmployeeId" Type="Int32" />
+          <Property Name="AdhocTime" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TripTypeMaster" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7625,6 +7629,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="VehicleInspections">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.VehicleInspection">
               <MappingFragment StoreEntitySet="VehicleInspection">
+                <ScalarProperty Name="TripTypeMaster" ColumnName="TripTypeMaster" />
+                <ScalarProperty Name="AdhocTime" ColumnName="AdhocTime" />
                 <ScalarProperty Name="InspectionByEmployeeId" ColumnName="InspectionByEmployeeId" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Total_NC_Count" ColumnName="Total_NC_Count" />
