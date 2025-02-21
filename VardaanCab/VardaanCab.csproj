@@ -3513,6 +3513,7 @@
     <Content Include="files\extra-pages\landingpage\assets\logos\logo6.png" />
     <Content Include="files\extra-pages\landingpage\assets\logos\logo7.png" />
     <Content Include="files\extra-pages\landingpage\index.html" />
+    <Content Include="files\Js\TableToExcel.js" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
