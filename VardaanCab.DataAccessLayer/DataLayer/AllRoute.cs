@@ -18,5 +18,8 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<int> Routing_Id { get; set; }
         public Nullable<long> RouteId { get; set; }
         public string Employee_Id { get; set; }
+        public Nullable<long> RouteNameId { get; set; }
+        public Nullable<int> AvailableSeats { get; set; }
+        public string CabNumber { get; set; }
     }
 }

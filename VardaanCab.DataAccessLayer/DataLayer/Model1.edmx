@@ -1104,6 +1104,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Routing_Id" Type="int" />
           <Property Name="RouteId" Type="bigint" />
           <Property Name="Employee_Id" Type="nvarchar" MaxLength="200" />
+          <Property Name="RouteNameId" Type="bigint" />
+          <Property Name="AvailableSeats" Type="int" />
+          <Property Name="CabNumber" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="AreaMaster">
           <Key>
@@ -1911,6 +1914,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="Total_NC_Count" Type="int" Mode="In" />
           <Parameter Name="IsActive" Type="bit" Mode="In" />
           <Parameter Name="InspectionByEmployeeId" Type="int" Mode="In" />
+          <Parameter Name="AdhocTime" Type="nvarchar" Mode="In" />
+          <Parameter Name="TripTypeMaster" Type="nvarchar" Mode="In" />
           <Parameter Name="ResponseMessage" Type="nvarchar" Mode="InOut" />
         </Function>
         <EntityContainer Name="Vardaan_AdminModelStoreContainer">
@@ -3647,6 +3652,8 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="Total_NC_Count" Mode="In" Type="Int32" />
             <Parameter Name="IsActive" Mode="In" Type="Boolean" />
             <Parameter Name="InspectionByEmployeeId" Mode="In" Type="Int32" />
+            <Parameter Name="AdhocTime" Mode="In" Type="String" />
+            <Parameter Name="TripTypeMaster" Mode="In" Type="String" />
             <Parameter Name="ResponseMessage" Mode="InOut" Type="String" />
           </FunctionImport>
           <EntitySet Name="VehicleInspections" EntityType="Vardaan_AdminModel.VehicleInspection" />
@@ -4929,6 +4936,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Routing_Id" Type="Int32" />
           <Property Name="RouteId" Type="Int64" />
           <Property Name="Employee_Id" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RouteNameId" Type="Int64" />
+          <Property Name="AvailableSeats" Type="Int32" />
+          <Property Name="CabNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Routing">
           <Key>
@@ -7515,6 +7525,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="AllRoutes">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.AllRoute">
               <MappingFragment StoreEntitySet="AllRoute">
+                <ScalarProperty Name="CabNumber" ColumnName="CabNumber" />
+                <ScalarProperty Name="AvailableSeats" ColumnName="AvailableSeats" />
+                <ScalarProperty Name="RouteNameId" ColumnName="RouteNameId" />
                 <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
                 <ScalarProperty Name="RouteId" ColumnName="RouteId" />
                 <ScalarProperty Name="Routing_Id" ColumnName="Routing_Id" />
