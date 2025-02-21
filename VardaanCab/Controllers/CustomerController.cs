@@ -336,7 +336,8 @@ join VehicleModel vm on cp.VehicleModel_Id= vm.Id order by vm.ModelName").ToList
             {
                 TempData["msg"] = "Server error";
             }
-            return RedirectToAction("Edit", new { id = model.Id, menuId = model.MenuId });
+            //return RedirectToAction("Edit", new { id = model.Id, menuId = model.MenuId });
+            return Redirect("/Customer/Edit?Id=" + model.Id + "&menuId="+ model.MenuId + "");
 
         }
 
