@@ -809,21 +809,32 @@ namespace VardaanCab.Controllers
                             RouteEndDate = model.EndDate,
                             Company_Id = model.Company_Id,
                             TripType = model.Trip_Type,
-                            PickupShiftTime= combinedString ?? null,
-                            DropShiftTime= DropcombinedString ?? null,
+                            PickupShiftTime = combinedString ?? null,
+                            DropShiftTime = DropcombinedString ?? null,
                             AdhocShiftTime = model.Adhoc_Shift_Time,
                             VehicleType = VehicleTypecombinedString ?? null,
-                            Routingtype=model.Routing_Type,
-                            RoutingOption=model.Routing_Options
+                            Routingtype = model.Routing_Type,
+                            RoutingOption = model.Routing_Options
                         };
                         ent.Routings.Add(data);
                         ent.SaveChanges();
                         // Group employees by Zone and Area categories
-                        var employeeGroups = GroupEmployeesByZoneAndArea(employeeRequestList);
-
+                        List<EmployeeGroup> employeeGroups = GroupEmployeesByZoneAndArea(employeeRequestList);
+                        foreach (var item in employeeGroups)
+                        {
+                            AllRoute allRoute = new AllRoute()
+                            {
+                                Routing_Id = ent.Routings.OrderByDescending(x => x.ID).FirstOrDefault().ID,
+                                RouteId = Convert.ToInt64(item.Group),
+                                Employee_Id = item.Employee_Id
+                            };
+                            ent.AllRoutes.Add(allRoute);
+                            ent.SaveChanges();
+                        }
                         // Convert grouped data into dictionary format for serialization
                         var groupedData = employeeGroups.GroupBy(x => x.Group);
                         var routeDictionary = groupedData.ToDictionary(group => group.Key, group => group.ToList());
+                        
 
                         // Serialize route information for further processing
                         var jsonRoutes = new JavaScriptSerializer().Serialize(routeDictionary);
@@ -860,8 +871,10 @@ namespace VardaanCab.Controllers
                                     join emp in ent.Employees on empr.EmployeeId equals emp.Employee_Id
                                     where empr.CompanyId == model.Company_Id &&
                                           empr.TripType == model.Trip_Type &&
-                                          model.PickupShiftid.Contains((int)empr.PickupShiftTimeId) &&
-                                          model.DropShiftid.Contains((int)empr.DropShiftTimeId) &&
+                                         //model.PickupShiftid.Contains((int)empr.PickupShiftTimeId) &&
+                                         //model.DropShiftid.Contains((int)empr.DropShiftTimeId) &&
+                                         (!model.PickupShiftid.Any() || model.PickupShiftid.Contains(empr.PickupShiftTimeId ?? 0)) &&
+(!model.DropShiftid.Any() || model.DropShiftid.Contains(empr.DropShiftTimeId ?? 0)) &&
                                           empr.StartRequestDate <= model.StartDate &&
                                           empr.EndRequestDate >= model.EndDate
                                           where empr.IsRouting == false
@@ -877,16 +890,11 @@ namespace VardaanCab.Controllers
             int maxGroupSize = 6;
             var groupedEmployees = new List<EmployeeGroup>();
 
-            var groupedByZone = employees.GroupBy(emp => new
-            {
-                emp.ZoneWise,
-                emp.ZoneHomeWise,
-                emp.DestinationAreaWise
-            });
+            var groupedByZone = employees.GroupBy(emp => emp.ZoneWise);
 
             foreach (var group in groupedByZone)
             {
-                var groupQueue = group.ToList(); // Employees in this zone/area
+                var groupQueue = group.ToList(); // Employees in this zone
                 var groupMemberCount = 0;
 
                 while (groupQueue.Any())
@@ -903,7 +911,7 @@ namespace VardaanCab.Controllers
                         emp.Group = groupCounter.ToString(); // Assign group ID
                         emp.CabNumber = cabNumber; // Assign cab number
                         emp.groupMemberCount = groupMemberCount;
-                        emp.missingEmployees = maxGroupSize - groupMemberCount; ;
+                        emp.missingEmployees = maxGroupSize - groupMemberCount;
                         groupedEmployees.Add(emp);
                     }
 
@@ -911,7 +919,6 @@ namespace VardaanCab.Controllers
                     groupQueue = groupQueue.Skip(maxGroupSize).ToList();
                 }
             }
-
             return groupedEmployees;
         }
 
@@ -923,10 +930,10 @@ namespace VardaanCab.Controllers
                 Employee_Id = emp.Employee_Id,
                 Gender = emp.Gender,
                 CompanyName = ent.Customers.FirstOrDefault(c => c.Id == emp.Company_Id)?.OrgName,
-                ComLatitude = (double)ent.Customers.FirstOrDefault(c => c.Id == emp.Company_Id)?.Latitude,
-                ComLongitude = (double)ent.Customers.FirstOrDefault(c => c.Id == emp.Company_Id)?.Longitude,
-                Latitude = (double)emp.Latitude,
-                Longitude = (double)emp.Longitude,
+                ComLatitude = ent.Customers.FirstOrDefault(c => c.Id == emp.Company_Id)?.Latitude ?? 0.0,
+                ComLongitude = ent.Customers.FirstOrDefault(c => c.Id == emp.Company_Id)?.Longitude ?? 0.0,
+                Latitude = emp.Latitude ?? 0.0,
+                Longitude = emp.Longitude ?? 0.0,
                 PickupandDropAddress = emp.EmployeeGeoCode,
                 Name = $"{emp.Employee_First_Name} {emp.Employee_Middle_Name} {emp.Employee_Last_Name}",
                 ZoneWise = ent.CompanyZones.FirstOrDefault(z => z.Id == emp.PrimaryFacilityZone)?.CompanyZone1,
