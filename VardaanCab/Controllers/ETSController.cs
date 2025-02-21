@@ -826,7 +826,10 @@ namespace VardaanCab.Controllers
                             {
                                 Routing_Id = ent.Routings.OrderByDescending(x => x.ID).FirstOrDefault().ID,
                                 RouteId = Convert.ToInt64(item.Group),
-                                Employee_Id = item.Employee_Id
+                                Employee_Id = item.Employee_Id,
+                                RouteNameId = ent.CompanyZones.Where(x => x.CompanyZone1 == item.ZoneWise).FirstOrDefault().Id,
+                                AvailableSeats = item.missingEmployees,
+                                CabNumber = item.CabNumber
                             };
                             ent.AllRoutes.Add(allRoute);
                             ent.SaveChanges();
@@ -871,10 +874,8 @@ namespace VardaanCab.Controllers
                                     join emp in ent.Employees on empr.EmployeeId equals emp.Employee_Id
                                     where empr.CompanyId == model.Company_Id &&
                                           empr.TripType == model.Trip_Type &&
-                                         //model.PickupShiftid.Contains((int)empr.PickupShiftTimeId) &&
-                                         //model.DropShiftid.Contains((int)empr.DropShiftTimeId) &&
-                                         (!model.PickupShiftid.Any() || model.PickupShiftid.Contains(empr.PickupShiftTimeId ?? 0)) &&
-(!model.DropShiftid.Any() || model.DropShiftid.Contains(empr.DropShiftTimeId ?? 0)) &&
+                                         model.PickupShiftid.Contains((int)empr.PickupShiftTimeId) &&
+                                         model.DropShiftid.Contains((int)empr.DropShiftTimeId) &&
                                           empr.StartRequestDate <= model.StartDate &&
                                           empr.EndRequestDate >= model.EndDate
                                           where empr.IsRouting == false
