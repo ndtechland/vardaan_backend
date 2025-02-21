@@ -100,9 +100,7 @@ namespace VardaanCab.APP.Controllers
                     response.StatusCode = StatusCodes.Status200OK;
                     response.Message = "No drivers found.";
                     return Content(HttpStatusCode.OK, response);
-
                 }
-
             }
             catch (Exception)
             {

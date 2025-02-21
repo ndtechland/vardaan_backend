@@ -606,5 +606,21 @@ namespace Vardaan.Services.ImplementationApi
                 throw new Exception("Server Error : " + ex.Message);
             }
         }
+        //public async Task<List<RoutingDTO>> GetRoutList()
+        //{
+        //    try
+        //    {
+        //        var dd=(from r in ent.Routings
+        //                join ar in ent.AllRoutes on r.ID equals ar.Routing_Id
+        //                join c in ent.Cabs on ar.)
+        //        //var data = ent.TripTypes.Where(x => x.TripMasterId == 1 && x.Id!=3).ToList();
+        //        return data;
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw new Exception("Server Error : " + ex.Message);
+        //    }
+        //}
     }
 }
