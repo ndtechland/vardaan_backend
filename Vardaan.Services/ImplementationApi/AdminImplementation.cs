@@ -94,6 +94,21 @@ namespace Vardaan.Services.ImplementationApi
         {
             try
             {
+                var driverinfo = ent.Drivers.Find(model.DriverId);
+                var hisinfo = ent.DriverLoginHistories.Where(x => x.DriverId == model.DriverId && x.IsActive == true).FirstOrDefault(); ;
+                var cabinfo = ent.Cabs.Where(c => c.VehicleNumber == hisinfo.VehicleNumber).FirstOrDefault();
+                if (hisinfo != null)
+                {
+                    hisinfo.IsActive = false;
+                }
+                if (cabinfo != null)
+                {
+                    cabinfo.IsLogin = false;
+                }
+                if (driverinfo!=null)
+                {
+                    driverinfo.IsLogin = false;
+                }
                 var data = new DriverCheckoutRemark()
                 {
                     Driver_Id = model.DriverId,

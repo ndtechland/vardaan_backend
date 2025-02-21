@@ -1057,7 +1057,6 @@ namespace VardaanCab.Controllers
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Server Error : " + ex.Message);
             }
         }

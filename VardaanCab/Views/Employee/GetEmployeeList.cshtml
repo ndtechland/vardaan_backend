@@ -41,16 +41,37 @@
                                     <!-- Heading -->
                                     <h5>Employee List</h5>
 
-                                    <!-- Import and Export Section -->
+                                    <!-- Export Section -->
                                     <div class="d-flex align-items-center">
+                                        <input type="text" id="term" class="form-control form-control-sm mx-2" placeholder="Employee Name or Mobile number" />
 
+
+                                        <input type="date" id="startDate" class="form-control form-control-sm mx-2" />
+
+                                        <input type="date" id="endDate" class="form-control form-control-sm mx-2" />
+
+                                        <!-- Export Button -->
+                                        <a href="javascript:void(0);" class="btn btn-link" onclick="exportEmployeeData()">
+                                            <img src="~/files/assets/images/Export-Image.png" alt="Export" class="img-fluid" style="height: 42px; width: 400px;" />
+                                        </a>
 
                                         <a href="/Employee/Add?menuId=@ViewBag.menuId" class="btn btn-primary btn-sm">
-                                            <i class="fa fa-plus-square"></i>Add New
+                                            <i class="fa fa-plus-square"></i> Add New
                                         </a>
                                     </div>
+
                                 </div>
                                 <div class="card-block">
+                                    @if (TempData["errormsg"] != null)
+                                    {
+                                        <div class="row r">
+                                            <div class="col-md-12">
+                                                <div class="alert alert-danger border-danger">
+                                                    @TempData["errormsg"]
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
                                     @if (TempData["dltmsg"] != null)
                                     {
                                         <div class="row r">
@@ -141,3 +162,49 @@
         </div>
     </div>
 </div>
+<script>
+    function exportEmployeeData() {
+        var term = document.getElementById("term").value.trim(); 
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+
+        var queryParams = [];
+
+        if (term) queryParams.push("term=" + encodeURIComponent(term)); 
+        if (startDate) queryParams.push("startDate=" + encodeURIComponent(startDate));
+        if (endDate) queryParams.push("endDate=" + encodeURIComponent(endDate));
+
+        var queryString = queryParams.length > 0 ? "?" + queryParams.join("&") : "";
+
+        window.location.href = "/Employee/ExportToExcelEmployeeData" + queryString;
+    }
+
+</script>
+@*<script>
+    function exportEmployeeData() {
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+
+        if (!startDate || !endDate) {
+            alert("Please select both start and end dates.");
+            return;
+        }
+
+        window.location.href = `/Employee/ExportToExcelEmployeeData?startDate=${startDate}&endDate=${endDate}`;
+    }
+</script>*@
+@*<script src="~/files/Js/TableToExcel.js"></script>
+<script>
+    function exportEmployeeData() {
+
+        let table = document.querySelector("#order-table");
+        TableToExcel.convert(table, {
+            name: "EmployeeData.xlsx",
+            sheet: {
+                name: "Sheet 1"
+            }
+        });
+        //TableToExcel.convert(table);
+
+    }
+</script>*@

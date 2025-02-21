@@ -567,7 +567,6 @@ namespace VardaanCab.APP.Controllers
                     return Content(HttpStatusCode.NotFound, response);
 
                 }
-
             }
             catch (Exception)
             {

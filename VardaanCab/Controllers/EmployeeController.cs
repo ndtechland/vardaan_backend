@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using NPOI.SS.Formula.Functions;
 using Vardaan.Services.IContract;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 
 
 namespace VardaanCab.Controllers
@@ -92,7 +93,6 @@ namespace VardaanCab.Controllers
                     model.LoginUserName = data.LoginUserName;
                     //model.WeekOff = data.WeekOff;
                     model.WeekOffs = data.WeekOff.Split(',').ToList();
-
                     model.EmployeeGeoCode = data.EmployeeGeoCode;
                     model.EmployeeBusinessUnit = data.EmployeeBusinessUnit;
                     model.EmployeeDepartment = data.EmployeeDepartment;
@@ -817,5 +817,122 @@ namespace VardaanCab.Controllers
         }
         return string.Empty;
         }
+        public async Task<ActionResult> ExportToExcelEmployeeData(string term, DateTime? startDate, DateTime? endDate)
+        {
+            var model = new EmployeeDTO();
+            model.employeedetailList = await _employee.GetEmployees();
+
+           
+            var EmpList = model.employeedetailList.AsQueryable();
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                EmpList = EmpList.Where(x => x.CreatedDate >= startDate && x.CreatedDate <= endDate);
+            }
+            else if (!string.IsNullOrEmpty(term))
+            {
+                EmpList = EmpList.Where(x =>
+                    x.MobileNumber.Contains(term) ||
+                    x.CompanyName.Contains(term) ||
+                    (x.Employee_First_Name + " " + x.Employee_Middle_Name + " " + x.Employee_Last_Name).Contains(term));
+            }
+            else
+            {
+                EmpList = EmpList;
+            }
+
+
+            var filteredEmpList = EmpList.ToList();
+
+            if (!filteredEmpList.Any())
+            {
+                TempData["errormsg"] = "No employee data available for export.";
+                return RedirectToAction("GetEmployeeList");
+            }
+
+           
+            DataTable dt = new DataTable();
+            dt.Columns.Add("EmployeeId");
+            dt.Columns.Add("Employee Name");
+            dt.Columns.Add("Mobile Number");
+            dt.Columns.Add("Email");
+            dt.Columns.Add("Company Name");
+            dt.Columns.Add("State");
+            dt.Columns.Add("City");
+            dt.Columns.Add("Pincode");
+            dt.Columns.Add("Employee Current Address");
+            dt.Columns.Add("Week Off");
+            dt.Columns.Add("Employee GEO Code");
+            dt.Columns.Add("Business");
+            dt.Columns.Add("Department");
+            dt.Columns.Add("Project Name");
+            dt.Columns.Add("Manager Name");
+            dt.Columns.Add("Primary Facility Zone");
+            dt.Columns.Add("Home Route Name");
+            dt.Columns.Add("Destination Area Name");
+            dt.Columns.Add("Registration Type");
+            dt.Columns.Add("Registration Date");
+
+            foreach (var emp in filteredEmpList)
+            {
+                dt.Rows.Add(
+                    emp.Employee_Id,
+                    $"{emp.Employee_First_Name} {emp.Employee_Middle_Name} {emp.Employee_Last_Name}".Trim(),
+                    emp.MobileNumber,
+                    emp.Email,
+                    emp.CompanyName,
+                    emp.StateName,
+                    emp.CityName,
+                    emp.Pincode,
+                    emp.EmployeeCurrentAddress,
+                    emp.WeekOffName,
+                    emp.EmployeeGeoCode,
+                    emp.EmployeeBusinessUnit,
+                    emp.EmployeeDepartment,
+                    emp.EmployeeProjectName,
+                    emp.ReportingManager,
+                    emp.PrimaryFacilityZone,
+                    emp.HomeRouteName,
+                    emp.EmployeeDestinationArea,
+                    emp.EmployeeRegistrationType,
+                    emp.CreatedDate
+                );
+            }
+
+            using (XLWorkbook workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Employee");
+
+                 
+                int colIndex = 1;
+                foreach (DataColumn column in dt.Columns)
+                {
+                    worksheet.Cell(1, colIndex).Value = column.ColumnName;
+                    worksheet.Cell(1, colIndex).Style.Fill.BackgroundColor = XLColor.Yellow;
+                    colIndex++;
+                }
+
+                
+                int rowIndex = 2;
+                foreach (DataRow row in dt.Rows)
+                {
+                    colIndex = 1;
+                    foreach (DataColumn column in dt.Columns)
+                    {
+                        worksheet.Cell(rowIndex, colIndex).Value = row[column];
+                        colIndex++;
+                    }
+                    rowIndex++;
+                }
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    stream.Position = 0;
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EmployeeData.xlsx");
+                }
+            }
+        }
+
     }
 }

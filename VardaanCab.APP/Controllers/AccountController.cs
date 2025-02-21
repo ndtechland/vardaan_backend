@@ -83,7 +83,8 @@ namespace VardaanCab.APP.Controllers
                         //return Ok(new { Status = 200, Message = "Please Enter the Password...!", Data = DriverResult.IsFirst });
                         response.Succeeded = true;
                         response.StatusCode = StatusCodes.Status200OK; // OK
-                        response.Data = (bool)DriverResult.IsFirst;
+                        response.Data = DriverResult.IsFirst != null ? (bool)DriverResult.IsFirst : false;
+
                         response.Message = "Please Enter the Password...!";
                         return Ok(response);
                     }
@@ -478,7 +479,7 @@ namespace VardaanCab.APP.Controllers
                     }
                     if (driverinfo != null)
                     {
-                        cab.IsLogin = true;
+                        driverinfo.IsLogin = true;
                         ent.SaveChanges();
                     }
 
