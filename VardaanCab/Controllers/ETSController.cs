@@ -1238,5 +1238,23 @@ namespace VardaanCab.Controllers
                 throw;
             }
         }
+        public ActionResult SearchRoutingAndCabAllocation()
+        {
+            try
+            {
+                var model = new VehicleInspectionDTO();
+                model.Companies = new SelectList(ent.Vendors.Where(c => c.IsActive).ToList(), "Id", "CompanyName");
+                model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
+                model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
+                model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

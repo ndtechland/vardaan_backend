@@ -1,0 +1,250 @@
+﻿@model VardaanCab.Domain.DTO.VehicleInspectionDTO
+@{
+    ViewBag.Title = "SearchRoutingAndCabAllocation";
+    Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
+}
+@*<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">*@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    .search-container {
+        /*align-items: center;*/
+    }
+
+    .search-btn {
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    .advanced-btn {
+        background-color: #f0ad4e;
+        color: white;
+    }
+
+    .or-text {
+        font-weight: bold;
+        padding: 0 10px;
+    }
+</style>
+<style>
+    .hidden-section {
+        display: none;
+    }
+    /* Initially hide sections */
+    .search-btn {
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    .advanced-btn {
+        background-color: #f0ad4e;
+        color: white;
+    }
+
+    .or-text {
+        font-weight: bold;
+        padding: 0 10px;
+    }
+</style>
+<style>
+    #advanceOptions {
+        display: none;
+    }
+    /* Hide Advance Search initially */
+    .btn {
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        margin: 5px;
+    }
+
+    .btn-green {
+        background-color: green;
+        color: white;
+    }
+
+    .btn-orange {
+        background-color: orange;
+        color: white;
+    }
+
+    .container {
+        margin: 20px;
+    }
+</style>
+
+<div class="pcoded-content">
+
+    <!-- Page-header end -->
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="card bread">
+                    <div class="card-body">
+                        <h5>Vehicle Inspection Detail</h5>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#!">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">ETS</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#!">Vehicle Inspection Detail</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <!-- Heading -->
+                                    <h5>Vehicle Inspection Detail</h5>
+
+                                    <!-- Import and Export Section -->
+
+                                </div>
+                                <div class="card-block">
+                                    @using (Html.BeginForm())
+                                    {
+                                        if (TempData["msg"] != null)
+                                        {
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="alert alert-success border-success">
+                                                        @TempData["msg"]
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                <div class="row search-container">
+
+                                    <div class="col-md-2 col-sm-4">
+                                        <div class="dropdown">
+                                            <button class="btn btn-success dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                                                Take Action on Routes
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#">Create New Route</a></li>
+                                                <li><a class="dropdown-item" href="#">Upload Route</a></li>
+                                                <li><a class="dropdown-item" href="#">Sears Employee Request</a></li>
+                                                <li><a class="dropdown-item" href="#">Prepare to download</a></li>
+                                                <li><a class="dropdown-item" href="#">Print All</a></li>
+                                                <li><a class="dropdown-item" href="#">Dummy Route</a></li>
+                                                <li><a class="dropdown-item" href="#">Upload Route to Meru</a></li>
+                                                <li><a class="dropdown-item" href="#">Create Back To Back</a></li>
+                                                <li><a class="dropdown-item" href="#">Manual Back To Back</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="advanceOptions" style="display:none;">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-group">
+                                                <select class="form-control" id="searchType" onchange="toggleSearchInput()">
+                                                    <option>-- Select Company --</option>
+                                                    <option>Vehicle</option>
+                                                    <option>Employee ID</option>
+                                                    <option>Sticker Number</option>
+                                                    <option>Route ID</option>
+                                                </select>
+                                                <input type="text" class="form-control" id="searchInput" placeholder="Select Search By Option" disabled>
+                                                <div class="btn btn-success" onclick="searchRoute()">
+                                                    <i class="fa fa-search"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-1 col-sm-2 d-flex justify-content-center align-items-center">
+                                            <span class="or-text">OR</span>
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-4">
+                                            <input type="button" class="btn advanced-btn w-100" id="btnSearchEmployee" value="Search Employee" />
+
+                                        </div>
+                                    </div>
+                                    <div class="row" id="employeeSearch">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-group">
+                                                <select class="form-control" id="searchType" onchange="toggleSearchInput()">
+                                                    <option>-- Search By --</option>
+                                                    <option>Vehicle</option>
+                                                    <option>Employee ID</option>
+                                                    <option>Sticker Number</option>
+                                                    <option>Route ID</option>
+                                                </select>
+                                                <input type="text" class="form-control" id="searchInput" placeholder="Select Search By Option" disabled>
+                                                <div class="btn btn-success" onclick="searchRoute()">
+                                                    <i class="fa fa-search"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-1 col-sm-2 d-flex justify-content-center align-items-center">
+                                            <span class="or-text">OR</span>
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-4">
+                                            <input type="button" class="btn advanced-btn w-100" id="btnAdvance" value="Advance Search" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSearchInput() {
+        let searchType = document.getElementById("searchType").value;
+        let searchInput = document.getElementById("searchInput");
+        let searchBtn = document.querySelector(".search-btn");
+
+        if (searchType !== "") {
+            searchInput.disabled = false;  // Enable input field
+            searchBtn.disabled = false;    // Enable search button
+        } else {
+            searchInput.disabled = true;
+            searchInput.value = "";
+            searchBtn.disabled = true;
+        }
+    }
+
+    function searchRoute() {
+        let searchInput = document.getElementById("searchInput").value.trim();
+
+        if (searchInput !== "") {
+            document.getElementById("searchResults").style.display = "block"; // Show results
+        } else {
+            alert("Please enter a valid Route ID");
+        }
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        $("#btnAdvance").click(function () {
+            $("#advanceOptions").show();
+            $("#employeeSearch").hide();
+        });
+
+        $("#btnSearchEmployee").click(function () {
+            $("#employeeSearch").show();
+            $("#advanceOptions").hide();
+        });
+    });
+</script>
