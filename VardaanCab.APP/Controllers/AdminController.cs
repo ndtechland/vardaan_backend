@@ -599,5 +599,31 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+        [HttpGet]
+        [Route("RoutingListByTerms")]
+        public async Task<IHttpActionResult> RoutingListByTerms(string term)
+        {
+            try
+            {
+                var response = new Response<TripType>();
+                var data = await _admin.GetRoutingListByTerms(term);
+                if (data.Count > 0)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", data = data });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Data not available.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

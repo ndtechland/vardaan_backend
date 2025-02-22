@@ -606,21 +606,42 @@ namespace Vardaan.Services.ImplementationApi
                 throw new Exception("Server Error : " + ex.Message);
             }
         }
-        //public async Task<List<RoutingDTO>> GetRoutList()
-        //{
-        //    try
-        //    {
-        //        var dd=(from r in ent.Routings
-        //                join ar in ent.AllRoutes on r.ID equals ar.Routing_Id
-        //                join c in ent.Cabs on ar.)
-        //        //var data = ent.TripTypes.Where(x => x.TripMasterId == 1 && x.Id!=3).ToList();
-        //        return data;
-        //    }
-        //    catch (Exception ex)
-        //    {
+        public async Task<List<RoutingDTO>> GetRoutingListByTerms(string term)
+        {
+            try
+            {
+                int? routeId = null;
+                if (int.TryParse(term, out int parsedRouteId))
+                {
+                    routeId = parsedRouteId;
+                }
 
-        //        throw new Exception("Server Error : " + ex.Message);
-        //    }
-        //}
+                var dd = await (from r in ent.Routings
+                                join ar in ent.AllRoutes on r.ID equals ar.Routing_Id
+                                join c in ent.Cabs on ar.CabNumber equals c.VehicleNumber
+                                join e in ent.Employees on ar.Employee_Id equals e.Employee_Id
+                                join z in ent.CompanyZones on ar.RouteNameId equals z.Id
+                                join v in ent.Vendors on c.Vendor_Id equals v.Id
+                                where e.Employee_Id == term
+                                      || c.VehicleNumber == term
+                                      || c.StickerNumber == term
+                                      || (routeId.HasValue && ar.RouteId == routeId.Value)
+                                select new RoutingDTO
+                                {
+                                    RouteId = ar.RouteId,
+                                    VehicleNumber = c.VehicleNumber,
+                                    ZoneName = z.CompanyZone1,
+                                    VendorName = v.CompanyName,
+                                    AvailableSeat = ar.AvailableSeats,
+                                }).ToListAsync();
+
+                return dd;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
     }
 }
