@@ -762,3 +762,65 @@
     `;
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let copiedRow = null;
+
+        // Add event listener for copying rows (Ctrl + C)
+        document.addEventListener("keydown", function (event) {
+            if (event.ctrlKey && event.key === "c") {
+                const selectedRow = document.querySelector("tr.selected");
+                if (selectedRow) {
+                    copiedRow = selectedRow;
+                    copiedRow.classList.add("highlight"); // Highlight copied row
+                }
+            }
+        });
+
+        // Add event listener for pasting rows (Ctrl + V)
+        document.addEventListener("keydown", function (event) {
+            if (event.ctrlKey && event.key === "v" && copiedRow) {
+                const hoveredTable = document.querySelector("table:hover");
+                if (hoveredTable) {
+                    const tbody = hoveredTable.querySelector("tbody");
+                    const newRow = copiedRow.cloneNode(true);
+                    newRow.classList.remove("selected", "highlight"); // Remove selection and highlight
+                    tbody.appendChild(newRow);
+                    copiedRow.remove(); // Remove the original copied row
+                    copiedRow = null; // Clear copied row after pasting
+                }
+            }
+        });
+
+        // Highlight row when clicked
+        document.addEventListener("click", function (event) {
+            const row = event.target.closest("tr");
+            if (row) {
+                document.querySelectorAll("tr").forEach(tr => tr.classList.remove("selected"));
+                row.classList.add("selected");
+            }
+        });
+
+        // Add hover event to detect target table
+        document.querySelectorAll("table").forEach(table => {
+            table.addEventListener("mouseenter", function () {
+                table.classList.add("hover");
+            });
+            table.addEventListener("mouseleave", function () {
+                table.classList.remove("hover");
+            });
+        });
+    });
+
+    // Add CSS for highlighting
+    const style = document.createElement("style");
+    style.innerHTML = `
+    .highlight {
+        background-color: #9cc39c !important;
+    }
+`;
+    document.head.appendChild(style);
+
+
+</script>
+
