@@ -4,22 +4,24 @@ using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Core.EntityClient;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Routing;
 using Vardaan.Services.IContract;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
 namespace Vardaan.Services.Implementation
 {
-    public class ETSImplementation:IETS
+    public class ETSImplementation : IETS
     {
-        Vardaan_AdminEntities ent =new Vardaan_AdminEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         public async Task<bool> AddUpdateRequest(CreateRequestDTO model)
         {
-			try
-			{
+            try
+            {
                 if (model.Id == 0)
                 {
                     var EmpReq = new EmployeeRequest()
@@ -79,11 +81,11 @@ namespace Vardaan.Services.Implementation
                 ent.SaveChanges();
                 return true;
             }
-			catch (Exception)
-			{
+            catch (Exception)
+            {
 
-				throw;
-			}
+                throw;
+            }
         }
         public async Task<List<EmployeeRequests>> GetEmployeerequests()
         {
@@ -94,7 +96,7 @@ namespace Vardaan.Services.Implementation
                             join c in ent.Customers on er.CompanyId equals c.Id
                             join tt in ent.TripTypes on er.TripType equals tt.Id
                             join st in ent.TripMasters on er.ShiftType equals st.Id
-                            where er.IsRouting==false
+                            where er.IsRouting == false
                             orderby er.Id descending
                             select new EmployeeRequests
                             {
@@ -192,16 +194,16 @@ namespace Vardaan.Services.Implementation
             try
             {
                 var data = await (from e in ent.Escorts
-                            join c in ent.Customers on e.CompanyId equals c.Id
-                            where e.IsActive == true && e.IsCheckin==false || e.IsCheckin==null
-                            select new Escorts
-                            {
-                                Id= e.Id,
-                                EscortName= e.EscortName,
-                                EscortMobileNumber= e.EscortMobileNumber,
-                                EscortAddress= e.EscortAddress,
-                                CompanyName= c.OrgName,
-                            }
+                                  join c in ent.Customers on e.CompanyId equals c.Id
+                                  where e.IsActive == true && e.IsCheckin == false || e.IsCheckin == null
+                                  select new Escorts
+                                  {
+                                      Id = e.Id,
+                                      EscortName = e.EscortName,
+                                      EscortMobileNumber = e.EscortMobileNumber,
+                                      EscortAddress = e.EscortAddress,
+                                      CompanyName = c.OrgName,
+                                  }
                             ).ToListAsync();
 
                 if (data.Count > 0)
@@ -224,7 +226,7 @@ namespace Vardaan.Services.Implementation
             {
                 var data = await (from e in ent.Escorts
                                   join c in ent.Customers on e.CompanyId equals c.Id
-                                  where e.IsActive == true && e.IsCheckin==true
+                                  where e.IsActive == true && e.IsCheckin == true
                                   select new Escorts
                                   {
                                       Id = e.Id,
@@ -250,9 +252,9 @@ namespace Vardaan.Services.Implementation
             {
                 var data = new DriverCheckoutRemark()
                 {
-                    Driver_Id= model.DriverId,
-                    Remark= model.Remark,
-                    RemarkDate= DateTime.Now
+                    Driver_Id = model.DriverId,
+                    Remark = model.Remark,
+                    RemarkDate = DateTime.Now
                 };
                 ent.DriverCheckoutRemarks.Add(data);
                 ent.SaveChanges();
@@ -264,12 +266,12 @@ namespace Vardaan.Services.Implementation
                 throw;
             }
         }
-        public async Task<string> AddVehicleInspection(VehicleInspectionDTO model,int userId)
+        public async Task<string> AddVehicleInspection(VehicleInspectionDTO model, int userId)
         {
             try
             {
                 var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
-               
+
                 using (var entityConnection = new EntityConnection(entityConnectionString))
                 {
                     entityConnection.Open();
@@ -359,6 +361,123 @@ namespace Vardaan.Services.Implementation
             {
 
                 throw;
+            }
+        }
+        //public async Task<RoutingCabAllCounts> GetRoutingListByTerms(string term)
+        //{
+
+        //    var results = new RoutingCabAllCounts();
+        //    try
+        //    {
+        //        var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+        //        var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+
+        //        using (var sqlConnection = new SqlConnection(sqlConnectionString))
+        //        {
+        //            await sqlConnection.OpenAsync();
+        //            using (var command = new SqlCommand("GetRoutes", sqlConnection))
+        //            {
+        //                command.CommandType = CommandType.StoredProcedure;
+        //                command.Parameters.Add(new SqlParameter("@term", SqlDbType.NVarChar, 50) { Value = (object)term ?? DBNull.Value });
+
+        //                using (var reader = await command.ExecuteReaderAsync())
+        //                {
+        //                    while (await reader.ReadAsync())
+        //                    {
+        //                        results.routingcaballocation.Add(new RoutingCabAllocation
+        //                        {
+        //                            ZoneName = reader.IsDBNull(0) ? null : reader.GetString(0),
+        //                            TotalRoutes = reader.GetInt32(1),
+        //                            AvailableSeat = reader.GetInt32(2)
+        //                        });
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        return results;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Error fetching routing list", ex);
+        //    }
+        //}
+
+
+        public async Task<RoutingCabAllCounts> GetRoutingListByTerms(string term)
+        {
+            var results = new RoutingCabAllCounts();
+            try
+            {
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+                var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+
+                using (var sqlConnection = new SqlConnection(sqlConnectionString))
+                {
+                    await sqlConnection.OpenAsync();
+                    using (var command = new SqlCommand("GetRoutes", sqlConnection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new SqlParameter("@term", SqlDbType.NVarChar, 50) { Value = (object)term ?? DBNull.Value });
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                results.totalzone = reader.GetInt32(0);
+                                results.totalroute = reader.GetInt32(1);
+                                results.totalEmployees = reader.GetInt32(2);
+                                results.totalMaleEmployees = reader.GetInt32(3);
+                                results.totalFemaleEmployees = reader.GetInt32(4);
+                                
+                                //results.totalcloseroute = reader.GetInt32(2);
+                                //results.totalrouteNotStarted = reader.GetInt32(3);
+                                //results.totalStartedRoutes = reader.GetInt32(4);
+                                //results.totalOpenRoutes = reader.GetInt32(5);
+                                //results.totalBackToBackRoutes = reader.GetInt32(6);
+                                //results.totalTotalEmployees = reader.GetInt32(7);
+                                //results.totalTotalMaleEmployees = reader.GetInt32(8);
+                                //results.totalTotalFemaleEmployees = reader.GetInt32(9);
+                                //results.TotalNoVendors = reader.GetInt32(10);
+                                //results.EscortRequired = reader.GetInt32(11);
+                                //results.TotalEmployeeOnboard = reader.GetInt32(12);
+                                //results.TotalEmployeeYetToOnboard = reader.GetInt32(13);
+                                //results.VehicleOccupancy = reader.GetDecimal(14);
+                            }
+
+                            // Move to the next result set for routing allocations
+                            if (await reader.NextResultAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    results.routingcaballocation.Add(new RoutingCabAllocation
+                                    {
+                                        ZoneName = reader.IsDBNull(0) ? null : reader.GetString(0),
+                                        TotalRoutes = reader.GetInt32(1),
+                                        AvailableSeat = reader.GetInt32(2)
+                                    });
+                                }
+                            }
+
+                            // Move to the next result set for vehicle types (Dictionary)
+                            //if (await reader.NextResultAsync())
+                            //{
+                            //    results.totalVehicleType = new Dictionary<string, int>();
+
+                            //    while (await reader.ReadAsync())
+                            //    {
+                            //        string vehicleType = reader.GetString(0);
+                            //        int count = reader.GetInt32(1);
+                            //        results.totalVehicleType.Add(vehicleType, count);
+                            //    }
+                            //}
+                        }
+                    }
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching routing list", ex);
             }
         }
     }

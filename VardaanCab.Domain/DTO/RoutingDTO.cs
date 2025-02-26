@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -36,6 +37,7 @@ namespace VardaanCab.Domain.DTO
         public SelectList DropshiftTimes { get; set; }
         public SelectList ShiftTypes { get; set; }
         public SelectList Zones { get; set; }
+        public IEnumerable<RoutingCabAllocation> RoutingCabAllocations { get; set; }
     }
 
     public class RouteAssignment
@@ -59,6 +61,40 @@ namespace VardaanCab.Domain.DTO
         public TimeSpan PickupTime { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+    }
+    public class RoutingCabAllocation
+    {
+        public long? RouteId { get; set; }
+        public DateTime Date { get; set; }
+        public string VehicleNumber { get; set; }
+        public string ZoneName { get; set; }
+        public int TotalRoutes { get; set; }
+        public string CabId { get; set; }
+        public string DriverName { get; set; }
+        public string VehicleCapacity { get; set; }
+        public int? AvailableSeat { get; set; }
+        public string LastLocation { get; set; }
+    }
+
+    public class RoutingCabAllCounts 
+    {
+        public int totalzone { get; set; }
+        public int totalroute { get; set; }
+        public int totalcloseroute { get; set; }
+        public int totalrouteNotStarted { get; set; }
+        public int totalStartedRoutes { get; set; }
+        public int totalOpenRoutes { get; set; }
+        public int totalBackToBackRoutes { get; set; }
+        public int totalEmployees { get; set; }
+        public int totalMaleEmployees { get; set; }
+        public int totalFemaleEmployees { get; set; }
+        public int TotalNoVendors { get; set; }
+        public int EscortRequired { get; set; }
+        public int TotalEmployeeOnboard { get; set; }
+        public int TotalEmployeeYetToOnboard { get; set; }
+        public decimal VehicleOccupancy { get; set; }
+        public Dictionary<string,int> totalVehicleType { get; set; }
+        public List<RoutingCabAllocation> routingcaballocation { get; set; } = new List<RoutingCabAllocation>();
     }
 
 }

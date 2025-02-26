@@ -1651,5 +1651,14 @@ namespace VardaanCab.DataAccessLayer.DataLayer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ManageVehicleInspection", vendor_IdParameter, vehicle_IdParameter, inspectionDateParameter, aC_WorkingParameter, aC_RemarksParameter, underInfluenceParameter, underInfluence_RemarksParameter, wiper_SeasonalParameter, wiper_RemarksParameter, national_PermitParameter, nationalPermit_RemarksParameter, windshield_BrokenParameter, windshield_RemarksParameter, trip_TypeParameter, visible_Body_DentParameter, bodyDent_RemarksParameter, seat_Belts_WorkingParameter, seatBelts_RemarksParameter, gPS_Not_AvailableParameter, gPS_RemarksParameter, state_PermitParameter, statePermit_RemarksParameter, unregistered_DriversParameter, unregisteredDrivers_RemarksParameter, shift_TimeParameter, dirty_Unclean_VehicleParameter, uncleanVehicle_RemarksParameter, seat_CoverParameter, seatCover_RemarksParameter, headlights_IndicatorsParameter, headlights_RemarksParameter, insuranceParameter, insurance_RemarksParameter, unregistered_CabParameter, unregisteredCab_RemarksParameter, city_NameParameter, driver_UniformParameter, driverUniform_RemarksParameter, spare_WheelParameter, spareWheel_RemarksParameter, rC_BookParameter, rCBook_RemarksParameter, pollutionParameter, pollution_RemarksParameter, penalty_AmountParameter, feedbackParameter, fire_ExtinguisherParameter, fireExtinguisher_RemarksParameter, tool_KitParameter, toolKit_RemarksParameter, fitnessParameter, fitness_RemarksParameter, commercial_LicenseParameter, commercialLicense_RemarksParameter, penalty_DescriptionParameter, first_Aid_BoxParameter, firstAidBox_RemarksParameter, fog_LampParameter, fogLamp_RemarksParameter, passenger_TaxParameter, passengerTax_RemarksParameter, vehicle_Model_Over_5_YearsParameter, vehicleModel_RemarksParameter, total_NC_CountParameter, isActiveParameter, inspectionByEmployeeIdParameter, adhocTimeParameter, tripTypeMasterParameter, responseMessage);
         }
+    
+        public virtual ObjectResult<GetRoutes_Result> GetRoutes(string term)
+        {
+            var termParameter = term != null ?
+                new ObjectParameter("term", term) :
+                new ObjectParameter("term", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoutes_Result>("GetRoutes", termParameter);
+        }
     }
 }

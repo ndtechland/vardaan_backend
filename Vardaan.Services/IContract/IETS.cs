@@ -18,5 +18,6 @@ namespace Vardaan.Services.IContract
         Task<List<Escorts>> GetEscortAvailable();
         Task<bool> AddDriverCheckoutRemark(DriverCheckoutRemarkModel model);
         Task<string> AddVehicleInspection(VehicleInspectionDTO model, int userId);
+        Task<RoutingCabAllCounts> GetRoutingListByTerms(string term);
     }
 }

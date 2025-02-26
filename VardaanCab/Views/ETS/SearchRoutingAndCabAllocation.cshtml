@@ -1,4 +1,4 @@
-﻿@model VardaanCab.Domain.DTO.VehicleInspectionDTO
+﻿@model VardaanCab.Domain.DTO.RoutingDTO
 @{
     ViewBag.Title = "SearchRoutingAndCabAllocation";
     Layout = "~/Views/Shared/New_Master/_FinelAdminLayout.cshtml";
@@ -35,6 +35,10 @@
         color: white;
     }
 
+    .input-group {
+        margin-bottom: 0.25em;
+    }
+
     .advanced-btn {
         background-color: #f0ad4e;
         color: white;
@@ -54,7 +58,7 @@
         padding: 10px;
         border: none;
         cursor: pointer;
-        margin: 5px;
+        /*margin: 5px;*/
     }
 
     .btn-green {
@@ -71,7 +75,33 @@
         margin: 20px;
     }
 </style>
+<style>
+    .summary-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+    }
 
+        .summary-table thead {
+            background-color: #5a6772;
+            color: white;
+            text-align: left;
+        }
+
+        .summary-table th, .summary-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+</style>
+<style>
+    #detailList {
+        display: none;
+    }
+</style>
 <div class="pcoded-content">
 
     <!-- Page-header end -->
@@ -81,7 +111,7 @@
             <div class="page-wrapper">
                 <div class="card bread">
                     <div class="card-body">
-                        <h5>Vehicle Inspection Detail</h5>
+                        <h5>Routing And Cab Allocation</h5>
                         <div class="page-header-breadcrumb">
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item">
@@ -93,7 +123,7 @@
                                     <a href="#!">ETS</a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="#!">Vehicle Inspection Detail</a>
+                                    <a href="#!">Routing And Cab Allocation</a>
                                 </li>
                             </ul>
                         </div>
@@ -106,7 +136,7 @@
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <!-- Heading -->
-                                    <h5>Vehicle Inspection Detail</h5>
+                                    <h5>Routing And Cab Allocation</h5>
 
                                     <!-- Import and Export Section -->
 
@@ -125,79 +155,290 @@
                                             </div>
                                         }
 
-                                <div class="row search-container">
+                                        <div class="row search-container align-items-center mt-3" id="mainSearchRow">
+                                            <div class="col-md-3 col-sm-4">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-success dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                                                        Take Action on Routes
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#">Create New Route</a></li>
+                                                        <li><a class="dropdown-item" href="#">Upload Route</a></li>
+                                                        <li><a class="dropdown-item" href="#">Sears Employee Request</a></li>
+                                                        <li><a class="dropdown-item" href="#">Prepare to download</a></li>
+                                                        <li><a class="dropdown-item" href="#">Print All</a></li>
+                                                        <li><a class="dropdown-item" href="#">Dummy Route</a></li>
+                                                        <li><a class="dropdown-item" href="#">Upload Route to Meru</a></li>
+                                                        <li><a class="dropdown-item" href="#">Create Back To Back</a></li>
+                                                        <li><a class="dropdown-item" href="#">Manual Back To Back</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
 
-                                    <div class="col-md-2 col-sm-4">
-                                        <div class="dropdown">
-                                            <button class="btn btn-success dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                                                Take Action on Routes
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#">Create New Route</a></li>
-                                                <li><a class="dropdown-item" href="#">Upload Route</a></li>
-                                                <li><a class="dropdown-item" href="#">Sears Employee Request</a></li>
-                                                <li><a class="dropdown-item" href="#">Prepare to download</a></li>
-                                                <li><a class="dropdown-item" href="#">Print All</a></li>
-                                                <li><a class="dropdown-item" href="#">Dummy Route</a></li>
-                                                <li><a class="dropdown-item" href="#">Upload Route to Meru</a></li>
-                                                <li><a class="dropdown-item" href="#">Create Back To Back</a></li>
-                                                <li><a class="dropdown-item" href="#">Manual Back To Back</a></li>
-                                            </ul>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="input-group">
+                                                    <select class="form-control" id="searchType" onchange="toggleSearchInput()">
+                                                        <option>-- Search By --</option>
+                                                        <option>Vehicle Number</option>
+                                                        <option>Employee ID</option>
+                                                        <option>Sticker Number</option>
+                                                        <option>Route ID</option>
+                                                    </select>
+                                                    <input type="text" class="form-control" id="searchInput" placeholder="Select Search By Option" disabled oninput="toggleSearchInput()">
+                                                    <button class="btn btn-success searchBtn" id="searchButton" onclick="searchData()" disabled>
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-2 text-center">
+                                                <span class="or-text">OR</span>
+                                            </div>
+
+                                            <div class="col-md-2 col-sm-4">
+                                                <input type="button" class="btn btn-warning w-100" id="btnSearchAdvance" value="Advance Search" onclick="toggleEmployeeSearch()" />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row" id="advanceOptions" style="display:none;">
-                                        <div class="col-md-6 col-sm-12">
-                                            <div class="input-group">
-                                                <select class="form-control" id="searchType" onchange="toggleSearchInput()">
-                                                    <option>-- Select Company --</option>
-                                                    <option>Vehicle</option>
-                                                    <option>Employee ID</option>
-                                                    <option>Sticker Number</option>
-                                                    <option>Route ID</option>
+
+                                        <!-- Hidden Row for Employee Search -->
+                                        <div class="row search-container align-items-center mt-3" id="employeeSearchRow" style="display: none;">
+                                            <div class="col-md-3 col-sm-4">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-success dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                                                        Take Action on Routes
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#">Create New Route</a></li>
+                                                        <li><a class="dropdown-item" href="#">Upload Route</a></li>
+                                                        <li><a class="dropdown-item" href="#">Sears Employee Request</a></li>
+                                                        <li><a class="dropdown-item" href="#">Prepare to Download</a></li>
+                                                        <li><a class="dropdown-item" href="#">Print All</a></li>
+                                                        <li><a class="dropdown-item" href="#">Dummy Route</a></li>
+                                                        <li><a class="dropdown-item" href="#">Upload Route to Meru</a></li>
+                                                        <li><a class="dropdown-item" href="#">Create Back To Back</a></li>
+                                                        <li><a class="dropdown-item" href="#">Manual Back To Back</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4">
+                                                <select class="form-control">
+                                                    <option>1 Facility(s) Selected</option>
                                                 </select>
-                                                <input type="text" class="form-control" id="searchInput" placeholder="Select Search By Option" disabled>
-                                                <div class="btn btn-success" onclick="searchRoute()">
-                                                    <i class="fa fa-search"></i>
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4">
+                                                <select class="form-control">
+                                                    <option>PICKUP</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4">
+                                                <select class="form-control">
+                                                    <option>1 Shift(s)</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4">
+                                                <input type="date" class="form-control" value="2025-02-24">
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4">
+                                                <select class="form-control">
+                                                    <option>All Route</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4">
+                                                <button class="btn btn-success w-100 searchBtn">Search</button>
+                                            </div>
+
+                                            <div class="col-md-1 text-center">
+                                                <span class="or-text">OR</span>
+                                            </div>
+
+                                            <div class="col-md-2 col-sm-4">
+                                                <input type="button" class="btn btn-success w-100" onclick="toggleEmployeeSearch()" value="Search Employee" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Hidden Section: Route Details & Summary -->
+                                        <div id="resultsSection" class="mt-4" style="display: none;">
+                                            <div class="row">
+                                                <!-- Route Details -->
+                                                <div class="col-md-6">
+                                                    <div id="searchResults"></div>
+                                                    @*<div class="card">
+            <div class="card-header">
+                <strong>🚏 Route Details</strong> <span class="badge bg-secondary pull-right">14</span>
+            </div>
+            <div class="card-body">
+
+                @foreach (var item in Model.RoutingCabAllocations)
+                    {
+                        <div class="route-item border-bottom pb-2">
+                            <strong>@item.ZoneName <a href="#">ROUTE SUMMARY</a></strong><br>
+                            Number Of Routes: <strong>12</strong><br>
+                            Available Seat Capacity: <strong>15</strong> <a href="#">View</a><br>
+                            <button class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
+                            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                        </div>
+                    }
+            </div>
+        </div>*@
+                                                </div>
+
+                                                <!-- Summary Details -->
+                                                <div class="col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <strong>📊 Summary Details</strong>
+                                                        </div>
+                                                        <div id="summerysearchResults"></div>
+                                                        @*<div class="card-body">
+                                                            <table class="table table-bordered">
+                                                                <tr><th>Total Zones</th><td>14</td></tr>
+                                                                <tr><th>Total Routes</th><td>81</td></tr>
+                                                                <tr><th>Close Routes</th><td>38</td></tr>
+                                                                <tr><th>Closed Routes But Not Started</th><td>6</td></tr>
+                                                                <tr><th>Started Routes</th><td>32</td></tr>
+                                                                <tr><th>Open Routes</th><td>43</td></tr>
+                                                            </table>
+                                                            <strong>Open Routes Vendor Summary</strong>
+                                                            <table class="summary-table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Vendor Name</th>
+                                                                        <th>Seating Capacity</th>
+                                                                        <th>Trip Count</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Yet To Assign</td>
+                                                                        <td>4</td>
+                                                                        <td>33</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Yet To Assign</td>
+                                                                        <td>6</td>
+                                                                        <td>10</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <table class="table table-bordered">
+                                                                <tr><th>Back To Back Routes</th><td>0</td></tr>
+                                                                <tr><th>Total Employees</th><td>238</td></tr>
+                                                            </table>
+                                                        </div>*@
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-1 col-sm-2 d-flex justify-content-center align-items-center">
-                                            <span class="or-text">OR</span>
+                                        <div class="dt-responsive table-responsive" id="detailList">
+                                            <table id="order-table" class="table table-striped table-bordered nowrap">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th>Route ID</th>
+                                                        <th>Date</th>
+                                                        <th>Pickup Time</th>
+                                                        <th>Planned Seats</th>
+                                                        <th>Actual</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Route Row -->
+                                                    <tr>
+                                                        <td>56955</td>
+                                                        <td>24-02-2025</td>
+                                                        <td>19:30</td>
+                                                        <td>4</td>
+                                                        <td>6</td>
+                                                        <td><a href="#" class="btn-view">View</a></td>
+                                                    </tr>
+                                                    <!-- Hidden Details Row -->
+                                                    <tr id="route-56955" class="details-content">
+                                                        <td colspan="6">
+                                                            <div class="route-header">
+                                                                <strong>Device Number:</strong> 761 |
+                                                                <strong>Driver Name:</strong> Narendra Singh Yadav |
+                                                                <strong>Vehicle Number:</strong> HR38AD9592 |
+                                                                <strong>Available Seats:</strong> 3
+                                                            </div>
+                                                            <div class="dt-responsive table-responsive">
+                                                                <table id="order-table" class="table table-striped table-bordered nowrap">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th>Employee Id</th>
+                                                                            <th>Employee Name</th>
+                                                                            <th>Number</th>
+                                                                            <th>Gender</th>
+                                                                            <th>Company</th>
+                                                                            <th>Pickup/Drop Location</th>
+                                                                            <th>Pickup Location</th>
+                                                                            <th>Status</th>
+                                                                            <th>Area</th>
+                                                                            <th>Pick-up Time</th>
+                                                                            <th>
+                                                                                <input type="checkbox" />No Show
+                                                                                <input type="checkbox" />PickUp Status
+                                                                            </th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>9284524195</td>
+                                                                            <td>Sushant Mangaonkar</td>
+                                                                            <td>919284524195</td>
+                                                                            <td>Male</td>
+                                                                            <td>VARDAANSTF</td>
+                                                                            <td>D-228 Block D sector-61 Near Prateek Fedora</td>
+                                                                            <td>PEACE-A 0702, Noida</td>
+                                                                            <td class="text-danger">Yet to confirm</td>
+                                                                            <td>NOIDA SECTOR 15</td>
+                                                                            <td><input type="time" class="form-control"></td>
+                                                                            <td>
+                                                                                <select class="zoneDropDown_serviceMapping floatLeft ng-scope ng-pristine ng-valid">
+                                                                                    <option value="NO">No Show</option>
+                                                                                    <option value="B">PickedUp</option>
+                                                                                    <option value="N" selected="selected">Yet to picked up</option>
+                                                                                    <option value="T">Leave</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td><button class="btn btn-warning btn-sm">Update</button></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>8755953537</td>
+                                                                            <td>Simran</td>
+                                                                            <td>918755953537</td>
+                                                                            <td>Female</td>
+                                                                            <td>VARDAANSTF</td>
+                                                                            <td>D-228 Block D sector-61 Near Prateek Fedora</td>
+                                                                            <td>Paras Tiera, Noida</td>
+                                                                            <td class="text-danger">Yet to confirm</td>
+                                                                            <td>NOIDA SECTOR 73</td>
+                                                                            <td><input type="time" class="form-control"></td>
+                                                                            <td>
+                                                                                <select class="zoneDropDown_serviceMapping floatLeft ng-scope ng-pristine ng-valid">
+                                                                                    <option value="NO">No Show</option>
+                                                                                    <option value="B">PickedUp</option>
+                                                                                    <option value="N" selected="selected">Yet to picked up</option>
+                                                                                    <option value="T">Leave</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td><button class="btn btn-warning btn-sm">Update</button></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-
-                                        <div class="col-md-2 col-sm-4">
-                                            <input type="button" class="btn advanced-btn w-100" id="btnSearchEmployee" value="Search Employee" />
-
-                                        </div>
-                                    </div>
-                                    <div class="row" id="employeeSearch">
-                                        <div class="col-md-6 col-sm-12">
-                                            <div class="input-group">
-                                                <select class="form-control" id="searchType" onchange="toggleSearchInput()">
-                                                    <option>-- Search By --</option>
-                                                    <option>Vehicle</option>
-                                                    <option>Employee ID</option>
-                                                    <option>Sticker Number</option>
-                                                    <option>Route ID</option>
-                                                </select>
-                                                <input type="text" class="form-control" id="searchInput" placeholder="Select Search By Option" disabled>
-                                                <div class="btn btn-success" onclick="searchRoute()">
-                                                    <i class="fa fa-search"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-1 col-sm-2 d-flex justify-content-center align-items-center">
-                                            <span class="or-text">OR</span>
-                                        </div>
-
-                                        <div class="col-md-2 col-sm-4">
-                                            <input type="button" class="btn advanced-btn w-100" id="btnAdvance" value="Advance Search" />
-                                        </div>
-                                    </div>
-                                </div>
-
                                     }
                                 </div>
                             </div>
@@ -213,38 +454,250 @@
     function toggleSearchInput() {
         let searchType = document.getElementById("searchType").value;
         let searchInput = document.getElementById("searchInput");
-        let searchBtn = document.querySelector(".search-btn");
 
         if (searchType !== "") {
-            searchInput.disabled = false;  // Enable input field
-            searchBtn.disabled = false;    // Enable search button
+            searchInput.disabled = false;
+            searchInput.placeholder = "Enter " + searchType;
         } else {
             searchInput.disabled = true;
+            searchInput.placeholder = "Select Search By Option";
             searchInput.value = "";
-            searchBtn.disabled = true;
         }
+
+        toggleSearchButton();
     }
 
-    function searchRoute() {
+    function toggleSearchButton() {
+        let searchInput = document.getElementById("searchInput");
+        let searchButton = document.getElementById("searchButton");
+        searchButton.disabled = searchInput.value.trim() === "";
+
+    }
+
+    function searchData() {
         let searchInput = document.getElementById("searchInput").value.trim();
-
-        if (searchInput !== "") {
-            document.getElementById("searchResults").style.display = "block"; // Show results
-        } else {
-            alert("Please enter a valid Route ID");
+        if (searchInput === "") {
+            alert("Please enter a search term.");
+            return;
         }
-    }
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function (event) {
-        $("#btnAdvance").click(function () {
-            $("#advanceOptions").show();
-            $("#employeeSearch").hide();
-        });
 
-        $("#btnSearchEmployee").click(function () {
-            $("#employeeSearch").show();
-            $("#advanceOptions").hide();
+        $.ajax({
+            url: '/ETS/RoutingAndCabAllocationData',
+            type: 'GET',
+            data: { term: searchInput },
+            dataType: 'json',
+            success: function (response) {
+                let resultsContainer = $("#searchResults");
+                resultsContainer.empty();
+                let summeryresultsContainer = $("#summerysearchResults");
+                summeryresultsContainer.empty();
+                if (response.message) {
+                    resultsContainer.html('<p class="text-danger text-center">' + response.message + '</p>');
+                } else {
+                    response.routingcaballocation.forEach((item, index) => {
+                        let collapseId = `collapse_${index}`; // Unique ID for each collapsible section
+                        resultsContainer.append(`
+                         <div class="card">
+     <div class="card-header">
+         <strong>🚏 Route Details</strong> <span class="badge bg-secondary pull-right" style="color:white;">${response.totalzone}</span>
+     </div>
+     <div class="card-body">
+                        <div class="route-item border-bottom pb-2">
+                            <strong>
+                                ${item.ZoneName}
+                                <a href="#" class="route-summary-toggle" data-target="#${collapseId}">ROUTE SUMMARY</a>
+                            </strong><br>
+                            <!-- Collapsible div -->
+<div id="${collapseId}" class="collapse-content" style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ddd;">
+     <table class="summary-table">
+    <thead>
+        <tr>
+            <th>Details</th>
+            <th>Summary Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Total Employees</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Total Male Employees</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Total Female Employees</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Escort Required</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Total Employee Onboard</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Total Employee Yet To Onboard</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Vehicle Occupancy</td>
+            <td>0%</td>
+        </tr>
+    </tbody>
+</table>
+
+</div>
+                            Number Of Routes: <strong>${item.TotalRoutes}</strong><br>
+                            Available Seat Capacity: <strong>${item.AvailableSeat}</strong> <a class="btn-view" href="#" data-target="#route-${item.RouteId}">View</a><br>
+                            <span class="btn btn-sm btn-primary viewdetail" id="fddfd"><i class="fa fa-eye"></i></span>
+                            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+
+
+                        </div>
+                        </div>
+                        </div>
+
+                    `);
+                    });
+                    summeryresultsContainer.append(`
+                        <div class="card-body">
+    <table class="table table-bordered">
+        <tr><th>Total Zones</th><td>${response.totalzone}</td></tr>
+        <tr><th>Total Routes</th><td>${response.totalroute}</td></tr>
+        <tr><th>Close Routes</th><td>${response.totalcloseroute}</td></tr>
+        <tr><th>Closed Routes But Not Started</th><td>${response.totalrouteNotStarted}</td></tr>
+        <tr><th>Started Routes</th><td>${response.totalStartedRoutes}</td></tr>
+        <tr><th>Open Routes</th><td>${response.totalOpenRoutes}</td></tr>
+    </table>
+    <strong>Open Routes Vendor Summary</strong>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>Vendor Name</th>
+                <th>Seating Capacity</th>
+                <th>Trip Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Yet To Assign</td>
+                <td>4</td>
+                <td>33</td>
+            </tr>
+            <tr>
+                <td>Yet To Assign</td>
+                <td>6</td>
+                <td>10</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered">
+        <tr><th>Back To Back Routes</th><td>${response.totalBackToBackRoutes}</td></tr>
+        <tr><th>Total Employees</th><td>${response.totalEmployees}</td></tr>
+        <tr><th>Total Male Employees</th><td>${response.totalMaleEmployees}</td></tr>
+        <tr><th>Total Female Employees</th><td>${response.totalFemaleEmployees}</td></tr>
+        <tr><th>Vehicle Type</th><td>${response.totalEmployees}</td></tr>
+        <tr><th>Total No Vendor</th><td>${response.totalEmployees}</td></tr>
+    </table>
+    <strong>Allocated Vendor Summary</strong>
+<table class="summary-table">
+    <thead>
+        <tr>
+            <th>Vendor Name</th>
+            <th>Seating Capacity</th>
+            <th>Trip Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Yet To Assign</td>
+            <td>4</td>
+            <td>33</td>
+        </tr>
+        <tr>
+            <td>Yet To Assign</td>
+            <td>6</td>
+            <td>10</td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-bordered">
+    <tr><th>Escort Required</th><td>${response.totalBackToBackRoutes}</td></tr>
+    <tr><th>Total Employee Onboard</th><td>${response.totalEmployees}</td></tr>
+    <tr><th>Total Employee Yet To Onboard</th><td>${response.totalEmployees}</td></tr>
+    <tr><th>Vehicle Occupancy</th><td>${response.totalEmployees} %</td></tr>
+</table>
+</div>
+
+                    `);
+                    //Summery detail
+
+                    // Toggle collapse functionality
+                    $(".route-summary-toggle").click(function (e) {
+                        e.preventDefault();
+
+                        let target = $(this).data("target");
+
+                        // Close all collapsible divs except the clicked one
+                        $(".collapse-content").not(target).slideUp();
+
+                        // Toggle the clicked one
+                        $(target).slideToggle();
+
+                    });
+
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error, xhr.responseText);
+                $("#searchResults").html('<p class="text-danger text-center">Error fetching data.</p>');
+            }
         });
+    }
+
+</script>
+
+<script>
+    function toggleEmployeeSearch() {
+        let mainSearchRow = document.getElementById("mainSearchRow");
+        let employeeSearchRow = document.getElementById("employeeSearchRow");
+        let resultsSection = document.getElementById("resultsSection");
+
+        if (employeeSearchRow.style.display === "none" || employeeSearchRow.style.display === "") {
+            mainSearchRow.style.display = "none";
+            employeeSearchRow.style.display = "flex";
+        } else {
+            mainSearchRow.style.display = "flex";
+            employeeSearchRow.style.display = "none";
+        }
+        
+        resultsSection.style.display = "none";
+        $("#detailList").fadeOut();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        $(".searchBtn").click(function () {
+            event.preventDefault(); // Prevent default form submission (if inside a form)
+
+
+            $("#resultsSection").fadeIn();
+            $("#detailList").fadeOut();
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        //$(".viewdetail").click(function (event) {
+        //    event.preventDefault();
+        //    $("#detailList").fadeIn();
+        //});
+        $(document).on("click", "#fddfd", function (event) {
+            event.preventDefault();
+            $("#detailList").fadeIn();
+            $("#resultsSection").fadeOut();
+        })
     });
 </script>
