@@ -1332,6 +1332,13 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="IsActive" Type="bit" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="RouteStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusName" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="Routing">
           <Key>
             <PropertyRef Name="ID" />
@@ -1987,6 +1994,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="Escort" EntityType="Self.Escort" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="FeedBackEmployee" EntityType="Self.FeedBackEmployee" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="HelpEmployee" EntityType="Self.HelpEmployee" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="RouteStatus" EntityType="Self.RouteStatus" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Routing" EntityType="Self.Routing" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="ShiftMaster" EntityType="Self.ShiftMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="Support" EntityType="Self.Support" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -3663,6 +3671,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <FunctionImport Name="GetRoutes" ReturnType="Collection(Vardaan_AdminModel.GetRoutes_Result)">
           <Parameter Name="term" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="RouteStatus" EntityType="Vardaan_AdminModel.RouteStatu" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -5121,6 +5130,13 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Type="Int32" Name="TotalRoutes" Nullable="true" />
           <Property Type="Int32" Name="TotalAvailableSeats" Nullable="true" />
         </ComplexType>
+        <EntityType Name="RouteStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7734,6 +7750,14 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="RouteStatus">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.RouteStatu">
+              <MappingFragment StoreEntitySet="RouteStatus">
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

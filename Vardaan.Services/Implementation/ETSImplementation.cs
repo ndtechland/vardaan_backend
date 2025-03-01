@@ -457,19 +457,19 @@ namespace Vardaan.Services.Implementation
                                     });
                                 }
                             }
+                            if (await reader.NextResultAsync())
+                            {
+                                results.totalVehicleType = new List<Dictionary<string, int>>();
 
-                            // Move to the next result set for vehicle types (Dictionary)
-                            //if (await reader.NextResultAsync())
-                            //{
-                            //    results.totalVehicleType = new Dictionary<string, int>();
-
-                            //    while (await reader.ReadAsync())
-                            //    {
-                            //        string vehicleType = reader.GetString(0);
-                            //        int count = reader.GetInt32(1);
-                            //        results.totalVehicleType.Add(vehicleType, count);
-                            //    }
-                            //}
+                                while (await reader.ReadAsync())
+                                {
+                                    var vehicleData = new Dictionary<string, int>
+                                    {
+                                        { reader.GetString(0), reader.GetInt32(1) }
+                                    };
+                                    results.totalVehicleType.Add(vehicleData);
+                                }
+                            }
                         }
                     }
                 }

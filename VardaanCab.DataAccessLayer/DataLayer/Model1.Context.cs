@@ -105,6 +105,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<CompanyZone> CompanyZones { get; set; }
         public virtual DbSet<DriverCheckoutRemark> DriverCheckoutRemarks { get; set; }
         public virtual DbSet<VehicleInspection> VehicleInspections { get; set; }
+        public virtual DbSet<RouteStatu> RouteStatus { get; set; }
     
         public virtual ObjectResult<Nullable<int>> checkOneCompanyBookingSelected(Nullable<bool> isNrg, string term, Nullable<System.DateTime> sDate, Nullable<System.DateTime> eDate, Nullable<int> cityId, Nullable<int> routeNo)
         {

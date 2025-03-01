@@ -1242,7 +1242,10 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                return View();
+                var model = new RoutingDTO();
+                model.Customers = new SelectList(ent.Customers.Where(c => c.IsActive).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
+                model.RouteStatuses = new SelectList(ent.RouteStatus.ToList(), "Id", "StatusName");
+                return View(model);
             }
             catch (Exception)
             {
