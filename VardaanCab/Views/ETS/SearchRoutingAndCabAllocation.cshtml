@@ -201,66 +201,73 @@
                                         </div>
 
                                         <!-- Hidden Row for Employee Search -->
-                                        <div class="row search-container align-items-center mt-3" id="employeeSearchRow" style="display: none;">
-                                            <div class="col-md-3 col-sm-4">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-success dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                                                        Take Action on Routes
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="#">Create New Route</a></li>
-                                                        <li><a class="dropdown-item" href="#">Upload Route</a></li>
-                                                        <li><a class="dropdown-item" href="#">Sears Employee Request</a></li>
-                                                        <li><a class="dropdown-item" href="#">Prepare to Download</a></li>
-                                                        <li><a class="dropdown-item" href="#">Print All</a></li>
-                                                        <li><a class="dropdown-item" href="#">Dummy Route</a></li>
-                                                        <li><a class="dropdown-item" href="#">Upload Route to Meru</a></li>
-                                                        <li><a class="dropdown-item" href="#">Create Back To Back</a></li>
-                                                        <li><a class="dropdown-item" href="#">Manual Back To Back</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-1 col-sm-4">
-                                                <select class="form-control">
-                                                    <option>1 Facility(s) Selected</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-1 col-sm-4">
-                                                <select class="form-control">
-                                                    <option>PICKUP</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-1 col-sm-4">
-                                                <select class="form-control">
-                                                    <option>1 Shift(s)</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-1 col-sm-4">
-                                                <input type="date" class="form-control" value="2025-02-24">
-                                            </div>
-
-                                            <div class="col-md-1 col-sm-4">
-                                                <select class="form-control">
-                                                    <option>All Route</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-1 col-sm-4">
-                                                <button class="btn btn-success w-100 searchBtn">Search</button>
-                                            </div>
-
-                                            <div class="col-md-1 text-center">
-                                                <span class="or-text">OR</span>
-                                            </div>
-
-                                            <div class="col-md-2 col-sm-4">
-                                                <input type="button" class="btn btn-success w-100" onclick="toggleEmployeeSearch()" value="Search Employee" />
-                                            </div>
+                                <div class="row search-container align-items-center mt-3" id="employeeSearchRow" style="display: none;">
+                                    <div class="col-md-3 col-sm-4">
+                                        <div class="dropdown">
+                                            <button class="btn btn-success dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                                                Take Action on Routes
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#">Create New Route</a></li>
+                                                <li><a class="dropdown-item" href="#">Upload Route</a></li>
+                                                <li><a class="dropdown-item" href="#">Sears Employee Request</a></li>
+                                                <li><a class="dropdown-item" href="#">Prepare to Download</a></li>
+                                                <li><a class="dropdown-item" href="#">Print All</a></li>
+                                                <li><a class="dropdown-item" href="#">Dummy Route</a></li>
+                                                <li><a class="dropdown-item" href="#">Upload Route to Meru</a></li>
+                                                <li><a class="dropdown-item" href="#">Create Back To Back</a></li>
+                                                <li><a class="dropdown-item" href="#">Manual Back To Back</a></li>
+                                            </ul>
                                         </div>
+                                    </div>
+
+                                    <div class="col-md-1 col-sm-4">
+                                        @Html.DropDownListFor(a => a.Company_Id, Model.Customers, "Select Company", new { @class = "form-control" })
+
+                                    </div>
+
+                                    <div class="col-md-1 col-sm-4">
+                                        <select id="tripType" class="form-control form-control-default waves-effect input input--dropdown js--animations">
+                                            <option value="">Trip Type</option>
+                                            <optgroup label="NORMAL">
+                                                <option value="1">PICKUP</option>
+                                                <option value="2">DROP</option>
+                                            </optgroup>
+                                            <optgroup label="ADHOC">
+                                                <option value="PICKUP">PICKUP</option>
+                                                <option value="DROP">DROP</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-1 col-sm-4" id="shiftContainer" style="display: none;">
+                                        @Html.DropDownListFor(a => a.Shift_Time, Enumerable.Empty<SelectListItem>(), "Select Shift", new { @class = "form-control", @required = "required" })
+
+                                    </div>
+                                    <div class="col-md-1 col-sm-4" id="timePickerContainer" style="display: none;">
+                                        <input type="time" class="form-control" id="timePicker">
+                                    </div>
+                                    <div class="col-md-1 col-sm-4">
+                                        <input type="date" class="form-control" id="datePicker">
+                                    </div>
+
+                                    <div class="col-md-1 col-sm-4">
+                                        @Html.DropDownListFor(a => a.Company_Id, Model.RouteStatuses, "All Routes", new { @class = "form-control" })
+
+                                    </div>
+
+                                    <div class="col-md-1 col-sm-4">
+                                        <button class="btn btn-success w-100 searchBtn">Search</button>
+                                    </div>
+
+                                    <div class="col-md-1 text-center">
+                                        <span class="or-text">OR</span>
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-4">
+                                        <input type="button" class="btn btn-success w-100" onclick="toggleEmployeeSearch()" value="Search Employee" />
+                                    </div>
+                                </div>
 
                                         <!-- Hidden Section: Route Details & Summary -->
                                         <div id="resultsSection" class="mt-4" style="display: none;">
@@ -268,24 +275,7 @@
                                                 <!-- Route Details -->
                                                 <div class="col-md-6">
                                                     <div id="searchResults"></div>
-                                                    @*<div class="card">
-            <div class="card-header">
-                <strong>🚏 Route Details</strong> <span class="badge bg-secondary pull-right">14</span>
-            </div>
-            <div class="card-body">
-
-                @foreach (var item in Model.RoutingCabAllocations)
-                    {
-                        <div class="route-item border-bottom pb-2">
-                            <strong>@item.ZoneName <a href="#">ROUTE SUMMARY</a></strong><br>
-                            Number Of Routes: <strong>12</strong><br>
-                            Available Seat Capacity: <strong>15</strong> <a href="#">View</a><br>
-                            <button class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
-                            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                        </div>
-                    }
-            </div>
-        </div>*@
+                                                  
                                                 </div>
 
                                                 <!-- Summary Details -->
@@ -295,42 +285,7 @@
                                                             <strong>📊 Summary Details</strong>
                                                         </div>
                                                         <div id="summerysearchResults"></div>
-                                                        @*<div class="card-body">
-                                                            <table class="table table-bordered">
-                                                                <tr><th>Total Zones</th><td>14</td></tr>
-                                                                <tr><th>Total Routes</th><td>81</td></tr>
-                                                                <tr><th>Close Routes</th><td>38</td></tr>
-                                                                <tr><th>Closed Routes But Not Started</th><td>6</td></tr>
-                                                                <tr><th>Started Routes</th><td>32</td></tr>
-                                                                <tr><th>Open Routes</th><td>43</td></tr>
-                                                            </table>
-                                                            <strong>Open Routes Vendor Summary</strong>
-                                                            <table class="summary-table">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Vendor Name</th>
-                                                                        <th>Seating Capacity</th>
-                                                                        <th>Trip Count</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>Yet To Assign</td>
-                                                                        <td>4</td>
-                                                                        <td>33</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Yet To Assign</td>
-                                                                        <td>6</td>
-                                                                        <td>10</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <table class="table table-bordered">
-                                                                <tr><th>Back To Back Routes</th><td>0</td></tr>
-                                                                <tr><th>Total Employees</th><td>238</td></tr>
-                                                            </table>
-                                                        </div>*@
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
@@ -598,8 +553,22 @@
         <tr><th>Total Employees</th><td>${response.totalEmployees}</td></tr>
         <tr><th>Total Male Employees</th><td>${response.totalMaleEmployees}</td></tr>
         <tr><th>Total Female Employees</th><td>${response.totalFemaleEmployees}</td></tr>
-        <tr><th>Vehicle Type</th><td>${response.totalEmployees}</td></tr>
-        <tr><th>Total No Vendor</th><td>${response.totalEmployees}</td></tr>
+        <tr>
+    <th>Vehicle Type</th>
+    <td>
+        <table class="table">
+            <tbody>
+                ${response.totalVehicleType.map(function (item) {
+                    return Object.keys(item).map(function (key) {
+                        return `<tr><th>${key}</th><td>${item[key]}</td></tr>`;
+                    }).join("");  // Ensure all rows are properly joined
+                }).join("")}
+            </tbody>
+        </table>
+    </td>
+</tr>
+
+        <tr><th>Total No Vendor</th><td>${response.TotalNoVendors}</td></tr>
     </table>
     <strong>Allocated Vendor Summary</strong>
 <table class="summary-table">
@@ -624,10 +593,10 @@
     </tbody>
 </table>
 <table class="table table-bordered">
-    <tr><th>Escort Required</th><td>${response.totalBackToBackRoutes}</td></tr>
-    <tr><th>Total Employee Onboard</th><td>${response.totalEmployees}</td></tr>
-    <tr><th>Total Employee Yet To Onboard</th><td>${response.totalEmployees}</td></tr>
-    <tr><th>Vehicle Occupancy</th><td>${response.totalEmployees} %</td></tr>
+    <tr><th>Escort Required</th><td>${response.EscortRequired}</td></tr>
+    <tr><th>Total Employee Onboard</th><td>${response.TotalEmployeeOnboard}</td></tr>
+    <tr><th>Total Employee Yet To Onboard</th><td>${response.TotalEmployeeYetToOnboard}</td></tr>
+    <tr><th>Vehicle Occupancy</th><td>${response.VehicleOccupancy} %</td></tr>
 </table>
 </div>
 
@@ -699,5 +668,59 @@
             $("#detailList").fadeIn();
             $("#resultsSection").fadeOut();
         })
+    });
+</script>
+<script>
+    document.getElementById('datePicker').value = new Date().toISOString().split('T')[0];
+</script>
+<script>
+    document.getElementById("tripType").addEventListener("change", function () {
+        var shiftContainer = document.getElementById("shiftContainer");
+        var timePickerContainer = document.getElementById("timePickerContainer");
+
+        var selectedOption = this.options[this.selectedIndex];  
+        var optGroup = selectedOption.parentElement.label; 
+
+        if (optGroup === "NORMAL") {
+            shiftContainer.style.display = "block";
+            timePickerContainer.style.display = "none";
+        } else if (optGroup === "ADHOC") {
+            shiftContainer.style.display = "none";
+            timePickerContainer.style.display = "block";
+        } else {
+            shiftContainer.style.display = "none";
+            timePickerContainer.style.display = "none";
+        }
+    });
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $("#tripType").change(function () {
+            var id = $(this).val();
+            $.get('/Common/GetShiftTimeByTripType?tripTypeId=' + id, function (r) {
+                var dd = $("#Shift_Time");
+                dd.empty();
+                dd.append('<option value="">Select Shift</option>');
+                $.each(r, function (k, v) {
+                    dd.append('<option value="' + v.Id + '">' + v.ShiftTime + '</option>');
+
+                })
+            })
+        });
+
+        //$(document).ready(function () {
+        //    var id = $("#tripType").val();
+        //    $.get('/Common/GetShiftTimeByTripType?tripTypeId=' + id, function (r) {
+        //        var dd = $("#Shift_Time");
+        //        dd.empty();
+        //        dd.append('<option value="">Select Shift</option>');
+        //        $.each(r, function (k, v) {
+        //            dd.append('<option value="' + v.Id + '">' + v.ShiftTime + '</option>');
+
+        //        })
+        //        $("#Shift_Time").val($("#Cityid").val());
+        //    })
+        //});
     });
 </script>

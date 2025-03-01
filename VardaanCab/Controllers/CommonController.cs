@@ -127,6 +127,12 @@ join CityMaster cm on b.City_Id=cm.Id where BookingStatus<>3 and CONVERT(VARCHAR
         {
             var data = ent.UserRoles.Where(a => a.CompanyId == companyId && a.IsActive == true).ToList();
             return Json(data, JsonRequestBehavior.AllowGet);
-        }        
+        }
+        public ActionResult GetShiftTimeByTripType(int tripTypeId)
+        {
+            var data = ent.ShiftMasters.Where(a => a.TripTypeId == tripTypeId).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

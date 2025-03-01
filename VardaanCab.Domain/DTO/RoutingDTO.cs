@@ -11,27 +11,28 @@ namespace VardaanCab.Domain.DTO
 {
     public class RoutingDTO
     {
-        public DateTime StartDate { get; set; } 
-        public DateTime EndDate { get; set; } 
-        public DateTime ShiftDate { get; set; } 
-        public int Company_Id { get; set; } 
-        public int[] Vehicle_Type { get; set; } 
-        public string Routing_Type { get; set; } 
-        public string Routing_Options { get; set; } 
-        public int WhereTripStartAndEnd { get; set; } 
-        public int Trip_Type { get; set; } 
-        public int Shift_Time { get; set; } 
-        public string Adhoc_Shift_Time { get; set; } 
-        public bool Generate_Routing { get; set; } 
-        public bool Remember_Routing { get; set; } 
-        public string Actual_vehicle { get; set; } 
-        public string Escort_Id { get; set; } 
-        public string IsVendorAllocation { get; set; } 
-        public bool Assign_Cab_by_Route { get; set; } 
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public DateTime ShiftDate { get; set; }
+        public int Company_Id { get; set; }
+        public int[] Vehicle_Type { get; set; }
+        public string Routing_Type { get; set; }
+        public string Routing_Options { get; set; }
+        public int WhereTripStartAndEnd { get; set; }
+        public int Trip_Type { get; set; }
+        public int Shift_Time { get; set; }
+        public string Adhoc_Shift_Time { get; set; }
+        public bool Generate_Routing { get; set; }
+        public bool Remember_Routing { get; set; }
+        public string Actual_vehicle { get; set; }
+        public string Escort_Id { get; set; }
+        public string IsVendorAllocation { get; set; }
+        public bool Assign_Cab_by_Route { get; set; }
         public int Zone_Id { get; set; }
         public List<int> PickupShiftid { get; set; }
         public List<int> DropShiftid { get; set; }
         public SelectList Customers { get; set; }
+        public SelectList RouteStatuses { get; set; }
         public SelectList TripTypes { get; set; }
         public SelectList PickUpshiftTimes { get; set; }
         public SelectList DropshiftTimes { get; set; }
@@ -76,7 +77,7 @@ namespace VardaanCab.Domain.DTO
         public string LastLocation { get; set; }
     }
 
-    public class RoutingCabAllCounts 
+    public class RoutingCabAllCounts
     {
         public int totalzone { get; set; }
         public int totalroute { get; set; }
@@ -93,8 +94,13 @@ namespace VardaanCab.Domain.DTO
         public int TotalEmployeeOnboard { get; set; }
         public int TotalEmployeeYetToOnboard { get; set; }
         public decimal VehicleOccupancy { get; set; }
-        public Dictionary<string,int> totalVehicleType { get; set; }
+        public List<Dictionary<string, int>> totalVehicleType { get; set; }
         public List<RoutingCabAllocation> routingcaballocation { get; set; } = new List<RoutingCabAllocation>();
+        public List<Vehicletype> Vehicletypes { get; set; } = new List<Vehicletype>();
     }
-
+    public class Vehicletype
+    {
+        public string Capacity { get; set; }
+        public int EmpInCab { get; set; }
+    }
 }

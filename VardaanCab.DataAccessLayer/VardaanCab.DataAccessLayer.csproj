@@ -299,6 +299,9 @@
     <Compile Include="DataLayer\RentalType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataLayer\RouteStatu.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer\Routing.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
