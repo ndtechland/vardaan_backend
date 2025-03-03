@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Results;
 using System.Web.Mvc;
@@ -48,21 +49,21 @@ namespace VardaanCab.Controllers
                     TempData["msg"] = "Invalid username or password";
                     return View(model);
                 }
-                if(!checkAuth)
-                { 
-                FormsAuthentication.SetAuthCookie(data.Id.ToString(), true);
-                string hostName = Dns.GetHostName();
-                string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
-                Session["uEmail"] = data.Email;
-                Session["IsAuth"] = false;
-                var lh = new LoginHistory
+                if (!checkAuth)
                 {
-                    UserLogin_Id = data.Id,
-                    Ip_Address = ip,
-                    UpdateDate = DateTime.Now
-                };
-                ent.LoginHistories.Add(lh);
-                ent.SaveChanges();
+                    FormsAuthentication.SetAuthCookie(data.Id.ToString(), true);
+                    string hostName = Dns.GetHostName();
+                    string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
+                    Session["uEmail"] = data.Email;
+                    Session["IsAuth"] = false;
+                    var lh = new LoginHistory
+                    {
+                        UserLogin_Id = data.Id,
+                        Ip_Address = ip,
+                        UpdateDate = DateTime.Now
+                    };
+                    ent.LoginHistories.Add(lh);
+                    ent.SaveChanges();
                 }
                 if (!string.IsNullOrEmpty(model.ReturnUrl))
                     return Redirect(model.ReturnUrl);
@@ -81,7 +82,7 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                var result = ent.Employees.Where(x => (x.Employee_Id == model.Username 
+                var result = ent.Employees.Where(x => (x.Employee_Id == model.Username
                 || x.MobileNumber == model.Username || x.Email == model.Username) && x.Password == model.Password && x.IsActive == true).FirstOrDefault();
                 if (result != null)
                 {
@@ -102,7 +103,7 @@ namespace VardaanCab.Controllers
                     return true;
                 }
                 return false;
-               
+
             }
             catch (Exception ex)
             {
@@ -116,7 +117,7 @@ namespace VardaanCab.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
-        [HttpGet,AllowAnonymous]
+        [HttpGet, AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             try
@@ -137,10 +138,10 @@ namespace VardaanCab.Controllers
                 if (!string.IsNullOrEmpty(model.Username))
                 {
                     var result = ent.Employees.FirstOrDefault(x => (x.Employee_Id == model.Username || x.MobileNumber == model.Username || x.Email == model.Username) && x.IsActive == true);
-                    if (result!=null)
+                    if (result != null)
                     {
                         bool isFirst = (bool)result.IsFirst;
-                        if(!isFirst)
+                        if (!isFirst)
                         {
                             int OTPNumber = _random.GenerateRandomOTP();
                             string msg = "Hi " + result.Employee_First_Name + result.Employee_Middle_Name + result.Employee_Last_Name + ",\n Welcome to the Vardaan Employee Login. \n OTP :" + OTPNumber + "";
@@ -194,7 +195,7 @@ namespace VardaanCab.Controllers
 
                     if (user != null)
                     {
-                        if(model.OTP!=user.OTP && model.OTP>0)
+                        if (model.OTP != user.OTP && model.OTP > 0)
                         {
                             TempData["Username"] = model.Username;
                             TempData["isFirst"] = user.IsFirst;
@@ -212,7 +213,7 @@ namespace VardaanCab.Controllers
                             TempData["isFirst"] = user.IsFirst;
                             TempData["Message"] = "ok";
                             return RedirectToAction("CreatePassword");
-                        }                       
+                        }
                     }
                     else
                     {
@@ -257,11 +258,11 @@ namespace VardaanCab.Controllers
 
             //}
             int userId = int.Parse(User.Identity.Name);
-                var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
-                var softwareLinks = ent.Database.SqlQuery<SoftwareLink>(query).ToList();
-                var model = new DashboardModel();
-                model.Data = softwareLinks;
-                return View(model); 
+            var query = @"select * from SoftwareLink where  IsHeading=1 and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
+            var softwareLinks = ent.Database.SqlQuery<SoftwareLink>(query).ToList();
+            var model = new DashboardModel();
+            model.Data = softwareLinks;
+            return View(model);
         }
 
         public ActionResult Submenu(int menuId)
@@ -270,7 +271,7 @@ namespace VardaanCab.Controllers
             var query = @"select * from SoftwareLink where  Parent_Id=" + menuId + " and Id in (select SoftwareLink_Id from User_SoftwareLink where UserId=" + userId + ")";
             var data = ent.Database.SqlQuery<SoftwareLink>(query).ToList();
             ViewBag.menuId = menuId;
-            string finStr =new CommonRepository().getCurrentFinYear();
+            string finStr = new CommonRepository().getCurrentFinYear();
             int finyear = Convert.ToInt32(finStr);
             if (menuId == 3 || menuId == 7)  // menuId=3 = CabBooking 
             {
@@ -298,15 +299,15 @@ namespace VardaanCab.Controllers
                 //var monthlyBookingRoute = ent.MonthlyPackageRoutes.Where(a => !a.IsClosed && DbFunctions.TruncateTime(a.CreateDate) == currentDate).Count();
                 //var dispatchedBooking = bookingData.Where(a => a.BookingStatusId == (int)BookingStatus.Dispatch).Select(a => a.Count).FirstOrDefault();
 
-                var pendingBooking = booking.Where(a => a.BookingStatus == (int)BookingStatus.Pending && a.PickupDate.Date <= cr.GetISTDate().Date).ToList().Where(x => x.PackageType_Id ==1 || x.PackageType_Id ==2 || x.PackageType_Id == 3).ToList().Count;
-                var pendingBookinETSg = booking.Where(a => a.BookingStatus == (int)BookingStatus.Pending && a.PickupDate.Date <= cr.GetISTDate().Date).ToList().Where(x => x.PackageType_Id == 4 || x.PackageType_Id == 5 || x.PackageType_Id ==6).ToList().Count;
-               // var completedBooking = booking.Where(a => a.BookingStatus == (int)BookingStatus.Completed).ToList().Count;              
+                var pendingBooking = booking.Where(a => a.BookingStatus == (int)BookingStatus.Pending && a.PickupDate.Date <= cr.GetISTDate().Date).ToList().Where(x => x.PackageType_Id == 1 || x.PackageType_Id == 2 || x.PackageType_Id == 3).ToList().Count;
+                var pendingBookinETSg = booking.Where(a => a.BookingStatus == (int)BookingStatus.Pending && a.PickupDate.Date <= cr.GetISTDate().Date).ToList().Where(x => x.PackageType_Id == 4 || x.PackageType_Id == 5 || x.PackageType_Id == 6).ToList().Count;
+                // var completedBooking = booking.Where(a => a.BookingStatus == (int)BookingStatus.Completed).ToList().Count;              
                 var dispatchedBooking = booking.Where(a => a.BookingStatus == (int)BookingStatus.Dispatched && a.IsReleasedCab == false).ToList().Count;
                 var cancelledBooking = booking.Where(a => a.BookingStatus == (int)BookingStatus.Cancelled && a.PickupDate.Date == cr.GetISTDate().Date).ToList().Count;
                 var unbilledBooking = booking.Where(a => a.BookingStatus == (int)BookingStatus.Dispatched && a.IsReleasedCab == true).ToList().Count;
                 var availableCab = cr.GetAvailableCabs().Count;
                 var availableDriver = cr.GetAvailableDrivers().Count;
-               var allBooking = booking.Where(a => a.PickupDate.Date == cr.GetISTDate().Date).ToList().Count;
+                var allBooking = booking.Where(a => a.PickupDate.Date == cr.GetISTDate().Date).ToList().Count;
                 foreach (var item in data)
                 {
                     switch (item.Url)
@@ -351,7 +352,7 @@ namespace VardaanCab.Controllers
                 //var booking = ent.Bookings.ToList();
                 //var unbilledBookingLst = booking.Where(a => a.BookingStatus == (int)BookingStatus.Dispatched && a.IsReleasedCab == true).ToList();
                 //var unbilledBooking = unbilledBookingLst.Count;
-                var unbilledBooking =ent.getbookingHeadCount(finyear).Where(a => a.BookingStatus == (int)BookingStatus.Dispatched && a.IsReleasedCab == true).ToList();
+                var unbilledBooking = ent.getbookingHeadCount(finyear).Where(a => a.BookingStatus == (int)BookingStatus.Dispatched && a.IsReleasedCab == true).ToList();
                 foreach (var item in data)
                 {
                     switch (item.Url)
@@ -360,16 +361,16 @@ namespace VardaanCab.Controllers
                             item.Counts = unbilledBooking.Count;
                             break;
                         case "/Booking/UnbilledBookingBypType?pType=2&bookingType=regular": //local booking
-                            item.Counts = unbilledBooking.Where(x=>x.PackageType_Id==2).ToList().Count();
+                            item.Counts = unbilledBooking.Where(x => x.PackageType_Id == 2).ToList().Count();
                             break;
                         case "/Booking/UnbilledBookingBypType?pType=4&bookingType=regular": //monthly fix booking
-                            item.Counts = unbilledBooking.Where(x => x.PackageType_Id ==4).ToList().Count();
+                            item.Counts = unbilledBooking.Where(x => x.PackageType_Id == 4).ToList().Count();
                             break;
                         case "/Booking/UnbilledBookingBypType?pType=5&bookingType=regular": //monthly route booking
                             item.Counts = unbilledBooking.Where(x => x.PackageType_Id == 5).ToList().Count();
                             break;
                         case "/Booking/UnbilledBookingBypType?pType=6&bookingType=regular": //monthly trip booking
-                            item.Counts = unbilledBooking.Where(x => x.PackageType_Id ==6).ToList().Count();
+                            item.Counts = unbilledBooking.Where(x => x.PackageType_Id == 6).ToList().Count();
                             break;
                         case "/Booking/UnbilledBookingBypType?pType=0&bookingType=nrd": //NRD booking
                             item.Counts = unbilledBooking.Where(x => x.BookingType == "nrd").ToList().Count();
@@ -397,10 +398,10 @@ namespace VardaanCab.Controllers
                     switch (item.Url)
                     {
                         case "/Booking/CorporateInvoiceList?isNrg=false":
-                            item.Counts = cbData.Where(x=>x.IsNrg==false).Count();
+                            item.Counts = cbData.Where(x => x.IsNrg == false).Count();
                             break;
                         case "/Booking/CorporateInvoiceListBypType?isNrg=false&pType=2&bookingType=regular":
-                            item.Counts = cbData.Where(x=>x.PackageType_Id==2).Count();
+                            item.Counts = cbData.Where(x => x.PackageType_Id == 2).Count();
                             break;
                         case "/Booking/CorporateInvoiceListBypType?isNrg=false&pType=4&bookingType=regular":
                             item.Counts = cbData.Where(x => x.PackageType_Id == 4).Count();
@@ -584,7 +585,7 @@ namespace VardaanCab.Controllers
                         var EmpUserRole = ent.UserRoles.Where(x => x.Id == EmpAccessAssign.Id && x.IsActive == true).FirstOrDefault();
                         if (EmpUserRole != null)
                         {
-                            if(EmpUserRole.IsAllRead == true && EmpUserRole.IsAllWrite == true)
+                            if (EmpUserRole.IsAllRead == true && EmpUserRole.IsAllWrite == true)
                             {
                                 var query = @"select * from SoftwareLink where  IsHeading=1";
                                 var softwareLinks = ent.Database.SqlQuery<SoftwareLinkDTO>(query).ToList();
@@ -626,6 +627,21 @@ namespace VardaanCab.Controllers
                 }
             }
             return View();
+        }
+
+        //[HttpGet]
+        //[Route("getsessionkey")]
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<JsonResult> getsessionkey()
+        {
+            if (string.IsNullOrEmpty(Session["uEmail"].ToString()))
+            {
+                return Json(false);
+            }
+            else
+            {
+                return Json(true);
+            }
         }
     }
 }

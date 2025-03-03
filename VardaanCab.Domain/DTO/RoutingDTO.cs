@@ -37,6 +37,7 @@ namespace VardaanCab.Domain.DTO
         public SelectList DropshiftTimes { get; set; }
         public SelectList ShiftTypes { get; set; }
         public SelectList Zones { get; set; }
+        public SelectList vehicleCapacity { get; set; }
         public IEnumerable<RoutingCabAllocation> RoutingCabAllocations { get; set; }
     }
 
