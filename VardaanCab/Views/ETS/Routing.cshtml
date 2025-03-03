@@ -73,23 +73,31 @@
                                                         @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                                                     </div>
                                                     @*<div class="col-md-6">
-                                                        <label class="form-label-title">Select Facility For Routing</label>
-                                                        @Html.DropDownListFor(model => model.Company_Id, Model.Customers, "Select Company", new { @class = "form-control" })
-                                                        @Html.ValidationMessageFor(model => model.Company_Id, "", new { @class = "text-danger" })
+            <label class="form-label-title">Select Facility For Routing</label>
+            @Html.DropDownListFor(model => model.Company_Id, Model.Customers, "Select Company", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Company_Id, "", new { @class = "text-danger" })
+
+        </div>*@
+
+                                                    @*<div class="col-md-6">
+                                                        <label class="form-label-title">Select Vehicle Type</label>
+                                                        <select name="Vehicle_Type" class="js-example-basic-multiple col-sm-12" multiple="multiple">
+                                                            <option value="" disabled>--Select Vehicle Type--</option>
+                                                            <option value="4">Cab Capacity 4/4</option>
+                                                            <option value="6">Cab Capacity 6/6</option>
+                                                        </select>
+
+                                                        @Html.ValidationMessageFor(model => model.Vehicle_Type, "", new { @class = "text-danger" })
 
                                                     </div>*@
 
                                                     <div class="col-md-6">
                                                         <label class="form-label-title">Select Vehicle Type</label>
-                                                    <select name="Vehicle_Type" class="js-example-basic-multiple col-sm-12" multiple="multiple">
-                                                        <option value="" disabled>--Select Vehicle Type--</option>
-                                                        <option value="4">Cab Capacity 4/4</option>
-                                                        <option value="6">Cab Capacity 6/6</option>
-                                                    </select>
-
+                                                        @Html.DropDownListFor(model => model.Vehicle_Type, Model.vehicleCapacity, "--Select Vehicle Type--", new { @class = "js-example-basic-multiple col-sm-12", multiple = "multiple" })
                                                         @Html.ValidationMessageFor(model => model.Vehicle_Type, "", new { @class = "text-danger" })
 
                                                     </div>
+
                                                     <div class="col-md-6">
                                                         <label class="form-label-title">Routing Type</label>
                                                         <select id="Routing_Type" name="Routing_Type" class="form-control">
@@ -136,13 +144,13 @@
                                                         @Html.DropDownListFor(a => a.DropShiftid, Model.DropshiftTimes, "--Select Drop Shift Time--", new { @class = "js-example-basic-multiple col-sm-12", multiple = "multiple", id = "ddldropshifttime" })
                                                     </div>
                                                     @*<div class="col-md-6">
-                        <label class="form-label-title">
-                            <input class="form-check-input" type="radio" name="ShiftOption" id="selectShiftTime" value="shift" checked />
-                            Select Shift Time
-                        </label>
-                        @Html.DropDownListFor(a => a.Shift_Time, Model.PickUpshiftTimes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
-                        @Html.ValidationMessageFor(model => model.Shift_Time, "", new { @class = "text-danger" })
-                    </div>*@
+            <label class="form-label-title">
+                <input class="form-check-input" type="radio" name="ShiftOption" id="selectShiftTime" value="shift" checked />
+                Select Shift Time
+            </label>
+            @Html.DropDownListFor(a => a.Shift_Time, Model.PickUpshiftTimes, "--Select Shift Type--", new { @class = "form-control", id = "shifttype" })
+            @Html.ValidationMessageFor(model => model.Shift_Time, "", new { @class = "text-danger" })
+        </div>*@
 
                                                     <div class="col-md-6">
                                                         <label class="form-label-title">

@@ -290,6 +290,28 @@
 
     <!-- nestable js -->
     <script src="../files/assets/pages/nestable/jquery.nestable.js"></script>
-    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                url: '/Admin/getsessionkey', // URL to your action method
+                type: 'GET', // HTTP method
+                dataType: 'json', // Data type expected from server
+                success: function (data) {
+                    // Handle the response data
+                    console.log(data);
+                    if (data === false) {
+
+                        window.location.href = "/Admin/Login";
+
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Handle any errors that occur during the AJAX call
+                    console.error('Error:', error);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
