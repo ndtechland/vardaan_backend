@@ -33,6 +33,7 @@ namespace VardaanCab.Domain.DTO
         public List<int> DropShiftid { get; set; }
         public SelectList Customers { get; set; }
         public SelectList RouteStatuses { get; set; }
+        public SelectList Triptypes { get; set; }
         public SelectList TripTypes { get; set; }
         public SelectList PickUpshiftTimes { get; set; }
         public SelectList DropshiftTimes { get; set; }

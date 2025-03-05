@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Vardaan.Services.IContractApi;
 using VardaanCab.DataAccessLayer.DataLayer;
+using VardaanCab.Domain.DTO;
 using VardaanCab.Domain.DTOAPI;
 
 namespace Vardaan.Services.ImplementationApi
@@ -129,6 +134,100 @@ namespace Vardaan.Services.ImplementationApi
             {
 
                 throw;
+            }
+        }
+        public async Task<List<EmployeeBookingDTO>> GetCabUpcommingListByEmployeeId(string employeeId)
+        {
+            var results = new List<EmployeeBookingDTO>();
+
+            try
+            {
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+                var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+
+                using (var sqlConnection = new SqlConnection(sqlConnectionString))
+                {
+                    await sqlConnection.OpenAsync();
+                    using (var command = new SqlCommand("GetUpcomingCab", sqlConnection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new SqlParameter("@EmployeeId", SqlDbType.BigInt) { Value = employeeId });
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                results.Add(new EmployeeBookingDTO
+                                {
+                                    RoutingID = reader.GetInt32(0),
+                                    Date = reader.GetDateTime(1),
+                                    VehicleNumber = reader.GetString(2),
+                                    CabId = reader.GetInt32(3),
+                                    CabName = reader.GetString(4),
+                                    TripTypeName = reader.GetString(5),
+                                    PickupShiftTime = reader.GetString(6),
+                                    DropShiftTime = reader.GetString(7),
+                                    CompanyName = reader.GetString(8),
+                                    PickupLocation = reader.IsDBNull(9) ? null : reader.GetString(8),
+                                    DropLocation = reader.IsDBNull(10) ? null : reader.GetString(9),
+                                    Employee_Id = reader.GetString(11)
+                                });
+                            }
+                        }
+                    }
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching routing list", ex);
+            }
+        }
+        public async Task<List<LiveCabs>> GetLiveCabByEmployeeId(string employeeId)
+        {
+            var results = new List<LiveCabs>();
+
+            try
+            {
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+                var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+
+                using (var sqlConnection = new SqlConnection(sqlConnectionString))
+                {
+                    await sqlConnection.OpenAsync();
+                    using (var command = new SqlCommand("GetLiveCab", sqlConnection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new SqlParameter("@EmployeeId", SqlDbType.BigInt) { Value = employeeId });
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                results.Add(new LiveCabs
+                                {
+                                    RoutingID = reader.GetInt32(0),
+                                    Date = reader.GetDateTime(1),
+                                    VehicleNumber = reader.GetString(2),
+                                    CabId = reader.GetInt32(3),
+                                    CabName = reader.GetString(4),
+                                    TripTypeName = reader.GetString(5),
+                                    PickupShiftTime = reader.GetString(6),
+                                    DropShiftTime = reader.GetString(7),
+                                    CompanyName = reader.GetString(8),
+                                    PickupLocation = reader.IsDBNull(9) ? null : reader.GetString(8),
+                                    DropLocation = reader.IsDBNull(10) ? null : reader.GetString(9),
+                                    DriverId = reader.GetInt32(11)
+                                });
+                            }
+                        }
+                    }
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching routing list", ex);
             }
         }
     }

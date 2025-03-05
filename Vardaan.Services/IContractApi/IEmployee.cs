@@ -14,5 +14,7 @@ namespace Vardaan.Services.IContractApi
         Task<bool> UpdateProfile(EmployeeProfileDTO model);
         Task<bool> Addhelp(HelpEmployee model);
         Task<bool> AddFeedback(FeedBackEmployee model);
+        Task<List<EmployeeBookingDTO>> GetCabUpcommingListByEmployeeId(string employeeId);
+        Task<List<LiveCabs>> GetLiveCabByEmployeeId(string employeeId);
     }
 }
