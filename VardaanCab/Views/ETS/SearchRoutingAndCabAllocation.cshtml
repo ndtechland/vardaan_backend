@@ -230,8 +230,12 @@
                                         <select id="tripType" class="form-control form-control-default waves-effect input input--dropdown js--animations">
                                             <option value="">Trip Type</option>
                                             <optgroup label="NORMAL">
-                                                <option value="1">PICKUP</option>
-                                                <option value="2">DROP</option>
+                                                @foreach (var item in Model.TripTypes)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                                @*<option value="1">PICKUP</option>
+                                                <option value="2">DROP</option>*@
                                             </optgroup>
                                             <optgroup label="ADHOC">
                                                 <option value="PICKUP">PICKUP</option>

@@ -139,5 +139,59 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+        [HttpGet]
+        [Route("UpCommingCabByEmpId")]
+        public async Task<IHttpActionResult> UpCommingCabByEmpId(string employeeId)
+        {
+            try
+            {
+                var response = new Response<EmployeeBookingDTO>();
+                var data = await _employee.GetCabUpcommingListByEmployeeId(employeeId);
+
+                if (data != null)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Data not found.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("LiveCabByEmpId")]
+        public async Task<IHttpActionResult> LiveCabByEmpId(string employeeId)
+        {
+            try
+            {
+                var response = new Response<LiveCabs>();
+                var data = await _employee.GetLiveCabByEmployeeId(employeeId);
+
+                if (data != null)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Data not found.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

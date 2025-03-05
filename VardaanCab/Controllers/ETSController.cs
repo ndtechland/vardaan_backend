@@ -1245,11 +1245,16 @@ namespace VardaanCab.Controllers
                 var model = new RoutingDTO();
                 model.Customers = new SelectList(ent.Customers.Where(c => c.IsActive).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
                 model.RouteStatuses = new SelectList(ent.RouteStatus.ToList(), "Id", "StatusName");
+                model.TripTypes = new SelectList(ent.TripTypes.Where(x=>x.TripMasterId==1).ToList(), "Id", "TripTypeName");
+                //ViewBag.tt = ent.TripTypes.Where(x => x.TripMasterId == 1).Select(x => new SelectListItem
+                //{
+                //    Text = x.TripTypeName,
+                //    Value = x.Id.ToString()
+                //}).ToList();
                 return View(model);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

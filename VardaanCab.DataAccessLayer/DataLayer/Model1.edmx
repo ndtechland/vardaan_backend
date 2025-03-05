@@ -1820,8 +1820,14 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="pageSize" Type="int" Mode="In" />
           <Parameter Name="TInvID" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetLiveCab" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
+          <Parameter Name="EmployeeId" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="GetRoutes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
           <Parameter Name="term" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetUpcomingCab" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
+          <Parameter Name="EmployeeId" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="ManageEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
           <Parameter Name="Action" Type="nvarchar" Mode="In" />
@@ -3672,6 +3678,12 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="term" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="RouteStatus" EntityType="Vardaan_AdminModel.RouteStatu" />
+          <FunctionImport Name="GetUpcomingCab" ReturnType="Collection(Vardaan_AdminModel.GetUpcomingCab_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetLiveCab" ReturnType="Collection(Vardaan_AdminModel.GetLiveCab_Result)">
+            <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -5137,6 +5149,32 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StatusName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
+        <ComplexType Name="GetUpcomingCab_Result">
+          <Property Type="Int32" Name="RoutingID" Nullable="true" />
+          <Property Type="DateTime" Name="RouteDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="CabNumber" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="ModelName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="TripTypeName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="PickupShiftTime" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DropShiftTime" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="PickupLocation" Nullable="true" />
+          <Property Type="String" Name="DropLocation" Nullable="true" />
+          <Property Type="String" Name="Employee_Id" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="GetLiveCab_Result">
+          <Property Type="Int32" Name="RoutingID" Nullable="true" />
+          <Property Type="DateTime" Name="RouteDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="CabNumber" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="CabId" Nullable="false" />
+          <Property Type="String" Name="ModelName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="TripTypeName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="PickupShiftTime" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DropShiftTime" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="PickupLocation" Nullable="true" />
+          <Property Type="String" Name="DropLocation" Nullable="true" />
+          <Property Type="Int32" Name="DriverId" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7758,6 +7796,40 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetUpcomingCab" FunctionName="Vardaan_AdminModel.Store.GetUpcomingCab">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetUpcomingCab_Result">
+                <ScalarProperty Name="RoutingID" ColumnName="RoutingID" />
+                <ScalarProperty Name="RouteDate" ColumnName="RouteDate" />
+                <ScalarProperty Name="CabNumber" ColumnName="CabNumber" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="TripTypeName" ColumnName="TripTypeName" />
+                <ScalarProperty Name="PickupShiftTime" ColumnName="PickupShiftTime" />
+                <ScalarProperty Name="DropShiftTime" ColumnName="DropShiftTime" />
+                <ScalarProperty Name="PickupLocation" ColumnName="PickupLocation" />
+                <ScalarProperty Name="DropLocation" ColumnName="DropLocation" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetLiveCab" FunctionName="Vardaan_AdminModel.Store.GetLiveCab">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetLiveCab_Result">
+                <ScalarProperty Name="RoutingID" ColumnName="RoutingID" />
+                <ScalarProperty Name="RouteDate" ColumnName="RouteDate" />
+                <ScalarProperty Name="CabNumber" ColumnName="CabNumber" />
+                <ScalarProperty Name="CabId" ColumnName="CabId" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="TripTypeName" ColumnName="TripTypeName" />
+                <ScalarProperty Name="PickupShiftTime" ColumnName="PickupShiftTime" />
+                <ScalarProperty Name="DropShiftTime" ColumnName="DropShiftTime" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="PickupLocation" ColumnName="PickupLocation" />
+                <ScalarProperty Name="DropLocation" ColumnName="DropLocation" />
+                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

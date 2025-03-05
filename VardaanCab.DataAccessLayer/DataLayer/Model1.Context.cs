@@ -1661,5 +1661,23 @@ namespace VardaanCab.DataAccessLayer.DataLayer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoutes_Result>("GetRoutes", termParameter);
         }
+    
+        public virtual ObjectResult<GetUpcomingCab_Result> GetUpcomingCab(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetUpcomingCab_Result>("GetUpcomingCab", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<GetLiveCab_Result> GetLiveCab(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetLiveCab_Result>("GetLiveCab", employeeIdParameter);
+        }
     }
 }
