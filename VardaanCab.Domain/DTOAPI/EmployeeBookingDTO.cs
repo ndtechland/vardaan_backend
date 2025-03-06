@@ -36,4 +36,10 @@ namespace VardaanCab.Domain.DTOAPI
         public string PickupLocation { get; set; }
         public string DropLocation { get; set; }
     }
+    public class FinishCabs
+    {
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string CompanyName { get; set; }
+    }
 }

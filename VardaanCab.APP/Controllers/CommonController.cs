@@ -272,5 +272,44 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+        [HttpPut]
+        [Route("UpdateEmployeeAndDriverLatLong")]
+        public async Task<IHttpActionResult> UpdateEmployeeAndDriverLatLong(UpdateLatLongDTO model)
+        {
+            try
+            {
+                var response = new Response<UpdateLatLongDTO>();
+                if (model.RoleName != "" && model.Id > 0)
+                {
+                    bool isUpdated = await _common.UpdateEmployeeAndLatLong(model);
+                    if (isUpdated)
+                    {
+                        response.Succeeded = true;
+                        response.StatusCode = StatusCodes.Status200OK;
+                        response.Message = $"{model.RoleName} current location updated successfully.";
+                        return Content(HttpStatusCode.OK, response);
+                    }
+                    else
+                    {
+                        response.Succeeded = false;
+                        response.StatusCode = StatusCodes.Status404NotFound;
+                        response.Message = $"{model.RoleName} not found.";
+                        return Content(HttpStatusCode.NotFound, response);
+                    }
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Your request is incomplete. Please provide the necessary details.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

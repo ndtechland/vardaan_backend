@@ -168,5 +168,47 @@ namespace Vardaan.Services.ImplementationApi
                 throw;
             }
         }
+        public async Task<bool> UpdateEmployeeAndLatLong(UpdateLatLongDTO model)
+        {
+            try
+            {
+                if (model.RoleName == "Employee")
+                {
+                    var data = ent.Employees.Find(model.Id);
+                    if (data != null)
+                    {
+                        data.CurrentLat = model.Lat;
+                        data.CurrentLong = model.Long;
+                        ent.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    var driverdata = ent.Drivers.Find(model.Id);
+                    if (driverdata != null)
+                    {
+                        driverdata.CurrentLat = model.Lat;
+                        driverdata.CurrentLong = model.Long;
+                        ent.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

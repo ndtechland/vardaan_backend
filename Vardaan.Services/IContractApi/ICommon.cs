@@ -18,5 +18,6 @@ namespace Vardaan.Services.IContractApi
         Task<List<ShiftMaster>> GetDropShifttimes();
         Task<List<TripMaster>> GetShiftTypes();
         Task<bool> GetUpdateEmployeeAndDriverDeviceId(UpdateDeviceDTO model);
+        Task<bool> UpdateEmployeeAndLatLong(UpdateLatLongDTO model);
     }
 }
