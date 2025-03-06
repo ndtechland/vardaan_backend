@@ -16,5 +16,6 @@ namespace Vardaan.Services.IContractApi
         Task<bool> AddFeedback(FeedBackEmployee model);
         Task<List<EmployeeBookingDTO>> GetCabUpcommingListByEmployeeId(string employeeId);
         Task<List<LiveCabs>> GetLiveCabByEmployeeId(string employeeId);
+        Task<List<FinishCabs>> GetFinishCabBookingHisByEmployeeId(string employeeId);
     }
 }

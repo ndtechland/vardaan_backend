@@ -45,5 +45,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<int> DeviceId { get; set; }
         public Nullable<int> Vendor_Id { get; set; }
         public Nullable<bool> IsLogin { get; set; }
+        public Nullable<double> CurrentLat { get; set; }
+        public Nullable<double> CurrentLong { get; set; }
     }
 }

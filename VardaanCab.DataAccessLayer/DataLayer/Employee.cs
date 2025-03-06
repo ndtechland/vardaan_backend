@@ -49,5 +49,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public Nullable<double> Latitude { get; set; }
         public Nullable<double> Longitude { get; set; }
         public string ReportingManagerEmployeeId { get; set; }
+        public Nullable<double> CurrentLat { get; set; }
+        public Nullable<double> CurrentLong { get; set; }
     }
 }

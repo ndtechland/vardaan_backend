@@ -453,73 +453,58 @@
                 if (response.message) {
                     resultsContainer.html('<p class="text-danger text-center">' + response.message + '</p>');
                 } else {
+                    // Append the header once
+                    resultsContainer.append(`
+    <div class="card">
+        <div class="card-header">
+            <strong>🚏 Route Details</strong> <span class="badge bg-secondary pull-right" style="color:white;">${response.totalzone}</span>
+        </div>
+        <div class="card-body" id="route-list">
+        </div>
+    </div>
+`);
+
+                    // Append route details inside the body
+                    let routeList = $("#route-list");
+
                     response.routingcaballocation.forEach((item, index) => {
                         let collapseId = `collapse_${index}`; // Unique ID for each collapsible section
-                        resultsContainer.append(`
-                         <div class="card">
-     <div class="card-header">
-         <strong>🚏 Route Details</strong> <span class="badge bg-secondary pull-right" style="color:white;">${response.totalzone}</span>
-     </div>
-     <div class="card-body">
-                        <div class="route-item border-bottom pb-2">
-                            <strong>
-                                ${item.ZoneName}
-                                <a href="#" class="route-summary-toggle" data-target="#${collapseId}">ROUTE SUMMARY</a>
-                            </strong><br>
-                            <!-- Collapsible div -->
-<div id="${collapseId}" class="collapse-content" style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ddd;">
-     <table class="summary-table">
-    <thead>
-        <tr>
-            <th>Details</th>
-            <th>Summary Count</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Total Employees</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td>Total Male Employees</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td>Total Female Employees</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td>Escort Required</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td>Total Employee Onboard</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td>Total Employee Yet To Onboard</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td>Vehicle Occupancy</td>
-            <td>0%</td>
-        </tr>
-    </tbody>
-</table>
 
-</div>
-                            Number Of Routes: <strong>${item.TotalRoutes}</strong><br>
-                            Available Seat Capacity: <strong>${item.AvailableSeat}</strong> <a class="btn-view" href="#" data-target="#route-${item.RouteId}">View</a><br>
-                            <span class="btn btn-sm btn-primary viewdetail" id="fddfd"><i class="fa fa-eye"></i></span>
-                            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-
-
-                        </div>
-                        </div>
-                        </div>
-
-                    `);
+                        routeList.append(`
+        <div class="route-item border-bottom pb-2">
+            <strong>
+                ${item.ZoneName}
+                <a href="#" class="route-summary-toggle" data-target="#${collapseId}">ROUTE SUMMARY</a>
+            </strong><br>
+            <!-- Collapsible div -->
+            <div id="${collapseId}" class="collapse-content" style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ddd;">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Details</th>
+                            <th>Summary Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Total Employees</td><td>0</td></tr>
+                        <tr><td>Total Male Employees</td><td>0</td></tr>
+                        <tr><td>Total Female Employees</td><td>0</td></tr>
+                        <tr><td>Escort Required</td><td>0</td></tr>
+                        <tr><td>Total Employee Onboard</td><td>0</td></tr>
+                        <tr><td>Total Employee Yet To Onboard</td><td>0</td></tr>
+                        <tr><td>Vehicle Occupancy</td><td>0%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            Number Of Routes: <strong>${item.TotalRoutes}</strong><br>
+            Available Seat Capacity: <strong>${item.AvailableSeat}</strong> 
+            <a class="btn-view" href="#" data-target="#route-${item.RouteId}">View</a><br>
+            <span class="btn btn-sm btn-primary viewdetail"><i class="fa fa-eye"></i></span>
+            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+        </div>
+    `);
                     });
+
                     summeryresultsContainer.append(`
                         <div class="card-body">
     <table class="table table-bordered">
@@ -663,11 +648,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        //$(".viewdetail").click(function (event) {
-        //    event.preventDefault();
-        //    $("#detailList").fadeIn();
-        //});
-        $(document).on("click", "#fddfd", function (event) {
+        $(document).on("click", ".viewdetail", function (event) {
             event.preventDefault();
             $("#detailList").fadeIn();
             $("#resultsSection").fadeOut();

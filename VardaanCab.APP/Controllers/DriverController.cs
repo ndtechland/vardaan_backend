@@ -152,6 +152,5 @@ namespace VardaanCab.APP.Controllers
                 return InternalServerError(new Exception("Internal server error."));
             }
         }
-
     }
 }

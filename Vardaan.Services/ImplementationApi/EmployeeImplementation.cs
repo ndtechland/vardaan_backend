@@ -15,13 +15,13 @@ using VardaanCab.Domain.DTOAPI;
 
 namespace Vardaan.Services.ImplementationApi
 {
-    public class EmployeeImplementation:IEmployee
+    public class EmployeeImplementation : IEmployee
     {
-        Vardaan_AdminEntities ent=new Vardaan_AdminEntities();
+        Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
         public async Task<EmployeeProfileDTO> GetProfileDetail(int id)
         {
-			try
-			{
+            try
+            {
                 var empdata = ent.Employees.SingleOrDefault(x => x.Id == id && x.IsActive == true);
 
                 if (empdata != null)
@@ -50,17 +50,18 @@ namespace Vardaan.Services.ImplementationApi
                         Gender = empdata.Gender,
                         Company_Id = empdata.Company_Id,
                     };
-                    return data;                }
+                    return data;
+                }
                 else
                 {
                     return null;
                 }
             }
-			catch (Exception)
-			{
+            catch (Exception)
+            {
 
-				throw;
-			}
+                throw;
+            }
         }
         public async Task<bool> UpdateProfile(EmployeeProfileDTO model)
         {
@@ -218,6 +219,44 @@ namespace Vardaan.Services.ImplementationApi
                                     PickupLocation = reader.IsDBNull(9) ? null : reader.GetString(8),
                                     DropLocation = reader.IsDBNull(10) ? null : reader.GetString(9),
                                     DriverId = reader.GetInt32(11)
+                                });
+                            }
+                        }
+                    }
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching routing list", ex);
+            }
+        }
+        public async Task<List<FinishCabs>> GetFinishCabBookingHisByEmployeeId(string employeeId)
+        {
+            var results = new List<FinishCabs>();
+
+            try
+            {
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+                var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+
+                using (var sqlConnection = new SqlConnection(sqlConnectionString))
+                {
+                    await sqlConnection.OpenAsync();
+                    using (var command = new SqlCommand("GetFinishCabBookingHistory", sqlConnection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new SqlParameter("@EmployeeId", SqlDbType.BigInt) { Value = employeeId });
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                results.Add(new FinishCabs
+                                {
+                                    StartDate = reader.GetDateTime(0),
+                                    EndDate = reader.GetDateTime(1),
+                                    CompanyName = reader.GetString(2)
                                 });
                             }
                         }

@@ -106,6 +106,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public virtual DbSet<DriverCheckoutRemark> DriverCheckoutRemarks { get; set; }
         public virtual DbSet<VehicleInspection> VehicleInspections { get; set; }
         public virtual DbSet<RouteStatu> RouteStatus { get; set; }
+        public virtual DbSet<PickupAndDropLocationData> PickupAndDropLocationDatas { get; set; }
     
         public virtual ObjectResult<Nullable<int>> checkOneCompanyBookingSelected(Nullable<bool> isNrg, string term, Nullable<System.DateTime> sDate, Nullable<System.DateTime> eDate, Nullable<int> cityId, Nullable<int> routeNo)
         {
@@ -1678,6 +1679,15 @@ namespace VardaanCab.DataAccessLayer.DataLayer
                 new ObjectParameter("EmployeeId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetLiveCab_Result>("GetLiveCab", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<GetFinishCabBookingHistory_Result> GetFinishCabBookingHistory(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetFinishCabBookingHistory_Result>("GetFinishCabBookingHistory", employeeIdParameter);
         }
     }
 }

@@ -209,6 +209,9 @@
     <Compile Include="DataLayer\GetCorporateDs_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataLayer\GetFinishCabBookingHistory_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer\GetLiveCab_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -300,6 +303,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DataLayer\PackageType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataLayer\PickupAndDropLocationData.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DataLayer\RentalType.cs">
