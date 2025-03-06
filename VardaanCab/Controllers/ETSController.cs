@@ -867,6 +867,7 @@ namespace VardaanCab.Controllers
             model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
             model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
             model.Zones = new SelectList(ent.CompanyZones.ToList(), "Id", "CompanyZone1");
+            model.vehicleCapacity = new SelectList(ent.VehicleCapacities.ToList(), "Id", "Capacity");
         }
 
         private List<EmployeeGroup> GetEmployeeRequests(RoutingDTO model)
