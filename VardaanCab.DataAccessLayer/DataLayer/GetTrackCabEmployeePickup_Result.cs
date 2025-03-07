@@ -13,7 +13,7 @@ namespace VardaanCab.DataAccessLayer.DataLayer
     
     public partial class GetTrackCabEmployeePickup_Result
     {
-        public Nullable<int> RoutingID { get; set; }
+        public int RoutingID { get; set; }
         public Nullable<System.DateTime> RouteDate { get; set; }
         public string EmployeeName { get; set; }
         public string CompanyName { get; set; }
