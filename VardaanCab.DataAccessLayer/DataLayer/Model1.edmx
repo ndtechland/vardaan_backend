@@ -3740,7 +3740,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <FunctionImport Name="GetFinishCabBookingHistory" ReturnType="Collection(Vardaan_AdminModel.GetFinishCabBookingHistory_Result)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="PickupAndDropLocationDatas" EntityType="Vardaan_AdminModel.PickupAndDropLocationData" />
           <FunctionImport Name="SplitString" IsComposable="true" ReturnType="Collection(Int32)">
             <Parameter Name="String" Mode="In" Type="String" />
             <Parameter Name="Delimiter" Mode="In" Type="String" />
@@ -3757,8 +3756,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="DriverId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="GetTrackCabEmployeePickup" ReturnType="Collection(Vardaan_AdminModel.GetTrackCabEmployeePickup_Result)">
-            <Parameter Name="DriverId" Mode="In" Type="Int64" />
+          <Parameter Name="DriverId" Mode="In" Type="Int64" />
           </FunctionImport>
+          <EntitySet Name="PickupAndDropLocationDatas" EntityType="Vardaan_AdminModel.PickupAndDropLocationData" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -5259,27 +5259,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Type="DateTime" Name="RouteEndDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="250" />
         </ComplexType>
-        <EntityType Name="PickupAndDropLocationData">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RoutingID" Type="Int64" />
-          <Property Name="RouteDate" Type="DateTime" Precision="3" />
-          <Property Name="CabId" Type="Int32" />
-          <Property Name="TripTypeid" Type="Int32" />
-          <Property Name="PickupShiftId" Type="Int32" />
-          <Property Name="DropShiftId" Type="Int32" />
-          <Property Name="CompanyId" Type="Int64" />
-          <Property Name="PickupLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DropLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Employee_Id" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="DriverId" Type="Int64" />
-          <Property Name="Status" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="AllRoute_Id" Type="Int32" />
-        </EntityType>
         <ComplexType Name="GetEmployeeRequestsForRouting_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="Company_Id" Nullable="true" />
@@ -5337,6 +5316,26 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Type="String" Name="DropLocation" Nullable="true" />
           <Property Type="String" Name="PickupShiftTime" Nullable="true" MaxLength="100" />
         </ComplexType>
+        <EntityType Name="PickupAndDropLocationData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RouteDate" Type="DateTime" Precision="3" />
+          <Property Name="CabId" Type="Int32" />
+          <Property Name="TripTypeid" Type="Int32" />
+          <Property Name="PickupShiftId" Type="Int32" />
+          <Property Name="DropShiftId" Type="Int32" />
+          <Property Name="CompanyId" Type="Int64" />
+          <Property Name="PickupLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DropLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Employee_Id" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DriverId" Type="Int64" />
+          <Property Name="Status" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="AllRoute_Id" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8005,27 +8004,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="PickupAndDropLocationDatas">
-            <EntityTypeMapping TypeName="Vardaan_AdminModel.PickupAndDropLocationData">
-              <MappingFragment StoreEntitySet="PickupAndDropLocationData">
-                <ScalarProperty Name="AllRoute_Id" ColumnName="AllRoute_Id" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
-                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
-                <ScalarProperty Name="DropLocation" ColumnName="DropLocation" />
-                <ScalarProperty Name="PickupLocation" ColumnName="PickupLocation" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="DropShiftId" ColumnName="DropShiftId" />
-                <ScalarProperty Name="PickupShiftId" ColumnName="PickupShiftId" />
-                <ScalarProperty Name="TripTypeid" ColumnName="TripTypeid" />
-                <ScalarProperty Name="CabId" ColumnName="CabId" />
-                <ScalarProperty Name="RouteDate" ColumnName="RouteDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="SplitString" FunctionName="Vardaan_AdminModel.Store.SplitString" />
           <FunctionImportMapping FunctionImportName="GetEmployeeRequestsForRouting" FunctionName="Vardaan_AdminModel.Store.GetEmployeeRequestsForRouting">
             <ResultMapping>
@@ -8096,6 +8074,27 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="PickupAndDropLocationDatas">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.PickupAndDropLocationData">
+              <MappingFragment StoreEntitySet="PickupAndDropLocationData">
+                <ScalarProperty Name="AllRoute_Id" ColumnName="AllRoute_Id" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="DropLocation" ColumnName="DropLocation" />
+                <ScalarProperty Name="PickupLocation" ColumnName="PickupLocation" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="DropShiftId" ColumnName="DropShiftId" />
+                <ScalarProperty Name="PickupShiftId" ColumnName="PickupShiftId" />
+                <ScalarProperty Name="TripTypeid" ColumnName="TripTypeid" />
+                <ScalarProperty Name="CabId" ColumnName="CabId" />
+                <ScalarProperty Name="RouteDate" ColumnName="RouteDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

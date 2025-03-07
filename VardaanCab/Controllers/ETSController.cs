@@ -842,7 +842,85 @@ namespace VardaanCab.Controllers
                             };
                             ent.AllRoutes.Add(allRoute);
                             ent.SaveChanges();
+                            var Triptypename=ent.TripTypes.Where(x=>x.Id==model.Trip_Type).First().TripTypeName;
+                            ///Store  two time entries for both trip type and then Pickup and Drop single time 
+                            if (Triptypename.ToLower()=="both")
+                            {
+                                for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
+                                {
+                                    PickupAndDropLocationData picdata = new PickupAndDropLocationData()
+                                    {
+                                        AllRoute_Id = allRoute.Id,
+                                        Employee_Id = item.Employee_Id,
+                                        RouteDate = date,
+                                        CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault().Id,
+                                        TripTypeid = model.Trip_Type,
+                                        PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().PickupShiftTimeId,
+                                        DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().DropShiftTimeId,
+                                        CompanyId = model.Company_Id,
+                                        PickupLocation = ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).First().EmployeeCurrentAddress,
+                                        DropLocation = ent.Customers.Where(x => x.Id == model.Company_Id).First().GeoLocation,
+                                        DriverId = 0,
+                                        CreatedDate = DateTime.Now,
+                                        IsActive = true
+                                    };
+                                    ent.PickupAndDropLocationDatas.Add(picdata);
+                                    ent.SaveChanges();
+                                    PickupAndDropLocationData dropdata2 = new PickupAndDropLocationData()
+                                    {
+                                        AllRoute_Id = allRoute.Id,
+                                        RouteDate = date,
+                                        Employee_Id = item.Employee_Id,
+                                        CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault().Id,
+                                        TripTypeid = model.Trip_Type,
+                                        PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().PickupShiftTimeId,
+                                        DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().DropShiftTimeId,
+                                        CompanyId = model.Company_Id,
+                                        DropLocation = ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).First().EmployeeCurrentAddress,
+                                        PickupLocation = ent.Customers.Where(x => x.Id == model.Company_Id).First().GeoLocation,
+                                        DriverId = 0,
+                                        CreatedDate = DateTime.Now,
+                                        IsActive = true
+                                    };
+                                    ent.PickupAndDropLocationDatas.Add(dropdata2);
+                                    ent.SaveChanges();
+                                }
+                            }
+                            else
+                            {
+                                for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
+                                {
+                                    PickupAndDropLocationData picdropdata = new PickupAndDropLocationData()
+                                    {
+                                        AllRoute_Id = allRoute.Id,
+                                        RouteDate = date,
+                                        Employee_Id = item.Employee_Id,
+                                        CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault()?.Id ?? 0, // Handle null cases
+                                        TripTypeid = model.Trip_Type,
+                                        PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault()?.PickupShiftTimeId ?? 0,
+                                        DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault()?.DropShiftTimeId ?? 0,
+                                        CompanyId = model.Company_Id,
+                                        PickupLocation = Triptypename == "pickup"
+                                            ? ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).FirstOrDefault()?.EmployeeCurrentAddress
+                                            : ent.Customers.Where(x => x.Id == model.Company_Id).FirstOrDefault()?.GeoLocation,
+                                        DropLocation = Triptypename == "pickup"
+                                            ? ent.Customers.Where(x => x.Id == model.Company_Id).FirstOrDefault()?.GeoLocation
+                                            : ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).FirstOrDefault()?.EmployeeCurrentAddress,
+                                        DriverId = 0,
+                                        CreatedDate = DateTime.Now,
+                                        IsActive = true
+                                    };
+
+                                    ent.PickupAndDropLocationDatas.Add(picdropdata);
+                                    ent.SaveChanges();
+                                }
+
+
+                            }
+
                         }
+                         
+
                         // Convert grouped data into dictionary format for serialization
                         var groupedData = employeeGroups.GroupBy(x => x.Group);
                         var routeDictionary = groupedData.ToDictionary(group => group.Key, group => group.ToList());
