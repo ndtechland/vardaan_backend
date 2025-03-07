@@ -15,7 +15,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
     public partial class PickupAndDropLocationData
     {
         public int Id { get; set; }
-        public Nullable<long> RoutingID { get; set; }
         public Nullable<System.DateTime> RouteDate { get; set; }
         public Nullable<int> CabId { get; set; }
         public Nullable<int> TripTypeid { get; set; }
