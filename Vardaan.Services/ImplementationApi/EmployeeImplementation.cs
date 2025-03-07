@@ -157,21 +157,22 @@ namespace Vardaan.Services.ImplementationApi
                             {
                                 results.Add(new EmployeeBookingDTO
                                 {
-                                    RoutingID = reader.GetInt32(0),
+                                    ID = reader.GetInt32(0),
                                     Date = reader.GetDateTime(1),
                                     VehicleNumber = reader.GetString(2),
-                                    CabId = reader.GetInt32(3),
-                                    CabName = reader.GetString(4),
+                                    CabId = reader.IsDBNull(3) ? 0 : reader.GetInt32(3),
+                                    CabName = reader.IsDBNull(4) ? null : reader.GetString(4),
                                     TripTypeName = reader.GetString(5),
-                                    PickupShiftTime = reader.GetString(6),
-                                    DropShiftTime = reader.GetString(7),
+                                    PickupShiftTime = reader.IsDBNull(6) ? null : reader.GetString(6),
+                                    DropShiftTime = reader.IsDBNull(7) ? null : reader.GetString(7),
                                     CompanyName = reader.GetString(8),
-                                    PickupLocation = reader.IsDBNull(9) ? null : reader.GetString(8),
-                                    DropLocation = reader.IsDBNull(10) ? null : reader.GetString(9),
+                                    PickupLocation = reader.GetString(9),
+                                    DropLocation = reader.GetString(10),
                                     Employee_Id = reader.GetString(11)
                                 });
                             }
                         }
+
                     }
                 }
                 return results;
