@@ -148,7 +148,17 @@ namespace VardaanCab.APP.Controllers
                 var response = new Response<EmployeeBookingDTO>();
                 var data = await _employee.GetCabUpcommingListByEmployeeId(employeeId);
 
-                return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
+                if (data.Count() > 0)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Data not found.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
             }
             catch (Exception)
             {
@@ -165,7 +175,17 @@ namespace VardaanCab.APP.Controllers
                 var response = new Response<LiveCabs>();
                 var data = await _employee.GetLiveCabByEmployeeId(employeeId);
 
-                return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
+                if (data.Count() > 0)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Data not found.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
             }
             catch (Exception)
             {
@@ -182,8 +202,17 @@ namespace VardaanCab.APP.Controllers
                 var response = new Response<FinishCabs>();
                 var data = await _employee.GetFinishCabBookingHisByEmployeeId(employeeId);
 
-                return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
-
+                if (data.Count() > 0)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Data not found.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
             }
             catch (Exception)
             {
