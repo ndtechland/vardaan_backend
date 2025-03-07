@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -92,6 +96,90 @@ namespace Vardaan.Services.ImplementationApi
             {
 
                 throw;
+            }
+        }
+        public async Task<List<TrackCabEmployeePickupViewModel>> GetTrackCabEmployeePickup(long driverId)
+        {
+            var results = new List<TrackCabEmployeePickupViewModel>();
+
+            try
+            {
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+                var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+
+                using (var sqlConnection = new SqlConnection(sqlConnectionString))
+                {
+                    await sqlConnection.OpenAsync();
+                    using (var command = new SqlCommand("GetTrackCabEmployeePickup", sqlConnection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new SqlParameter("@DriverId", SqlDbType.BigInt) { Value = driverId });
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                results.Add(new TrackCabEmployeePickupViewModel
+                                {
+                                    RoutingID = reader.GetInt32(0),
+                                    RouteDate = reader.GetDateTime(1),
+                                    EmployeeName = reader.GetString(2),
+                                    CompanyName = reader.GetString(3),
+                                    PickupLocation = reader.GetString(4),
+                                    DropLocation = reader.GetString(5),
+                                    ShiftTime = reader.GetString(6)
+                                });
+                            }
+                        }
+                    }
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching routing list", ex);
+            }
+        }
+        public async Task<List<TrackCabEmployeePickupViewModel>> GetTrackCabEmployeeDrop(long driverId)
+        {
+            var results = new List<TrackCabEmployeePickupViewModel>();
+
+            try
+            {
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+                var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+
+                using (var sqlConnection = new SqlConnection(sqlConnectionString))
+                {
+                    await sqlConnection.OpenAsync();
+                    using (var command = new SqlCommand("GetTrackCabEmployeeDrop", sqlConnection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new SqlParameter("@DriverId", SqlDbType.BigInt) { Value = driverId });
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                results.Add(new TrackCabEmployeePickupViewModel
+                                {
+                                    RoutingID = reader.GetInt32(0),
+                                    RouteDate = reader.GetDateTime(1),
+                                    EmployeeName = reader.GetString(2),
+                                    CompanyName = reader.GetString(3),
+                                    PickupLocation = reader.GetString(4),
+                                    DropLocation = reader.GetString(5),
+                                    ShiftTime = reader.GetString(6)
+                                });
+                            }
+                        }
+                    }
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching routing list", ex);
             }
         }
     }

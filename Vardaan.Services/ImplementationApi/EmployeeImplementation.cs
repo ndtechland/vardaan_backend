@@ -5,12 +5,9 @@ using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Vardaan.Services.IContractApi;
 using VardaanCab.DataAccessLayer.DataLayer;
-using VardaanCab.Domain.DTO;
 using VardaanCab.Domain.DTOAPI;
 
 namespace Vardaan.Services.ImplementationApi
@@ -269,5 +266,8 @@ namespace Vardaan.Services.ImplementationApi
                 throw new Exception("Error fetching routing list", ex);
             }
         }
+        
+
+
     }
 }
