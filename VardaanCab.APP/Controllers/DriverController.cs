@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Vardaan.Services.IContract;
 using Vardaan.Services.IContractApi;
 using VardaanCab.APP.Utilities;
 using VardaanCab.DataAccessLayer.DataLayer;
@@ -150,6 +151,60 @@ namespace VardaanCab.APP.Controllers
             catch (Exception)
             {
                 return InternalServerError(new Exception("Internal server error."));
+            }
+        }
+        [HttpGet]
+        [Route("TrackCabEmployeePickupListByDriverId")]
+        public async Task<IHttpActionResult> TrackCabEmployeePickupListByDriverId(long driverId)
+        {
+            try
+            {
+                var response = new Response<TrackCabEmployeePickupViewModel>();
+                var data = await _driver.GetTrackCabEmployeePickup(driverId);
+
+                if (data.Count() > 0)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Data not found.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("TrackCabEmployeeDropListByDriverId")]
+        public async Task<IHttpActionResult> TrackCabEmployeeDropListByDriverId(long driverId)
+        {
+            try
+            {
+                var response = new Response<TrackCabEmployeePickupViewModel>();
+                var data = await _driver.GetTrackCabEmployeeDrop(driverId);
+
+                if (data.Count() > 0)
+                {
+                    return Ok(new { Succeeded = true, StatusCode = 200, Message = "Retrieved successfully.", Data = data });
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    response.Message = "Data not found.";
+                    return Content(HttpStatusCode.NotFound, response);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
