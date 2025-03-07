@@ -27,4 +27,15 @@ namespace VardaanCab.Domain.DTOAPI
         public int? AvailableSeat { get; set; }
         public string LastLocation { get; set; }
     }
+    public class TrackCabEmployeePickupViewModel
+    {
+        public long RoutingID { get; set; }  
+        public DateTime RouteDate { get; set; }  
+        public string EmployeeName { get; set; }   
+        public string CompanyName { get; set; }  
+        public string PickupLocation { get; set; }   
+        public string DropLocation { get; set; }  
+        public string ShiftTime { get; set; }   
+    }
+
 }
