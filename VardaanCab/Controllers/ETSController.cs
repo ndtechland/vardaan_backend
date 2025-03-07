@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.EMMA;
 using NPOI.SS.Formula.Functions;
 using Org.BouncyCastle.Asn1.Ocsp;
@@ -775,6 +776,7 @@ namespace VardaanCab.Controllers
                 throw new Exception("Server Error + " + ex.Message);
             }
         }
+        
         [HttpPost]
         public ActionResult Routing(RoutingDTO model)
         {
@@ -787,23 +789,29 @@ namespace VardaanCab.Controllers
                 {
                     // Get the list of employees who match the criteria
                     var employeeRequestList = GetEmployeeRequests(model);
-                    var employeeRequestList1 = ent.EmployeeRequests.Where(e =>e.IsRouting == false && e.CompanyId==model.Company_Id &&
-                                          e.TripType == model.Trip_Type &&
-                                          model.PickupShiftid.Contains((int)e.PickupShiftTimeId) &&
-                                          model.DropShiftid.Contains((int)e.DropShiftTimeId) &&
-                                          e.StartRequestDate <= model.StartDate &&
-                                          e.EndRequestDate >= model.EndDate).ToList();
-
-                    foreach (var empreqs in employeeRequestList1)
+                    //var employeeRequestList1 = ent.EmployeeRequests.Where(e => e.IsRouting == false && e.CompanyId == model.Company_Id &&
+                    //                      e.TripType == model.Trip_Type &&
+                    //                      model.PickupShiftid.Contains((int)e.PickupShiftTimeId) &&
+                    //                      model.DropShiftid.Contains((int)e.DropShiftTimeId) &&
+                    //                      e.StartRequestDate <= model.StartDate &&
+                    //                      e.EndRequestDate >= model.EndDate).ToList();
+                    var employeeRequestList1 = GetEmployeeRequestsUsingADO(model);
+                    if (employeeRequestList1.Count() > 0)
                     {
-                        empreqs.IsRouting = true;
+                        foreach (var empreqs in employeeRequestList1)
+                        {
+                            empreqs.IsRouting = true;
+                        }
+                        ent.SaveChanges();
                     }
-                    ent.SaveChanges();
                     if (employeeRequestList.Count > 0)
                     {
-                        string combinedString = string.Join(",", model.PickupShiftid);
-                        string DropcombinedString = string.Join(",", model.DropShiftid);
-                        string VehicleTypecombinedString = string.Join(",", model.Vehicle_Type);
+                        //string combinedString = string.Join(",", model.PickupShiftid);
+                        //string DropcombinedString = string.Join(",", model.DropShiftid);
+                        //string VehicleTypecombinedString = string.Join(",", model.Vehicle_Type);
+                        string combinedString = model.PickupShiftid != null ? string.Join(",", model.PickupShiftid) : string.Empty;
+                        string DropcombinedString = model.DropShiftid != null ? string.Join(",", model.DropShiftid) : string.Empty;
+                        string VehicleTypecombinedString = model.Vehicle_Type != null ? string.Join(",", model.Vehicle_Type) : string.Empty;
                         var data = new Routing()
                         {
                             RouteStartDate = model.StartDate,
@@ -857,11 +865,81 @@ namespace VardaanCab.Controllers
                 throw new Exception("Server Error: " + ex.Message);
             }
         }
+        public List<EmployeeRequest> GetEmployeeRequestsUsingADO(RoutingDTO model)
+        {
+            var employeeRequests = new List<EmployeeRequest>();
 
+            // Extracting the correct SQL connection string
+            var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+            var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+
+            using (var connection = new SqlConnection(sqlConnectionString))
+            {
+                connection.Open();
+
+                // Base SQL Query with parameterized IN clauses
+                string sqlQuery = @"
+            SELECT EmployeeId, CompanyId, TripType, PickupShiftTimeId, DropShiftTimeId, StartRequestDate, EndRequestDate, IsRouting
+            FROM EmployeeRequest 
+            WHERE 
+                IsRouting = 0
+                AND CompanyId = @CompanyId
+                AND TripType = @TripType
+                AND (@PickupShiftIds IS NULL OR PickupShiftTimeId IN (SELECT value FROM SplitString(@PickupShiftIds, ',')))
+                AND (@DropShiftIds IS NULL OR DropShiftTimeId IN (SELECT value FROM SplitString(@DropShiftIds, ',')))
+                AND StartRequestDate <= @StartDate
+                AND EndRequestDate >= @EndDate";
+
+                using (var command = new SqlCommand(sqlQuery, connection))
+                {
+                    // Adding parameters safely
+                    command.Parameters.AddWithValue("@CompanyId", model.Company_Id);
+                    command.Parameters.AddWithValue("@TripType", model.Trip_Type);
+                    command.Parameters.AddWithValue("@StartDate", model.StartDate);
+                    command.Parameters.AddWithValue("@EndDate", model.EndDate);
+
+                    // Handling NULL values for shift IDs
+                    command.Parameters.AddWithValue("@PickupShiftIds",
+                        (model.PickupShiftid != null && model.PickupShiftid.Any())
+                        ? string.Join(",", model.PickupShiftid)
+                        : (object)DBNull.Value);
+
+                    command.Parameters.AddWithValue("@DropShiftIds",
+                        (model.DropShiftid != null && model.DropShiftid.Any())
+                        ? string.Join(",", model.DropShiftid)
+                        : (object)DBNull.Value);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            employeeRequests.Add(new EmployeeRequest
+                            {
+                                EmployeeId = reader.GetString(0),
+                                CompanyId = reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
+                                TripType = reader.GetInt32(2),
+                                PickupShiftTimeId = reader.IsDBNull(3) ? (int?)null : reader.GetInt32(3),
+                                DropShiftTimeId = reader.IsDBNull(4) ? (int?)null : reader.GetInt32(4),
+                                StartRequestDate = reader.GetDateTime(5),
+                                EndRequestDate = reader.GetDateTime(6),
+                                IsRouting = reader.GetBoolean(7)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return employeeRequests;
+        }
         private void InitializeDropdowns(RoutingDTO model)
         {
-            model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive)
-                .OrderByDescending(a => a.Id).ToList(), "Id", "OrgName");
+            model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).OrderByDescending(a => a.Id)
+        .Select(a => new
+        {
+            Id = a.Id,
+            DisplayName = a.CompanyName + " (" + a.OrgName + ")"
+        }).ToList(),"Id","DisplayName");
+            //model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).OrderByDescending(a => a.Id).ToList(), "Id", "OrgName");
             model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
             model.ShiftTypes = new SelectList(ent.TripMasters.Where(x => x.Id == 1).ToList(), "Id", "TripName");
             model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
@@ -870,21 +948,114 @@ namespace VardaanCab.Controllers
             model.vehicleCapacity = new SelectList(ent.VehicleCapacities.ToList(), "Id", "Capacity");
         }
 
-        private List<EmployeeGroup> GetEmployeeRequests(RoutingDTO model)
-        {
-            var employeeRequests = (from empr in ent.EmployeeRequests
-                                    join emp in ent.Employees on empr.EmployeeId equals emp.Employee_Id
-                                    where empr.CompanyId == model.Company_Id &&
-                                          empr.TripType == model.Trip_Type &&
-                                         model.PickupShiftid.Contains((int)empr.PickupShiftTimeId) &&
-                                         model.DropShiftid.Contains((int)empr.DropShiftTimeId) &&
-                                          empr.StartRequestDate <= model.StartDate &&
-                                          empr.EndRequestDate >= model.EndDate
-                                          where empr.IsRouting == false
-                                    select emp).ToList();
+        //private List<EmployeeGroup> GetEmployeeRequests(RoutingDTO model)
+        //{
+        //    var employeeRequests = (from empr in ent.EmployeeRequests
+        //                            join emp in ent.Employees on empr.EmployeeId equals emp.Employee_Id
+        //                            where empr.CompanyId == model.Company_Id &&
+        //                                  empr.TripType == model.Trip_Type &&
+        //                                 model.PickupShiftid.Contains((int)empr.PickupShiftTimeId) &&
+        //                                 model.DropShiftid.Contains((int)empr.DropShiftTimeId) &&
+        //                                  empr.StartRequestDate <= model.StartDate &&
+        //                                  empr.EndRequestDate >= model.EndDate
+        //                            where empr.IsRouting == false
+        //                            select emp).ToList();
 
-            return TransformData(employeeRequests);
+        //    return TransformData(employeeRequests);
+        //}
+        public List<EmployeeGroup> GetEmployeeRequests(RoutingDTO model)
+        {
+            var employees = new List<Employee>();
+
+            try
+            {
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+                var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+
+                using (var sqlConnection = new SqlConnection(sqlConnectionString))
+                {
+                    sqlConnection.Open(); // Synchronous open
+
+                    using (var command = new SqlCommand("GetEmployeeRequestsForRouting", sqlConnection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Add parameters
+                        command.Parameters.Add(new SqlParameter("@CompanyId", SqlDbType.Int) { Value = model.Company_Id });
+                        command.Parameters.Add(new SqlParameter("@TripType", SqlDbType.Int) { Value = model.Trip_Type });
+                        command.Parameters.Add(new SqlParameter("@PickupShiftIds", SqlDbType.VarChar)
+                        {
+                            Value = (model.PickupShiftid != null && model.PickupShiftid.Any())
+        ? string.Join(",", model.PickupShiftid)
+        : (object)DBNull.Value
+                        });
+
+                        command.Parameters.Add(new SqlParameter("@DropShiftIds", SqlDbType.VarChar)
+                        {
+                            Value = (model.DropShiftid != null && model.DropShiftid.Any())
+                                ? string.Join(",", model.DropShiftid)
+                                : (object)DBNull.Value
+                        });
+                        command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = model.StartDate });
+                        command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = model.EndDate });
+
+                        using (var reader = command.ExecuteReader()) // Synchronous execution
+                        {
+                            while (reader.Read()) // Synchronous reading
+                            {
+                                employees.Add(new Employee
+                                {
+                                    Id = reader.GetInt32(0),
+                                    Company_Id = reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
+                                    Company_location = reader.IsDBNull(2) ? null : reader.GetString(2),
+                                    Employee_Id = reader.IsDBNull(3) ? null : reader.GetString(3),
+                                    Employee_First_Name = reader.IsDBNull(4) ? null : reader.GetString(4),
+                                    Employee_Middle_Name = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                    Employee_Last_Name = reader.IsDBNull(6) ? null : reader.GetString(6),
+                                    MobileNumber = reader.IsDBNull(7) ? null : reader.GetString(7),
+                                    Email = reader.IsDBNull(8) ? null : reader.GetString(8),
+                                    StateId = reader.IsDBNull(9) ? 0 : reader.GetInt32(9),
+                                    CityId = reader.IsDBNull(10) ? 0 : reader.GetInt32(10),
+                                    Pincode = reader.IsDBNull(11) ? 0 : reader.GetInt32(11),
+                                    EmployeeCurrentAddress = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                    LoginUserName = reader.IsDBNull(13) ? null : reader.GetString(13),
+                                    WeekOff = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                    EmployeeGeoCode = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                    EmployeeBusinessUnit = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                    EmployeeDepartment = reader.IsDBNull(17) ? null : reader.GetString(17),
+                                    EmployeeProjectName = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                    ReportingManager = reader.IsDBNull(19) ? null : reader.GetString(19),
+                                    PrimaryFacilityZone = reader.IsDBNull(20) ? 0 : reader.GetInt32(20),
+                                    HomeRouteName = reader.IsDBNull(21) ? 0 : reader.GetInt32(21),
+                                    EmployeeDestinationArea = reader.IsDBNull(22) ? 0 : reader.GetInt32(22),
+                                    EmployeeRegistrationType = reader.IsDBNull(23) ? 0 : reader.GetInt32(23),
+                                    IsActive = reader.IsDBNull(24) ? true : reader.GetBoolean(24),
+                                    CreatedDate = reader.IsDBNull(25) ? DateTime.Now : reader.GetDateTime(25),
+                                    Password = reader.IsDBNull(26) ? null : reader.GetString(26),
+                                    IsFirst = reader.IsDBNull(27) ? true : reader.GetBoolean(27),
+                                    OTP = reader.IsDBNull(28) ? 0 : reader.GetInt32(28),
+                                    Gender = reader.IsDBNull(29) ? null : reader.GetString(29),
+                                    AlternateNumber = reader.IsDBNull(30) ? null : reader.GetString(30),
+                                    DeviceId = reader.IsDBNull(31) ? null : reader.GetString(31),
+                                    Latitude = reader.IsDBNull(32) ? 0.00 : reader.GetDouble(32),
+                                    Longitude = reader.IsDBNull(33) ? 0.00 : reader.GetDouble(33),
+                                    ReportingManagerEmployeeId = reader.IsDBNull(34) ? null : reader.GetString(34),
+                                    CurrentLat = reader.IsDBNull(35) ? 0.00 : reader.GetDouble(35),
+                                    CurrentLong = reader.IsDBNull(36) ? 0.00 : reader.GetDouble(36)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error fetching employees.", ex);
+            }
+
+            return TransformData(employees);
         }
+
 
         private List<EmployeeGroup> GroupEmployeesByZoneAndArea(List<EmployeeGroup> employees)
         {

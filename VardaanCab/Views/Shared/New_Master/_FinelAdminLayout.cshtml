@@ -2,131 +2,150 @@
 
 <html>
 <head>
-    <head>
-        <title>Vardaan Car - Admin</title>
-        <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 10]>
+    <title>Vardaan Car - Admin</title>
+    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 10]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-        <!-- Meta -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="description" content="Gradient Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
-        <meta name="keywords" content="Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
-        <meta name="author" content="Phoenixcoded" />
-        <!-- Favicon icon -->
-        <link rel="icon" href="~/files/assets/images/logoVardaan.png" type="image/x-icon">
-        <!-- Google font-->
-        <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
-        <!-- Required Fremwork -->
-        <link rel="stylesheet" type="text/css" href="../files/bower_components/bootstrap/css/bootstrap.min.css">
-        <!-- waves.css -->
-        <link rel="stylesheet" href="../files/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
-        <!-- themify-icons line icon -->
-        <link rel="stylesheet" type="text/css" href="../files/assets/icon/themify-icons/themify-icons.css">
-        <!-- Font Awesome -->
-        <link rel="stylesheet" type="text/css" href="../files/assets/icon/font-awesome/css/font-awesome.min.css">
-        <!-- am chart export.css -->
-        <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Gradient Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+    <meta name="keywords" content="Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="Phoenixcoded" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="~/files/assets/images/logoVardaan.png" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="../files/bower_components/bootstrap/css/bootstrap.min.css">
+    <!-- waves.css -->
+    <link rel="stylesheet" href="../files/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="../files/assets/icon/themify-icons/themify-icons.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="../files/assets/icon/font-awesome/css/font-awesome.min.css">
+    <!-- am chart export.css -->
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
 
-        <!-- nestable css -->
-        <link rel="stylesheet" type="text/css" href="../files/assets/pages/nestable/nestable.css">
-        <!-- Style.css -->
-        <link rel="stylesheet" type="text/css" href="../files/assets/css/style.css">
-        <link rel="stylesheet" type="text/css" href="../files/assets/css/jquery.mCustomScrollbar.css">
-        <link rel="stylesheet" type="text/css" href="../files/assets/css/pcoded-horizontal.min.css">
+    <!-- nestable css -->
+    <link rel="stylesheet" type="text/css" href="../files/assets/pages/nestable/nestable.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="../files/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../files/assets/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="../files/assets/css/pcoded-horizontal.min.css">
 
-        <!-- inner form design -->
-        <!-- Select 2 css -->
-        <link rel="stylesheet" href="../files/bower_components/select2/css/select2.min.css" />
-        <!-- Multi Select css -->
-        <link rel="stylesheet" type="text/css" href="../files/bower_components/bootstrap-multiselect/css/bootstrap-multiselect.css" />
-        <link rel="stylesheet" type="text/css" href="../files/bower_components/multiselect/css/multi-select.css" />
-        <!-- Data Table Css -->
-        <link rel="stylesheet" type="text/css" href="../files/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
-        <link rel="stylesheet" type="text/css" href="../files/assets/pages/data-table/css/buttons.dataTables.min.css">
-        <link rel="stylesheet" type="text/css" href="../files/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
-        <style>
-            /*.m-t-40 {
+    <!-- inner form design -->
+    <!-- Select 2 css -->
+    <link rel="stylesheet" href="../files/bower_components/select2/css/select2.min.css" />
+    <!-- Multi Select css -->
+    <link rel="stylesheet" type="text/css" href="../files/bower_components/bootstrap-multiselect/css/bootstrap-multiselect.css" />
+    <link rel="stylesheet" type="text/css" href="../files/bower_components/multiselect/css/multi-select.css" />
+    <!-- Data Table Css -->
+    <link rel="stylesheet" type="text/css" href="../files/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../files/assets/pages/data-table/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="../files/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
+    <style>
+        /*.m-t-40 {
                 margin-top: 75px;
             }*/
 
-            .form-material .form-default.form-static-label .float-label {
-                color: #070707;
-            }
+        .form-material .form-default.form-static-label .float-label {
+            color: #070707;
+        }
 
-            .form-material .form-group.form-static-label .form-control ~ .float-label {
-                top: -14px;
-                font-size: 14px;
-            }
+        .form-material .form-group.form-static-label .form-control ~ .float-label {
+            top: -14px;
+            font-size: 14px;
+        }
 
-            .select2-container--default .select2-selection--multiple .select2-selection__choice {
-                background-color: blue;
-                border: 1px solid black;
-                border-radius: 4px;
-                cursor: default;
-                float: left;
-                margin-right: 7px;
-                margin-top: 3px;
-                padding: 0px 5px;
-            }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: blue;
+            border: 1px solid black;
+            border-radius: 4px;
+            cursor: default;
+            float: left;
+            margin-right: 7px;
+            margin-top: 3px;
+            padding: 0px 5px;
+        }
 
-            .select2-container--default .select2-selection--multiple {
-                background-color: white;
-                border: 1px solid #aaa;
-                border-radius: 4px;
-                cursor: text;
-                margin-top: 10px;
-            }
+        .select2-container--default .select2-selection--multiple {
+            background-color: white;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            cursor: text;
+            margin-top: 10px;
+        }
 
-            .img-fluid {
-                max-width: 40%;
-                height: auto;
-            }
+        .img-fluid {
+            max-width: 40%;
+            height: auto;
+        }
 
-            .pcoded .pcoded-navbar .pcoded-item > li {
-                float: left;
-                /*margin-left: -15px;*/
-            }
+        .pcoded .pcoded-navbar .pcoded-item > li {
+            float: left;
+            /*margin-left: -15px;*/
+        }
+    </style>
 
-            
-        </style>
+    @*start color css*@
+    <style>
+        .pcoded .pcoded-header[header-theme="theme1"] {
+            background: #81BFDA;
+        }
 
-        @*start color css*@
-        <style>
-            .pcoded .pcoded-header[header-theme="theme1"] {
-                background: #81BFDA;
-            }
+        .card .card-block {
+            padding: 20px;
+            background-color: #b1f0f7db;
+        }
 
-            .card .card-block {
-                padding: 20px;
-                background-color: #b1f0f7db;
-            }
+        .card .card-header {
+            background-color: #a0dfe5;
+        }
 
-            .card .card-header {
-                background-color: #a0dfe5;
-            }
+        .bread {
+            background-color: #81d0d8;
+        }
 
-            .bread {
-                background-color: #81d0d8;
-            }
+        .pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item > li.active > a, .pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item > li:hover > a {
+            background: #81bfda;
+            color: #fff !important;
+        }
 
-            .pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item > li.active > a, .pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item > li:hover > a {
-                background: #81bfda;
-                color: #fff !important;
-            }
+        .card .card-footer {
+            border-top: none;
+            padding: 15px 20px;
+            border-radius: 0 0 5px 5px;
+            text-align: right;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                url: '/Admin/getsessionkey', // URL to your action method
+                type: 'GET', // HTTP method
+                dataType: 'json', // Data type expected from server
+                success: function (data) {
+                    // Handle the response data
+                    console.log(data);
+                    if (data === false) {
 
-            .card .card-footer {
-                border-top: none;
-                padding: 15px 20px;
-                border-radius: 0 0 5px 5px;
-                text-align: right;
-            }
-        </style>
-    </head>
+                        window.location.href = "/Admin/Login";
+
+
+                    }
+                },
+                //error: function (xhr, status, error) {
+                //    // Handle any errors that occur during the AJAX call
+                //    console.error('Error:', error);
+                //}
+            });
+        });
+    </script>
 </head>
 <body>
     <!-- Pre-loader start -->
@@ -290,28 +309,6 @@
 
     <!-- nestable js -->
     <script src="../files/assets/pages/nestable/jquery.nestable.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $.ajax({
-                url: '/Admin/getsessionkey', // URL to your action method
-                type: 'GET', // HTTP method
-                dataType: 'json', // Data type expected from server
-                success: function (data) {
-                    // Handle the response data
-                    console.log(data);
-                    if (data === false) {
-
-                        window.location.href = "/Admin/Login";
-
-
-                    }
-                },
-                //error: function (xhr, status, error) {
-                //    // Handle any errors that occur during the AJAX call
-                //    console.error('Error:', error);
-                //}
-            });
-        });
-    </script>
+   
 </body>
 </html>
