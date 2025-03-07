@@ -1341,7 +1341,6 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RoutingID" Type="bigint" />
           <Property Name="RouteDate" Type="datetime" />
           <Property Name="CabId" Type="int" />
           <Property Name="TripTypeid" Type="int" />
@@ -1355,6 +1354,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Status" Type="nvarchar" MaxLength="200" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
+          <Property Name="AllRoute_Id" Type="int" />
         </EntityType>
         <EntityType Name="RouteStatus">
           <Key>
@@ -1824,6 +1824,17 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
         <Function Name="getWorkingDayOfMonth" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="workingDate" Type="date" Mode="In" />
         </Function>
+        <Function Name="SplitString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="String" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Delimiter" Type="char" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Value" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <Function Name="uspTaxInvoicelist" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="taxInvId" Type="int" Mode="In" />
         </Function>
@@ -1844,6 +1855,14 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="pageSize" Type="int" Mode="In" />
           <Parameter Name="TInvID" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetEmployeeRequestsForRouting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="TripType" Type="int" Mode="In" />
+          <Parameter Name="PickupShiftIds" Type="varchar(max)" Mode="In" />
+          <Parameter Name="DropShiftIds" Type="varchar(max)" Mode="In" />
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+        </Function>
         <Function Name="GetFinishCabBookingHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
           <Parameter Name="EmployeeId" Type="nvarchar" Mode="In" />
         </Function>
@@ -1852,6 +1871,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
         </Function>
         <Function Name="GetRoutes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
           <Parameter Name="term" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetTrackCabEmployeeDrop" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
+          <Parameter Name="DriverId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="GetUpcomingCab" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
           <Parameter Name="EmployeeId" Type="nvarchar" Mode="In" />
@@ -3716,6 +3738,21 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="PickupAndDropLocationDatas" EntityType="Vardaan_AdminModel.PickupAndDropLocationData" />
+          <FunctionImport Name="SplitString" IsComposable="true" ReturnType="Collection(Int32)">
+            <Parameter Name="String" Mode="In" Type="String" />
+            <Parameter Name="Delimiter" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetEmployeeRequestsForRouting" ReturnType="Collection(Vardaan_AdminModel.GetEmployeeRequestsForRouting_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="TripType" Mode="In" Type="Int32" />
+            <Parameter Name="PickupShiftIds" Mode="In" Type="String" />
+            <Parameter Name="DropShiftIds" Mode="In" Type="String" />
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="GetTrackCabEmployeeDrop" ReturnType="Collection(Vardaan_AdminModel.GetTrackCabEmployeeDrop_Result)">
+            <Parameter Name="DriverId" Mode="In" Type="Int64" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -5235,7 +5272,56 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Status" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
+          <Property Name="AllRoute_Id" Type="Int32" />
         </EntityType>
+        <ComplexType Name="GetEmployeeRequestsForRouting_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="Company_Id" Nullable="true" />
+          <Property Type="String" Name="Company_location" Nullable="true" />
+          <Property Type="String" Name="Employee_Id" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Employee_First_Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Employee_Middle_Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Employee_Last_Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="MobileNumber" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="StateId" Nullable="true" />
+          <Property Type="Int32" Name="CityId" Nullable="true" />
+          <Property Type="Int32" Name="Pincode" Nullable="true" />
+          <Property Type="String" Name="EmployeeCurrentAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="LoginUserName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WeekOff" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmployeeGeoCode" Nullable="true" />
+          <Property Type="String" Name="EmployeeBusinessUnit" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EmployeeDepartment" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EmployeeProjectName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ReportingManager" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="PrimaryFacilityZone" Nullable="true" />
+          <Property Type="Int32" Name="HomeRouteName" Nullable="true" />
+          <Property Type="Int32" Name="EmployeeDestinationArea" Nullable="true" />
+          <Property Type="Int32" Name="EmployeeRegistrationType" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="200" />
+          <Property Type="Boolean" Name="IsFirst" Nullable="true" />
+          <Property Type="Int32" Name="OTP" Nullable="true" />
+          <Property Type="String" Name="Gender" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="AlternateNumber" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DeviceId" Nullable="true" />
+          <Property Type="Double" Name="Latitude" Nullable="true" />
+          <Property Type="Double" Name="Longitude" Nullable="true" />
+          <Property Type="String" Name="ReportingManagerEmployeeId" Nullable="true" MaxLength="100" />
+          <Property Type="Double" Name="CurrentLat" Nullable="true" />
+          <Property Type="Double" Name="CurrentLong" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetTrackCabEmployeeDrop_Result">
+          <Property Type="Int32" Name="RoutingID" Nullable="true" />
+          <Property Type="DateTime" Name="RouteDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="EmployeeName" Nullable="false" MaxLength="302" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="PickupLocation" Nullable="true" />
+          <Property Type="String" Name="DropLocation" Nullable="true" />
+          <Property Type="String" Name="PickupShiftTime" Nullable="true" MaxLength="100" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7907,6 +7993,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="PickupAndDropLocationDatas">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.PickupAndDropLocationData">
               <MappingFragment StoreEntitySet="PickupAndDropLocationData">
+                <ScalarProperty Name="AllRoute_Id" ColumnName="AllRoute_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
@@ -7920,11 +8007,67 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
                 <ScalarProperty Name="TripTypeid" ColumnName="TripTypeid" />
                 <ScalarProperty Name="CabId" ColumnName="CabId" />
                 <ScalarProperty Name="RouteDate" ColumnName="RouteDate" />
-                <ScalarProperty Name="RoutingID" ColumnName="RoutingID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SplitString" FunctionName="Vardaan_AdminModel.Store.SplitString" />
+          <FunctionImportMapping FunctionImportName="GetEmployeeRequestsForRouting" FunctionName="Vardaan_AdminModel.Store.GetEmployeeRequestsForRouting">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetEmployeeRequestsForRouting_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Company_location" ColumnName="Company_location" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="Employee_First_Name" ColumnName="Employee_First_Name" />
+                <ScalarProperty Name="Employee_Middle_Name" ColumnName="Employee_Middle_Name" />
+                <ScalarProperty Name="Employee_Last_Name" ColumnName="Employee_Last_Name" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="EmployeeCurrentAddress" ColumnName="EmployeeCurrentAddress" />
+                <ScalarProperty Name="LoginUserName" ColumnName="LoginUserName" />
+                <ScalarProperty Name="WeekOff" ColumnName="WeekOff" />
+                <ScalarProperty Name="EmployeeGeoCode" ColumnName="EmployeeGeoCode" />
+                <ScalarProperty Name="EmployeeBusinessUnit" ColumnName="EmployeeBusinessUnit" />
+                <ScalarProperty Name="EmployeeDepartment" ColumnName="EmployeeDepartment" />
+                <ScalarProperty Name="EmployeeProjectName" ColumnName="EmployeeProjectName" />
+                <ScalarProperty Name="ReportingManager" ColumnName="ReportingManager" />
+                <ScalarProperty Name="PrimaryFacilityZone" ColumnName="PrimaryFacilityZone" />
+                <ScalarProperty Name="HomeRouteName" ColumnName="HomeRouteName" />
+                <ScalarProperty Name="EmployeeDestinationArea" ColumnName="EmployeeDestinationArea" />
+                <ScalarProperty Name="EmployeeRegistrationType" ColumnName="EmployeeRegistrationType" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsFirst" ColumnName="IsFirst" />
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="AlternateNumber" ColumnName="AlternateNumber" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="ReportingManagerEmployeeId" ColumnName="ReportingManagerEmployeeId" />
+                <ScalarProperty Name="CurrentLat" ColumnName="CurrentLat" />
+                <ScalarProperty Name="CurrentLong" ColumnName="CurrentLong" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTrackCabEmployeeDrop" FunctionName="Vardaan_AdminModel.Store.GetTrackCabEmployeeDrop">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetTrackCabEmployeeDrop_Result">
+                <ScalarProperty Name="RoutingID" ColumnName="RoutingID" />
+                <ScalarProperty Name="RouteDate" ColumnName="RouteDate" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="PickupLocation" ColumnName="PickupLocation" />
+                <ScalarProperty Name="DropLocation" ColumnName="DropLocation" />
+                <ScalarProperty Name="PickupShiftTime" ColumnName="PickupShiftTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

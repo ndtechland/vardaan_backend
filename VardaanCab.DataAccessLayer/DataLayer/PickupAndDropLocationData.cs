@@ -29,5 +29,6 @@ namespace VardaanCab.DataAccessLayer.DataLayer
         public string Status { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public Nullable<int> AllRoute_Id { get; set; }
     }
 }

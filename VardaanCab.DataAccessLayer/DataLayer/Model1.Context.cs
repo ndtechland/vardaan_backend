@@ -1689,5 +1689,57 @@ namespace VardaanCab.DataAccessLayer.DataLayer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetFinishCabBookingHistory_Result>("GetFinishCabBookingHistory", employeeIdParameter);
         }
+    
+        [DbFunction("Vardaan_AdminEntities", "SplitString")]
+        public virtual IQueryable<Nullable<int>> SplitString(string @string, string delimiter)
+        {
+            var stringParameter = @string != null ?
+                new ObjectParameter("String", @string) :
+                new ObjectParameter("String", typeof(string));
+    
+            var delimiterParameter = delimiter != null ?
+                new ObjectParameter("Delimiter", delimiter) :
+                new ObjectParameter("Delimiter", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Nullable<int>>("[Vardaan_AdminEntities].[SplitString](@String, @Delimiter)", stringParameter, delimiterParameter);
+        }
+    
+        public virtual ObjectResult<GetEmployeeRequestsForRouting_Result> GetEmployeeRequestsForRouting(Nullable<int> companyId, Nullable<int> tripType, string pickupShiftIds, string dropShiftIds, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var tripTypeParameter = tripType.HasValue ?
+                new ObjectParameter("TripType", tripType) :
+                new ObjectParameter("TripType", typeof(int));
+    
+            var pickupShiftIdsParameter = pickupShiftIds != null ?
+                new ObjectParameter("PickupShiftIds", pickupShiftIds) :
+                new ObjectParameter("PickupShiftIds", typeof(string));
+    
+            var dropShiftIdsParameter = dropShiftIds != null ?
+                new ObjectParameter("DropShiftIds", dropShiftIds) :
+                new ObjectParameter("DropShiftIds", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeeRequestsForRouting_Result>("GetEmployeeRequestsForRouting", companyIdParameter, tripTypeParameter, pickupShiftIdsParameter, dropShiftIdsParameter, startDateParameter, endDateParameter);
+        }
+    
+        public virtual ObjectResult<GetTrackCabEmployeeDrop_Result> GetTrackCabEmployeeDrop(Nullable<long> driverId)
+        {
+            var driverIdParameter = driverId.HasValue ?
+                new ObjectParameter("DriverId", driverId) :
+                new ObjectParameter("DriverId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTrackCabEmployeeDrop_Result>("GetTrackCabEmployeeDrop", driverIdParameter);
+        }
     }
 }
