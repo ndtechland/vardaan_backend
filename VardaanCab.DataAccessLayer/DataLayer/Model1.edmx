@@ -1875,6 +1875,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
         <Function Name="GetTrackCabEmployeeDrop" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
           <Parameter Name="DriverId" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="GetTrackCabEmployeePickup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
+          <Parameter Name="DriverId" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="GetUpcomingCab" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vardaan_Admin">
           <Parameter Name="EmployeeId" Type="nvarchar" Mode="In" />
         </Function>
@@ -3751,6 +3754,9 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="EndDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="GetTrackCabEmployeeDrop" ReturnType="Collection(Vardaan_AdminModel.GetTrackCabEmployeeDrop_Result)">
+          <Parameter Name="DriverId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="GetTrackCabEmployeePickup" ReturnType="Collection(Vardaan_AdminModel.GetTrackCabEmployeePickup_Result)">
             <Parameter Name="DriverId" Mode="In" Type="Int64" />
           </FunctionImport>
           </EntityContainer>
@@ -5315,6 +5321,15 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
         </ComplexType>
         <ComplexType Name="GetTrackCabEmployeeDrop_Result">
           <Property Type="Int32" Name="RoutingID" Nullable="true" />
+          <Property Type="DateTime" Name="RouteDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="EmployeeName" Nullable="false" MaxLength="302" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="PickupLocation" Nullable="true" />
+          <Property Type="String" Name="DropLocation" Nullable="true" />
+          <Property Type="String" Name="PickupShiftTime" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GetTrackCabEmployeePickup_Result">
+          <Property Type="Int32" Name="RoutingID" Nullable="false" />
           <Property Type="DateTime" Name="RouteDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="EmployeeName" Nullable="false" MaxLength="302" />
           <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="250" />
@@ -8058,6 +8073,19 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <FunctionImportMapping FunctionImportName="GetTrackCabEmployeeDrop" FunctionName="Vardaan_AdminModel.Store.GetTrackCabEmployeeDrop">
             <ResultMapping>
               <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetTrackCabEmployeeDrop_Result">
+                <ScalarProperty Name="RoutingID" ColumnName="RoutingID" />
+                <ScalarProperty Name="RouteDate" ColumnName="RouteDate" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="PickupLocation" ColumnName="PickupLocation" />
+                <ScalarProperty Name="DropLocation" ColumnName="DropLocation" />
+                <ScalarProperty Name="PickupShiftTime" ColumnName="PickupShiftTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTrackCabEmployeePickup" FunctionName="Vardaan_AdminModel.Store.GetTrackCabEmployeePickup">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Vardaan_AdminModel.GetTrackCabEmployeePickup_Result">
                 <ScalarProperty Name="RoutingID" ColumnName="RoutingID" />
                 <ScalarProperty Name="RouteDate" ColumnName="RouteDate" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />

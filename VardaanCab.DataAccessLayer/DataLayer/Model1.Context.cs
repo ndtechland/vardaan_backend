@@ -1741,5 +1741,14 @@ namespace VardaanCab.DataAccessLayer.DataLayer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTrackCabEmployeeDrop_Result>("GetTrackCabEmployeeDrop", driverIdParameter);
         }
+    
+        public virtual ObjectResult<GetTrackCabEmployeePickup_Result> GetTrackCabEmployeePickup(Nullable<long> driverId)
+        {
+            var driverIdParameter = driverId.HasValue ?
+                new ObjectParameter("DriverId", driverId) :
+                new ObjectParameter("DriverId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTrackCabEmployeePickup_Result>("GetTrackCabEmployeePickup", driverIdParameter);
+        }
     }
 }
