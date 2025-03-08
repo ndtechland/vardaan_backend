@@ -154,13 +154,13 @@ namespace VardaanCab.APP.Controllers
             }
         }
         [HttpGet]
-        [Route("TrackCabEmployeePickupListByDriverId")]
+        [Route("TrackCabEmployeesListByDriverId")]
         public async Task<IHttpActionResult> TrackCabEmployeePickupListByDriverId(long driverId)
         {
             try
             {
                 var response = new Response<TrackCabEmployeePickupViewModel>();
-                var data = await _driver.GetTrackCabEmployeePickup(driverId);
+                var data = await _driver.GetTrackCabEmployee(driverId);
 
                 if (data.Count() > 0)
                 {
@@ -181,13 +181,13 @@ namespace VardaanCab.APP.Controllers
             }
         }
         [HttpGet]
-        [Route("TrackCabEmployeeDropListByDriverId")]
-        public async Task<IHttpActionResult> TrackCabEmployeeDropListByDriverId(long driverId)
+        [Route("TrackEmployeeLocationByDriverIdAndId")]
+        public async Task<IHttpActionResult> TrackEmployeeLocationByDriverIdAndId(long driverId,int Id)
         {
             try
             {
                 var response = new Response<TrackCabEmployeePickupViewModel>();
-                var data = await _driver.GetTrackCabEmployeeDrop(driverId);
+                var data = await _driver.GetTrackEmployeeLocationIndividually(driverId,Id);
 
                 if (data.Count() > 0)
                 {

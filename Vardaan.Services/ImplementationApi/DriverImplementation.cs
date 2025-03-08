@@ -98,7 +98,7 @@ namespace Vardaan.Services.ImplementationApi
                 throw;
             }
         }
-        public async Task<List<TrackCabEmployeePickupViewModel>> GetTrackCabEmployeePickup(long driverId)
+        public async Task<List<TrackCabEmployeePickupViewModel>> GetTrackCabEmployee(long driverId)
         {
             var results = new List<TrackCabEmployeePickupViewModel>();
 
@@ -110,7 +110,7 @@ namespace Vardaan.Services.ImplementationApi
                 using (var sqlConnection = new SqlConnection(sqlConnectionString))
                 {
                     await sqlConnection.OpenAsync();
-                    using (var command = new SqlCommand("GetTrackCabEmployeePickup", sqlConnection))
+                    using (var command = new SqlCommand("GetTrackCabEmployees", sqlConnection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.Add(new SqlParameter("@DriverId", SqlDbType.BigInt) { Value = driverId });
@@ -121,15 +121,16 @@ namespace Vardaan.Services.ImplementationApi
                             {
                                 results.Add(new TrackCabEmployeePickupViewModel
                                 {
-                                    RoutingID = reader.GetInt32(0),
+                                    ID = (int)reader.GetInt32(0),
                                     RouteDate = reader.GetDateTime(1),
                                     EmployeeName = reader.GetString(2),
                                     CompanyName = reader.GetString(3),
-                                    PickupLocation = reader.GetString(4),
-                                    DropLocation = reader.GetString(5),
-                                    ShiftTime = reader.GetString(6)
+                                    TripTypeName = reader.GetString(4),
+                                    Location = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                    ShiftTime = reader.IsDBNull(6) ? null : reader.GetString(6)
                                 });
                             }
+
                         }
                     }
                 }
@@ -140,9 +141,9 @@ namespace Vardaan.Services.ImplementationApi
                 throw new Exception("Error fetching routing list", ex);
             }
         }
-        public async Task<List<TrackCabEmployeePickupViewModel>> GetTrackCabEmployeeDrop(long driverId)
+        public async Task<List<TrackEmployeeLocationModel>> GetTrackEmployeeLocationIndividually(long driverId,int Id)
         {
-            var results = new List<TrackCabEmployeePickupViewModel>();
+            var results = new List<TrackEmployeeLocationModel>();
 
             try
             {
@@ -152,26 +153,28 @@ namespace Vardaan.Services.ImplementationApi
                 using (var sqlConnection = new SqlConnection(sqlConnectionString))
                 {
                     await sqlConnection.OpenAsync();
-                    using (var command = new SqlCommand("GetTrackCabEmployeeDrop", sqlConnection))
+                    using (var command = new SqlCommand("TrackEmployeeLocation", sqlConnection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.Add(new SqlParameter("@DriverId", SqlDbType.BigInt) { Value = driverId });
+                        command.Parameters.Add(new SqlParameter("@Id", SqlDbType.Int) { Value = Id });
 
                         using (var reader = await command.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
                             {
-                                results.Add(new TrackCabEmployeePickupViewModel
+                                results.Add(new TrackEmployeeLocationModel
                                 {
-                                    RoutingID = reader.GetInt32(0),
+                                    ID = (int)reader.GetInt32(0),
                                     RouteDate = reader.GetDateTime(1),
                                     EmployeeName = reader.GetString(2),
                                     CompanyName = reader.GetString(3),
-                                    PickupLocation = reader.GetString(4),
-                                    DropLocation = reader.GetString(5),
-                                    ShiftTime = reader.GetString(6)
+                                    TripTypeName = reader.GetString(4),
+                                    PickupLocation = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                    Destination = reader.IsDBNull(6) ? null : reader.GetString(6)
                                 });
                             }
+
                         }
                     }
                 }
