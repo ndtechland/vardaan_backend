@@ -1750,5 +1750,27 @@ namespace VardaanCab.DataAccessLayer.DataLayer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTrackCabEmployeePickup_Result>("GetTrackCabEmployeePickup", driverIdParameter);
         }
+    
+        public virtual ObjectResult<GetTrackCabEmployees_Result> GetTrackCabEmployees(Nullable<long> driverId)
+        {
+            var driverIdParameter = driverId.HasValue ?
+                new ObjectParameter("DriverId", driverId) :
+                new ObjectParameter("DriverId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTrackCabEmployees_Result>("GetTrackCabEmployees", driverIdParameter);
+        }
+    
+        public virtual ObjectResult<TrackEmployeeLocation_Result> TrackEmployeeLocation(Nullable<long> driverId, Nullable<long> id)
+        {
+            var driverIdParameter = driverId.HasValue ?
+                new ObjectParameter("DriverId", driverId) :
+                new ObjectParameter("DriverId", typeof(long));
+    
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<TrackEmployeeLocation_Result>("TrackEmployeeLocation", driverIdParameter, idParameter);
+        }
     }
 }

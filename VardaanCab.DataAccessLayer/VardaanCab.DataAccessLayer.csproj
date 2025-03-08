@@ -233,6 +233,9 @@
     <Compile Include="DataLayer\GetTrackCabEmployeePickup_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataLayer\GetTrackCabEmployees_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer\GetUnbilledBookingByPTypeNew_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -348,6 +351,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DataLayer\tempUserBooking.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataLayer\TrackEmployeeLocation_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DataLayer\TripMaster.cs">

@@ -163,14 +163,13 @@ namespace Vardaan.Services.ImplementationApi
                                     CabId = reader.IsDBNull(3) ? 0 : reader.GetInt32(3),
                                     CabName = reader.IsDBNull(4) ? null : reader.GetString(4),
                                     TripTypeName = reader.GetString(5),
-                                    PickupShiftTime = reader.IsDBNull(6) ? null : reader.GetString(6),
-                                    DropShiftTime = reader.IsDBNull(7) ? null : reader.GetString(7),
+                                    Location = reader.IsDBNull(6) ? null : reader.GetString(6),
+                                    ShiftTime = reader.IsDBNull(7) ? null : reader.GetString(7),
                                     CompanyName = reader.GetString(8),
-                                    PickupLocation = reader.GetString(9),
-                                    DropLocation = reader.GetString(10),
-                                    Employee_Id = reader.GetString(11)
+                                    Employee_Id = reader.GetString(9)
                                 });
                             }
+
                         }
 
                     }
@@ -205,18 +204,18 @@ namespace Vardaan.Services.ImplementationApi
                             {
                                 results.Add(new LiveCabs
                                 {
-                                    RoutingID = reader.GetInt32(0),
+                                    ID = reader.GetInt32(0),
                                     Date = reader.GetDateTime(1),
                                     VehicleNumber = reader.GetString(2),
                                     CabId = reader.GetInt32(3),
                                     CabName = reader.GetString(4),
                                     TripTypeName = reader.GetString(5),
-                                    PickupShiftTime = reader.GetString(6),
-                                    DropShiftTime = reader.GetString(7),
-                                    CompanyName = reader.GetString(8),
-                                    PickupLocation = reader.IsDBNull(9) ? null : reader.GetString(8),
-                                    DropLocation = reader.IsDBNull(10) ? null : reader.GetString(9),
-                                    DriverId = reader.GetInt32(11)
+                                    ShiftTime = reader.IsDBNull(6) ? null : reader.GetString(6), // ShiftTime based on TripType
+                                    CompanyName = reader.GetString(7),
+                                    Location = reader.IsDBNull(8) ? null : reader.GetString(8), // Conditional Pickup/Drop Location
+                                    DriverId = (int)(reader.IsDBNull(9) ? 0 : reader.GetInt64(9)),
+                                    OTP=12345
+
                                 });
                             }
                         }
@@ -267,8 +266,5 @@ namespace Vardaan.Services.ImplementationApi
                 throw new Exception("Error fetching routing list", ex);
             }
         }
-        
-
-
     }
 }

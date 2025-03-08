@@ -13,7 +13,7 @@ namespace Vardaan.Services.IContractApi
         Task<DriverProfileDTO> GetProfile(int id);
         Task<bool> UpdateProfile(DriverProfileDTO model);
         Task<bool> UpdateActiveStatus(DriverDTO model);
-        Task<List<TrackCabEmployeePickupViewModel>> GetTrackCabEmployeePickup(long driverId);
-        Task<List<TrackCabEmployeePickupViewModel>> GetTrackCabEmployeeDrop(long driverId);
+        Task<List<TrackCabEmployeePickupViewModel>> GetTrackCabEmployee(long driverId);
+        Task<List<TrackEmployeeLocationModel>> GetTrackEmployeeLocationIndividually(long driverId, int Id);
     }
 }
