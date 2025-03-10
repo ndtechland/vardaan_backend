@@ -15,6 +15,7 @@ namespace Vardaan.Services.ImplementationApi
     public class EmployeeImplementation : IEmployee
     {
         Vardaan_AdminEntities ent = new Vardaan_AdminEntities();
+        
         public async Task<EmployeeProfileDTO> GetProfileDetail(int id)
         {
             try
@@ -237,6 +238,7 @@ namespace Vardaan.Services.ImplementationApi
                 var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
                 var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
 
+               
                 using (var sqlConnection = new SqlConnection(sqlConnectionString))
                 {
                     await sqlConnection.OpenAsync();

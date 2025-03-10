@@ -1128,6 +1128,19 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="CabMeterReading">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RouteId" Type="int" />
+          <Property Name="DriverId" Type="int" />
+          <Property Name="MeterReading" Type="nvarchar" MaxLength="250" />
+          <Property Name="MeterReadingImage" Type="nvarchar(max)" />
+          <Property Name="Status" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="CompanyZoneHomeRoute">
           <Key>
             <PropertyRef Name="Id" />
@@ -1355,6 +1368,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="AllRoute_Id" Type="int" />
+          <Property Name="OTP" Type="int" />
         </EntityType>
         <EntityType Name="RouteStatus">
           <Key>
@@ -2038,6 +2052,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySet Name="AllRoute" EntityType="Self.AllRoute" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="AreaMaster" EntityType="Self.AreaMaster" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="BannerMaster" EntityType="Self.BannerMaster" Schema="Vardaan_Admin" store:Type="Tables" />
+          <EntitySet Name="CabMeterReading" EntityType="Self.CabMeterReading" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="CompanyZoneHomeRoute" EntityType="Self.CompanyZoneHomeRoute" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="CompanyZones" EntityType="Self.CompanyZones" Schema="Vardaan_Admin" store:Type="Tables" />
           <EntitySet Name="DaysName" EntityType="Self.DaysName" Schema="Vardaan_Admin" store:Type="Tables" />
@@ -3767,6 +3782,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
             <Parameter Name="DriverId" Mode="In" Type="Int64" />
             <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
+          <EntitySet Name="CabMeterReadings" EntityType="Vardaan_AdminModel.CabMeterReading" />
           </EntityContainer>
         <ComplexType Name="GetAllBooking_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -5343,6 +5359,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="AllRoute_Id" Type="Int32" />
+          <Property Name="OTP" Type="Int32" />
         </EntityType>
         <ComplexType Name="GetTrackCabEmployees_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -5362,6 +5379,19 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <Property Type="String" Name="PickupLocation" Nullable="true" />
           <Property Type="String" Name="DropLocation" Nullable="true" />
         </ComplexType>
+        <EntityType Name="CabMeterReading">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RouteId" Type="Int32" />
+          <Property Name="DriverId" Type="Int32" />
+          <Property Name="MeterReading" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MeterReadingImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8077,6 +8107,7 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
           <EntitySetMapping Name="PickupAndDropLocationDatas">
             <EntityTypeMapping TypeName="Vardaan_AdminModel.PickupAndDropLocationData">
               <MappingFragment StoreEntitySet="PickupAndDropLocationData">
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
                 <ScalarProperty Name="AllRoute_Id" ColumnName="AllRoute_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -8121,6 +8152,20 @@ warning 6002: The table/view 'Vardaan_Admin.newVardaan.SoftwareLink_15052023' do
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="CabMeterReadings">
+            <EntityTypeMapping TypeName="Vardaan_AdminModel.CabMeterReading">
+              <MappingFragment StoreEntitySet="CabMeterReading">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="MeterReadingImage" ColumnName="MeterReadingImage" />
+                <ScalarProperty Name="MeterReading" ColumnName="MeterReading" />
+                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

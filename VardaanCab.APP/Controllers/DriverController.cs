@@ -207,5 +207,40 @@ namespace VardaanCab.APP.Controllers
                 throw;
             }
         }
+        [HttpPost]
+        [Route("AddCabMeterReadings")]
+        public async Task<IHttpActionResult> AddCabMeterReadings(CabReadingDTO model)
+        {
+            try
+            {
+                if(!ent.AllRoutes.Any(x=>x.Id==model.RouteId))
+                {
+                    return BadRequest("Route not exists.");
+                }
+                string[] allowedExtensions = { ".jpg", ".jpeg", ".png" };
+                string imagePath = ConfigurationManager.AppSettings["ImagePath"];
+                var profilepic = FileOperation.UploadFileWithBase64(imagePath, model.MeterReadingImage, model.MeterReadingImageBase64, allowedExtensions);
+
+                if (profilepic == "not allowed")
+                {
+                    return BadRequest("Only png, jpg, jpeg files are allowed as Profile picture.");
+                }
+                model.MeterReadingImage = profilepic;
+                bool isCreated = await _driver.AddCabMeterReading(model);
+                if (isCreated)
+                {
+                    return Ok(new { StatusCode = 200, Message = "Added successfully." });
+                }
+                else
+                {
+                    return BadRequest("Failed.");
+                }
+
+            }
+            catch (Exception)
+            {
+                return InternalServerError(new Exception("Internal server error."));
+            }
+        }
     }
 }
