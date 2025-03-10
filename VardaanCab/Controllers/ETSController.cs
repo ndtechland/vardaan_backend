@@ -216,10 +216,6 @@ namespace VardaanCab.Controllers
             dt.Columns.Add("ShiftType"); // tripmaster
             dt.Columns.Add("PickUpTime"); // shiftmaster id(1)
             dt.Columns.Add("DropTime"); // shiftmaster id(2)
-
-            // Add dummy rows
-
-
             int userId = int.Parse(User.Identity.Name);
             string companyName = "";
             List<Customer> companyList = new List<Customer>();
@@ -253,106 +249,10 @@ namespace VardaanCab.Controllers
                     companyList = new List<Customer>();
                 }
             }
-
-            // Optionally handle cases where the DataTable is empty for additional logic.
-
-            //dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-01", "2024-12-03", "BOTH", "NORMAL", "08:00", "19:30");
-            //dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "2024-12-02", "2", "PICKUP", "NORMAL", "09:00", "19:30");
-            //dt.Rows.Add("9898989898", "Test Vardaan car rental pvt ltd", "", "2024-12-05", "DROP", "NORMAL", "10:00", "19:30");
-
-            // Create Excel workbook using ClosedXML
             using (var workbook = new XLWorkbook())
             {
-                // Add DataTable as a worksheet
                 var worksheet = workbook.Worksheets.Add("Employee Request Data");
                 worksheet.Cell(1, 1).InsertTable(dt);
-
-                // Add hidden sheets for dropdown data
-                //var hiddenSheet = workbook.Worksheets.Add("CompanyList");
-                //var hiddenTripTypeListSheet = workbook.Worksheets.Add("TripTypeList");
-                //var hiddenShiftTypeSheet = workbook.Worksheets.Add("ShiftTypeList");
-                //var hiddenPickuptimeSheet = workbook.Worksheets.Add("PickuptimeList");
-                //var hiddenDroptimeSheet = workbook.Worksheets.Add("DroptimeList");
-
-                //// Fetch lists from the database
-                //var companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
-                //var TriptypeList = ent.TripTypes.Where(x => x.TripMasterId == 1).ToList();
-                //var ShiftTypeList = ent.TripMasters.Where(x => x.Id == 1).ToList();
-                //var PickupTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList();
-                //var DropTimeList = ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList();
-
-                //// Populate hidden sheets and create dropdown ranges
-                //int hiddenRow = 1;
-                //foreach (var company in companyList.OrderByDescending(x => x.Id))
-                //{
-                //    hiddenSheet.Cell(hiddenRow++, 1).Value = company.CompanyName;
-                //}
-                //var companyRange = hiddenSheet.Range($"A1:A{companyList.Count}");
-
-                //hiddenRow = 1;
-                //foreach (var triptype in TriptypeList.OrderByDescending(x => x.Id))
-                //{
-                //    hiddenTripTypeListSheet.Cell(hiddenRow++, 1).Value = triptype.TripTypeName;
-                //}
-                //var TripTypeRange = hiddenTripTypeListSheet.Range($"A1:A{TriptypeList.Count}");
-
-                //hiddenRow = 1;
-                //foreach (var shifttype in ShiftTypeList.OrderByDescending(x => x.Id))
-                //{
-                //    hiddenShiftTypeSheet.Cell(hiddenRow++, 1).Value = shifttype.TripName;
-                //}
-                //var ShiftTypeRange = hiddenShiftTypeSheet.Range($"A1:A{ShiftTypeList.Count}");
-
-                //hiddenRow = 1;
-                //foreach (var pickuptime in PickupTimeList.OrderByDescending(x => x.Id))
-                //{
-                //    hiddenPickuptimeSheet.Cell(hiddenRow++, 1).Value = pickuptime.ShiftTime;
-                //}
-                //var PickuptimeRange = hiddenPickuptimeSheet.Range($"A1:A{PickupTimeList.Count}");
-
-                //hiddenRow = 1;
-                //foreach (var droptime in DropTimeList.OrderByDescending(x => x.Id))
-                //{
-                //    hiddenDroptimeSheet.Cell(hiddenRow++, 1).Value = droptime.ShiftTime;
-                //}
-                //var DroptimeRange = hiddenDroptimeSheet.Range($"A1:A{DropTimeList.Count}");
-
-                //// Apply dropdown validations for all rows with dummy data
-                //int rowCount = dt.Rows.Count + 1; // Including header row
-                //for (int row = 2; row <= rowCount; row++)
-                //{
-                //    // Company Dropdown
-                //    var companyValidation = worksheet.Cell(row, 2).DataValidation;
-                //    companyValidation.List(companyRange);
-                //    companyValidation.IgnoreBlanks = true;
-                //    companyValidation.InCellDropdown = true;
-
-                //    // TripType Dropdown
-                //    var tripTypeValidation = worksheet.Cell(row, 5).DataValidation;
-                //    tripTypeValidation.List(TripTypeRange);
-                //    tripTypeValidation.IgnoreBlanks = true;
-                //    tripTypeValidation.InCellDropdown = true;
-
-                //    // ShiftType Dropdown
-                //    var shiftTypeValidation = worksheet.Cell(row, 6).DataValidation;
-                //    shiftTypeValidation.List(ShiftTypeRange);
-                //    shiftTypeValidation.IgnoreBlanks = true;
-                //    shiftTypeValidation.InCellDropdown = true;
-
-                //    // PickupTime Dropdown
-                //    var pickupTimeValidation = worksheet.Cell(row, 7).DataValidation;
-                //    pickupTimeValidation.List(PickuptimeRange);
-                //    pickupTimeValidation.IgnoreBlanks = true;
-                //    pickupTimeValidation.InCellDropdown = true;
-
-                //    // DropTime Dropdown
-                //    var dropTimeValidation = worksheet.Cell(row, 8).DataValidation;
-                //    dropTimeValidation.List(DroptimeRange);
-                //    dropTimeValidation.IgnoreBlanks = true;
-                //    dropTimeValidation.InCellDropdown = true;
-                //}
-
-                // Set response for Excel download
                 using (var stream = new System.IO.MemoryStream())
                 {
                     workbook.SaveAs(stream);
@@ -696,7 +596,7 @@ namespace VardaanCab.Controllers
                                        ).ToList();
                 ViewBag.VehicleNumItems = (from c in ent.Cabs
                                            join dl in ent.DriverLoginHistories on c.VehicleNumber equals dl.VehicleNumber
-                                           where dl.IsActive == true && c.IsLogin==true
+                                           where dl.IsActive == true && c.IsLogin == true
                                            orderby dl.Id descending
                                            select new SelectListItem
                                            {
@@ -705,14 +605,14 @@ namespace VardaanCab.Controllers
                                            }
                                        ).ToList();
                 ViewBag.DeviceIdItems = (from di in ent.DriverDeviceIds
-                                           join dl in ent.DriverLoginHistories on di.Driver_Id equals dl.DriverId
-                                           where dl.IsActive == true
-                                           orderby dl.Id descending
-                                           select new SelectListItem
-                                           {
-                                               Text = di.Id.ToString(),
-                                               Value = di.Id.ToString()
-                                           }
+                                         join dl in ent.DriverLoginHistories on di.Driver_Id equals dl.DriverId
+                                         where dl.IsActive == true
+                                         orderby dl.Id descending
+                                         select new SelectListItem
+                                         {
+                                             Text = di.Id.ToString(),
+                                             Value = di.Id.ToString()
+                                         }
                                        ).ToList();
                 ViewBag.EscortItems = ent.Escorts.Where(x => x.IsActive == true).Select(x => new SelectListItem
                 {
@@ -760,8 +660,6 @@ namespace VardaanCab.Controllers
         .ToList(),
     "Id",
     "DisplayName");
-
-                //model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).OrderByDescending(a => a.Id).ToList(), "Id", "OrgName");
                 model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
                 model.ShiftTypes = new SelectList(ent.TripMasters.Where(x => x.Id == 1).ToList(), "Id", "TripName");
                 model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
@@ -783,33 +681,13 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                // Initialize dropdowns for the UI
                 InitializeDropdowns(model);
-
                 if (model.StartDate != null && model.EndDate != null)
                 {
-                    // Get the list of employees who match the criteria
                     var employeeRequestList = GetEmployeeRequests(model);
-                    //var employeeRequestList1 = ent.EmployeeRequests.Where(e => e.IsRouting == false && e.CompanyId == model.Company_Id &&
-                    //                      e.TripType == model.Trip_Type &&
-                    //                      model.PickupShiftid.Contains((int)e.PickupShiftTimeId) &&
-                    //                      model.DropShiftid.Contains((int)e.DropShiftTimeId) &&
-                    //                      e.StartRequestDate <= model.StartDate &&
-                    //                      e.EndRequestDate >= model.EndDate).ToList();
                     var employeeRequestList1 = GetEmployeeRequestsUsingADO(model);
-                    if (employeeRequestList1.Count() > 0)
-                    {
-                        foreach (var empreqs in employeeRequestList1)
-                        {
-                            empreqs.IsRouting = true;
-                        }
-                        ent.SaveChanges();
-                    }
                     if (employeeRequestList.Count > 0)
                     {
-                        //string combinedString = string.Join(",", model.PickupShiftid);
-                        //string DropcombinedString = string.Join(",", model.DropShiftid);
-                        //string VehicleTypecombinedString = string.Join(",", model.Vehicle_Type);
                         string combinedString = model.PickupShiftid != null ? string.Join(",", model.PickupShiftid) : string.Empty;
                         string DropcombinedString = model.DropShiftid != null ? string.Join(",", model.DropShiftid) : string.Empty;
                         string VehicleTypecombinedString = model.Vehicle_Type != null ? string.Join(",", model.Vehicle_Type) : string.Empty;
@@ -828,105 +706,12 @@ namespace VardaanCab.Controllers
                         };
                         ent.Routings.Add(data);
                         ent.SaveChanges();
-                        // Group employees by Zone and Area categories
                         List<EmployeeGroup> employeeGroups = GroupEmployeesByZoneAndArea(employeeRequestList);
-
-                        //foreach (var item in employeeGroups)
-                        //{
-                        //    AllRoute allRoute = new AllRoute()
-                        //    {
-                        //        Routing_Id = ent.Routings.OrderByDescending(x => x.ID).FirstOrDefault().ID,
-                        //        RouteId = Convert.ToInt64(item.Group),
-                        //        Employee_Id = item.Employee_Id,
-                        //        RouteNameId = ent.CompanyZones.Where(x => x.CompanyZone1 == item.ZoneWise).FirstOrDefault().Id,
-                        //        AvailableSeats = item.missingEmployees,
-                        //        CabNumber = item.CabNumber
-                        //    };
-                        //    ent.AllRoutes.Add(allRoute);
-                        //    ent.SaveChanges();
-                        //    var Triptypename = ent.TripTypes.Where(x => x.Id == model.Trip_Type).First().TripTypeName;
-                        //    ///Store  two time entries for both trip type and then Pickup and Drop single time 
-                        //    if (Triptypename.ToLower() == "both")
-                        //    {
-                        //        for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
-                        //        {
-                        //            PickupAndDropLocationData picdata = new PickupAndDropLocationData()
-                        //            {
-                        //                AllRoute_Id = allRoute.Id,
-                        //                Employee_Id = item.Employee_Id,
-                        //                RouteDate = date,
-                        //                CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault().Id,
-                        //                TripTypeid = model.Trip_Type,
-                        //                PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().PickupShiftTimeId,
-                        //                DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().DropShiftTimeId,
-                        //                CompanyId = model.Company_Id,
-                        //                PickupLocation = ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).First().EmployeeCurrentAddress,
-                        //                DropLocation = ent.Customers.Where(x => x.Id == model.Company_Id).First().GeoLocation,
-                        //                DriverId = 0,
-                        //                CreatedDate = DateTime.Now,
-                        //                IsActive = true
-                        //            };
-                        //            ent.PickupAndDropLocationDatas.Add(picdata);
-                        //            ent.SaveChanges();
-                        //            PickupAndDropLocationData dropdata2 = new PickupAndDropLocationData()
-                        //            {
-                        //                AllRoute_Id = allRoute.Id,
-                        //                RouteDate = date,
-                        //                Employee_Id = item.Employee_Id,
-                        //                CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault().Id,
-                        //                TripTypeid = model.Trip_Type,
-                        //                PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().PickupShiftTimeId,
-                        //                DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().DropShiftTimeId,
-                        //                CompanyId = model.Company_Id,
-                        //                DropLocation = ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).First().EmployeeCurrentAddress,
-                        //                PickupLocation = ent.Customers.Where(x => x.Id == model.Company_Id).First().GeoLocation,
-                        //                DriverId = 0,
-                        //                CreatedDate = DateTime.Now,
-                        //                IsActive = true
-                        //            };
-                        //            ent.PickupAndDropLocationDatas.Add(dropdata2);
-                        //            ent.SaveChanges();
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
-                        //        {
-                        //            PickupAndDropLocationData picdropdata = new PickupAndDropLocationData()
-                        //            {
-                        //                AllRoute_Id = allRoute.Id,
-                        //                RouteDate = date,
-                        //                Employee_Id = item.Employee_Id,
-                        //                CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault()?.Id ?? 0, // Handle null cases
-                        //                TripTypeid = model.Trip_Type,
-                        //                PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault()?.PickupShiftTimeId ?? 0,
-                        //                DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault()?.DropShiftTimeId ?? 0,
-                        //                CompanyId = model.Company_Id,
-                        //                PickupLocation = Triptypename == "pickup"
-                        //                    ? ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).FirstOrDefault()?.EmployeeCurrentAddress
-                        //                    : ent.Customers.Where(x => x.Id == model.Company_Id).FirstOrDefault()?.GeoLocation,
-                        //                DropLocation = Triptypename == "pickup"
-                        //                    ? ent.Customers.Where(x => x.Id == model.Company_Id).FirstOrDefault()?.GeoLocation
-                        //                    : ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).FirstOrDefault()?.EmployeeCurrentAddress,
-                        //                DriverId = 0,
-                        //                CreatedDate = DateTime.Now,
-                        //                IsActive = true
-                        //            };
-
-                        //            ent.PickupAndDropLocationDatas.Add(picdropdata);
-                        //            ent.SaveChanges();
-                        //        }
-                        //    }
-                        //}
                         Thread thread = new Thread(() => BackgroudJob(employeeGroups, model, employeeRequestList1));
                         thread.IsBackground = true;
                         thread.Start();
-                        // Convert grouped data into dictionary format for serialization
                         var groupedData = employeeGroups.GroupBy(x => x.Group);
                         var routeDictionary = groupedData.ToDictionary(group => group.Key, group => group.ToList());
-
-
-                        // Serialize route information for further processing
                         var jsonRoutes = new JavaScriptSerializer().Serialize(routeDictionary);
                         Session["AllRoutes"] = jsonRoutes;
 
@@ -944,7 +729,7 @@ namespace VardaanCab.Controllers
             }
         }
 
-        public void BackgroudJob(List<EmployeeGroup> employeeGroups,RoutingDTO model,List<EmployeeRequest> employeeRequestList1)
+        public void BackgroudJob(List<EmployeeGroup> employeeGroups, RoutingDTO model, List<EmployeeRequest> employeeRequestList1)
         {
             try
             {
@@ -1055,7 +840,7 @@ namespace VardaanCab.Controllers
 
                 throw new Exception("Server Error : " + ex.Message);
             }
-        } 
+        }
 
         public List<EmployeeRequest> GetEmployeeRequestsUsingADO(RoutingDTO model)
         {
@@ -1069,60 +854,94 @@ namespace VardaanCab.Controllers
             {
                 connection.Open();
 
-                // Base SQL Query with parameterized IN clauses
-                string sqlQuery = @"
-            SELECT EmployeeId, CompanyId, TripType, PickupShiftTimeId, DropShiftTimeId, StartRequestDate, EndRequestDate, IsRouting
-            FROM EmployeeRequest 
-            WHERE 
-                IsRouting = 0
-                AND CompanyId = @CompanyId
-                AND TripType = @TripType
-                AND (@PickupShiftIds IS NULL OR PickupShiftTimeId IN (SELECT value FROM SplitString(@PickupShiftIds, ',')))
-                AND (@DropShiftIds IS NULL OR DropShiftTimeId IN (SELECT value FROM SplitString(@DropShiftIds, ',')))
-                AND StartRequestDate <= @StartDate
-                AND EndRequestDate >= @EndDate";
-
-                using (var command = new SqlCommand(sqlQuery, connection))
+                // Start Transaction
+                using (var transaction = connection.BeginTransaction())
                 {
-                    // Adding parameters safely
-                    command.Parameters.AddWithValue("@CompanyId", model.Company_Id);
-                    command.Parameters.AddWithValue("@TripType", model.Trip_Type);
-                    command.Parameters.AddWithValue("@StartDate", model.StartDate);
-                    command.Parameters.AddWithValue("@EndDate", model.EndDate);
-
-                    // Handling NULL values for shift IDs
-                    command.Parameters.AddWithValue("@PickupShiftIds",
-                        (model.PickupShiftid != null && model.PickupShiftid.Any())
-                        ? string.Join(",", model.PickupShiftid)
-                        : (object)DBNull.Value);
-
-                    command.Parameters.AddWithValue("@DropShiftIds",
-                        (model.DropShiftid != null && model.DropShiftid.Any())
-                        ? string.Join(",", model.DropShiftid)
-                        : (object)DBNull.Value);
-
-                    using (var reader = command.ExecuteReader())
+                    try
                     {
-                        while (reader.Read())
+                        // Base SQL Query with parameterized IN clauses
+                        string sqlQuery = @"
+                SELECT Id, EmployeeId, CompanyId, TripType, PickupShiftTimeId, DropShiftTimeId, StartRequestDate, EndRequestDate, IsRouting
+                FROM EmployeeRequest 
+                WHERE 
+                    IsRouting = 0
+                    AND CompanyId = @CompanyId
+                    AND TripType = @TripType
+                    AND (@PickupShiftIds IS NULL OR PickupShiftTimeId IN (SELECT value FROM SplitString(@PickupShiftIds, ',')))
+                    AND (@DropShiftIds IS NULL OR DropShiftTimeId IN (SELECT value FROM SplitString(@DropShiftIds, ',')))
+                    AND StartRequestDate <= @StartDate
+                    AND EndRequestDate >= @EndDate";
+
+                        using (var command = new SqlCommand(sqlQuery, connection, transaction))
                         {
-                            employeeRequests.Add(new EmployeeRequest
+                            // Adding parameters safely
+                            command.Parameters.AddWithValue("@CompanyId", model.Company_Id);
+                            command.Parameters.AddWithValue("@TripType", model.Trip_Type);
+                            command.Parameters.AddWithValue("@StartDate", model.StartDate);
+                            command.Parameters.AddWithValue("@EndDate", model.EndDate);
+
+                            // Handling NULL values for shift IDs
+                            command.Parameters.AddWithValue("@PickupShiftIds",
+                                (model.PickupShiftid != null && model.PickupShiftid.Any())
+                                ? string.Join(",", model.PickupShiftid)
+                                : (object)DBNull.Value);
+
+                            command.Parameters.AddWithValue("@DropShiftIds",
+                                (model.DropShiftid != null && model.DropShiftid.Any())
+                                ? string.Join(",", model.DropShiftid)
+                                : (object)DBNull.Value);
+
+                            using (var reader = command.ExecuteReader())
                             {
-                                EmployeeId = reader.GetString(0),
-                                CompanyId = reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
-                                TripType = reader.GetInt32(2),
-                                PickupShiftTimeId = reader.IsDBNull(3) ? (int?)null : reader.GetInt32(3),
-                                DropShiftTimeId = reader.IsDBNull(4) ? (int?)null : reader.GetInt32(4),
-                                StartRequestDate = reader.GetDateTime(5),
-                                EndRequestDate = reader.GetDateTime(6),
-                                IsRouting = reader.GetBoolean(7)
-                            });
+                                while (reader.Read())
+                                {
+                                    employeeRequests.Add(new EmployeeRequest
+                                    {
+                                        Id = reader.GetInt32(0),
+                                        EmployeeId = reader.GetString(1),
+                                        CompanyId = reader.IsDBNull(2) ? 0 : reader.GetInt32(2),
+                                        TripType = reader.GetInt32(3),
+                                        PickupShiftTimeId = reader.IsDBNull(4) ? (int?)null : reader.GetInt32(4),
+                                        DropShiftTimeId = reader.IsDBNull(5) ? (int?)null : reader.GetInt32(5),
+                                        StartRequestDate = reader.GetDateTime(6),
+                                        EndRequestDate = reader.GetDateTime(7),
+                                        IsRouting = reader.GetBoolean(8)
+                                    });
+                                }
+                            }
                         }
+
+                        // Bulk update IsRouting field if any records exist
+                        if (employeeRequests.Any())
+                        {
+                            string sqlUpdateQuery = @"
+                    UPDATE EmployeeRequest 
+                    SET IsRouting = 1
+                    WHERE Id IN (SELECT value FROM SplitString(@Ids, ','))";
+
+                            using (var updateCommand = new SqlCommand(sqlUpdateQuery, connection, transaction))
+                            {
+                                updateCommand.Parameters.AddWithValue("@Ids",
+                                    string.Join(",", employeeRequests.Select(e => e.Id)));
+
+                                int rowsAffected = updateCommand.ExecuteNonQuery();
+                                Console.WriteLine($"{rowsAffected} records updated successfully.");
+                            }
+                        }
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        Console.WriteLine("Error updating IsRouting: " + ex.Message);
                     }
                 }
             }
 
             return employeeRequests;
         }
+
+
         private void InitializeDropdowns(RoutingDTO model)
         {
             model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).OrderByDescending(a => a.Id)
@@ -1130,8 +949,7 @@ namespace VardaanCab.Controllers
         {
             Id = a.Id,
             DisplayName = a.CompanyName + " (" + a.OrgName + ")"
-        }).ToList(),"Id","DisplayName");
-            //model.Customers = new SelectList(ent.Customers.Where(a => a.IsActive).OrderByDescending(a => a.Id).ToList(), "Id", "OrgName");
+        }).ToList(), "Id", "DisplayName");
             model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
             model.ShiftTypes = new SelectList(ent.TripMasters.Where(x => x.Id == 1).ToList(), "Id", "TripName");
             model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
@@ -1139,22 +957,6 @@ namespace VardaanCab.Controllers
             model.Zones = new SelectList(ent.CompanyZones.ToList(), "Id", "CompanyZone1");
             model.vehicleCapacity = new SelectList(ent.VehicleCapacities.ToList(), "Id", "Capacity");
         }
-
-        //private List<EmployeeGroup> GetEmployeeRequests(RoutingDTO model)
-        //{
-        //    var employeeRequests = (from empr in ent.EmployeeRequests
-        //                            join emp in ent.Employees on empr.EmployeeId equals emp.Employee_Id
-        //                            where empr.CompanyId == model.Company_Id &&
-        //                                  empr.TripType == model.Trip_Type &&
-        //                                 model.PickupShiftid.Contains((int)empr.PickupShiftTimeId) &&
-        //                                 model.DropShiftid.Contains((int)empr.DropShiftTimeId) &&
-        //                                  empr.StartRequestDate <= model.StartDate &&
-        //                                  empr.EndRequestDate >= model.EndDate
-        //                            where empr.IsRouting == false
-        //                            select emp).ToList();
-
-        //    return TransformData(employeeRequests);
-        //}
         public List<EmployeeGroup> GetEmployeeRequests(RoutingDTO model)
         {
             var employees = new List<Employee>();
@@ -1347,12 +1149,12 @@ namespace VardaanCab.Controllers
         public ActionResult GetDriverDeviceIdByDriver(int driverId)
         {
             var device = (from di in ent.DriverDeviceIds
-                           join dl in ent.DriverLoginHistories on di.Driver_Id equals dl.DriverId
-                           where dl.IsActive == true && dl.DriverId == driverId
-                           select new
-                           {
-                               Id = di.Id
-                           }
+                          join dl in ent.DriverLoginHistories on di.Driver_Id equals dl.DriverId
+                          where dl.IsActive == true && dl.DriverId == driverId
+                          select new
+                          {
+                              Id = di.Id
+                          }
                            ).FirstOrDefault();
             if (device != null)
             {
@@ -1446,9 +1248,9 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                var model=new EscortDTO();
+                var model = new EscortDTO();
                 model.EscortList = await _ets.GetChechinEscort();
-                if(model.EscortList != null)
+                if (model.EscortList != null)
                 {
                     ViewBag.Total = model.EscortList.Count();
                 }
@@ -1505,8 +1307,8 @@ namespace VardaanCab.Controllers
         {
             try
             {
-                var model=new VehicleInspectionDTO();
-                model.Companies = new SelectList(ent.Vendors.Where(c=>c.IsActive).ToList(), "Id", "CompanyName");
+                var model = new VehicleInspectionDTO();
+                model.Companies = new SelectList(ent.Vendors.Where(c => c.IsActive).ToList(), "Id", "CompanyName");
                 model.PickUpshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 1).ToList(), "Id", "ShiftTime");
                 model.DropshiftTimes = new SelectList(ent.ShiftMasters.Where(x => x.TripTypeId == 2).ToList(), "Id", "ShiftTime");
                 model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
@@ -1526,24 +1328,6 @@ namespace VardaanCab.Controllers
             {
                 var companyList = new List<Customer>();
                 int userId = int.Parse(User.Identity.Name);
-
-                //if (Session["IsAuth"] != null && Convert.ToBoolean(Session["IsAuth"]) == false)
-                //{
-                //    companyList = ent.Customers.Where(x => x.IsActive == true).ToList();
-                //}
-                //else
-                //{
-                //    var empinfo = ent.Employees.FirstOrDefault(e => e.Id == userId);
-
-                //    if (empinfo != null)
-                //    {
-                //        companyList = ent.Customers.Where(x => x.IsActive == true && x.Id == empinfo.Company_Id).ToList();
-                //    }
-                //    else
-                //    {
-                //        companyList = new List<Customer>();
-                //    }
-                //}
                 string isCreated = await _ets.AddVehicleInspection(model, userId);
                 if (isCreated != null)
                 {
@@ -1562,7 +1346,7 @@ namespace VardaanCab.Controllers
                 .Where(a => a.IsActive
                     && a.Vendor_Id == vendorId
                     && a.VehicleNumber.ToLower().Contains(term.ToLower()))
-                .Select(a => new { a.Id, a.VehicleNumber }) 
+                .Select(a => new { a.Id, a.VehicleNumber })
                 .ToList();
 
             return Json(data, JsonRequestBehavior.AllowGet);
@@ -1572,8 +1356,8 @@ namespace VardaanCab.Controllers
         {
             var vehicle = (from c in ent.Cabs
                            join vm in ent.VehicleModels on c.VehicleModel_Id equals vm.Id
-                           where c.Id == vehicleId   
-                           select new { vm.ModelName })  
+                           where c.Id == vehicleId
+                           select new { vm.ModelName })
                            .FirstOrDefault();
 
             if (vehicle != null)
@@ -1608,14 +1392,9 @@ namespace VardaanCab.Controllers
             try
             {
                 var model = new RoutingDTO();
-                model.Customers = new SelectList(ent.Customers.Where(c => c.IsActive).OrderByDescending(c=>c.Id).ToList(), "Id", "OrgName");
+                model.Customers = new SelectList(ent.Customers.Where(c => c.IsActive).OrderByDescending(c => c.Id).ToList(), "Id", "OrgName");
                 model.RouteStatuses = new SelectList(ent.RouteStatus.ToList(), "Id", "StatusName");
-                model.TripTypes = new SelectList(ent.TripTypes.Where(x=>x.TripMasterId==1).ToList(), "Id", "TripTypeName");
-                //ViewBag.tt = ent.TripTypes.Where(x => x.TripMasterId == 1).Select(x => new SelectListItem
-                //{
-                //    Text = x.TripTypeName,
-                //    Value = x.Id.ToString()
-                //}).ToList();
+                model.TripTypes = new SelectList(ent.TripTypes.Where(x => x.TripMasterId == 1).ToList(), "Id", "TripTypeName");
                 return View(model);
             }
             catch (Exception)
@@ -1627,7 +1406,7 @@ namespace VardaanCab.Controllers
         public async Task<ActionResult> RoutingAndCabAllocationData(string term)
         {
             var routingList = await _ets.GetRoutingListByTerms(term);
-            
+
             if (routingList == null || !routingList.routingcaballocation.Any())
             {
                 return Json(new { success = false, message = "No data found" }, JsonRequestBehavior.AllowGet);
