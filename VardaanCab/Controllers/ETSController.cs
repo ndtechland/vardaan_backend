@@ -12,6 +12,7 @@ using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -776,7 +777,7 @@ namespace VardaanCab.Controllers
                 throw new Exception("Server Error + " + ex.Message);
             }
         }
-        
+
         [HttpPost]
         public ActionResult Routing(RoutingDTO model)
         {
@@ -829,102 +830,101 @@ namespace VardaanCab.Controllers
                         ent.SaveChanges();
                         // Group employees by Zone and Area categories
                         List<EmployeeGroup> employeeGroups = GroupEmployeesByZoneAndArea(employeeRequestList);
-                        foreach (var item in employeeGroups)
-                        {
-                            AllRoute allRoute = new AllRoute()
-                            {
-                                Routing_Id = ent.Routings.OrderByDescending(x => x.ID).FirstOrDefault().ID,
-                                RouteId = Convert.ToInt64(item.Group),
-                                Employee_Id = item.Employee_Id,
-                                RouteNameId = ent.CompanyZones.Where(x => x.CompanyZone1 == item.ZoneWise).FirstOrDefault().Id,
-                                AvailableSeats = item.missingEmployees,
-                                CabNumber = item.CabNumber
-                            };
-                            ent.AllRoutes.Add(allRoute);
-                            ent.SaveChanges();
-                            var Triptypename=ent.TripTypes.Where(x=>x.Id==model.Trip_Type).First().TripTypeName;
-                            ///Store  two time entries for both trip type and then Pickup and Drop single time 
-                            if (Triptypename.ToLower()=="both")
-                            {
-                                for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
-                                {
-                                    PickupAndDropLocationData picdata = new PickupAndDropLocationData()
-                                    {
-                                        AllRoute_Id = allRoute.Id,
-                                        Employee_Id = item.Employee_Id,
-                                        RouteDate = date,
-                                        CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault().Id,
-                                        TripTypeid = model.Trip_Type,
-                                        PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().PickupShiftTimeId,
-                                        DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().DropShiftTimeId,
-                                        CompanyId = model.Company_Id,
-                                        PickupLocation = ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).First().EmployeeCurrentAddress,
-                                        DropLocation = ent.Customers.Where(x => x.Id == model.Company_Id).First().GeoLocation,
-                                        DriverId = 0,
-                                        CreatedDate = DateTime.Now,
-                                        IsActive = true
-                                    };
-                                    ent.PickupAndDropLocationDatas.Add(picdata);
-                                    ent.SaveChanges();
-                                    PickupAndDropLocationData dropdata2 = new PickupAndDropLocationData()
-                                    {
-                                        AllRoute_Id = allRoute.Id,
-                                        RouteDate = date,
-                                        Employee_Id = item.Employee_Id,
-                                        CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault().Id,
-                                        TripTypeid = model.Trip_Type,
-                                        PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().PickupShiftTimeId,
-                                        DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().DropShiftTimeId,
-                                        CompanyId = model.Company_Id,
-                                        DropLocation = ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).First().EmployeeCurrentAddress,
-                                        PickupLocation = ent.Customers.Where(x => x.Id == model.Company_Id).First().GeoLocation,
-                                        DriverId = 0,
-                                        CreatedDate = DateTime.Now,
-                                        IsActive = true
-                                    };
-                                    ent.PickupAndDropLocationDatas.Add(dropdata2);
-                                    ent.SaveChanges();
-                                }
-                            }
-                            else
-                            {
-                                for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
-                                {
-                                    PickupAndDropLocationData picdropdata = new PickupAndDropLocationData()
-                                    {
-                                        AllRoute_Id = allRoute.Id,
-                                        RouteDate = date,
-                                        Employee_Id = item.Employee_Id,
-                                        CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault()?.Id ?? 0, // Handle null cases
-                                        TripTypeid = model.Trip_Type,
-                                        PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault()?.PickupShiftTimeId ?? 0,
-                                        DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault()?.DropShiftTimeId ?? 0,
-                                        CompanyId = model.Company_Id,
-                                        PickupLocation = Triptypename == "pickup"
-                                            ? ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).FirstOrDefault()?.EmployeeCurrentAddress
-                                            : ent.Customers.Where(x => x.Id == model.Company_Id).FirstOrDefault()?.GeoLocation,
-                                        DropLocation = Triptypename == "pickup"
-                                            ? ent.Customers.Where(x => x.Id == model.Company_Id).FirstOrDefault()?.GeoLocation
-                                            : ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).FirstOrDefault()?.EmployeeCurrentAddress,
-                                        DriverId = 0,
-                                        CreatedDate = DateTime.Now,
-                                        IsActive = true
-                                    };
 
-                                    ent.PickupAndDropLocationDatas.Add(picdropdata);
-                                    ent.SaveChanges();
-                                }
+                        //foreach (var item in employeeGroups)
+                        //{
+                        //    AllRoute allRoute = new AllRoute()
+                        //    {
+                        //        Routing_Id = ent.Routings.OrderByDescending(x => x.ID).FirstOrDefault().ID,
+                        //        RouteId = Convert.ToInt64(item.Group),
+                        //        Employee_Id = item.Employee_Id,
+                        //        RouteNameId = ent.CompanyZones.Where(x => x.CompanyZone1 == item.ZoneWise).FirstOrDefault().Id,
+                        //        AvailableSeats = item.missingEmployees,
+                        //        CabNumber = item.CabNumber
+                        //    };
+                        //    ent.AllRoutes.Add(allRoute);
+                        //    ent.SaveChanges();
+                        //    var Triptypename = ent.TripTypes.Where(x => x.Id == model.Trip_Type).First().TripTypeName;
+                        //    ///Store  two time entries for both trip type and then Pickup and Drop single time 
+                        //    if (Triptypename.ToLower() == "both")
+                        //    {
+                        //        for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
+                        //        {
+                        //            PickupAndDropLocationData picdata = new PickupAndDropLocationData()
+                        //            {
+                        //                AllRoute_Id = allRoute.Id,
+                        //                Employee_Id = item.Employee_Id,
+                        //                RouteDate = date,
+                        //                CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault().Id,
+                        //                TripTypeid = model.Trip_Type,
+                        //                PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().PickupShiftTimeId,
+                        //                DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().DropShiftTimeId,
+                        //                CompanyId = model.Company_Id,
+                        //                PickupLocation = ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).First().EmployeeCurrentAddress,
+                        //                DropLocation = ent.Customers.Where(x => x.Id == model.Company_Id).First().GeoLocation,
+                        //                DriverId = 0,
+                        //                CreatedDate = DateTime.Now,
+                        //                IsActive = true
+                        //            };
+                        //            ent.PickupAndDropLocationDatas.Add(picdata);
+                        //            ent.SaveChanges();
+                        //            PickupAndDropLocationData dropdata2 = new PickupAndDropLocationData()
+                        //            {
+                        //                AllRoute_Id = allRoute.Id,
+                        //                RouteDate = date,
+                        //                Employee_Id = item.Employee_Id,
+                        //                CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault().Id,
+                        //                TripTypeid = model.Trip_Type,
+                        //                PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().PickupShiftTimeId,
+                        //                DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault().DropShiftTimeId,
+                        //                CompanyId = model.Company_Id,
+                        //                DropLocation = ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).First().EmployeeCurrentAddress,
+                        //                PickupLocation = ent.Customers.Where(x => x.Id == model.Company_Id).First().GeoLocation,
+                        //                DriverId = 0,
+                        //                CreatedDate = DateTime.Now,
+                        //                IsActive = true
+                        //            };
+                        //            ent.PickupAndDropLocationDatas.Add(dropdata2);
+                        //            ent.SaveChanges();
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
+                        //        {
+                        //            PickupAndDropLocationData picdropdata = new PickupAndDropLocationData()
+                        //            {
+                        //                AllRoute_Id = allRoute.Id,
+                        //                RouteDate = date,
+                        //                Employee_Id = item.Employee_Id,
+                        //                CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault()?.Id ?? 0, // Handle null cases
+                        //                TripTypeid = model.Trip_Type,
+                        //                PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault()?.PickupShiftTimeId ?? 0,
+                        //                DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault()?.DropShiftTimeId ?? 0,
+                        //                CompanyId = model.Company_Id,
+                        //                PickupLocation = Triptypename == "pickup"
+                        //                    ? ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).FirstOrDefault()?.EmployeeCurrentAddress
+                        //                    : ent.Customers.Where(x => x.Id == model.Company_Id).FirstOrDefault()?.GeoLocation,
+                        //                DropLocation = Triptypename == "pickup"
+                        //                    ? ent.Customers.Where(x => x.Id == model.Company_Id).FirstOrDefault()?.GeoLocation
+                        //                    : ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).FirstOrDefault()?.EmployeeCurrentAddress,
+                        //                DriverId = 0,
+                        //                CreatedDate = DateTime.Now,
+                        //                IsActive = true
+                        //            };
 
-
-                            }
-
-                        }
-                         
-
+                        //            ent.PickupAndDropLocationDatas.Add(picdropdata);
+                        //            ent.SaveChanges();
+                        //        }
+                        //    }
+                        //}
+                        Thread thread = new Thread(() => BackgroudJob(employeeGroups, model, employeeRequestList1));
+                        thread.IsBackground = true;
+                        thread.Start();
                         // Convert grouped data into dictionary format for serialization
                         var groupedData = employeeGroups.GroupBy(x => x.Group);
                         var routeDictionary = groupedData.ToDictionary(group => group.Key, group => group.ToList());
-                        
+
 
                         // Serialize route information for further processing
                         var jsonRoutes = new JavaScriptSerializer().Serialize(routeDictionary);
@@ -943,6 +943,120 @@ namespace VardaanCab.Controllers
                 throw new Exception("Server Error: " + ex.Message);
             }
         }
+
+        public void BackgroudJob(List<EmployeeGroup> employeeGroups,RoutingDTO model,List<EmployeeRequest> employeeRequestList1)
+        {
+            try
+            {
+                foreach (var item in employeeGroups)
+                {
+                    AllRoute allRoute = new AllRoute()
+                    {
+                        Routing_Id = ent.Routings.OrderByDescending(x => x.ID).FirstOrDefault().ID,
+                        RouteId = Convert.ToInt64(item.Group),
+                        Employee_Id = item.Employee_Id,
+                        RouteNameId = ent.CompanyZones.Where(x => x.CompanyZone1 == item.ZoneWise).FirstOrDefault().Id,
+                        AvailableSeats = item.missingEmployees,
+                        CabNumber = item.CabNumber
+                    };
+                    ent.AllRoutes.Add(allRoute);
+                    ent.SaveChanges();
+                    var Triptypename = ent.TripTypes.Where(x => x.Id == model.Trip_Type).First().TripTypeName;
+                    ///Store  two time entries for both trip type and then Pickup and Drop single time 
+                    if (Triptypename?.ToLower() == "both")
+                    {
+                        var cab = ent.Cabs.FirstOrDefault(x => x.VehicleNumber == item.CabNumber);
+                        var employeeRequest = employeeRequestList1.FirstOrDefault(x => x.EmployeeId == item.Employee_Id);
+                        var employee = ent.Employees.FirstOrDefault(x => x.Employee_Id == item.Employee_Id);
+                        var customer = ent.Customers.FirstOrDefault(x => x.Id == model.Company_Id);
+
+                        if (employee == null || customer == null)
+                        {
+                            // Log missing data and return to avoid inserting incomplete records
+                            return;
+                        }
+
+                        for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
+                        {
+                            var picdata = new PickupAndDropLocationData()
+                            {
+                                AllRoute_Id = allRoute?.Id ?? 0,
+                                Employee_Id = item.Employee_Id,
+                                RouteDate = date,
+                                CabId = cab == null ? 0 : cab?.Id, // Avoid null reference
+                                TripTypeid = ent.TripTypes.Where(x => x.TripTypeName.ToUpper() == "PICKUP" && x.TripMasterId == 1).First().Id,
+                                PickupShiftId = employeeRequest?.PickupShiftTimeId ?? 0,
+                                DropShiftId = employeeRequest?.DropShiftTimeId ?? 0,
+                                CompanyId = model.Company_Id,
+                                PickupLocation = employee?.EmployeeCurrentAddress ?? "Unknown",
+                                DropLocation = customer?.GeoLocation ?? "Unknown",
+                                DriverId = 0,
+                                CreatedDate = DateTime.Now,
+                                IsActive = true
+                            };
+
+                            var dropdata2 = new PickupAndDropLocationData()
+                            {
+                                AllRoute_Id = allRoute?.Id ?? 0,
+                                Employee_Id = item.Employee_Id,
+                                RouteDate = date,
+                                CabId = cab == null ? 0 : cab?.Id,
+                                TripTypeid = ent.TripTypes.Where(x => x.TripTypeName.ToUpper() == "DROP" && x.TripMasterId == 1).First().Id,
+                                PickupShiftId = employeeRequest?.PickupShiftTimeId ?? 0,
+                                DropShiftId = employeeRequest?.DropShiftTimeId ?? 0,
+                                CompanyId = model.Company_Id,
+                                PickupLocation = customer?.GeoLocation ?? "Unknown", // Swapped for drop trip
+                                DropLocation = employee?.EmployeeCurrentAddress ?? "Unknown",
+                                DriverId = 0,
+                                CreatedDate = DateTime.Now,
+                                IsActive = true
+                            };
+
+                            ent.PickupAndDropLocationDatas.Add(picdata);
+                            ent.PickupAndDropLocationDatas.Add(dropdata2);
+                            ent.SaveChanges();
+                        }
+
+                        //ent.SaveChanges(); // Save once per iteration (better performance)
+                    }
+                    else
+                    {
+                        for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
+                        {
+                            PickupAndDropLocationData picdropdata = new PickupAndDropLocationData()
+                            {
+                                AllRoute_Id = allRoute.Id,
+                                RouteDate = date,
+                                Employee_Id = item.Employee_Id,
+                                CabId = ent.Cabs.Where(x => x.VehicleNumber == item.CabNumber).FirstOrDefault()?.Id ?? 0, // Handle null cases
+                                TripTypeid = model.Trip_Type,
+                                PickupShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault()?.PickupShiftTimeId ?? 0,
+                                DropShiftId = employeeRequestList1.Where(x => x.EmployeeId == item.Employee_Id).FirstOrDefault()?.DropShiftTimeId ?? 0,
+                                CompanyId = model.Company_Id,
+                                PickupLocation = Triptypename == "pickup"
+                                    ? ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).FirstOrDefault()?.EmployeeCurrentAddress
+                                    : ent.Customers.Where(x => x.Id == model.Company_Id).FirstOrDefault()?.GeoLocation,
+                                DropLocation = Triptypename == "pickup"
+                                    ? ent.Customers.Where(x => x.Id == model.Company_Id).FirstOrDefault()?.GeoLocation
+                                    : ent.Employees.Where(x => x.Employee_Id == item.Employee_Id).FirstOrDefault()?.EmployeeCurrentAddress,
+                                DriverId = 0,
+                                CreatedDate = DateTime.Now,
+                                IsActive = true
+                            };
+
+                            ent.PickupAndDropLocationDatas.Add(picdropdata);
+                            ent.SaveChanges();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Server Error : " + ex.Message);
+            }
+        } 
+
         public List<EmployeeRequest> GetEmployeeRequestsUsingADO(RoutingDTO model)
         {
             var employeeRequests = new List<EmployeeRequest>();
