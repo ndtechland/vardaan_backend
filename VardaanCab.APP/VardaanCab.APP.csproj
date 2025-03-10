@@ -375,6 +375,7 @@
     <Compile Include="Utilities\CommonOperations.cs" />
     <Compile Include="Utilities\FileOperation.cs" />
     <Compile Include="Utilities\Response.cs" />
+    <Compile Include="Utilities\ScheduledTaskService.cs" />
     <Compile Include="Utilities\SmsOperation.cs" />
   </ItemGroup>
   <ItemGroup>

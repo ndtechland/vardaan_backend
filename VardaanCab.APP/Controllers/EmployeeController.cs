@@ -21,6 +21,7 @@ namespace VardaanCab.APP.Controllers
     public class EmployeeController : ApiController
     {
         Vardaan_AdminEntities ent=new Vardaan_AdminEntities();
+        private readonly CommonOperations _random = new CommonOperations();
         private readonly IEmployee _employee;
         public EmployeeController(IEmployee employee)
         {
@@ -162,6 +163,7 @@ namespace VardaanCab.APP.Controllers
         {
             try
             {
+                UpdateOTP();
                 var response = new Response<LiveCabs>();
                 var data = await _employee.GetLiveCabByEmployeeId(employeeId);
 
@@ -172,6 +174,18 @@ namespace VardaanCab.APP.Controllers
 
                 throw;
             }
+        }
+        public void UpdateOTP()
+        {
+            var today = DateTime.Now.Date;
+            var datainfo = ent.PickupAndDropLocationDatas.Where(x => x.RouteDate == today).ToList();
+
+            foreach (var data in datainfo)
+            {
+                data.OTP = _random.GenerateRandomOTP();
+            }
+
+            ent.SaveChanges();
         }
         [HttpGet]
         [Route("FinishCabBookingHistoryByEmpId")]

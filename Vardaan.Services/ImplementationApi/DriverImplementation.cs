@@ -185,5 +185,29 @@ namespace Vardaan.Services.ImplementationApi
                 throw new Exception("Error fetching routing list", ex);
             }
         }
+        public async Task<bool> AddCabMeterReading(CabReadingDTO model)
+        {
+            try
+            {
+                var data = new CabMeterReading()
+                {
+                    RouteId = model.RouteId,
+                    DriverId = model.DriverId,
+                    MeterReading = model.MeterReading,
+                    MeterReadingImage = model.MeterReadingImage,
+                    Status = model.Status,
+                    IsActive = true,
+                    CreatedDate = DateTime.Now
+                };
+                ent.CabMeterReadings.Add(data);
+                ent.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

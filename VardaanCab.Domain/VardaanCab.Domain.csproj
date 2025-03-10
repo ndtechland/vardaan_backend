@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="DTOAPI\AdminLoginDTO.cs" />
     <Compile Include="DTOAPI\AvailableDriverDTO.cs" />
+    <Compile Include="DTOAPI\CabReadingDTO.cs" />
     <Compile Include="DTOAPI\ChangePasswordDTO.cs" />
     <Compile Include="DTOAPI\DriverProfileDTO.cs" />
     <Compile Include="DTOAPI\EmployeeBookingDTO.cs" />

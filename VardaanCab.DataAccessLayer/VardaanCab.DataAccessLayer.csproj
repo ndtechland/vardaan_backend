@@ -83,6 +83,9 @@
     <Compile Include="DataLayer\CabCategory.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataLayer\CabMeterReading.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer\Category.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
