@@ -126,8 +126,9 @@ namespace Vardaan.Services.ImplementationApi
                                     EmployeeName = reader.GetString(2),
                                     CompanyName = reader.GetString(3),
                                     TripTypeName = reader.GetString(4),
-                                    Location = reader.IsDBNull(5) ? null : reader.GetString(5),
-                                    ShiftTime = reader.IsDBNull(6) ? null : reader.GetString(6)
+                                    PickupLocation = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                    DropLocation = reader.IsDBNull(6) ? null : reader.GetString(6),
+                                    ShiftTime = reader.IsDBNull(7) ? null : reader.GetString(7)
                                 });
                             }
 

@@ -401,8 +401,6 @@ namespace Vardaan.Services.Implementation
         //        throw new Exception("Error fetching routing list", ex);
         //    }
         //}
-
-
         public async Task<RoutingCabAllCounts> GetRoutingListByTerms(string term)
         {
             var results = new RoutingCabAllCounts();
@@ -480,5 +478,80 @@ namespace Vardaan.Services.Implementation
                 throw new Exception("Error fetching routing list", ex);
             }
         }
+        public async Task<RoutingCabAllCounts> GetAdvanceSearchRoutingList(int companyId, DateTime routeDate, int? tripTypeId, int? pickupShiftId/*, int? dropShiftId*/)
+        {
+            var results = new RoutingCabAllCounts();
+            try
+            {
+                var entityConnectionString = ConfigurationManager.ConnectionStrings["Vardaan_AdminEntities"].ConnectionString;
+                var sqlConnectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+
+                using (var sqlConnection = new SqlConnection(sqlConnectionString))
+                {
+                    await sqlConnection.OpenAsync();
+                    using (var command = new SqlCommand("GetAdvanceSearchRoutes", sqlConnection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Add required parameters
+                        command.Parameters.Add(new SqlParameter("@CompanyId", SqlDbType.Int) { Value = companyId });
+                        command.Parameters.Add(new SqlParameter("@RouteDate", SqlDbType.Date) { Value = routeDate });
+                        command.Parameters.Add(new SqlParameter("@TripTypeId", SqlDbType.Int) { Value = tripTypeId });
+                        command.Parameters.Add(new SqlParameter("@PickupShiftId", SqlDbType.Int) { Value = pickupShiftId });
+                        //command.Parameters.Add(new SqlParameter("@DropShiftId", SqlDbType.Int) { Value = dropShiftId });
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            // Read first result set: General Counts
+                            if (await reader.ReadAsync())
+                            {
+                                results.totalzone = reader.GetInt32(0);
+                                results.totalroute = reader.GetInt32(1);
+                                results.totalEmployees = reader.GetInt32(2);
+                                results.totalMaleEmployees = reader.GetInt32(3);
+                                results.totalFemaleEmployees = reader.GetInt32(4);
+                            }
+
+                            // Read second result set: Routing Cab Allocation
+                            if (await reader.NextResultAsync())
+                            {
+                                results.routingcaballocation = new List<RoutingCabAllocation>();
+
+                                while (await reader.ReadAsync())
+                                {
+                                    results.routingcaballocation.Add(new RoutingCabAllocation
+                                    {
+                                        ZoneName = reader.IsDBNull(0) ? null : reader.GetString(0),
+                                        TotalRoutes = reader.GetInt32(1),
+                                        AvailableSeat = reader.GetInt32(2)
+                                    });
+                                }
+                            }
+
+                            // Read third result set: Vehicle Capacity vs. Employees in Cab
+                            if (await reader.NextResultAsync())
+                            {
+                                results.totalVehicleType = new List<Dictionary<string, int>>();
+
+                                while (await reader.ReadAsync())
+                                {
+                                    var vehicleData = new Dictionary<string, int>
+                            {
+                                { reader.GetString(0), reader.GetInt32(1) }
+                            };
+                                    results.totalVehicleType.Add(vehicleData);
+                                }
+                            }
+                        }
+                    }
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching routing list", ex);
+            }
+        }
+
     }
 }

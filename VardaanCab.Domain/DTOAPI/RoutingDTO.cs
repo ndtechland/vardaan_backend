@@ -34,7 +34,8 @@ namespace VardaanCab.Domain.DTOAPI
         public string EmployeeName { get; set; }   
         public string TripTypeName { get; set; }   
         public string CompanyName { get; set; }  
-        public string Location { get; set; }    
+        public string PickupLocation { get; set; }    
+        public string DropLocation { get; set; }    
         public string ShiftTime { get; set; }   
     }
     public class TrackEmployeeLocationModel

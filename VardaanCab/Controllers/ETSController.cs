@@ -1414,6 +1414,19 @@ namespace VardaanCab.Controllers
 
             return Json(routingList, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public async Task<ActionResult> SearchAdvanceRoutingAndCabAllocationData(int companyId, DateTime routeDate, int? tripTypeId, int? pickupShiftId/*, int? dropShiftId*/)
+        {
+            var routingList = await _ets.GetAdvanceSearchRoutingList(companyId, routeDate, (int)tripTypeId, (int)pickupShiftId/*, (int)dropShiftId*/);
+
+            if (routingList == null || !routingList.routingcaballocation.Any())
+            {
+                return Json(new { success = false, message = "No data found" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(routingList, JsonRequestBehavior.AllowGet);
+        }
+
 
     }
 }
