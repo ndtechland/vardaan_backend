@@ -185,7 +185,7 @@
                                                         <option>Route ID</option>
                                                     </select>
                                                     <input type="text" class="form-control" id="searchInput" placeholder="Select Search By Option" disabled oninput="toggleSearchInput()">
-                                                    <button class="btn btn-success searchBtn" id="searchButton" onclick="searchData()" disabled>
+                                                    <button class="btn btn-success searchBtn" id="searchButton" onclick="searchData('normal')" disabled>
                                                         <i class="fa fa-search"></i>
                                                     </button>
                                                 </div>
@@ -261,7 +261,7 @@
                                     </div>
 
                                     <div class="col-md-1 col-sm-4">
-                                        <button class="btn btn-success w-100 searchBtn">Search</button>
+                                        <button class="btn btn-success w-100 searchBtn" onclick="searchData('advance')">Search</button>
                                     </div>
 
                                     <div class="col-md-1 text-center">
@@ -433,17 +433,45 @@
 
     }
 
-    function searchData() {
-        let searchInput = document.getElementById("searchInput").value.trim();
-        if (searchInput === "") {
-            alert("Please enter a search term.");
+    function searchData(type) {
+        let url = '';
+        let data = {};
+
+        if (type === 'normal') {
+            let searchInput = document.getElementById("searchInput").value.trim();
+            if (searchInput === "") {
+                alert("Please enter a search term.");
+                return;
+            }
+            url = '/ETS/RoutingAndCabAllocationData';
+            data = { term: searchInput };
+
+        } else if (type === 'advance') {
+            url = '/ETS/SearchAdvanceRoutingAndCabAllocationData';
+
+            //// Collect advance search parameters dynamically
+            let  Company_Id = document.getElementById("Company_Id").value;
+            let routeDate = document.getElementById("datePicker").value;
+            let tripTypeId = document.getElementById("tripType").value;
+            let pickupShiftId = document.getElementById("Shift_Time").value;
+            //let pickupLocation = document.getElementById("pickupLocation").value.trim();
+            //let dropLocation = document.getElementById("dropLocation").value.trim();
+            //let date = document.getElementById("date").value.trim();
+
+            data = {
+                companyId: Company_Id,
+                routeDate: routeDate,
+                tripTypeId: tripTypeId,
+                pickupShiftId: pickupShiftId
+            };
+        } else {
+            alert("Invalid search type.");
             return;
         }
-
         $.ajax({
-            url: '/ETS/RoutingAndCabAllocationData',
+            url: url,
             type: 'GET',
-            data: { term: searchInput },
+            data: data,
             dataType: 'json',
             success: function (response) {
                 let resultsContainer = $("#searchResults");
@@ -614,6 +642,8 @@
             }
         });
     }
+
+       
 
 </script>
 
