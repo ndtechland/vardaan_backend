@@ -18,7 +18,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Vardaan.Services.IContract;
-using Vardaan.Services.IContractApi;
 using VardaanCab.DataAccessLayer.DataLayer;
 using VardaanCab.Domain.DTO;
 
@@ -1426,7 +1425,51 @@ namespace VardaanCab.Controllers
 
             return Json(routingList, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public async Task<JsonResult> RouteList(int zoneId)
+        {
+            var result = _ets.GetRouteDetailsByZone(zoneId);
 
+          
+            var groupedRoutes = result
+                .GroupBy(r => r.RouteId)
+                .Select(g => new
+                {
+                    RouteId = g.Key,
+                    RouteDetails = g.ToList()
+                })
+                .ToList();
+
+            return Json(groupedRoutes,JsonRequestBehavior.AllowGet);
+        }
+        //[HttpGet]
+        //public async Task<JsonResult> RouteLists(int zoneId)
+        //{
+        //    var routeDetail = _ets.GetRouteDetailsByZone(zoneId); // Fetch from DB or Service
+
+        //    if (routeDetail == null)
+        //        return Json(new { success = false, message = "No details found." });
+
+        //    return Json(new
+        //    {
+        //        DeviceNumber = routeDetail.DeviceNumber,
+        //        DriverName = routeDetail.DriverName,
+        //        VehicleNumber = routeDetail.VehicleNumber,
+        //        AvailableSeats = routeDetail.AvailableSeats,
+        //        Employees = routeDetail.Employees.Select(emp => new
+        //        {
+        //            EmployeeId = emp.EmployeeId,
+        //            EmployeeName = emp.EmployeeName,
+        //            MobileNumber = emp.MobileNumber,
+        //            Gender = emp.Gender,
+        //            CompanyName = emp.CompanyName,
+        //            PickupDropLocation = emp.PickupDropLocation,
+        //            PickupLocation = emp.PickupLocation,
+        //            Status = emp.Status,
+        //            Area = emp.Area
+        //        })
+        //    });
+        //}
 
     }
 }

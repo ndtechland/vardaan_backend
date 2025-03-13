@@ -20,5 +20,6 @@ namespace Vardaan.Services.IContract
         Task<string> AddVehicleInspection(VehicleInspectionDTO model, int userId);
         Task<RoutingCabAllCounts> GetRoutingListByTerms(string term);
         Task<RoutingCabAllCounts> GetAdvanceSearchRoutingList(int companyId, DateTime routeDate, int? tripTypeId, int? pickupShiftId/*, int? dropShiftId*/);
+        List<RouteDetail> GetRouteDetailsByZone(int zoneId);
     }
 }
