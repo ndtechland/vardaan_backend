@@ -201,77 +201,77 @@
                                         </div>
 
                                         <!-- Hidden Row for Employee Search -->
-                                <div class="row search-container align-items-center mt-3" id="employeeSearchRow" style="display: none;">
-                                    <div class="col-md-3 col-sm-4">
-                                        <div class="dropdown">
-                                            <button class="btn btn-success dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                                                Take Action on Routes
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#">Create New Route</a></li>
-                                                <li><a class="dropdown-item" href="#">Upload Route</a></li>
-                                                <li><a class="dropdown-item" href="#">Sears Employee Request</a></li>
-                                                <li><a class="dropdown-item" href="#">Prepare to Download</a></li>
-                                                <li><a class="dropdown-item" href="#">Print All</a></li>
-                                                <li><a class="dropdown-item" href="#">Dummy Route</a></li>
-                                                <li><a class="dropdown-item" href="#">Upload Route to Meru</a></li>
-                                                <li><a class="dropdown-item" href="#">Create Back To Back</a></li>
-                                                <li><a class="dropdown-item" href="#">Manual Back To Back</a></li>
-                                            </ul>
+                                        <div class="row search-container align-items-center mt-3" id="employeeSearchRow" style="display: none;">
+                                            <div class="col-md-3 col-sm-4">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-success dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                                                        Take Action on Routes
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#">Create New Route</a></li>
+                                                        <li><a class="dropdown-item" href="#">Upload Route</a></li>
+                                                        <li><a class="dropdown-item" href="#">Sears Employee Request</a></li>
+                                                        <li><a class="dropdown-item" href="#">Prepare to Download</a></li>
+                                                        <li><a class="dropdown-item" href="#">Print All</a></li>
+                                                        <li><a class="dropdown-item" href="#">Dummy Route</a></li>
+                                                        <li><a class="dropdown-item" href="#">Upload Route to Meru</a></li>
+                                                        <li><a class="dropdown-item" href="#">Create Back To Back</a></li>
+                                                        <li><a class="dropdown-item" href="#">Manual Back To Back</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4">
+                                                @Html.DropDownListFor(a => a.Company_Id, Model.Customers, "Select Company", new { @class = "form-control" })
+
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4">
+                                                <select id="tripType" class="form-control form-control-default waves-effect input input--dropdown js--animations">
+                                                    <option value="">Trip Type</option>
+                                                    <optgroup label="NORMAL">
+                                                        @foreach (var item in Model.TripTypes)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                        @*<option value="1">PICKUP</option>
+                            <option value="2">DROP</option>*@
+                                                    </optgroup>
+                                                    <optgroup label="ADHOC">
+                                                        <option value="PICKUP">PICKUP</option>
+                                                        <option value="DROP">DROP</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4" id="shiftContainer" style="display: none;">
+                                                @Html.DropDownListFor(a => a.Shift_Time, Enumerable.Empty<SelectListItem>(), "Select Shift", new { @class = "form-control", @required = "required" })
+
+                                            </div>
+                                            <div class="col-md-1 col-sm-4" id="timePickerContainer" style="display: none;">
+                                                <input type="time" class="form-control" id="timePicker">
+                                            </div>
+                                            <div class="col-md-1 col-sm-4">
+                                                <input type="date" class="form-control" id="datePicker">
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4">
+                                                @Html.DropDownListFor(a => a.Company_Id, Model.RouteStatuses, "All Routes", new { @class = "form-control" })
+
+                                            </div>
+
+                                            <div class="col-md-1 col-sm-4">
+                                                <button class="btn btn-success w-100 searchBtn" onclick="searchData('advance')">Search</button>
+                                            </div>
+
+                                            <div class="col-md-1 text-center">
+                                                <span class="or-text">OR</span>
+                                            </div>
+
+                                            <div class="col-md-2 col-sm-4">
+                                                <input type="button" class="btn btn-success w-100" onclick="toggleEmployeeSearch()" value="Search Employee" />
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-1 col-sm-4">
-                                        @Html.DropDownListFor(a => a.Company_Id, Model.Customers, "Select Company", new { @class = "form-control" })
-
-                                    </div>
-
-                                    <div class="col-md-1 col-sm-4">
-                                        <select id="tripType" class="form-control form-control-default waves-effect input input--dropdown js--animations">
-                                            <option value="">Trip Type</option>
-                                            <optgroup label="NORMAL">
-                                                @foreach (var item in Model.TripTypes)
-                                                {
-                                                    <option value="@item.Value">@item.Text</option>
-                                                }
-                                                @*<option value="1">PICKUP</option>
-                                                <option value="2">DROP</option>*@
-                                            </optgroup>
-                                            <optgroup label="ADHOC">
-                                                <option value="PICKUP">PICKUP</option>
-                                                <option value="DROP">DROP</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-1 col-sm-4" id="shiftContainer" style="display: none;">
-                                        @Html.DropDownListFor(a => a.Shift_Time, Enumerable.Empty<SelectListItem>(), "Select Shift", new { @class = "form-control", @required = "required" })
-
-                                    </div>
-                                    <div class="col-md-1 col-sm-4" id="timePickerContainer" style="display: none;">
-                                        <input type="time" class="form-control" id="timePicker">
-                                    </div>
-                                    <div class="col-md-1 col-sm-4">
-                                        <input type="date" class="form-control" id="datePicker">
-                                    </div>
-
-                                    <div class="col-md-1 col-sm-4">
-                                        @Html.DropDownListFor(a => a.Company_Id, Model.RouteStatuses, "All Routes", new { @class = "form-control" })
-
-                                    </div>
-
-                                    <div class="col-md-1 col-sm-4">
-                                        <button class="btn btn-success w-100 searchBtn" onclick="searchData('advance')">Search</button>
-                                    </div>
-
-                                    <div class="col-md-1 text-center">
-                                        <span class="or-text">OR</span>
-                                    </div>
-
-                                    <div class="col-md-2 col-sm-4">
-                                        <input type="button" class="btn btn-success w-100" onclick="toggleEmployeeSearch()" value="Search Employee" />
-                                    </div>
-                                </div>
 
                                         <!-- Hidden Section: Route Details & Summary -->
                                         <div id="resultsSection" class="mt-4" style="display: none;">
@@ -279,7 +279,7 @@
                                                 <!-- Route Details -->
                                                 <div class="col-md-6">
                                                     <div id="searchResults"></div>
-                                                  
+
                                                 </div>
 
                                                 <!-- Summary Details -->
@@ -289,12 +289,11 @@
                                                             <strong>📊 Summary Details</strong>
                                                         </div>
                                                         <div id="summerysearchResults"></div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="dt-responsive table-responsive" id="detailList">
                                             <table id="order-table" class="table table-striped table-bordered nowrap">
                                                 <thead class="table-dark">
@@ -307,97 +306,114 @@
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    <!-- Route Row -->
-                                                    <tr>
-                                                        <td>56955</td>
-                                                        <td>24-02-2025</td>
-                                                        <td>19:30</td>
-                                                        <td>4</td>
-                                                        <td>6</td>
-                                                        <td><a href="#" class="btn-view">View</a></td>
-                                                    </tr>
-                                                    <!-- Hidden Details Row -->
-                                                    <tr id="route-56955" class="details-content">
-                                                        <td colspan="6">
-                                                            <div class="route-header">
-                                                                <strong>Device Number:</strong> 761 |
-                                                                <strong>Driver Name:</strong> Narendra Singh Yadav |
-                                                                <strong>Vehicle Number:</strong> HR38AD9592 |
-                                                                <strong>Available Seats:</strong> 3
-                                                            </div>
-                                                            <div class="dt-responsive table-responsive">
-                                                                <table id="order-table" class="table table-striped table-bordered nowrap">
-                                                                    <thead class="table-light">
-                                                                        <tr>
-                                                                            <th>Employee Id</th>
-                                                                            <th>Employee Name</th>
-                                                                            <th>Number</th>
-                                                                            <th>Gender</th>
-                                                                            <th>Company</th>
-                                                                            <th>Pickup/Drop Location</th>
-                                                                            <th>Pickup Location</th>
-                                                                            <th>Status</th>
-                                                                            <th>Area</th>
-                                                                            <th>Pick-up Time</th>
-                                                                            <th>
-                                                                                <input type="checkbox" />No Show
-                                                                                <input type="checkbox" />PickUp Status
-                                                                            </th>
-                                                                            <th>Action</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>9284524195</td>
-                                                                            <td>Sushant Mangaonkar</td>
-                                                                            <td>919284524195</td>
-                                                                            <td>Male</td>
-                                                                            <td>VARDAANSTF</td>
-                                                                            <td>D-228 Block D sector-61 Near Prateek Fedora</td>
-                                                                            <td>PEACE-A 0702, Noida</td>
-                                                                            <td class="text-danger">Yet to confirm</td>
-                                                                            <td>NOIDA SECTOR 15</td>
-                                                                            <td><input type="time" class="form-control"></td>
-                                                                            <td>
-                                                                                <select class="zoneDropDown_serviceMapping floatLeft ng-scope ng-pristine ng-valid">
-                                                                                    <option value="NO">No Show</option>
-                                                                                    <option value="B">PickedUp</option>
-                                                                                    <option value="N" selected="selected">Yet to picked up</option>
-                                                                                    <option value="T">Leave</option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td><button class="btn btn-warning btn-sm">Update</button></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>8755953537</td>
-                                                                            <td>Simran</td>
-                                                                            <td>918755953537</td>
-                                                                            <td>Female</td>
-                                                                            <td>VARDAANSTF</td>
-                                                                            <td>D-228 Block D sector-61 Near Prateek Fedora</td>
-                                                                            <td>Paras Tiera, Noida</td>
-                                                                            <td class="text-danger">Yet to confirm</td>
-                                                                            <td>NOIDA SECTOR 73</td>
-                                                                            <td><input type="time" class="form-control"></td>
-                                                                            <td>
-                                                                                <select class="zoneDropDown_serviceMapping floatLeft ng-scope ng-pristine ng-valid">
-                                                                                    <option value="NO">No Show</option>
-                                                                                    <option value="B">PickedUp</option>
-                                                                                    <option value="N" selected="selected">Yet to picked up</option>
-                                                                                    <option value="T">Leave</option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td><button class="btn btn-warning btn-sm">Update</button></td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                <tbody id="routeTableBody">
+                                                    <!-- Dynamic data will be inserted here -->
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <!--<div class="dt-responsive table-responsive" id="detailList">
+            <table id="order-table" class="table table-striped table-bordered nowrap">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Route ID</th>
+                        <th>Date</th>
+                        <th>Pickup Time</th>
+                        <th>Planned Seats</th>
+                        <th>Actual</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>-->
+                                        <!-- Route Row -->
+                                        <!--<tr>
+            <td>56955</td>
+            <td>24-02-2025</td>
+            <td>19:30</td>
+            <td>4</td>
+            <td>6</td>
+            <td><a href="#" class="btn-view">View</a></td>
+        </tr>-->
+                                        <!-- Hidden Details Row -->
+                                        <!--<tr id="route-56955" class="details-content">
+                        <td colspan="6">
+                            <div class="route-header">
+                                <strong>Device Number:</strong> 761 |
+                                <strong>Driver Name:</strong> Narendra Singh Yadav |
+                                <strong>Vehicle Number:</strong> HR38AD9592 |
+                                <strong>Available Seats:</strong> 3
+                            </div>
+                            <div class="dt-responsive table-responsive">
+                                <table id="order-table" class="table table-striped table-bordered nowrap">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Employee Id</th>
+                                            <th>Employee Name</th>
+                                            <th>Number</th>
+                                            <th>Gender</th>
+                                            <th>Company</th>
+                                            <th>Pickup/Drop Location</th>
+                                            <th>Pickup Location</th>
+                                            <th>Status</th>
+                                            <th>Area</th>
+                                            <th>Pick-up Time</th>
+                                            <th>
+                                                <input type="checkbox" />No Show
+                                                <input type="checkbox" />PickUp Status
+                                            </th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>9284524195</td>
+                                            <td>Sushant Mangaonkar</td>
+                                            <td>919284524195</td>
+                                            <td>Male</td>
+                                            <td>VARDAANSTF</td>
+                                            <td>D-228 Block D sector-61 Near Prateek Fedora</td>
+                                            <td>PEACE-A 0702, Noida</td>
+                                            <td class="text-danger">Yet to confirm</td>
+                                            <td>NOIDA SECTOR 15</td>
+                                            <td><input type="time" class="form-control"></td>
+                                            <td>
+                                                <select class="zoneDropDown_serviceMapping floatLeft ng-scope ng-pristine ng-valid">
+                                                    <option value="NO">No Show</option>
+                                                    <option value="B">PickedUp</option>
+                                                    <option value="N" selected="selected">Yet to picked up</option>
+                                                    <option value="T">Leave</option>
+                                                </select>
+                                            </td>
+                                            <td><button class="btn btn-warning btn-sm">Update</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>8755953537</td>
+                                            <td>Simran</td>
+                                            <td>918755953537</td>
+                                            <td>Female</td>
+                                            <td>VARDAANSTF</td>
+                                            <td>D-228 Block D sector-61 Near Prateek Fedora</td>
+                                            <td>Paras Tiera, Noida</td>
+                                            <td class="text-danger">Yet to confirm</td>
+                                            <td>NOIDA SECTOR 73</td>
+                                            <td><input type="time" class="form-control"></td>
+                                            <td>
+                                                <select class="zoneDropDown_serviceMapping floatLeft ng-scope ng-pristine ng-valid">
+                                                    <option value="NO">No Show</option>
+                                                    <option value="B">PickedUp</option>
+                                                    <option value="N" selected="selected">Yet to picked up</option>
+                                                    <option value="T">Leave</option>
+                                                </select>
+                                            </td>
+                                            <td><button class="btn btn-warning btn-sm">Update</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>-->
                                     }
                                 </div>
                             </div>
@@ -723,19 +739,108 @@
                 })
             })
         });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".viewdetail", function (event) {
+            //var zoneId = $("#zoneDropdown").val();
+            var zoneId = 24
 
-        //$(document).ready(function () {
-        //    var id = $("#tripType").val();
-        //    $.get('/Common/GetShiftTimeByTripType?tripTypeId=' + id, function (r) {
-        //        var dd = $("#Shift_Time");
-        //        dd.empty();
-        //        dd.append('<option value="">Select Shift</option>');
-        //        $.each(r, function (k, v) {
-        //            dd.append('<option value="' + v.Id + '">' + v.ShiftTime + '</option>');
+            $.ajax({
+                url: '/ETS/RouteList?zoneId=' + zoneId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var tableBody = $("#routeTableBody");
+                    tableBody.empty();
 
-        //        })
-        //        $("#Shift_Time").val($("#Cityid").val());
-        //    })
-        //});
+                    data.forEach(routeGroup => {
+                        var routeRow = `
+                            <tr>
+                                <td>${routeGroup.RouteId}</td>
+                                <td>24-02-2025</td>
+                                <td>19:30</td>
+                                <td>4</td>
+                                <td>6</td>
+                                <td><a href="#" class="btn-view" data-routeid="${routeGroup.RouteId}">View</a></td>
+                            </tr>
+                            <tr id="route-${routeGroup.RouteId}" class="details-content" style="display:none;">
+                                <td colspan="6">
+                                    <div class="route-header">
+                                        <strong>Device Number:</strong> 761 |
+                                        <strong>Driver Name:</strong> Narendra Singh Yadav |
+                                        <strong>Vehicle Number:</strong> HR38AD9592 |
+                                        <strong>Available Seats:</strong> 3
+                                    </div>
+                                    <div class="dt-responsive table-responsive">
+                                        <table class="table table-striped table-bordered nowrap">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Employee Id</th>
+                                                    <th>Employee Name</th>
+                                                    <th>Number</th>
+                                                    <th>Gender</th>
+                                                    <th>Company</th>
+                                                    <th>Pickup/Drop Location</th>
+                                                    <th>Pickup Location</th>
+                                                    <th>Status</th>
+                                                    <th>Area</th>
+                                                    <th>Pick-up Time</th>
+                                                    <th>
+                                                        <input type="checkbox" />No Show
+                                                        <input type="checkbox" />PickUp Status
+                                                    </th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>`;
+
+                        // Employee details
+                        routeGroup.RouteDetails.forEach(employee => {
+                            routeRow += `
+                                <tr>
+                                    <td>${employee.EmployeeId}</td>
+                                    <td>${employee.EmployeeName}</td>
+                                    <td>${employee.MobileNumber}</td>
+                                    <td>${employee.Gender}</td>
+                                    <td>${employee.CompanyName}</td>
+                                    <td>${employee.PickupLocation}</td>
+                                    <td>${employee.DropLocation}</td>
+                                    <td class="text-danger">Yet to confirm</td>
+                                    <td>NOIDA SECTOR 15</td>
+                                    <td><input type="time" class="form-control"></td>
+                                    <td>
+                                        <select class="zoneDropDown_serviceMapping">
+                                            <option value="NO">No Show</option>
+                                            <option value="B">PickedUp</option>
+                                            <option value="N" selected="selected">Yet to picked up</option>
+                                            <option value="T">Leave</option>
+                                        </select>
+                                    </td>
+                                    <td><button class="btn btn-warning btn-sm">Update</button></td>
+                                </tr>`;
+                        });
+
+                        routeRow += `
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>`;
+
+                        tableBody.append(routeRow);
+                    });
+                }
+            });
+        });
+
+        // Toggle Details View
+        $(document).on("click", ".btn-view", function (e) {
+            e.preventDefault();
+            var routeId = $(this).data("routeid");
+            $("#route-" + routeId).toggle();
+        });
     });
 </script>

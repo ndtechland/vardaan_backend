@@ -104,4 +104,21 @@ namespace VardaanCab.Domain.DTO
         public string Capacity { get; set; }
         public int EmpInCab { get; set; }
     }
+    public class RouteDetail
+    {
+        public long? RouteId { get; set; }
+        public string EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
+        public string MobileNumber { get; set; }
+        public string CompanyName { get; set; }
+        public string Gender { get; set; }
+        public string PickupLocation { get; set; }
+        public string DropLocation { get; set; }
+    }
+    // Grouped Model
+    public class GroupedRoute
+    {
+        public int RouteId { get; set; }
+        public List<RouteDetail> RouteDetails { get; set; } = new List<RouteDetail>();
+    }
 }

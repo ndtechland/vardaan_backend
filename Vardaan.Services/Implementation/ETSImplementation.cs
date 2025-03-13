@@ -552,6 +552,30 @@ namespace Vardaan.Services.Implementation
                 throw new Exception("Error fetching routing list", ex);
             }
         }
+        public List<RouteDetail> GetRouteDetailsByZone(int zoneId)
+        {
+            var routeDetails = (from r in ent.PickupAndDropLocationDatas
+                                join ar in ent.AllRoutes on r.AllRoute_Id equals ar.Id
+                                join emp in ent.Employees on r.Employee_Id equals emp.Employee_Id
+                                join cu in ent.Customers on r.CompanyId equals cu.Id
+                                join c in ent.Cabs on ar.CabNumber equals c.VehicleNumber
+                                where ar.RouteNameId == zoneId
+                                select new RouteDetail
+                                {
+                                    RouteId = ar.RouteId,
+                                    EmployeeId = r.Employee_Id,
+                                    EmployeeName = emp.Employee_First_Name + " " +
+                                                   (emp.Employee_Middle_Name ?? "") + " " +
+                                                   emp.Employee_Last_Name,
+                                    MobileNumber = emp.MobileNumber,
+                                    CompanyName = cu.OrgName,
+                                    Gender = emp.Gender,
+                                    PickupLocation = r.PickupLocation,
+                                    DropLocation = r.DropLocation
+                                }).ToList();
+
+            return routeDetails;
+        }
 
     }
 }
